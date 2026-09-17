@@ -57,6 +57,10 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 .waitBox { text-align:center; color:var(--dim); padding:14px 6px; }
 .waitBox .big { font-size:40px; margin-bottom:6px; }
 .seerBig { text-align:center; }
+.suspect { display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--haze); }
+.suspect .face { width:120px; height:120px; border-radius:18px; overflow:hidden; border:2px solid var(--candle); box-shadow:0 0 0 3px rgba(245,177,76,.18); }
+.suspect .face img, .suspect .face svg { width:100%; height:100%; object-fit:cover; display:block; }
+.suspect span { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--candle); }
 .seerQ { font-family:'Fraunces',serif; font-size:24px; line-height:1.25; margin:6px 0 18px; }
 .ansRow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .ans { font-family:inherit; font-weight:700; font-size:18px; padding:18px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
@@ -301,6 +305,10 @@ function App(){
 
       {role==="seer" && (
         <section className="qcard seerBig">
+          <div className="suspect">
+            <div className="face"><Face file={faces[secret]?.file} seed={faces[secret]?.seed} /></div>
+            <span>Your suspect — only you see this</span>
+          </div>
           {!askedQ && <div className="waitBox"><div className="big">🔮</div>Waiting for the detectives to agree on a question…</div>}
           {askedQ && !seerAns && (<div>
             <div className="who" style={{textAlign:"center",marginBottom:6}}>The detectives are asking</div>
