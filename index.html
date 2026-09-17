@@ -11,68 +11,85 @@
 html, body { margin: 0; }
 :root {
   --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
-  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6;
+  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6;
 }
 body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height: 100vh; }
-.wrap {
-  font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist);
-  max-width:520px; margin:0 auto; padding:16px 16px 28px; -webkit-font-smoothing:antialiased;
-}
+.wrap { font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); max-width:520px; margin:0 auto; padding:16px 16px 30px; -webkit-font-smoothing:antialiased; }
 .top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
 .brand { display:flex; align-items:center; gap:7px; letter-spacing:.22em; font-weight:700; font-size:14px; color:var(--candle); }
+.brandBig { font-family:'Fraunces',serif; font-weight:600; font-size:38px; letter-spacing:.02em; color:var(--candle); margin:18px 0 4px; }
+.sub { color:var(--dim); font-size:14px; margin-bottom:18px; }
 .who { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
-.diffs { display:flex; gap:6px; }
-.chip { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--dim);
-  background:var(--velvet); border:1px solid var(--haze); border-radius:999px; padding:6px 11px; cursor:pointer; }
+.chip { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--dim); background:var(--velvet); border:1px solid var(--haze); border-radius:999px; padding:7px 12px; cursor:pointer; }
 .chip.on { color:var(--ink); background:var(--candle); border-color:var(--candle); }
-.reading { font-size:13px; color:var(--dim); text-align:center; margin:6px 0 14px; }
-.reading b { color:var(--mist); }
-.qcard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze);
-  border-radius:20px; padding:18px; margin-bottom:16px; box-shadow:0 18px 40px -24px #000; }
+.sel { display:flex; gap:7px; flex-wrap:wrap; margin:8px 0 4px; }
+.label { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:18px 0 8px; }
+.card { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:20px; padding:16px 18px; box-shadow:0 18px 40px -24px #000; }
+.roster { display:flex; flex-direction:column; }
+.prow { display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--haze); }
+.prow:last-child { border-bottom:none; }
+.pname { font-weight:600; font-size:15px; display:flex; align-items:center; gap:8px; }
+.crown { color:var(--candle); }
+.rgt { display:flex; align-items:center; gap:8px; }
+.pill { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; }
+.pill.ready { color:var(--ink); background:var(--mint); }
+.pill.wait { color:var(--dim); border:1px solid var(--haze); }
+.kick { font-size:11px; font-weight:700; color:var(--rose); border:1px solid var(--rose); background:none; border-radius:999px; padding:4px 9px; cursor:pointer; font-family:inherit; }
+.readyBtn { width:100%; margin-top:12px; font-family:inherit; font-weight:700; font-size:15px; padding:13px; border-radius:13px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.readyBtn.on { background:rgba(125,240,166,.14); border-color:var(--mint); color:var(--mint); }
+.go { width:100%; margin-top:16px; font-family:'Fraunces',serif; font-weight:600; font-size:22px; letter-spacing:.03em; padding:16px; border-radius:16px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+.go:disabled { opacity:.4; cursor:not-allowed; }
+.hint { font-size:12px; color:var(--dim); text-align:center; margin-top:10px; }
+.roleTog { display:flex; background:var(--velvet); border:1px solid var(--haze); border-radius:999px; padding:4px; gap:4px; margin-bottom:12px; }
+.roleTog button { flex:1; border:none; background:none; color:var(--dim); font-weight:700; font-size:14px; padding:10px; border-radius:999px; font-family:inherit; cursor:pointer; }
+.roleTog button.on { background:var(--candle); color:var(--ink); }
+.qcard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:20px; padding:18px; margin-bottom:16px; }
 .qmeta { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
 .counter { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:15px; color:var(--psychic); }
 .counter i { color:var(--dim); font-style:normal; font-size:12px; }
 .lead { font-family:'Fraunces',serif; font-size:18px; margin:0 0 12px; }
 .picks { display:grid; gap:9px; }
-.pick { text-align:left; font-family:inherit; font-weight:600; font-size:15px; color:var(--mist);
-  background:var(--velvet); border:1px solid var(--haze); border-radius:13px; padding:14px; cursor:pointer; line-height:1.3; }
-.pick:active { transform:scale(.98); }
-.miniToggle { background:none; border:1px solid var(--haze); color:var(--dim); font-size:11px; font-weight:600;
-  border-radius:999px; padding:5px 10px; cursor:pointer; font-family:inherit; }
+.pick { text-align:left; font-family:inherit; font-weight:600; font-size:15px; color:var(--mist); background:var(--velvet); border:1px solid var(--haze); border-radius:13px; padding:14px; cursor:pointer; line-height:1.3; }
+.miniToggle { background:none; border:1px solid var(--haze); color:var(--dim); font-size:11px; font-weight:600; border-radius:999px; padding:5px 10px; cursor:pointer; font-family:inherit; }
 .qtext { font-family:'Fraunces',serif; font-weight:500; font-size:22px; line-height:1.25; margin:2px 0 16px; }
 .qtext.small { font-size:17px; margin:0; }
 .qhi { color:var(--candle); font-style:italic; }
+.waitBox { text-align:center; color:var(--dim); padding:14px 6px; }
+.waitBox .big { font-size:40px; margin-bottom:6px; }
+.seerBig { text-align:center; }
+.seerQ { font-family:'Fraunces',serif; font-size:24px; line-height:1.25; margin:6px 0 18px; }
+.ansRow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ans { font-family:inherit; font-weight:700; font-size:18px; padding:18px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.ans.y { border-color:var(--mint); color:var(--mint); } .ans.n { border-color:var(--rose); color:var(--rose); }
+.scaleRow { margin-top:14px; }
+.scaleRow input { width:100%; accent-color:var(--psychic); }
+.scaleVal { font-family:'JetBrains Mono',monospace; color:var(--psychic); font-weight:700; }
 .gridHead { display:flex; align-items:center; justify-content:space-between; margin:0 2px 10px; }
 .tally { font-size:12px; color:var(--dim); font-family:'JetBrains Mono',monospace; }
 .grid { display:grid; gap:8px; }
-.cell { position:relative; padding:0; border:1.5px solid var(--haze); border-radius:15px; overflow:hidden;
-  background:var(--velvet); cursor:pointer; aspect-ratio:1; }
+.cell { position:relative; padding:0; border:1.5px solid var(--haze); border-radius:15px; overflow:hidden; background:var(--velvet); cursor:pointer; aspect-ratio:1; }
 .cell img, .cell svg { width:100%; height:100%; display:block; object-fit:cover; }
 .cell:active { transform:scale(.95); }
 .cell.likely { border-color:var(--psychic); box-shadow:0 0 0 2px rgba(167,139,250,.35), 0 10px 24px -12px var(--psychic); }
 .cell.out { opacity:.32; filter:grayscale(.7); }
 .cell.picked { border-color:var(--candle); box-shadow:0 0 0 3px rgba(245,177,76,.5); }
-.badge { position:absolute; top:5px; right:5px; width:22px; height:22px; border-radius:999px;
-  display:grid; place-items:center; color:var(--ink); font-weight:800; font-size:13px; line-height:1; }
+.badge { position:absolute; top:5px; right:5px; width:22px; height:22px; border-radius:999px; display:grid; place-items:center; color:var(--ink); font-weight:800; font-size:13px; }
 .badge.like { background:var(--psychic); } .badge.no { background:var(--rose); } .badge.pick { background:var(--candle); }
 .footer { display:flex; gap:10px; margin-top:16px; }
-.primary { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:inherit;
-  font-weight:700; font-size:15px; padding:14px; border-radius:14px; cursor:pointer; border:none;
-  background:var(--candle); color:var(--ink); }
+.primary { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:inherit; font-weight:700; font-size:15px; padding:14px; border-radius:14px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
 .primary:disabled { opacity:.4; cursor:not-allowed; }
 .primary.full { width:100%; }
-.ghost { display:inline-flex; align-items:center; gap:6px; font-family:inherit; font-weight:600; font-size:14px;
-  padding:14px 16px; border-radius:14px; cursor:pointer; background:var(--velvet); color:var(--mist); border:1px solid var(--haze); }
+.ghost { display:inline-flex; align-items:center; gap:6px; font-family:inherit; font-weight:600; font-size:14px; padding:14px 16px; border-radius:14px; cursor:pointer; background:var(--velvet); color:var(--mist); border:1px solid var(--haze); }
 .flash { position:fixed; inset:0; display:grid; place-items:center; padding:24px; text-align:center; z-index:15; }
 .flash.yes { background:radial-gradient(120% 90% at 50% 40%, rgba(74,222,128,.22), rgba(14,11,26,.92)); }
 .flash.no { background:radial-gradient(120% 90% at 50% 40%, rgba(242,109,139,.22), rgba(14,11,26,.92)); }
 .flashCard { max-width:420px; }
 .flashQ { font-size:13px; color:var(--dim); margin-bottom:14px; }
-.verdictBig { font-family:'Fraunces',serif; font-size:64px; font-weight:600; letter-spacing:.02em; margin:0 0 22px; }
-.flash.yes .verdictBig { color:#7DF0A6; } .flash.no .verdictBig { color:var(--rose); }
+.verdictBig { font-family:'Fraunces',serif; font-size:64px; font-weight:600; margin:0 0 8px; }
+.flash.yes .verdictBig { color:var(--mint); } .flash.no .verdictBig { color:var(--rose); }
+.conf { font-family:'JetBrains Mono',monospace; color:var(--dim); margin-bottom:18px; }
 .revealOverlay { position:fixed; inset:0; background:rgba(8,6,16,.82); display:grid; place-items:center; padding:20px; z-index:20; }
-.revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze);
-  border-radius:22px; padding:24px 22px; max-width:460px; width:100%; text-align:center; box-shadow:0 30px 60px -20px #000; }
+.revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:22px; padding:24px 22px; max-width:460px; width:100%; text-align:center; box-shadow:0 30px 60px -20px #000; }
 .verdict { font-family:'Fraunces',serif; font-size:30px; font-weight:600; margin-bottom:18px; }
 .verdict.win { color:var(--candle); } .verdict.lose { color:var(--rose); }
 .revealFaces { display:flex; gap:22px; justify-content:center; margin-bottom:20px; }
@@ -80,10 +97,6 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 .rf .face { width:104px; height:104px; border-radius:16px; overflow:hidden; border:2px solid var(--haze); }
 .rf .face img, .rf .face svg { width:100%; height:100%; object-fit:cover; display:block; }
 .rf span { font-size:12px; color:var(--dim); }
-.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
-.stats div { background:var(--velvet); border:1px solid var(--haze); border-radius:12px; padding:11px 6px; }
-.stats b { display:block; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--psychic); }
-.stats span { font-size:10.5px; color:var(--dim); }
 .note { font-size:12px; color:var(--dim); line-height:1.5; margin:0 0 18px; }
 button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
@@ -91,18 +104,13 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 </head>
 <body>
 <div id="root"></div>
-
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
 <script type="text/babel">
 const { useState, useMemo, useEffect, useCallback } = React;
 
-/* --- config --- */
-const FACE_POOL = 25;                 // how many jpgs you uploaded to /faces (001..025)
-const ROUNDS = 8;                     // questions before the final guess
-const TARGET = "the suspect";
+const FACE_POOL = 25, ROUNDS = 8;
 const GRID = { easy:{n:9,cols:3}, medium:{n:16,cols:4}, hard:{n:25,cols:5} };
 const FALLBACK_Q = [
   "Does this person help granny across the street?","Does this person have a death stare?",
@@ -113,7 +121,6 @@ const FALLBACK_Q = [
   "Would this person snitch for a good sandwich?","Does this person secretly love pineapple on pizza?",
 ];
 
-/* --- deterministic drawn-face fallback --- */
 function mulberry32(a){return function(){a|=0;a=(a+0x6d2b79f5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
 function hashSeed(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
 const SKIN=["#F3C9A5","#E7B08A","#D69A6C","#B87A4B","#8C5A34","#6A4327","#FADCB8"];
@@ -122,8 +129,7 @@ const HAIR=["#221B2E","#3B2A1A","#6B4226","#B5651D","#D9A441","#9CA3AF","#7C3AED
 function FaceSVG({ seed }){
   const f = useMemo(()=>{
     const r=mulberry32(hashSeed(String(seed))); const pick=a=>a[Math.floor(r()*a.length)];
-    return { skin:pick(SKIN), hair:pick(HAIR), style:Math.floor(r()*6), glasses:r()<0.34, round:r()<0.5,
-      beard:Math.floor(r()*4), mouth:Math.floor(r()*4), acc:Math.floor(r()*5) };
+    return { skin:pick(SKIN), hair:pick(HAIR), style:Math.floor(r()*6), glasses:r()<0.34, round:r()<0.5, beard:Math.floor(r()*4), mouth:Math.floor(r()*4) };
   },[seed]);
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -150,181 +156,241 @@ function FaceSVG({ seed }){
       {f.style===2 && <path d="M26 66 Q22 20 50 18 Q78 20 74 66 L70 66 Q73 30 50 26 Q27 30 30 66 Z" fill={f.hair} />}
       {f.style===3 && <React.Fragment><circle cx="50" cy="20" r="8" fill={f.hair} /><path d="M29 42 Q30 22 50 22 Q70 22 71 42 L71 36 Q66 28 50 28 Q34 28 29 36 Z" fill={f.hair} /></React.Fragment>}
       {f.style===4 && <path d="M30 38 Q32 24 50 24 Q68 24 70 38 L70 36 Q64 30 50 30 Q36 30 30 36 Z" fill={f.hair} opacity="0.55" />}
-      {f.acc===2 && <path d="M27 34 Q50 12 73 34 L73 40 Q50 22 27 40 Z" fill="#7C3AED" />}
-      {f.acc===3 && <rect x="28" y="34" width="44" height="4" rx="2" fill="#F5B14C" />}
     </svg>
   );
 }
-
-/* photo with graceful fallback to a drawn face */
-function Face({ photoNum, seed }){
+function Face({ file, seed }){
   const [ok, setOk] = useState(true);
-  const src = `./faces/${String(photoNum).padStart(3,"0")}.jpg`;
-  if (ok) return <img src={src} alt="" onError={()=>setOk(false)} />;
+  if (ok && file) return <img src={"./faces/"+file} alt="" onError={()=>setOk(false)} />;
   return <FaceSVG seed={seed} />;
 }
 
+function seedPlayers(){
+  const you = 1 + Math.floor(Math.random()*6);
+  const others = [1,2,3,4,5,6].filter(n=>n!==you).slice(0,3);
+  const bots = others.map((n,i)=>({ id:"b"+n, num:n, name:"Detective "+n, ready:false, you:false, lag:i===2 }));
+  const all = [{ id:"you", num:you, name:"Detective "+you, ready:false, you:true, lag:false }, ...bots];
+  return all.sort((a,b)=>a.num-b.num);
+}
+
 function App(){
-  const [diff, setDiff] = useState("medium");
-  const [seed, setSeed] = useState(1);
-  const [pool, setPool] = useState(FALLBACK_Q);
-  const [round, setRound] = useState(1);
-  const [phase, setPhase] = useState("pick");      // pick | flash | narrow | guessing | reveal
-  const [askedQ, setAskedQ] = useState("");
-  const [readYes, setReadYes] = useState(true);
-  const [sortLikely, setSortLikely] = useState(true);
-  const [status, setStatus] = useState({});
-  const [guess, setGuess] = useState(null);
+  const [screen,setScreen] = useState("lobby");
+  const [players,setPlayers] = useState(seedPlayers);
+  const [leaderMode,setLeaderMode] = useState("random");
+  const [crown,setCrown] = useState(null);
+  const [diff,setDiff] = useState("medium");
+
+  const [role,setRole] = useState("detective");
+  const [seed,setSeed] = useState(1);
+  const [faceFiles,setFaceFiles] = useState([]);
+  const [pool,setPool] = useState(FALLBACK_Q);
+  const [round,setRound] = useState(1);
+  const [phase,setPhase] = useState("vote");     // vote|waiting|reading|narrow|guessing|reveal
+  const [askedQ,setAskedQ] = useState("");
+  const [seerAns,setSeerAns] = useState(null);   // {ans:'yes'|'no', conf:number|null}
+  const [useScale,setUseScale] = useState(false);
+  const [conf,setConf] = useState(7);
+  const [sortLikely,setSortLikely] = useState(true);
+  const [status,setStatus] = useState({});
+  const [guess,setGuess] = useState(null);
+  const [seerId,setSeerId] = useState(null);
   const cfg = GRID[diff];
 
+  useEffect(()=>{ fetch("./questions.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{}); },[]);
+  useEffect(()=>{ fetch("./faces/manifest.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setFaceFiles(d); }).catch(()=>{}); },[]);
+
+  // bots ready up on their own (one laggard never does -> shows the kick)
   useEffect(()=>{
-    fetch("./questions.json").then(r=>r.json())
-      .then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{});
-  },[]);
+    if(screen!=="lobby") return;
+    const timers = players.filter(p=>!p.you && !p.lag).map(p=>
+      setTimeout(()=>setPlayers(ps=>ps.map(x=>x.id===p.id?{...x,ready:true}:x)), 700+Math.random()*2000));
+    return ()=>timers.forEach(clearTimeout);
+  },[screen]);
+
+  const allReady = players.length>0 && players.every(p=>p.ready);
+  const toggleYou = ()=> setPlayers(ps=>ps.map(p=>p.you?{...p,ready:!p.ready}:p));
+  const kick = (id)=> setPlayers(ps=>ps.filter(p=>p.id!==id));
+
+  const chooseSeer = ()=>{
+    if(leaderMode==="picked" && crown && players.some(p=>p.id===crown)) return crown;
+    if(leaderMode==="random") return players[Math.floor(Math.random()*players.length)].id;
+    return players[0].id; // rotating starts with lowest number
+  };
+  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setGuess(null); setSeed(s=>s+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
-    const r = mulberry32(hashSeed(`${diff}:${seed}`));
-    const nums = []; while(nums.length<cfg.n){ const p=1+Math.floor(r()*FACE_POOL); if(!nums.includes(p)) nums.push(p); }
-    return nums.map((p,i)=>({ id:i, photo:p, seed:`${diff}-${seed}-${p}-${i}` }));
-  },[diff,seed,cfg.n]);
-  const secret = useMemo(()=>{ const r=mulberry32(hashSeed(`secret:${diff}:${seed}`)); return Math.floor(r()*cfg.n); },[diff,seed,cfg.n]);
-
+    const source = faceFiles.length ? faceFiles : Array.from({length:FACE_POOL},(_,i)=>String(i+1).padStart(3,"0")+".jpg");
+    const r = mulberry32(hashSeed(diff+":"+seed+":"+source.length));
+    const distinct = source.length>=cfg.n; const idx=[];
+    while(idx.length<cfg.n){ const k=Math.floor(r()*source.length); if(distinct && idx.includes(k)) continue; idx.push(k); }
+    return idx.map((k,i)=>({ id:i, file:source[k], seed:diff+"-"+seed+"-"+k+"-"+i }));
+  },[diff,seed,cfg.n,faceFiles]);
+  const secret = useMemo(()=>{ const r=mulberry32(hashSeed("secret:"+diff+":"+seed)); return Math.floor(r()*cfg.n); },[diff,seed,cfg.n]);
   const options = useMemo(()=>{
-    const r = mulberry32(hashSeed(`opts:${diff}:${seed}:${round}`)); const out=[]; const used=new Set();
+    const r=mulberry32(hashSeed("opts:"+seed+":"+round)); const out=[]; const used=new Set();
     while(out.length<4 && used.size<pool.length){ const i=Math.floor(r()*pool.length); if(!used.has(i)){ used.add(i); out.push(pool[i]); } }
     return out;
-  },[pool,diff,seed,round]);
+  },[pool,seed,round]);
 
-  const reset = useCallback((d)=>{ setDiff(d||diff); setSeed(s=>s+1); setRound(1); setPhase("pick"); setStatus({}); setGuess(null); },[diff]);
+  const pickQuestion = (q)=>{ setAskedQ(q); setSeerAns(null); setPhase("waiting"); };
+  const seerAnswer = (ans)=>{ setSeerAns({ ans, conf: useScale?conf:null }); setPhase("reading"); };
+  const simulate = ()=>{ const r=mulberry32(hashSeed("read:"+seed+":"+round)); setSeerAns({ ans:r()<0.5?"yes":"no", conf:null }); setPhase("reading"); };
+  const cycle = (id)=>{ if(phase==="guessing"){ setGuess(id); return; } if(phase!=="narrow") return; setStatus(prev=>{ const c=prev[id]; const n={...prev}; if(!c)n[id]="likely"; else if(c==="likely")n[id]="out"; else delete n[id]; return n; }); };
+  const next = ()=>{ if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); } else setPhase("guessing"); };
 
-  const askQuestion = (q)=>{ const r=mulberry32(hashSeed(`read:${seed}:${round}:${q}`)); setAskedQ(q); setReadYes(r()<0.5); setPhase("flash"); };
-  const cycle = (id)=>{
-    if(phase==="guessing"){ setGuess(id); return; }
-    if(phase!=="narrow") return;
-    setStatus(prev=>{ const c=prev[id]; const n={...prev}; if(!c)n[id]="likely"; else if(c==="likely")n[id]="out"; else delete n[id]; return n; });
-  };
-  const nextRound = ()=>{ if(round<ROUNDS){ setRound(r=>r+1); setPhase("pick"); } else setPhase("guessing"); };
-
-  const ordered = useMemo(()=>{
-    if(!sortLikely) return faces;
-    const rank=id=>(status[id]==="likely"?0:status[id]==="out"?2:1);
-    return [...faces].sort((a,b)=>rank(a.id)-rank(b.id)||a.id-b.id);
-  },[faces,status,sortLikely]);
-
+  const ordered = useMemo(()=>{ if(!sortLikely) return faces; const rank=id=>(status[id]==="likely"?0:status[id]==="out"?2:1); return [...faces].sort((a,b)=>rank(a.id)-rank(b.id)||a.id-b.id); },[faces,status,sortLikely]);
   const likely = Object.values(status).filter(s=>s==="likely").length;
   const out = Object.values(status).filter(s=>s==="out").length;
   const correct = guess===secret;
-  const badge = round<=3?"TRUE PSYCHIC":round<=5?"SHARP READ":round<=7?"SOLID GUESS":"PLAYED IT SAFE";
+  const youP = players.find(p=>p.you);
+  const seerP = players.find(p=>p.id===seerId);
+  const shortQ = (q)=> q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"");
 
+  /* ---------------- LOBBY ---------------- */
+  if(screen==="lobby"){
+    return (
+      <div className="wrap">
+        <div className="brand">◍ COLD&nbsp;READ</div>
+        <div className="brandBig">Assemble the detectives</div>
+        <div className="sub">Everyone piles in and gets a number. Ready up, boot the stragglers, then go.</div>
+
+        <div className="label">In the room</div>
+        <div className="card"><div className="roster">
+          {players.map(p=>(
+            <div className="prow" key={p.id}>
+              <div className="pname">{p.name}{p.you && <span className="who">you</span>}{crown===p.id && leaderMode==="picked" && <span className="crown">👑</span>}</div>
+              <div className="rgt">
+                <span className={"pill "+(p.ready?"ready":"wait")}>{p.ready?"ready":"waiting"}</span>
+                {!p.you && !p.ready && <button className="kick" onClick={()=>kick(p.id)}>kick</button>}
+              </div>
+            </div>
+          ))}
+        </div></div>
+        <button className={"readyBtn"+(youP&&youP.ready?" on":"")} onClick={toggleYou}>{youP&&youP.ready?"✓ You're ready":"Ready up"}</button>
+
+        <div className="label">Grid size</div>
+        <div className="sel">
+          {["easy","medium","hard"].map(d=>(<button key={d} className={"chip"+(diff===d?" on":"")} onClick={()=>setDiff(d)}>{d==="easy"?"Easy · 3×3":d==="medium"?"Medium · 4×4":"Hard · 5×5"}</button>))}
+        </div>
+
+        <div className="label">Who's the seer</div>
+        <div className="sel">
+          {[["picked","Picked"],["random","Random"],["rotating","Rotating"]].map(([m,l])=>(<button key={m} className={"chip"+(leaderMode===m?" on":"")} onClick={()=>setLeaderMode(m)}>{l}</button>))}
+        </div>
+        {leaderMode==="picked" && <div className="sel">{players.map(p=>(<button key={p.id} className={"chip"+(crown===p.id?" on":"")} onClick={()=>setCrown(p.id)}>{p.name}</button>))}</div>}
+
+        <button className="go" disabled={!allReady || (leaderMode==="picked" && !crown)} onClick={start}>LET'S GOOOO</button>
+        <div className="hint">{allReady ? "Detectives ready." : "Waiting on someone — ready them or kick them."}</div>
+      </div>
+    );
+  }
+
+  /* ---------------- GAME ---------------- */
   return (
     <div className="wrap">
       <header className="top">
-        <div>
-          <div className="brand">◍ COLD&nbsp;READ</div>
-          <div className="who">You are Detective 1</div>
-        </div>
-        <div className="diffs">
-          {["easy","medium","hard"].map(d=>(
-            <button key={d} className={"chip"+(diff===d?" on":"")} onClick={()=>reset(d)}>
-              {d==="easy"?"3×3":d==="medium"?"4×4":"5×5"}
-            </button>
-          ))}
-        </div>
+        <div><div className="brand">◍ COLD&nbsp;READ</div>
+          <div className="who">{youP&&youP.name} · seer: {seerP?seerP.name:"—"} · Q{Math.min(round,ROUNDS)}/{ROUNDS}</div></div>
+        <button className="miniToggle" onClick={()=>setScreen("lobby")}>Lobby</button>
       </header>
 
-      {phase!=="reveal" && <div className="reading">You're reading <b>{TARGET}</b>. One of these faces is their secret identity.</div>}
+      <div className="roleTog">
+        <button className={role==="detective"?"on":""} onClick={()=>setRole("detective")}>🕵 Detective</button>
+        <button className={role==="seer"?"on":""} onClick={()=>setRole("seer")}>🔮 Seer</button>
+      </div>
 
-      {phase==="pick" && (
+      {role==="seer" && (
+        <section className="qcard seerBig">
+          {!askedQ && <div className="waitBox"><div className="big">🔮</div>Waiting for the detectives to agree on a question…</div>}
+          {askedQ && !seerAns && (<div>
+            <div className="who" style={{textAlign:"center",marginBottom:6}}>The detectives are asking</div>
+            <p className="seerQ">Does {shortQ(askedQ)}?</p>
+            <div className="ansRow">
+              <button className="ans y" onClick={()=>seerAnswer("yes")}>YES</button>
+              <button className="ans n" onClick={()=>seerAnswer("no")}>NO</button>
+            </div>
+            <div className="scaleRow">
+              <button className="miniToggle" onClick={()=>setUseScale(v=>!v)}>{useScale?"Scale on":"Just yes / no"}</button>
+              {useScale && <div style={{marginTop:10}}><input type="range" min="0" max="10" value={conf} onChange={e=>setConf(+e.target.value)} /><div className="who">confidence <span className="scaleVal">{conf}/10</span> — sent with your answer</div></div>}
+            </div>
+          </div>)}
+          {seerAns && <div className="waitBox"><div className="big">{seerAns.ans==="yes"?"✅":"⛔"}</div>You answered <b>{seerAns.ans.toUpperCase()}</b>{seerAns.conf!=null?` · ${seerAns.conf}/10`:""}. The reading's been sent — sit tight for the next question.</div>}
+        </section>
+      )}
+
+      {role==="detective" && phase==="vote" && (
         <section className="qcard">
-          <div className="qmeta">
-            <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
-            <span className="miniToggle">Vote a question</span>
-          </div>
+          <div className="qmeta"><span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span><span className="miniToggle">Vote a question</span></div>
           <p className="lead">Which question do we send to the seer?</p>
-          <div className="picks">
-            {options.map((q,i)=>(<button key={i} className="pick" onClick={()=>askQuestion(q)}>{q}</button>))}
-          </div>
+          <div className="picks">{options.map((q,i)=>(<button key={i} className="pick" onClick={()=>pickQuestion(q)}>{q}</button>))}</div>
         </section>
       )}
 
-      {phase==="narrow" && (
+      {role==="detective" && phase==="waiting" && (
         <section className="qcard">
-          <div className="qmeta">
-            <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
-            <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"likely first":"off"}</button>
+          <div className="qmeta"><span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span></div>
+          <div className="waitBox"><div className="big">🔮</div>Sent to the seer: <b>Does {shortQ(askedQ)}?</b></div>
+          <div className="footer">
+            <button className="ghost" onClick={()=>setRole("seer")}>Peek as seer</button>
+            <button className="primary" onClick={simulate}>Simulate reading ›</button>
           </div>
-          <p className="qtext small">The seer said <span className="qhi">{readYes?"YES":"NO"}</span> — now read your suspects.</p>
         </section>
       )}
 
-      {phase==="guessing" && (
-        <section className="qcard"><p className="qtext small">Lock in the face you think is <b>{TARGET}</b>.</p></section>
-      )}
-
-      <div className="gridHead">
-        <span className="tally">✦ {likely} likely · {out} out</span>
-      </div>
-
-      <div className="grid" style={{ gridTemplateColumns:`repeat(${cfg.cols}, 1fr)` }}>
-        {ordered.map(f=>{
-          const st=status[f.id]; const picked=phase==="guessing"&&guess===f.id;
-          const cls=["cell",st==="likely"?"likely":"",st==="out"?"out":"",picked?"picked":""].join(" ");
-          return (
-            <button key={f.id} className={cls} onClick={()=>cycle(f.id)} aria-label={`Face ${f.id+1}`}>
-              <Face photoNum={f.photo} seed={f.seed} />
-              {st==="likely" && <span className="badge like">✓</span>}
-              {st==="out" && <span className="badge no">✕</span>}
-              {picked && <span className="badge pick">◆</span>}
-            </button>
-          );
-        })}
-      </div>
-
-      {phase==="narrow" && (
-        <div className="footer">
-          <button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button>
-          <button className="primary" onClick={nextRound}>{round<ROUNDS?"Next question":"Time to guess"} ›</button>
+      {role==="detective" && (phase==="narrow"||phase==="guessing") && (
+        <section className="qcard"><div className="qmeta">
+          <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
+          {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"likely first":"off"}</button>}
         </div>
-      )}
-      {phase==="guessing" && (
-        <div className="footer">
-          <button className="ghost" onClick={()=>setPhase("narrow")}>Back</button>
-          <button className="primary" disabled={guess===null} onClick={()=>setPhase("reveal")}>Lock my guess ◆</button>
-        </div>
+        <p className="qtext small">{phase==="narrow" ? <span>Seer said <span className="qhi">{seerAns&&seerAns.ans.toUpperCase()}</span> — read your suspects.</span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
+        </section>
       )}
 
-      {phase==="flash" && (
-        <div className={"flash "+(readYes?"yes":"no")} onClick={()=>setPhase("narrow")}>
+      {role==="detective" && phase!=="vote" && phase!=="waiting" && (
+        <React.Fragment>
+          <div className="gridHead"><span className="tally">✦ {likely} likely · {out} out</span></div>
+          <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
+            {ordered.map(f=>{
+              const st=status[f.id]; const picked=phase==="guessing"&&guess===f.id;
+              const cls=["cell",st==="likely"?"likely":"",st==="out"?"out":"",picked?"picked":""].join(" ");
+              return (<button key={f.id} className={cls} onClick={()=>cycle(f.id)} aria-label={"Face "+(f.id+1)}>
+                <Face file={f.file} seed={f.seed} />
+                {st==="likely" && <span className="badge like">✓</span>}
+                {st==="out" && <span className="badge no">✕</span>}
+                {picked && <span className="badge pick">◆</span>}
+              </button>);
+            })}
+          </div>
+          {phase==="narrow" && <div className="footer"><button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button><button className="primary" onClick={next}>{round<ROUNDS?"Next question":"Time to guess"} ›</button></div>}
+          {phase==="guessing" && <div className="footer"><button className="ghost" onClick={()=>setPhase("narrow")}>Back</button><button className="primary" disabled={guess===null} onClick={()=>setPhase("reveal")}>Lock my guess ◆</button></div>}
+        </React.Fragment>
+      )}
+
+      {role==="detective" && phase==="reading" && seerAns && (
+        <div className={"flash "+(seerAns.ans==="yes"?"yes":"no")} onClick={()=>setPhase("narrow")}>
           <div className="flashCard">
-            <div className="flashQ">Does {TARGET} {askedQ.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"")}?</div>
-            <p className="verdictBig">{readYes?"YES":"NO"}</p>
+            <div className="flashQ">Does {shortQ(askedQ)}?</div>
+            <p className="verdictBig">{seerAns.ans.toUpperCase()}</p>
+            {seerAns.conf!=null && <div className="conf">seer is {seerAns.conf}/10 sure</div>}
             <button className="primary full" onClick={()=>setPhase("narrow")}>Read your suspects ›</button>
           </div>
         </div>
       )}
 
       {phase==="reveal" && (
-        <div className="revealOverlay">
-          <div className="revealCard">
-            <div className={"verdict "+(correct?"win":"lose")}>{correct?"You read them.":"Not quite."}</div>
-            <div className="revealFaces">
-              <div className="rf"><div className="face"><Face photoNum={faces[guess]?.photo} seed={faces[guess]?.seed} /></div><span>Your guess</span></div>
-              {!correct && <div className="rf"><div className="face"><Face photoNum={faces[secret]?.photo} seed={faces[secret]?.seed} /></div><span>Was {TARGET}</span></div>}
-            </div>
-            <div className="stats">
-              <div><b>{badge}</b><span>read at Q{Math.min(round,ROUNDS)}</span></div>
-              <div><b>{likely}</b><span>marked likely</span></div>
-              <div><b>{out}</b><span>ruled out</span></div>
-            </div>
-            <p className="note">In multiplayer this screen adds the group math: % of answers matching the seer, and the single most divisive question.</p>
-            <button className="primary full" onClick={()=>reset()}>↻ Play again</button>
+        <div className="revealOverlay"><div className="revealCard">
+          <div className={"verdict "+(correct?"win":"lose")}>{correct?"You read them.":"Not quite."}</div>
+          <div className="revealFaces">
+            <div className="rf"><div className="face"><Face file={faces[guess]?.file} seed={faces[guess]?.seed} /></div><span>Your guess</span></div>
+            {!correct && <div className="rf"><div className="face"><Face file={faces[secret]?.file} seed={faces[secret]?.seed} /></div><span>The suspect</span></div>}
           </div>
-        </div>
+          <p className="note">In the live game this adds the group math: % of detectives who matched the seer, and the single most divisive question.</p>
+          <div className="footer"><button className="ghost" onClick={()=>setScreen("lobby")}>Lobby</button><button className="primary" onClick={start}>Play again ↻</button></div>
+        </div></div>
       )}
     </div>
   );
 }
-
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
