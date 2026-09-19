@@ -450,6 +450,11 @@ function OnlineApp({ onExit }){
   const [conf,setConf] = useState(7);
   const [pendingSeer,setPendingSeer] = useState(null);
   const [dismissed,setDismissed] = useState(0);
+  const [score,setScore] = useState({});
+  const [marks,setMarks] = useState({});
+  const [showMode,setShowMode] = useState("score");
+  const [nowT,setNowT] = useState(Date.now());
+  const firedRef = React.useRef(null);
   const [err,setErr] = useState("");
 
   useEffect(()=>{
@@ -534,9 +539,22 @@ function OnlineApp({ onExit }){
   const lockGuess = async ()=>{ if(guess==null) return; await sb.from("players").update({ guess }).eq("id",myId); };
   const reveal = async ()=>{ await sb.from("games").update({ phase:"revealed" }).eq("code",code); };
 
-  const cycle = (id)=>{ setStatus(prev=>{ const c=prev[id]; const n=Object.assign({},prev); if(!c)n[id]="likely"; else if(c==="likely")n[id]="out"; else delete n[id]; return n; }); };
-  const likely = Object.values(status).filter(s=>s==="likely").length;
-  const outc = Object.values(status).filter(s=>s==="out").length;
+  useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; }, [game && game.seed]);
+  useEffect(()=>{ const t=setInterval(()=>setNowT(Date.now()), 300); return ()=>clearInterval(t); }, []);
+  useEffect(()=>{
+    if(!game || !amSeer) return;
+    const until = game.seer_ans && game.seer_ans.until;
+    if(until && Date.now()>=until && firedRef.current!==game.round){ firedRef.current=game.round; nextRound(); }
+  }, [nowT, game, amSeer]);
+
+  const tapFace = (id)=>{
+    if(game.phase==="guessing"){ setGuess(id); return; }
+    const key = game.round+":"+id; const on = !!marks[key];
+    setMarks(m=>{ const n=Object.assign({},m); if(on) delete n[key]; else n[key]=true; return n; });
+    setScore(s=>Object.assign({},s,{ [id]: Math.max(0,(s[id]||0)+(on?-1:1)) }));
+  };
+  const seerWarn = async ()=>{ const cur = game.seer_ans || {}; await sb.from("games").update({ seer_ans:Object.assign({},cur,{ until: Date.now()+5000 }) }).eq("code",code); };
+  const tallyMarks = (n)=>{ let s=""; for(let i=0;i<n;i++) s+="|"; return s; };
 
   if(!sb){
     return (<div className="wrap"><div className="brand">◍ COLD&nbsp;READ</div><div className="card" style={{marginTop:18}}><p style={{margin:0,lineHeight:1.5}}>To play online, paste your Supabase <b>Project URL</b> and <b>key</b> into the two marked lines at the top of index.html, then re-upload.</p></div><button className="readyBtn" style={{marginTop:14}} onClick={onExit}>Back</button></div>);
@@ -635,7 +653,15 @@ function OnlineApp({ onExit }){
             )}
           </div>
         ) : (
-          <div className="waitBox"><div className="big">{game.seer_ans.ans==="yes"?"✅":"⛔"}</div>You answered <b>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""}. Waiting for the next question.</div>
+          <div className="waitBox">
+            <div className="big">{game.seer_ans.ans==="yes"?"✅":"⛔"}</div>
+            You answered <b>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""}.
+            {game.seer_ans.until && game.seer_ans.until>nowT && <div style={{color:"var(--candle)",marginTop:8,fontWeight:700}}>Moving on in {Math.ceil((game.seer_ans.until-nowT)/1000)}s…</div>}
+            <div className="footer" style={{marginTop:14}}>
+              <button className="ghost" onClick={seerWarn}>⏱ 5-sec warning</button>
+              <button className="primary" onClick={nextRound}>Next question ›</button>
+            </div>
+          </div>
         )}
       </section>
     </div>);
@@ -660,15 +686,18 @@ function OnlineApp({ onExit }){
     )}
     {(game.phase==="guessing" || (game.phase==="playing" && game.seer_ans)) && (
       <React.Fragment>
-        <div className="gridHead"><span className="tally">✦ {likely} likely · {outc} out</span></div>
+        <div className="gridHead">
+          <span className="tally">{game.phase==="guessing" ? "tap the suspect" : "tap faces that fit the reading"}</span>
+          <button className="miniToggle" onClick={()=>setShowMode(m=>m==="score"?"tally":"score")}>{showMode==="score"?"Show: score":"Show: tally"}</button>
+        </div>
+        {game.phase==="playing" && game.seer_ans && game.seer_ans.until && game.seer_ans.until>nowT && <div className="hint" style={{marginTop:-4,marginBottom:8,color:"var(--candle)"}}>Seer moving on in {Math.ceil((game.seer_ans.until-nowT)/1000)}s — mark fast!</div>}
         <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-          {faces.map(f=>{
-            const st=status[f.id]; const picked=game.phase==="guessing"&&guess===f.id;
-            const cls=["cell",st==="likely"?"likely":"",st==="out"?"out":"",picked?"picked":""].join(" ");
-            return (<button key={f.id} className={cls} onClick={()=> game.phase==="guessing" ? setGuess(f.id) : cycle(f.id)}>
+          {[...faces].sort((a,b)=>((score[b.id]||0)-(score[a.id]||0))||a.id-b.id).map(f=>{
+            const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id;
+            const cls=["cell",hit&&game.phase!=="guessing"?"likely":"",picked?"picked":""].join(" ");
+            return (<button key={f.id} className={cls} onClick={()=>tapFace(f.id)}>
               <Face file={f.file} seed={f.seed} />
-              {st==="likely" && <span className="badge like">✓</span>}
-              {st==="out" && <span className="badge no">✕</span>}
+              {sc>0 && <span className="badge like" style={{minWidth:22,width:"auto",padding:"0 6px",fontFamily:"'JetBrains Mono',monospace"}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
               {picked && <span className="badge pick">◆</span>}
             </button>);
           })}
