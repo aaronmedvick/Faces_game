@@ -426,6 +426,8 @@ const sb = sbReady ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 const randId = () => Math.random().toString(36).slice(2,10);
 const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set:(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} }, del:(k)=>{ try{ localStorage.removeItem(k); }catch(e){} } };
+const persistId = ()=>{ let v=ls.get("cr_id"); if(!v){ v=randId(); ls.set("cr_id",v); } return v; };
 const shortQ = (q)=> q ? q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"") : "";
 
 function Home({configured,onPick}){
@@ -443,9 +445,10 @@ function Home({configured,onPick}){
 
 function OnlineApp({ onExit }){
   const inp = { width:"100%", padding:"13px", borderRadius:"12px", border:"1px solid var(--haze)", background:"var(--velvet)", color:"var(--mist)", fontFamily:"inherit", fontSize:"16px", marginBottom:"10px" };
-  const [myId] = useState(randId);
-  const [name,setName] = useState("");
-  const [codeInput,setCodeInput] = useState("");
+  const [myId] = useState(persistId);
+  const [name,setName] = useState(()=>ls.get("cr_name")||"");
+  const [codeInput,setCodeInput] = useState(()=>ls.get("cr_code")||"");
+  const [savedCode] = useState(()=>ls.get("cr_code")||"");
   const [code,setCode] = useState("");
   const [game,setGame] = useState(null);
   const [players,setPlayers] = useState([]);
@@ -512,6 +515,7 @@ function OnlineApp({ onExit }){
     const g = await sb.from("games").insert({ code:c, host_id:myId, phase:"lobby", difficulty:"medium", answer_mode:"yesno", seed:Math.floor(Math.random()*1000000)+1, round:1 });
     if(g.error){ setErr(g.error.message); return; }
     await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
+    ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
   };
   const joinGame = async ()=>{
@@ -523,10 +527,12 @@ function OnlineApp({ onExit }){
     const ps = await sb.from("players").select("num").eq("code",c);
     const num = (ps.data && ps.data.length ? Math.max.apply(null, ps.data.map(p=>p.num)) : 0) + 1;
     await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num, ready:false });
+    ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
   };
   const toggleReady = async ()=>{ if(!me) return; await sb.from("players").update({ ready:!me.ready }).eq("id",myId); };
   const kick = async (id)=>{ await sb.from("players").delete().eq("id",id); };
+  const resume = ()=>{ if(savedCode){ setCodeInput(savedCode); setCode(savedCode); } };
   const setDiff = async (d)=>{ await sb.from("games").update({ difficulty:d }).eq("code",code); };
   const setAns = async (m)=>{ await sb.from("games").update({ answer_mode:m }).eq("code",code); };
   const startGame = async ()=>{
@@ -574,16 +580,17 @@ function OnlineApp({ onExit }){
     return (<div className="wrap">
       <div className="brand">◍ COLD&nbsp;READ</div>
       <div className="brandBig">Join the case</div>
+      {savedCode && <button className="go" style={{background:"var(--psychic)",marginBottom:16}} onClick={resume}>↩ Return to game {savedCode}</button>}
       <input style={inp} placeholder="Your detective name" value={name} onChange={e=>setName(e.target.value)} />
       <input style={inp} placeholder="Game code (e.g. K4TQ)" value={codeInput} onChange={e=>setCodeInput(e.target.value)} />
       <button className="go" onClick={joinGame}>Join game</button>
-      <div style={{textAlign:"center",marginTop:14}}><button className="miniToggle" onClick={createGame}>or host a new game</button></div>
+      <div style={{textAlign:"center",marginTop:16}}><button style={{background:"none",border:"none",color:"var(--dim)",textDecoration:"underline",fontFamily:"inherit",fontSize:"13px",cursor:"pointer",padding:"6px"}} onClick={createGame}>Start a new game</button></div>
       {err && <div className="hint" style={{color:"var(--rose)"}}>{err}</div>}
       <button className="readyBtn" style={{marginTop:16}} onClick={onExit}>Back</button>
     </div>);
   }
 
-  if(!game){ return (<div className="wrap"><div className="waitBox" style={{marginTop:40}}><div className="big">🔮</div>Connecting to {code}…</div></div>); }
+  if(!game){ return (<div className="wrap"><div className="waitBox" style={{marginTop:40}}><div className="big">🔮</div>Connecting to {code}…</div><button className="readyBtn" style={{marginTop:16}} onClick={()=>setCode("")}>Back</button></div>); }
 
   const seerP = players.find(p=>p.id===game.seer_id);
   const suspect = game.suspect_idx;
