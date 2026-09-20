@@ -116,6 +116,8 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 const { useState, useMemo, useEffect, useCallback } = React;
 
 const FACE_POOL = 25, ROUNDS = 8;
+const FACE_DIR = "Faces";
+const FACE_FILES = ["IMG_7742.jpeg","IMG_7745.jpeg","IMG_7746.jpeg","IMG_7747.jpeg","IMG_7748.jpeg","IMG_7749.jpeg","IMG_7750.jpeg","IMG_7751.jpeg","IMG_7753.jpeg","IMG_7754.jpeg","IMG_7755.jpeg","IMG_7756.jpeg","IMG_7757.jpeg","IMG_7758.jpeg","IMG_7759.jpeg","IMG_7760.jpeg","IMG_7761.jpeg","IMG_7762.jpeg","IMG_7763.jpeg","IMG_7764.jpeg","IMG_7765.jpeg","IMG_7766.jpeg","IMG_7768.jpeg","IMG_7770.jpeg","IMG_7771.jpeg","IMG_7772.jpeg","IMG_7773.jpeg","IMG_7774.jpeg","IMG_7775.jpeg","IMG_7776.jpeg","IMG_7777.jpeg","IMG_7778.jpeg","IMG_7779.jpeg","IMG_7781.jpeg","IMG_7782.jpeg","IMG_7783.jpeg","IMG_7784.jpeg"];
 const GRID = { easy:{n:9,cols:3}, medium:{n:16,cols:4}, hard:{n:25,cols:5} };
 const FALLBACK_Q = [
   "Does this person help granny across the street?","Does this person have a death stare?",
@@ -166,7 +168,7 @@ function FaceSVG({ seed }){
 }
 function Face({ file, seed }){
   const [ok, setOk] = useState(true);
-  if (ok && file) return <img src={"./faces/"+file} alt="" onError={()=>setOk(false)} />;
+  if (ok && file) return <img src={"./"+FACE_DIR+"/"+file} alt="" onError={()=>setOk(false)} />;
   return <FaceSVG seed={seed} />;
 }
 
@@ -224,7 +226,7 @@ function SoloApp(){
   const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setGuess(null); setSeed(s=>s+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
-    const source = faceFiles.length ? faceFiles : Array.from({length:FACE_POOL},(_,i)=>String(i+1).padStart(3,"0")+".jpg");
+    const source = faceFiles.length ? faceFiles : FACE_FILES;
     const r = mulberry32(hashSeed(diff+":"+seed+":"+source.length));
     const distinct = source.length>=cfg.n; const idx=[];
     while(idx.length<cfg.n){ const k=Math.floor(r()*source.length); if(distinct && idx.includes(k)) continue; idx.push(k); }
@@ -487,7 +489,7 @@ function OnlineApp({ onExit }){
 
   const faces = useMemo(()=>{
     if(!game) return [];
-    const source = faceFiles.length ? faceFiles : Array.from({length:FACE_POOL},(_,i)=>String(i+1).padStart(3,"0")+".jpg");
+    const source = faceFiles.length ? faceFiles : FACE_FILES;
     const r = mulberry32(hashSeed(game.difficulty+":"+game.seed+":"+source.length));
     const distinct = source.length>=cfg.n; const idx=[];
     while(idx.length<cfg.n){ const k=Math.floor(r()*source.length); if(distinct && idx.includes(k)) continue; idx.push(k); }
