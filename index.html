@@ -226,7 +226,7 @@ function SoloApp(){
     if(leaderMode==="random") return players[Math.floor(Math.random()*players.length)].id;
     return players[0].id; // rotating starts with lowest number
   };
-  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setSeed(s=>s+1); setScreen("game"); };
+  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
     const source = faceFiles.length ? faceFiles : FACE_FILES;
@@ -539,7 +539,7 @@ function OnlineApp({ onExit }){
     if(!(players.length>0 && players.every(p=>p.ready))) return;
     const seer = (pendingSeer && players.some(p=>p.id===pendingSeer)) ? pendingSeer : players[Math.floor(Math.random()*players.length)].id;
     const suspect = Math.floor(Math.random()*cfg.n);
-    await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, asked_q:null, seer_ans:null }).eq("code",code);
+    await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, seed:Math.floor(Math.random()*1000000)+1, asked_q:null, seer_ans:null }).eq("code",code);
     await sb.from("players").update({ ready:false }).eq("code",code);
   };
   const sendQuestion = async (q)=>{ await sb.from("games").update({ asked_q:q, seer_ans:null }).eq("code",code); };
