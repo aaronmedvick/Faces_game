@@ -213,6 +213,8 @@ function SoloApp(){
   const [brief2,setBrief2] = useState(false);
   const [hist,setHist] = useState([]);
   const [reaction,setReaction] = useState(null);
+  const [myVote,setMyVote] = useState(null);
+  const [showStats,setShowStats] = useState(false);
   const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   const [guess,setGuess] = useState(null);
@@ -239,7 +241,7 @@ function SoloApp(){
     if(leaderMode==="random") return players[Math.floor(Math.random()*players.length)].id;
     return players[0].id; // rotating starts with lowest number
   };
-  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setHist([]); setReaction(null); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
+  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setHist([]); setReaction(null); setMyVote(null); setShowStats(false); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
     const source = faceFiles.length ? faceFiles : FACE_FILES;
@@ -261,10 +263,10 @@ function SoloApp(){
   const simulate = ()=>{ const r=mulberry32(hashSeed("read:"+seed+":"+round)); setSeerAns({ ans:r()<0.5?"yes":"no", conf:null }); setPhase("reading"); };
   const tapFace = (id)=>{ if(phase==="guessing"){ if(guess===id){ setGuess(null); setReaction({text:pickReact(GUILTY_FREE),kind:"yay"}); } else { setGuess(id); setReaction({text:pickReact(GUILTY_ACCUSE),kind:"aw"}); } return; } if(phase!=="narrow") return; const key=round+":"+id; const on=!!marks[key]; setMarks(m=>{ const n={...m}; if(on) delete n[key]; else n[key]=true; return n; }); setScore(s=>({...s,[id]:Math.max(0,(s[id]||0)+(on?-1:1))})); };
   const tallyMarks = (n)=>{ let s=""; for(let i=0;i<n;i++) s+="|"; return s; };
-  const next = ()=>{ setHist(h=>h.concat([{ q:askedQ, ans:seerAns?seerAns.ans:null, conf:seerAns?seerAns.conf:null }])); if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); } else setPhase("guessing"); };
+  const next = ()=>{ setHist(h=>h.concat([{ q:askedQ, ans:seerAns?seerAns.ans:null, conf:seerAns?seerAns.conf:null }])); if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setMyVote(null); } else setPhase("guessing"); };
 
-  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
-  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [round,faces]);
+  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:(vision===f.id?-1:0); return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
+  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:(vision===f.id?-1:0); return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [round,faces]);
   const ordered = sortMode==="off"?faces : (sortMode==="live"?liveOrder:roundOrder);
   const correct = guess===secret;
   const youP = players.find(p=>p.you);
@@ -428,13 +430,18 @@ function SoloApp(){
         </section>
       )}
 
-      {role==="detective" && phase==="vote" && (
-        <section className="qcard">
+      {role==="detective" && phase==="vote" && (()=>{
+        const botVotes=players.filter(p=>!p.you).map(p=>{ const r=mulberry32(hashSeed("vote:"+seed+":"+round+":"+p.id)); return Math.floor(r()*options.length); });
+        const counts=options.map((_,i)=> botVotes.filter(v=>v===i).length + (myVote===i?1:0));
+        const resolve=()=>{ const max=Math.max.apply(null,counts.concat([0])); const top=counts.map((c,i)=>c===max?i:-1).filter(i=>i>=0); const w=top.length?top[Math.floor(Math.random()*top.length)]:0; pickQuestion(options[w]); };
+        return (<section className="qcard">
           <div className="qmeta"><span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span><button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"between rounds":sortMode}</button></div>
-          <p className="lead">Which question do we send to the seer?</p>
-          <div className="picks">{options.map((q,i)=>(<button key={i} className="pick" onClick={()=>pickQuestion(q)}>{q}</button>))}</div>
-        </section>
-      )}
+          <p className="lead">Vote which question to ask the pendulum:</p>
+          <div className="picks">{options.map((q,i)=>(<button key={i} className="pick" style={myVote===i?{borderColor:"var(--candle)",background:"rgba(245,177,76,.1)"}:{}} onClick={()=>setMyVote(i)}>{q}{counts[i]>0 && <span style={{float:"right",color:"var(--candle)",fontFamily:"'JetBrains Mono',monospace"}}>{"✓".repeat(counts[i])}</span>}</button>))}</div>
+          <button className="primary full" style={{marginTop:12}} disabled={myVote===null} onClick={resolve}>Ask the top question ›</button>
+          <div className="hint" style={{marginTop:8}}>The group votes — the top pick gets asked (ties break randomly). Other detectives are simulated in the demo.</div>
+        </section>);
+      })()}
 
       {role==="detective" && phase==="waiting" && (
         <section className="qcard">
@@ -469,7 +476,7 @@ function SoloApp(){
             {ordered.map(f=>{
               const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isVision=vision===f.id; const isFreed=!!freed[f.id];
               const narrow=phase==="narrow"; const readYes=seerAns&&seerAns.ans==="yes"; const matchV=readYes?"var(--yes)":"var(--no)"; const oppV=readYes?"var(--no)":"var(--yes)";
-              const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {});
+              const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {}, picked ? { borderColor:"var(--no)", boxShadow:"0 0 0 3px color-mix(in srgb, var(--no) 60%, transparent)" } : {});
               const cls=["cell",picked?"picked":""].join(" ");
               return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
                 <Face file={f.file} seed={f.seed} />
@@ -491,7 +498,7 @@ function SoloApp(){
             <div className="flashQ">Does {shortQ(askedQ)}?</div>
             <p className="verdictBig">{seerAns.ans.toUpperCase()}</p>
             {seerAns.conf!=null && <div className="conf">seer is {seerAns.conf}/10 sure</div>}
-            <button className="primary full" onClick={()=>setPhase("narrow")}>Feel them out ›</button>
+            <button className="primary full" onClick={()=>setPhase("narrow")}>Pick your suspects ›</button>
           </div>
         </div>
       )}
@@ -507,17 +514,23 @@ function SoloApp(){
         return (<div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
           <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
           {visionHit && <div style={{textAlign:"center",background:"color-mix(in srgb, var(--psychic) 18%, transparent)",border:"1px solid var(--psychic)",borderRadius:12,padding:"10px 12px",margin:"0 0 14px",color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC — you named the culprit blind!</div>}
-          <div style={{display:"flex",justifyContent:"center",marginBottom:14}}><div className="rf"><div className="face"><Face file={faces[secret]?.file} seed={faces[secret]?.seed} /></div><span>The guilty suspect</span></div></div>
+          <div className="revealFaces" style={{marginBottom:14}}>
+            <div className="rf"><div className="face" style={{position:"relative"}}><Face file={faces[guess]?.file} seed={faces[guess]?.seed} />{guess!=null && <span style={{position:"absolute",inset:0,display:"grid",placeItems:"center"}}><span style={{transform:"rotate(-16deg)",border:"3px solid var(--no)",color:"var(--no)",fontWeight:900,fontSize:12,letterSpacing:".08em",padding:"1px 7px",borderRadius:4,background:"rgba(14,11,26,.45)"}}>GUILTY</span></span>}</div><span>You accused</span></div>
+            {guess!==secret && <div className="rf"><div className="face"><Face file={faces[secret]?.file} seed={faces[secret]?.seed} /></div><span style={{color:"var(--mint)"}}>Actually guilty</span></div>}
+          </div>
           <div className="label">Your score</div>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:28,fontWeight:700,color:"var(--psychic)",textAlign:"center"}}>{total} pts</div>
           <div style={{fontSize:12,color:"var(--dim)",textAlign:"center",marginTop:4}}>{correct?"caught ✓ ":"missed "}{innocent>0?("· freed "+innocent+" "):""}{visionHit?"· 🔮 psychic hunch ":""}{freedGuilty?"· ⚠ freed suspect":""}</div>
-          <div className="label">The readings</div>
-          {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:suspectHit(i+1)?"var(--mint)":"var(--dim)",fontWeight:700,whiteSpace:"nowrap"}}>{suspectHit(i+1)?"✓ tracked":"✗ missed"}</span></div>))}
-          <div className="label">How you read the room</div>
-          <div style={{fontSize:13,lineHeight:1.6}}>Suspect tracked <b style={{color:"var(--mint)"}}>{trackedN}/{hist.length}</b> rounds · read accuracy <b style={{color:"var(--psychic)"}}>{precision}%</b><br/><span style={{fontWeight:700}}>{tier}</span></div>
-          <p className="note" style={{marginTop:12}}>+100 caught · +5 psychic hunch (+ eternal glory) · +20 each innocent freed · −40 freeing the suspect.</p>
-          <p className="note" style={{marginTop:6}}>The pendulum never lies — every "miss" was in how <i>you</i> read a stranger's face. Turns out you can't tell much from a face at all.</p>
-          <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
+          <div style={{textAlign:"center",margin:"12px 0 0"}}><button className="miniToggle" onClick={()=>setShowStats(v=>!v)}>{showStats?"Hide the breakdown":"See how you did →"}</button></div>
+          {showStats && <div style={{marginTop:10}}>
+            <div className="label" style={{margin:"0 0 4px"}}>Round by round</div>
+            {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:suspectHit(i+1)?"var(--mint)":"var(--rose)",fontWeight:700,whiteSpace:"nowrap"}}>{suspectHit(i+1)?"you read it right":"you missed it"}</span></div>))}
+            <div className="label">How you read the room</div>
+            <div style={{fontSize:13,lineHeight:1.6}}>Suspect tracked <b style={{color:"var(--mint)"}}>{trackedN}/{hist.length}</b> rounds · read accuracy <b style={{color:"var(--psychic)"}}>{precision}%</b><br/><span style={{fontWeight:700}}>{tier}</span></div>
+            <p className="note" style={{marginTop:12}}>+100 caught · +5 psychic hunch (+ eternal glory) · +20 each innocent freed · −40 freeing the suspect.</p>
+            <p className="note" style={{marginTop:6}}>The pendulum never lies — every "miss" was in how <i>you</i> read a stranger's face. Turns out you can't tell much from a face at all.</p>
+            <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
+          </div>}
           <div className="footer" style={{marginTop:14}}><button className="ghost" onClick={()=>setScreen("lobby")}>Lobby</button><button className="primary" onClick={start}>Play again ↻</button></div>
         </div></div>);
       })()}
@@ -541,7 +554,7 @@ function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.docume
 const FREE_YAY = ["Yay! I'm free! 🎉","Thank you, detective! 🙏","Finally! 😭","Bless you!","I knew you'd see reason!","Freedom! 🕊️","You're the best!","Told you I was innocent!","Pick me — oh you did! 😍"];
 const FREE_AW = ["Oh no... 😰","Not me?! 😱","Aw, come on!","I can't believe you picked me 😭","But I'm innocent! 😢","Rude. 😤","Wait — put me back!","Betrayed! 🥲"];
 const pickReact = (arr)=> arr[Math.floor(Math.random()*arr.length)];
-const GUILTY_ACCUSE = ["😰 wait, me?!","I— I can explain!","You've got the wrong guy!","I want a lawyer! ⚖️","My hands are sweating... 😨","This is a setup!"];
+const GUILTY_ACCUSE = ["😰 wait, me?!","I— I can explain!","You've got the wrong guy!","I want a lawyer! ⚖️","My hands are sweating... 😨","This is a setup!","I promise I didn't do it! 🥺","You only read half my face!","I've got an alibi, I swear!"];
 const GUILTY_FREE = ["😮‍💨 I can breathe now","I thought I was done for!","I could've gotten away with it too...","Phew — close one. 😅","Oh thank you 🙏","Knew you'd come to your senses"];
 const shortQ = (q)=> q ? q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"") : "";
 function QR({ text, size }){
@@ -624,6 +637,7 @@ function OnlineApp({ onExit }){
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   const [reaction,setReaction] = useState(null);
   const [sortMode,setSortMode] = useState("rounds");
+  const [showStats,setShowStats] = useState(false);
 
   useEffect(()=>{
     fetch("./questions.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{});
@@ -668,8 +682,8 @@ function OnlineApp({ onExit }){
     return out;
   },[game,pool]);
 
-  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
-  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [game&&game.round,faces]);
+  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:(vision===f.id?-1:0); return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
+  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:(vision===f.id?-1:0); return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [game&&game.round,faces]);
   const ordered = sortMode==="off"?faces : (sortMode==="live"?liveOrder:roundOrder);
 
   const createGame = async ()=>{
@@ -729,7 +743,7 @@ function OnlineApp({ onExit }){
   const toggleDone = async ()=>{ if(!me) return; const mine=Object.keys(marks).filter(k=>marks[k]&&k.split(":")[0]===String(game.round)).map(k=>Number(k.split(":")[1])); const ans=Object.assign({},me.answers||{},{[game.round]:mine}); await sb.from("players").update({ ready:!me.ready, answers:ans }).eq("id",myId); };
   const backToLobby = async ()=>{ await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[] }).eq("code",code); await sb.from("games").update({ phase:"lobby", seer_id:null, suspect_idx:null, asked_q:null, seer_ans:null, history:[], seed:Math.floor(Math.random()*1000000)+1 }).eq("code",code); };
 
-  useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); }, [game && game.seed]);
+  useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setShowStats(false); }, [game && game.seed]);
   useEffect(()=>{ const m=players.find(p=>p.id===myId); if(!m) return; if(m.stars && m.stars.length && vision===null && !visionDone){ setVision(m.stars[0]); setVisionDone(true); } if(m.freed && m.freed.length && Object.keys(freed).length===0){ const fr={}; m.freed.forEach(i=>{ fr[i]=true; }); setFreed(fr); } }, [players]);
   useEffect(()=>{ const t=setInterval(()=>setNowT(Date.now()), 300); return ()=>clearInterval(t); }, []);
   useEffect(()=>{
@@ -834,16 +848,21 @@ function OnlineApp({ onExit }){
     return (<div className="wrap">{header}
       <div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
         <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
-        <div style={{display:"flex",justifyContent:"center",marginBottom:16}}><div className="rf"><div className="face"><Face file={faces[suspect]?.file} seed={faces[suspect]?.seed} /></div><span>The guilty suspect</span></div></div>
+        <div className="revealFaces" style={{marginBottom:16}}>
+          {!amSeer && me && me.guess!=null && <div className="rf"><div className="face" style={{position:"relative"}}><Face file={faces[me.guess]?.file} seed={faces[me.guess]?.seed} /><span style={{position:"absolute",inset:0,display:"grid",placeItems:"center"}}><span style={{transform:"rotate(-16deg)",border:"3px solid var(--no)",color:"var(--no)",fontWeight:900,fontSize:12,letterSpacing:".08em",padding:"1px 7px",borderRadius:4,background:"rgba(14,11,26,.45)"}}>GUILTY</span></span></div><span>You accused</span></div>}
+          <div className="rf"><div className="face"><Face file={faces[suspect]?.file} seed={faces[suspect]?.seed} /></div><span style={{color:"var(--mint)"}}>Actually guilty</span></div>
+        </div>
         <div className="label">Final scoreboard</div>
         <div className="roster">{scored.map((b,i)=>(<div key={i} className="prow"><div className="pname"><span style={{color:i===0?"var(--candle)":"var(--mist)"}}>{i+1}. {b.name}</span></div><div style={{textAlign:"right"}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:"var(--psychic)"}}>{b.total} pts</div><div style={{fontSize:10.5,color:"var(--dim)"}}>{b.correct?"caught ✓ ":""}{b.innocent>0?("freed "+b.innocent+" "):""}{b.starHit && <span style={{color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC </span>}{b.freedGuilty?"⚠ freed suspect":""}</div></div></div>))}</div>
         <div style={{fontSize:12,color:"var(--dim)",margin:"6px 0 4px"}}>Seer this game: <b style={{color:"var(--mist)"}}>{seerP2?seerP2.name:"—"}</b></div>
-        <div className="label">The readings</div>
-        {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:"var(--candle)",fontWeight:700,whiteSpace:"nowrap"}}>{qStats[i] && qStats[i].pct!=null ? qStats[i].pct+"% read it" : ""}</span></div>))}
-        {accBoard.length>0 && accBoard[0].tracked>0 && <div style={{fontSize:13,marginTop:10}}>Sharpest read: <b style={{color:"var(--psychic)"}}>{accBoard[0].name}</b> tracked the suspect <b>{accBoard[0].tracked}/{hist.length}</b> rounds.</div>}
-        <p className="note" style={{marginTop:12}}>Scoring: caught the suspect +100 · each innocent freed +20 · ★ prime suspect correct +50 · freeing the real suspect −40.</p>
-        <p className="note" style={{marginTop:4}}>Coming next: per-question group stats — who read each face right.</p>
-        <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
+        <div style={{textAlign:"center",margin:"12px 0 0"}}><button className="miniToggle" onClick={()=>setShowStats(v=>!v)}>{showStats?"Hide the breakdown":"See how everyone did →"}</button></div>
+        {showStats && <div style={{marginTop:10}}>
+          <div className="label" style={{margin:"0 0 4px"}}>Round by round</div>
+          {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:"var(--candle)",fontWeight:700,whiteSpace:"nowrap"}}>{qStats[i] && qStats[i].pct!=null ? qStats[i].pct+"% read it" : ""}</span></div>))}
+          {accBoard.length>0 && accBoard[0].tracked>0 && <div style={{fontSize:13,marginTop:10}}>Sharpest read: <b style={{color:"var(--psychic)"}}>{accBoard[0].name}</b> tracked the suspect <b>{accBoard[0].tracked}/{hist.length}</b> rounds.</div>}
+          <p className="note" style={{marginTop:12}}>Scoring: caught +100 · innocent freed +20 each · 🔮 psychic hunch +5 · freeing the suspect −40.</p>
+          <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
+        </div>}
         {amHost && <button className="primary full" onClick={backToLobby}>Back to lobby</button>}
       </div></div>
     </div>);
@@ -996,7 +1015,7 @@ function OnlineApp({ onExit }){
           {ordered.map(f=>{
             const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id; const isVision=vision===f.id; const isFreed=!!freed[f.id];
             const narrow=game.phase==="playing"&&!!game.seer_ans; const readYes=game.seer_ans&&game.seer_ans.ans==="yes"; const matchV=readYes?"var(--yes)":"var(--no)"; const oppV=readYes?"var(--no)":"var(--yes)";
-            const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {});
+            const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {}, picked ? { borderColor:"var(--no)", boxShadow:"0 0 0 3px color-mix(in srgb, var(--no) 60%, transparent)" } : {});
             const cls=["cell",picked?"picked":""].join(" ");
             return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)}>
               <Face file={f.file} seed={f.seed} />
@@ -1017,7 +1036,7 @@ function OnlineApp({ onExit }){
     {(game.phase==="playing" && game.seer_ans) && <div className="hint" style={{marginTop:12,textAlign:"center",color:"var(--candle)"}}>Remember: tap everyone who matches, every round.</div>}
     {showFlash && (
       <div className={"flash "+(game.seer_ans.ans==="yes"?"yes":"no")} onClick={()=>setDismissed(game.round)}>
-        <div className="flashCard"><div className="flashQ">Does {shortQ(game.asked_q)}?</div><p className="verdictBig">{game.seer_ans.ans.toUpperCase()}</p>{game.seer_ans.conf!=null && <div className="conf">seer is {game.seer_ans.conf}/10 sure</div>}<button className="primary full" onClick={()=>setDismissed(game.round)}>Feel them out ›</button></div>
+        <div className="flashCard"><div className="flashQ">Does {shortQ(game.asked_q)}?</div><p className="verdictBig">{game.seer_ans.ans.toUpperCase()}</p>{game.seer_ans.conf!=null && <div className="conf">seer is {game.seer_ans.conf}/10 sure</div>}<button className="primary full" onClick={()=>setDismissed(game.round)}>Pick your suspects ›</button></div>
       </div>
     )}
   </div>);
