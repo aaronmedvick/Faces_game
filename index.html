@@ -212,6 +212,7 @@ function SoloApp(){
   const [brief1,setBrief1] = useState(false);
   const [brief2,setBrief2] = useState(false);
   const [hist,setHist] = useState([]);
+  const [reaction,setReaction] = useState(null);
   const [guess,setGuess] = useState(null);
   const [seerId,setSeerId] = useState(null);
   const cfg = GRID[diff];
@@ -236,7 +237,7 @@ function SoloApp(){
     if(leaderMode==="random") return players[Math.floor(Math.random()*players.length)].id;
     return players[0].id; // rotating starts with lowest number
   };
-  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setHist([]); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
+  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setHist([]); setReaction(null); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
     const source = faceFiles.length ? faceFiles : FACE_FILES;
@@ -260,7 +261,7 @@ function SoloApp(){
   const tallyMarks = (n)=>{ let s=""; for(let i=0;i<n;i++) s+="|"; return s; };
   const next = ()=>{ setHist(h=>h.concat([{ q:askedQ, ans:seerAns?seerAns.ans:null, conf:seerAns?seerAns.conf:null }])); if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); } else setPhase("guessing"); };
 
-  const ordered = useMemo(()=>{ if(!sortLikely) return faces; return [...faces].sort((a,b)=>((score[b.id]||0)-(score[a.id]||0))||a.id-b.id); },[faces,score,sortLikely]);
+  const ordered = useMemo(()=>{ if(!sortLikely) return faces; return [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }); },[round,sortLikely,faces]);
   const correct = guess===secret;
   const youP = players.find(p=>p.you);
   const seerP = players.find(p=>p.id===seerId);
@@ -343,16 +344,17 @@ function SoloApp(){
   if(round>=4 && !brief1 && role==="detective"){
     const freeMax = diff==="easy"?1 : diff==="hard"?3 : 2;
     const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapFree = (id)=>{ setFreed(fr=>{ const n={...fr}; if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<freeMax) n[id]=true; return n; }); };
+    const tapFree = (id)=>{ const on=!!freed[id]; if(!on && freedCount>=freeMax) return; setFreed(fr=>{ const n={...fr}; if(on) delete n[id]; else n[id]=true; return n; }); setReaction({ text: on?pickReact(FREE_AW):pickReact(FREE_YAY), kind: on?"aw":"yay" }); };
     return (<div className="wrap">
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Briefing Room</div>
         <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>Three readings in. Anyone you're sure is innocent?</p>
         <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> — grace points for each innocent you send home. <b style={{color:"var(--candle)"}}>({freeMax-freedCount} left)</b> · optional</p>
+        <div style={{fontWeight:700,minHeight:22,marginTop:8,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge" style={{background:"var(--mint)"}}>🕊️</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>setBrief1(true)}>Continue ›</button></div>
@@ -363,16 +365,17 @@ function SoloApp(){
     const freeMax = diff==="easy"?1 : diff==="hard"?3 : 2;
     const cap = freeMax*2;
     const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapFree = (id)=>{ setFreed(fr=>{ const n={...fr}; if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<cap) n[id]=true; return n; }); };
+    const tapFree = (id)=>{ const on=!!freed[id]; if(!on && freedCount>=cap) return; setFreed(fr=>{ const n={...fr}; if(on) delete n[id]; else n[id]=true; return n; }); setReaction({ text: on?pickReact(FREE_AW):pickReact(FREE_YAY), kind: on?"aw":"yay" }); };
     return (<div className="wrap">
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Second Briefing</div>
         <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>More visions in. Anyone else clearly out?</p>
         <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> more. <b style={{color:"var(--candle)"}}>({cap-freedCount} left)</b> · optional</p>
+        <div style={{fontWeight:700,minHeight:22,marginTop:8,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge" style={{background:"var(--mint)"}}>🕊️</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>setBrief2(true)}>Continue ›</button></div>
@@ -442,7 +445,7 @@ function SoloApp(){
       {role==="detective" && (phase==="narrow"||phase==="guessing") && (
         <section className="qcard"><div className="qmeta">
           <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
-          {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"likely first":"off"}</button>}
+          {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"each round":"off"}</button>}
         </div>
         <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
         </section>
@@ -454,22 +457,26 @@ function SoloApp(){
             <span className="tally">{phase==="guessing"?"tap the suspect":"tap faces that fit"}</span>
             <button className="miniToggle" onClick={()=>setShowMode(m=>m==="score"?"tally":"score")}>{showMode==="score"?"Show: score":"Show: tally"}</button>
           </div>
-          {phase==="narrow" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button><button className="primary" onClick={next}>{round<ROUNDS?"Next question":"Time to guess"} ›</button></div>}
+          {phase==="narrow" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button><button className="primary" onClick={next}>{(round===3||round===5)?"Enter briefing room":(round<ROUNDS?"Next question":"Time to guess")} ›</button></div>}
           <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-            {[...ordered].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(vision===f.id?-1:0); return rk(a)-rk(b); }).map(f=>{
-              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isVision=vision===f.id;
-              const readYes=seerAns&&seerAns.ans==="yes";
-              const hitStyle=(hit&&!isFreed&&phase!=="guessing")?{ borderColor:readYes?"var(--yes)":"var(--no)", boxShadow:readYes?"0 0 0 3px color-mix(in srgb, var(--yes) 55%, transparent)":"0 0 0 3px color-mix(in srgb, var(--no) 55%, transparent)" }:{};
-              const cls=["cell",isFreed?"out":"",picked?"picked":""].join(" ");
-              return (<button key={f.id} className={cls} style={hitStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
+            {ordered.filter(f=>!freed[f.id]).map(f=>{
+              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isVision=vision===f.id;
+              const narrow=phase==="narrow"; const readYes=seerAns&&seerAns.ans==="yes"; const matchV=readYes?"var(--yes)":"var(--no)"; const oppV=readYes?"var(--no)":"var(--yes)";
+              const cellStyle = narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {};
+              const cls=["cell",picked?"picked":""].join(" ");
+              return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
                 <Face file={f.file} seed={f.seed} />
+                {narrow && <span style={{position:"absolute",inset:0,pointerEvents:"none",background: hit ? "color-mix(in srgb, "+matchV+" 30%, transparent)" : "color-mix(in srgb, "+oppV+" 26%, transparent)"}} />}
                 {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
-                {sc>0 && !isFreed && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
-                {isFreed && <span className="badge no">✕</span>}
+                {sc>0 && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
                 {picked && <span className="badge pick">◆</span>}
               </button>);
             })}
           </div>
+          {faces.filter(f=>freed[f.id]).length>0 && <div style={{marginTop:14}}>
+            <div className="label" style={{margin:"0 0 6px"}}>Sent home 🕊️</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{faces.filter(f=>freed[f.id]).map(f=>(<div key={f.id} style={{width:44,height:44,borderRadius:9,overflow:"hidden",filter:"grayscale(1)",opacity:.55,border:"1px solid var(--haze)"}}><Face file={f.file} seed={f.seed} /></div>))}</div>
+          </div>}
           {phase==="narrow" && <div className="hint" style={{marginTop:12,textAlign:"center",color:"var(--candle)"}}>Remember: tap everyone who matches, every round.</div>}
           {phase==="guessing" && <div className="footer"><button className="ghost" onClick={()=>setPhase("narrow")}>Back</button><button className="primary" disabled={guess===null} onClick={()=>setPhase("reveal")}>Lock my guess ◆</button></div>}
         </React.Fragment>
@@ -519,6 +526,9 @@ const ls = { get:(k)=>{ try{ return localStorage.getItem(k); }catch(e){ return n
 const persistId = ()=>{ let v=ls.get("cr_id"); if(!v){ v=randId(); ls.set("cr_id",v); } return v; };
 const PALETTES = { gr:{ yes:"#7DF0A6", no:"#F26D8B", label:"Green / Red" }, bo:{ yes:"#5AA9FF", no:"#F5A03D", label:"Blue / Orange" } };
 function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.documentElement.style.setProperty("--yes",c.yes); document.documentElement.style.setProperty("--no",c.no); }catch(e){} }
+const FREE_YAY = ["Yay! I'm free! 🎉","Thank you, detective! 🙏","Finally! 😭","Bless you!","I knew you'd see reason!","Freedom! 🕊️","You're the best!","Told you I was innocent!","Pick me — oh you did! 😍"];
+const FREE_AW = ["Oh no... 😰","Not me?! 😱","Aw, come on!","I can't believe you picked me 😭","But I'm innocent! 😢","Rude. 😤","Wait — put me back!","Betrayed! 🥲"];
+const pickReact = (arr)=> arr[Math.floor(Math.random()*arr.length)];
 const shortQ = (q)=> q ? q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"") : "";
 function QR({ text, size }){
   const ref = React.useRef(null);
