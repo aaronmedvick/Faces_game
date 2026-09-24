@@ -200,7 +200,7 @@ function SoloApp(){
   const [seerAns,setSeerAns] = useState(null);   // {ans:'yes'|'no', conf:number|null}
   const [answerMode,setAnswerMode] = useState("yesno");
   const [conf,setConf] = useState(7);
-  const [sortLikely,setSortLikely] = useState(true);
+  const [sortMode,setSortMode] = useState("rounds");
   const [status,setStatus] = useState({});
   const [score,setScore] = useState({});
   const [marks,setMarks] = useState({});
@@ -261,7 +261,9 @@ function SoloApp(){
   const tallyMarks = (n)=>{ let s=""; for(let i=0;i<n;i++) s+="|"; return s; };
   const next = ()=>{ setHist(h=>h.concat([{ q:askedQ, ans:seerAns?seerAns.ans:null, conf:seerAns?seerAns.conf:null }])); if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); } else setPhase("guessing"); };
 
-  const ordered = useMemo(()=>{ if(!sortLikely) return faces; return [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }); },[round,sortLikely,faces]);
+  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
+  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [round,faces]);
+  const ordered = sortMode==="off"?faces : (sortMode==="live"?liveOrder:roundOrder);
   const correct = guess===secret;
   const youP = players.find(p=>p.you);
   const seerP = players.find(p=>p.id===seerId);
@@ -385,6 +387,7 @@ function SoloApp(){
   /* ---------------- GAME ---------------- */
   return (
     <div className="wrap">
+      {role==="detective" && phase==="narrow" && seerAns && <div style={{position:"fixed",inset:0,pointerEvents:"none",border:"6px solid "+(seerAns.ans==="yes"?"var(--yes)":"var(--no)"),zIndex:5}} />}
       <header className="top">
         <div><div className="brand">◍ COLD&nbsp;READ</div>
           <div className="who">{youP&&youP.name} · seer: {seerP?seerP.name:"—"} · Q{Math.min(round,ROUNDS)}/{ROUNDS}</div></div>
@@ -425,7 +428,7 @@ function SoloApp(){
 
       {role==="detective" && phase==="vote" && (
         <section className="qcard">
-          <div className="qmeta"><span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span><span className="miniToggle">Vote a question</span></div>
+          <div className="qmeta"><span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span><button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"between rounds":sortMode}</button></div>
           <p className="lead">Which question do we send to the seer?</p>
           <div className="picks">{options.map((q,i)=>(<button key={i} className="pick" onClick={()=>pickQuestion(q)}>{q}</button>))}</div>
         </section>
@@ -445,7 +448,7 @@ function SoloApp(){
       {role==="detective" && (phase==="narrow"||phase==="guessing") && (
         <section className="qcard"><div className="qmeta">
           <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
-          {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"each round":"off"}</button>}
+          {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"between rounds":sortMode}</button>}
         </div>
         <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
         </section>
@@ -467,6 +470,7 @@ function SoloApp(){
               return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
                 <Face file={f.file} seed={f.seed} />
                 {narrow && <span style={{position:"absolute",inset:0,pointerEvents:"none",background: hit ? "color-mix(in srgb, "+matchV+" 30%, transparent)" : "color-mix(in srgb, "+oppV+" 26%, transparent)"}} />}
+                {narrow && <span style={{position:"absolute",bottom:4,left:"50%",transform:"translateX(-50%)",pointerEvents:"none",fontSize:11,fontWeight:800,fontFamily:"'JetBrains Mono',monospace",letterSpacing:".05em",padding:"1px 8px",borderRadius:999,background: hit?matchV:oppV, color:"#0E0B1A"}}>{hit?(readYes?"YES":"NO"):(readYes?"NO":"YES")}</span>}
                 {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
                 {sc>0 && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
                 {picked && <span className="badge pick">◆</span>}
