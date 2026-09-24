@@ -278,6 +278,7 @@ function SoloApp(){
     return (
       <div className="wrap">
         <div className="brand">◍ COLD&nbsp;READ</div>
+        <div className="brand" style={{color:"var(--candle)"}}>◍ COLD READ · DEMO</div>
         <div className="brandBig">Assemble the detectives</div>
         <div className="sub">Everyone piles in and gets a number. Ready up, boot the stragglers, then go.</div>
 
@@ -394,7 +395,7 @@ function SoloApp(){
       {role==="detective" && phase==="narrow" && seerAns && <div style={{position:"fixed",inset:0,pointerEvents:"none",border:"6px solid "+(seerAns.ans==="yes"?"var(--yes)":"var(--no)"),zIndex:5}} />}
       <header className="top">
         <div><div className="brand">◍ COLD&nbsp;READ</div>
-          <div className="who">{youP&&youP.name} · seer: {seerP?seerP.name:"—"} · Q{Math.min(round,ROUNDS)}/{ROUNDS}</div></div>
+          <div className="who"><span style={{color:"var(--candle)",fontWeight:700}}>DEMO</span> · {youP&&youP.name} · seer: {seerP?seerP.name:"—"} · Q{Math.min(round,ROUNDS)}/{ROUNDS}</div></div>
         <div style={{display:"flex",gap:6}}><button className="miniToggle" onClick={()=>pickPal(pal==="gr"?"bo":"gr")}>{pal==="gr"?"Colors: G/R":"Colors: B/O"}</button><button className="miniToggle" onClick={()=>setScreen("lobby")}>Lobby</button></div>
       </header>
 
@@ -592,7 +593,7 @@ function Home({configured,onPick}){
       </div>
       <div style={{flex:1,minHeight:16}} />
       <button className="go" onClick={()=>onPick("online")}>Play with friends ›</button>
-      <button className="readyBtn" style={{marginTop:12}} onClick={()=>onPick("solo")}>Try it solo (one phone)</button>
+      <button className="readyBtn" style={{marginTop:12}} onClick={()=>onPick("solo")}>▶ Demo mode (one phone)</button>
       <div style={{textAlign:"center",marginTop:16}}>
         <div style={{fontSize:11,color:"var(--dim)",letterSpacing:".1em",textTransform:"uppercase",marginBottom:6}}>Colors</div>
         <div className="sel" style={{justifyContent:"center"}}>
