@@ -213,6 +213,8 @@ function SoloApp(){
   const [brief2,setBrief2] = useState(false);
   const [hist,setHist] = useState([]);
   const [reaction,setReaction] = useState(null);
+  const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
+  const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   const [guess,setGuess] = useState(null);
   const [seerId,setSeerId] = useState(null);
   const cfg = GRID[diff];
@@ -257,7 +259,7 @@ function SoloApp(){
   const seerAnswer = (ans)=>{ setSeerAns({ ans, conf:null }); setPhase("reading"); };
   const seerScale = ()=>{ setSeerAns({ ans: conf>=5?"yes":"no", conf }); setPhase("reading"); };
   const simulate = ()=>{ const r=mulberry32(hashSeed("read:"+seed+":"+round)); setSeerAns({ ans:r()<0.5?"yes":"no", conf:null }); setPhase("reading"); };
-  const tapFace = (id)=>{ if(freed[id]) return; if(phase==="guessing"){ setGuess(id); return; } if(phase!=="narrow") return; const key=round+":"+id; const on=!!marks[key]; setMarks(m=>{ const n={...m}; if(on) delete n[key]; else n[key]=true; return n; }); setScore(s=>({...s,[id]:Math.max(0,(s[id]||0)+(on?-1:1))})); };
+  const tapFace = (id)=>{ if(phase==="guessing"){ if(guess===id){ setGuess(null); setReaction({text:pickReact(GUILTY_FREE),kind:"yay"}); } else { setGuess(id); setReaction({text:pickReact(GUILTY_ACCUSE),kind:"aw"}); } return; } if(phase!=="narrow") return; const key=round+":"+id; const on=!!marks[key]; setMarks(m=>{ const n={...m}; if(on) delete n[key]; else n[key]=true; return n; }); setScore(s=>({...s,[id]:Math.max(0,(s[id]||0)+(on?-1:1))})); };
   const tallyMarks = (n)=>{ let s=""; for(let i=0;i<n;i++) s+="|"; return s; };
   const next = ()=>{ setHist(h=>h.concat([{ q:askedQ, ans:seerAns?seerAns.ans:null, conf:seerAns?seerAns.conf:null }])); if(round<ROUNDS){ setRound(r=>r+1); setPhase("vote"); setAskedQ(""); setSeerAns(null); } else setPhase("guessing"); };
 
@@ -329,7 +331,7 @@ function SoloApp(){
     return (<div className="wrap">
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Psychic Hunch</div>
-        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — who does your gut say did it? Nail it for a big bonus. Optional.</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — what's your gut telling you? Call it blind for <b style={{color:"var(--psychic)"}}>major prestige</b>. You still play the whole séance either way. Optional.</p>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isV=vision===f.id; const cls=["cell",isV?"picked":""].join(" ");
@@ -391,7 +393,7 @@ function SoloApp(){
       <header className="top">
         <div><div className="brand">◍ COLD&nbsp;READ</div>
           <div className="who">{youP&&youP.name} · seer: {seerP?seerP.name:"—"} · Q{Math.min(round,ROUNDS)}/{ROUNDS}</div></div>
-        <button className="miniToggle" onClick={()=>setScreen("lobby")}>Lobby</button>
+        <div style={{display:"flex",gap:6}}><button className="miniToggle" onClick={()=>pickPal(pal==="gr"?"bo":"gr")}>{pal==="gr"?"Colors: G/R":"Colors: B/O"}</button><button className="miniToggle" onClick={()=>setScreen("lobby")}>Lobby</button></div>
       </header>
 
       <div className="roleTog">
@@ -450,7 +452,7 @@ function SoloApp(){
           <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
           {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"between rounds":sortMode}</button>}
         </div>
-        <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
+        <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>The pendulum points to the guilty party — <b>tap to accuse</b>, then lock the verdict.</span>}</p>
         </section>
       )}
 
@@ -460,29 +462,26 @@ function SoloApp(){
             <span className="tally">{phase==="guessing"?"tap the suspect":"tap faces that fit"}</span>
             <button className="miniToggle" onClick={()=>setShowMode(m=>m==="score"?"tally":"score")}>{showMode==="score"?"Show: score":"Show: tally"}</button>
           </div>
-          {phase==="narrow" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button><button className="primary" onClick={next}>{(round===3||round===5)?"Enter briefing room":(round<ROUNDS?"Next question":"Time to guess")} ›</button></div>}
+          {phase==="narrow" && <div className="footer" style={{marginTop:0,marginBottom:12}}>{round>=5 && <button className="ghost" onClick={()=>setPhase("guessing")}>Guess early</button>}<button className="primary" onClick={next}>{(round===3||round===5)?"Enter briefing room":(round<ROUNDS?"Next question":"Enter final vote")} ›</button></div>}
+          {phase==="guessing" && <div className="footer" style={{marginTop:0,marginBottom:8}}><button className="ghost" onClick={()=>setPhase("narrow")}>Back</button><button className="primary" disabled={guess===null} onClick={()=>setPhase("reveal")}>Lock the verdict</button></div>}
+          {phase==="guessing" && <div style={{textAlign:"center",fontWeight:700,minHeight:20,marginBottom:8,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>}
           <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-            {ordered.filter(f=>!freed[f.id]).map(f=>{
-              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isVision=vision===f.id;
+            {ordered.map(f=>{
+              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isVision=vision===f.id; const isFreed=!!freed[f.id];
               const narrow=phase==="narrow"; const readYes=seerAns&&seerAns.ans==="yes"; const matchV=readYes?"var(--yes)":"var(--no)"; const oppV=readYes?"var(--no)":"var(--yes)";
-              const cellStyle = narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {};
+              const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {});
               const cls=["cell",picked?"picked":""].join(" ");
               return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
                 <Face file={f.file} seed={f.seed} />
                 {narrow && <span style={{position:"absolute",inset:0,pointerEvents:"none",background: hit ? "color-mix(in srgb, "+matchV+" 30%, transparent)" : "color-mix(in srgb, "+oppV+" 26%, transparent)"}} />}
                 {narrow && <span style={{position:"absolute",bottom:4,left:"50%",transform:"translateX(-50%)",pointerEvents:"none",fontSize:11,fontWeight:800,fontFamily:"'JetBrains Mono',monospace",letterSpacing:".05em",padding:"1px 8px",borderRadius:999,background: hit?matchV:oppV, color:"#0E0B1A"}}>{hit?(readYes?"YES":"NO"):(readYes?"NO":"YES")}</span>}
-                {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
+                {isFreed && <span className="badge" style={{background:"var(--mint)",left:5,right:"auto"}}>🕊️</span>}
                 {sc>0 && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
-                {picked && <span className="badge pick">◆</span>}
+                {picked && phase==="guessing" && <span style={{position:"absolute",inset:0,display:"grid",placeItems:"center",pointerEvents:"none"}}><span style={{transform:"rotate(-18deg)",border:"3px solid var(--no)",color:"var(--no)",fontWeight:900,fontSize:13,letterSpacing:".1em",padding:"2px 8px",borderRadius:4,background:"rgba(14,11,26,.4)"}}>GUILTY</span></span>}
               </button>);
             })}
           </div>
-          {faces.filter(f=>freed[f.id]).length>0 && <div style={{marginTop:14}}>
-            <div className="label" style={{margin:"0 0 6px"}}>Sent home 🕊️</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{faces.filter(f=>freed[f.id]).map(f=>(<div key={f.id} style={{width:44,height:44,borderRadius:9,overflow:"hidden",filter:"grayscale(1)",opacity:.55,border:"1px solid var(--haze)"}}><Face file={f.file} seed={f.seed} /></div>))}</div>
-          </div>}
           {phase==="narrow" && <div className="hint" style={{marginTop:12,textAlign:"center",color:"var(--candle)"}}>Remember: tap everyone who matches, every round.</div>}
-          {phase==="guessing" && <div className="footer"><button className="ghost" onClick={()=>setPhase("narrow")}>Back</button><button className="primary" disabled={guess===null} onClick={()=>setPhase("reveal")}>Lock my guess ◆</button></div>}
         </React.Fragment>
       )}
 
@@ -492,7 +491,7 @@ function SoloApp(){
             <div className="flashQ">Does {shortQ(askedQ)}?</div>
             <p className="verdictBig">{seerAns.ans.toUpperCase()}</p>
             {seerAns.conf!=null && <div className="conf">seer is {seerAns.conf}/10 sure</div>}
-            <button className="primary full" onClick={()=>setPhase("narrow")}>Read your suspects ›</button>
+            <button className="primary full" onClick={()=>setPhase("narrow")}>Feel them out ›</button>
           </div>
         </div>
       )}
@@ -500,6 +499,11 @@ function SoloApp(){
       {phase==="reveal" && (()=>{
         const pf=Object.keys(freed).filter(k=>freed[k]).map(Number); const innocent=pf.filter(i=>i!==secret).length; const freedGuilty=pf.indexOf(secret)>=0;
         const visionHit=vision===secret; const total=(correct?100:0)+innocent*20-(freedGuilty?40:0)+(visionHit?5:0);
+        const suspectHit=(r)=>!!marks[r+":"+secret];
+        const trackedN=hist.filter((h,i)=>suspectHit(i+1)).length;
+        const totalHits=Object.keys(marks).filter(k=>marks[k]).length;
+        const precision=totalHits>0?Math.round((trackedN/totalHits)*100):0;
+        const tier = precision>=85?"🔮 Perfect psychic — you barely touched an innocent":precision>=55?"🎯 Sharp read":precision>=30?"🔫 A bit scattergun":"🤪 Your pendulum might be broken";
         return (<div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
           <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
           {visionHit && <div style={{textAlign:"center",background:"color-mix(in srgb, var(--psychic) 18%, transparent)",border:"1px solid var(--psychic)",borderRadius:12,padding:"10px 12px",margin:"0 0 14px",color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC — you named the culprit blind!</div>}
@@ -508,8 +512,12 @@ function SoloApp(){
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:28,fontWeight:700,color:"var(--psychic)",textAlign:"center"}}>{total} pts</div>
           <div style={{fontSize:12,color:"var(--dim)",textAlign:"center",marginTop:4}}>{correct?"caught ✓ ":"missed "}{innocent>0?("· freed "+innocent+" "):""}{visionHit?"· 🔮 psychic hunch ":""}{freedGuilty?"· ⚠ freed suspect":""}</div>
           <div className="label">The readings</div>
-          {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b>{h.conf!=null?(" ("+h.conf+"/10)"):""}</div>))}
+          {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:suspectHit(i+1)?"var(--mint)":"var(--dim)",fontWeight:700,whiteSpace:"nowrap"}}>{suspectHit(i+1)?"✓ tracked":"✗ missed"}</span></div>))}
+          <div className="label">How you read the room</div>
+          <div style={{fontSize:13,lineHeight:1.6}}>Suspect tracked <b style={{color:"var(--mint)"}}>{trackedN}/{hist.length}</b> rounds · read accuracy <b style={{color:"var(--psychic)"}}>{precision}%</b><br/><span style={{fontWeight:700}}>{tier}</span></div>
           <p className="note" style={{marginTop:12}}>+100 caught · +5 psychic hunch (+ eternal glory) · +20 each innocent freed · −40 freeing the suspect.</p>
+          <p className="note" style={{marginTop:6}}>The pendulum never lies — every "miss" was in how <i>you</i> read a stranger's face. Turns out you can't tell much from a face at all.</p>
+          <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
           <div className="footer" style={{marginTop:14}}><button className="ghost" onClick={()=>setScreen("lobby")}>Lobby</button><button className="primary" onClick={start}>Play again ↻</button></div>
         </div></div>);
       })()}
@@ -533,6 +541,8 @@ function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.docume
 const FREE_YAY = ["Yay! I'm free! 🎉","Thank you, detective! 🙏","Finally! 😭","Bless you!","I knew you'd see reason!","Freedom! 🕊️","You're the best!","Told you I was innocent!","Pick me — oh you did! 😍"];
 const FREE_AW = ["Oh no... 😰","Not me?! 😱","Aw, come on!","I can't believe you picked me 😭","But I'm innocent! 😢","Rude. 😤","Wait — put me back!","Betrayed! 🥲"];
 const pickReact = (arr)=> arr[Math.floor(Math.random()*arr.length)];
+const GUILTY_ACCUSE = ["😰 wait, me?!","I— I can explain!","You've got the wrong guy!","I want a lawyer! ⚖️","My hands are sweating... 😨","This is a setup!"];
+const GUILTY_FREE = ["😮‍💨 I can breathe now","I thought I was done for!","I could've gotten away with it too...","Phew — close one. 😅","Oh thank you 🙏","Knew you'd come to your senses"];
 const shortQ = (q)=> q ? q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"") : "";
 function QR({ text, size }){
   const ref = React.useRef(null);
@@ -612,6 +622,8 @@ function OnlineApp({ onExit }){
   const [err,setErr] = useState("");
   const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
+  const [reaction,setReaction] = useState(null);
+  const [sortMode,setSortMode] = useState("rounds");
 
   useEffect(()=>{
     fetch("./questions.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{});
@@ -655,6 +667,10 @@ function OnlineApp({ onExit }){
     while(out.length<4 && used.size<pool.length){ const i=Math.floor(r()*pool.length); if(!used.has(i)){ used.add(i); out.push(pool[i]); } }
     return out;
   },[game,pool]);
+
+  const liveOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [faces,score,freed]);
+  const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:0; return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [game&&game.round,faces]);
+  const ordered = sortMode==="off"?faces : (sortMode==="live"?liveOrder:roundOrder);
 
   const createGame = async ()=>{
     if(!name.trim()){ setErr("Enter a name first"); return; }
@@ -710,7 +726,7 @@ function OnlineApp({ onExit }){
   const lockHunch = async (v)=>{ setVision(v); await sb.from("players").update({ stars: v!=null?[v]:[] }).eq("id",myId); setVisionDone(true); };
   const finishBrief = async (setBrief)=>{ await sb.from("players").update({ freed:Object.keys(freed).filter(k=>freed[k]).map(Number) }).eq("id",myId); setBrief(true); };
   const reveal = async ()=>{ await sb.from("games").update({ phase:"revealed" }).eq("code",code); };
-  const toggleDone = async ()=>{ if(!me) return; await sb.from("players").update({ ready:!me.ready }).eq("id",myId); };
+  const toggleDone = async ()=>{ if(!me) return; const mine=Object.keys(marks).filter(k=>marks[k]&&k.split(":")[0]===String(game.round)).map(k=>Number(k.split(":")[1])); const ans=Object.assign({},me.answers||{},{[game.round]:mine}); await sb.from("players").update({ ready:!me.ready, answers:ans }).eq("id",myId); };
   const backToLobby = async ()=>{ await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[] }).eq("code",code); await sb.from("games").update({ phase:"lobby", seer_id:null, suspect_idx:null, asked_q:null, seer_ans:null, history:[], seed:Math.floor(Math.random()*1000000)+1 }).eq("code",code); };
 
   useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); }, [game && game.seed]);
@@ -729,8 +745,7 @@ function OnlineApp({ onExit }){
   }, [game, players, amHost]);
 
   const tapFace = (id)=>{
-    if(freed[id]) return;
-    if(game.phase==="guessing"){ setGuess(id); return; }
+    if(game.phase==="guessing"){ if(guess===id){ setGuess(null); setReaction({text:pickReact(GUILTY_FREE),kind:"yay"}); } else { setGuess(id); setReaction({text:pickReact(GUILTY_ACCUSE),kind:"aw"}); } return; }
     const key = game.round+":"+id; const on = !!marks[key];
     setMarks(m=>{ const n=Object.assign({},m); if(on) delete n[key]; else n[key]=true; return n; });
     setScore(s=>Object.assign({},s,{ [id]: Math.max(0,(s[id]||0)+(on?-1:1)) }));
@@ -806,7 +821,7 @@ function OnlineApp({ onExit }){
 
   const header = (<header className="top">
     <div><div className="brand">◍ COLD&nbsp;READ</div><div className="who">{me&&me.name} · {amSeer?"you are the seer":("seer: "+(seerP?seerP.name:"—"))} · Q{Math.min(game.round,ROUNDS)}/{ROUNDS}</div></div>
-    <button className="miniToggle" onClick={onExit}>Leave</button>
+    <div style={{display:"flex",gap:6}}><button className="miniToggle" onClick={()=>pickPal(pal==="gr"?"bo":"gr")}>{pal==="gr"?"G/R":"B/O"}</button><button className="miniToggle" onClick={onExit}>Leave</button></div>
   </header>);
 
   if(game.phase==="revealed"){
@@ -814,6 +829,8 @@ function OnlineApp({ onExit }){
     const scored = dets.map(p=>{ const pf=p.freed||[]; const innocent=pf.filter(i=>i!==suspect).length; const freedGuilty=pf.indexOf(suspect)>=0; const g=p.guess===suspect?100:0; const fr=innocent*20-(freedGuilty?40:0); const sh=(p.stars||[]).indexOf(suspect)>=0; const st=sh?5:0; return { name:p.name, total:g+fr+st, correct:p.guess===suspect, innocent, freedGuilty, starHit:sh }; }).sort((a,b)=>b.total-a.total);
     const seerP2 = players.find(p=>p.id===game.seer_id);
     const hist = game.history||[];
+    const qStats = hist.map((h,i)=>{ const r=i+1; const answered=dets.filter(p=>p.answers && p.answers[r]!=null); const tracked=answered.filter(p=>(p.answers[r]||[]).indexOf(suspect)>=0).length; return { pct: answered.length?Math.round(tracked/answered.length*100):null }; });
+    const accBoard = dets.map(p=>{ const a=p.answers||{}; let t=0; for(let r=1;r<=hist.length;r++){ if(a[r]!=null && (a[r]||[]).indexOf(suspect)>=0) t++; } return { name:p.name, tracked:t }; }).sort((x,y)=>y.tracked-x.tracked);
     return (<div className="wrap">{header}
       <div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
         <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
@@ -822,9 +839,11 @@ function OnlineApp({ onExit }){
         <div className="roster">{scored.map((b,i)=>(<div key={i} className="prow"><div className="pname"><span style={{color:i===0?"var(--candle)":"var(--mist)"}}>{i+1}. {b.name}</span></div><div style={{textAlign:"right"}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:"var(--psychic)"}}>{b.total} pts</div><div style={{fontSize:10.5,color:"var(--dim)"}}>{b.correct?"caught ✓ ":""}{b.innocent>0?("freed "+b.innocent+" "):""}{b.starHit && <span style={{color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC </span>}{b.freedGuilty?"⚠ freed suspect":""}</div></div></div>))}</div>
         <div style={{fontSize:12,color:"var(--dim)",margin:"6px 0 4px"}}>Seer this game: <b style={{color:"var(--mist)"}}>{seerP2?seerP2.name:"—"}</b></div>
         <div className="label">The readings</div>
-        {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b>{h.conf!=null?(" ("+h.conf+"/10)"):""}</div>))}
+        {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)",display:"flex",justifyContent:"space-between",gap:8}}><span>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></span><span style={{color:"var(--candle)",fontWeight:700,whiteSpace:"nowrap"}}>{qStats[i] && qStats[i].pct!=null ? qStats[i].pct+"% read it" : ""}</span></div>))}
+        {accBoard.length>0 && accBoard[0].tracked>0 && <div style={{fontSize:13,marginTop:10}}>Sharpest read: <b style={{color:"var(--psychic)"}}>{accBoard[0].name}</b> tracked the suspect <b>{accBoard[0].tracked}/{hist.length}</b> rounds.</div>}
         <p className="note" style={{marginTop:12}}>Scoring: caught the suspect +100 · each innocent freed +20 · ★ prime suspect correct +50 · freeing the real suspect −40.</p>
-        <p className="note" style={{marginTop:4}}>Coming next: the opening psychic-vision guess, and each detective's round-by-round answers.</p>
+        <p className="note" style={{marginTop:4}}>Coming next: per-question group stats — who read each face right.</p>
+        <p className="note" style={{marginTop:6}}>Why a pendulum "answers" → <a href="https://en.wikipedia.org/wiki/Ideomotor_phenomenon" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>the ideomotor effect ↗</a> · Reading faces → <a href="https://en.wikipedia.org/wiki/Physiognomy" target="_blank" rel="noopener" style={{color:"var(--psychic)"}}>physiognomy ↗</a></p>
         {amHost && <button className="primary full" onClick={backToLobby}>Back to lobby</button>}
       </div></div>
     </div>);
@@ -885,7 +904,7 @@ function OnlineApp({ onExit }){
     return (<div className="wrap">{header}
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Psychic Hunch</div>
-        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — who does your gut say did it? Nail it for a big bonus. Optional.</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — what's your gut telling you? Call it blind for <b style={{color:"var(--psychic)"}}>major prestige</b>. You still play the whole séance either way. Optional.</p>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isV=vision===f.id; const cls=["cell",isV?"picked":""].join(" ");
@@ -902,16 +921,17 @@ function OnlineApp({ onExit }){
   if(game.phase==="playing" && game.round>=4 && game.round<6 && !brief1){
     const freeMax = cfg.n>=25?3:(cfg.n>=16?2:1);
     const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapFree = (id)=>{ setFreed(fr=>{ const n=Object.assign({},fr); if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<freeMax) n[id]=true; return n; }); };
+    const tapFree = (id)=>{ const on=!!freed[id]; if(!on && freedCount>=freeMax) return; setFreed(fr=>{ const n=Object.assign({},fr); if(on) delete n[id]; else n[id]=true; return n; }); setReaction({text:on?pickReact(FREE_AW):pickReact(FREE_YAY),kind:on?"aw":"yay"}); };
     return (<div className="wrap">{header}
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Briefing Room</div>
         <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>Three readings in. Anyone you're sure is innocent?</p>
         <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> — grace points for each innocent. <b style={{color:"var(--candle)"}}>({freeMax-freedCount} left)</b> · optional</p>
+        <div style={{fontWeight:700,minHeight:22,marginTop:8,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge" style={{background:"var(--mint)"}}>🕊️</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>finishBrief(setBrief1)}>Continue ›</button></div>
@@ -922,16 +942,17 @@ function OnlineApp({ onExit }){
     const freeMax = cfg.n>=25?3:(cfg.n>=16?2:1);
     const cap = freeMax*2;
     const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapFree = (id)=>{ setFreed(fr=>{ const n=Object.assign({},fr); if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<cap) n[id]=true; return n; }); };
+    const tapFree = (id)=>{ const on=!!freed[id]; if(!on && freedCount>=cap) return; setFreed(fr=>{ const n=Object.assign({},fr); if(on) delete n[id]; else n[id]=true; return n; }); setReaction({text:on?pickReact(FREE_AW):pickReact(FREE_YAY),kind:on?"aw":"yay"}); };
     return (<div className="wrap">{header}
       <section className="qcard" style={{textAlign:"center"}}>
         <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Second Briefing</div>
         <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>More visions in. Anyone else clearly out?</p>
         <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> more. <b style={{color:"var(--candle)"}}>({cap-freedCount} left)</b> · optional</p>
+        <div style={{fontWeight:700,minHeight:22,marginTop:8,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
         {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge" style={{background:"var(--mint)"}}>🕊️</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>finishBrief(setBrief2)}>Continue ›</button></div>
@@ -941,9 +962,10 @@ function OnlineApp({ onExit }){
   const roundMarks = Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(game.round)).length;
   const showFlash = game.phase==="playing" && game.seer_ans && dismissed!==game.round;
   return (<div className="wrap">{header}
+    {game.phase==="playing" && game.seer_ans && <div style={{position:"fixed",inset:0,pointerEvents:"none",border:"6px solid "+(game.seer_ans.ans==="yes"?"var(--yes)":"var(--no)"),zIndex:5}} />}
     {game.phase==="playing" && !game.asked_q && (
       <section className="qcard">
-        <div className="qmeta"><span className="counter">{String(game.round).padStart(2,"0")}<i>/{ROUNDS}</i></span><span className="miniToggle">Vote a question</span></div>
+        <div className="qmeta"><span className="counter">{String(game.round).padStart(2,"0")}<i>/{ROUNDS}</i></span><button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"rounds":sortMode}</button></div>
         <p className="lead">Vote which question to ask the pendulum:</p>
         <div className="picks">{options.map((q,i)=>{
           const c=players.filter(p=>p.id!==game.seer_id && p.vote===i).length; const mine=me&&me.vote===i;
@@ -958,41 +980,44 @@ function OnlineApp({ onExit }){
     )}
     {((game.phase==="playing" && game.seer_ans) || game.phase==="guessing") && (
       <section className="qcard"><div className="qmeta"><span className="counter">{String(Math.min(game.round,ROUNDS)).padStart(2,"0")}<i>/{ROUNDS}</i></span></div>
-        <p className="qtext small">{game.phase==="guessing" ? <span>Lock in who is <b>the suspect</b>.</span> : <span><b>Does {shortQ(game.asked_q)}?</b><br/>The pendulum said <b style={{color:game.seer_ans.ans==="yes"?"var(--yes)":"var(--no)"}}>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""} — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{roundMarks} marked</b></span>}</p>
+        <p className="qtext small">{game.phase==="guessing" ? <span>The pendulum points to the guilty party — <b>tap to accuse</b>, then lock the verdict.</span> : <span><b>Does {shortQ(game.asked_q)}?</b><br/>The pendulum said <b style={{color:game.seer_ans.ans==="yes"?"var(--yes)":"var(--no)"}}>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""} — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{roundMarks} marked</b></span>}</p>
       </section>
     )}
     {(game.phase==="guessing" || (game.phase==="playing" && game.seer_ans)) && (
       <React.Fragment>
         <div className="gridHead">
           <span className="tally">{game.phase==="guessing" ? "tap the suspect" : "tap faces that fit the reading"}</span>
+          <button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"rounds":sortMode}</button>
           <button className="miniToggle" onClick={()=>setShowMode(m=>m==="score"?"tally":"score")}>{showMode==="score"?"Show: score":"Show: tally"}</button>
         </div>
         {game.phase==="playing" && game.seer_ans && game.seer_ans.until && game.seer_ans.until>nowT && <div className="hint" style={{marginTop:-4,marginBottom:8,color:"var(--candle)"}}>Seer moving on in {Math.ceil((game.seer_ans.until-nowT)/1000)}s — mark fast!</div>}
         {game.phase==="playing" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="primary full" style={me&&me.ready?{background:"var(--mint)",color:"var(--ink)"}:{}} onClick={toggleDone}>{me&&me.ready?"✓ Done — waiting for the seer":"I'm done marking"}</button></div>}
         <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-          {[...faces].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(vision===f.id?-1:0); return rk(a)-rk(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }).map(f=>{
-            const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isVision=vision===f.id;
-            const readYes=game.seer_ans&&game.seer_ans.ans==="yes";
-            const hitStyle=(hit&&!isFreed&&game.phase!=="guessing")?{ borderColor:readYes?"var(--yes)":"var(--no)", boxShadow:readYes?"0 0 0 3px color-mix(in srgb, var(--yes) 55%, transparent)":"0 0 0 3px color-mix(in srgb, var(--no) 55%, transparent)" }:{};
-            const cls=["cell",isFreed?"out":"",picked?"picked":""].join(" ");
-            return (<button key={f.id} className={cls} style={hitStyle} onClick={()=>tapFace(f.id)}>
+          {ordered.map(f=>{
+            const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id; const isVision=vision===f.id; const isFreed=!!freed[f.id];
+            const narrow=game.phase==="playing"&&!!game.seer_ans; const readYes=game.seer_ans&&game.seer_ans.ans==="yes"; const matchV=readYes?"var(--yes)":"var(--no)"; const oppV=readYes?"var(--no)":"var(--yes)";
+            const cellStyle = Object.assign({}, narrow&&hit ? { borderColor:matchV, boxShadow:"0 0 0 2px color-mix(in srgb, "+matchV+" 55%, transparent)" } : {}, isVision ? { outline:"2px dashed var(--psychic)", outlineOffset:"-3px" } : {}, isFreed ? { opacity:.6 } : {});
+            const cls=["cell",picked?"picked":""].join(" ");
+            return (<button key={f.id} className={cls} style={cellStyle} onClick={()=>tapFace(f.id)}>
               <Face file={f.file} seed={f.seed} />
-              {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
-              {sc>0 && !isFreed && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
-              {isFreed && <span className="badge no">✕</span>}
-              {picked && <span className="badge pick">◆</span>}
+              {narrow && <span style={{position:"absolute",inset:0,pointerEvents:"none",background: hit ? "color-mix(in srgb, "+matchV+" 30%, transparent)" : "color-mix(in srgb, "+oppV+" 26%, transparent)"}} />}
+              {narrow && <span style={{position:"absolute",bottom:4,left:"50%",transform:"translateX(-50%)",pointerEvents:"none",fontSize:11,fontWeight:800,fontFamily:"'JetBrains Mono',monospace",letterSpacing:".05em",padding:"1px 8px",borderRadius:999,background: hit?matchV:oppV, color:"#0E0B1A"}}>{hit?(readYes?"YES":"NO"):(readYes?"NO":"YES")}</span>}
+              {isFreed && <span className="badge" style={{background:"var(--mint)",left:5,right:"auto"}}>🕊️</span>}
+              {sc>0 && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
+              {picked && game.phase==="guessing" && <span style={{position:"absolute",inset:0,display:"grid",placeItems:"center",pointerEvents:"none"}}><span style={{transform:"rotate(-18deg)",border:"3px solid var(--no)",color:"var(--no)",fontWeight:900,fontSize:13,letterSpacing:".1em",padding:"2px 8px",borderRadius:4,background:"rgba(14,11,26,.4)"}}>GUILTY</span></span>}
             </button>);
           })}
         </div>
+        {game.phase==="guessing" && <div style={{textAlign:"center",fontWeight:700,minHeight:20,marginTop:10,color:reaction?(reaction.kind==="yay"?"var(--mint)":"var(--rose)"):"transparent"}}>{reaction?reaction.text:"·"}</div>}
         {game.phase==="guessing" && (me && me.guess!=null
-          ? <div className="hint" style={{marginTop:14}}>Guess locked. Waiting for the seer to reveal…</div>
-          : <div className="footer"><button className="primary full" disabled={guess===null} onClick={lockGuess}>Lock my guess ◆</button></div>)}
+          ? <div className="hint" style={{marginTop:8}}>Verdict locked. Waiting for the seer to reveal…</div>
+          : <div className="footer"><button className="primary full" disabled={guess===null} onClick={lockGuess}>Lock the verdict</button></div>)}
       </React.Fragment>
     )}
     {(game.phase==="playing" && game.seer_ans) && <div className="hint" style={{marginTop:12,textAlign:"center",color:"var(--candle)"}}>Remember: tap everyone who matches, every round.</div>}
     {showFlash && (
       <div className={"flash "+(game.seer_ans.ans==="yes"?"yes":"no")} onClick={()=>setDismissed(game.round)}>
-        <div className="flashCard"><div className="flashQ">Does {shortQ(game.asked_q)}?</div><p className="verdictBig">{game.seer_ans.ans.toUpperCase()}</p>{game.seer_ans.conf!=null && <div className="conf">seer is {game.seer_ans.conf}/10 sure</div>}<button className="primary full" onClick={()=>setDismissed(game.round)}>Read your suspects ›</button></div>
+        <div className="flashCard"><div className="flashQ">Does {shortQ(game.asked_q)}?</div><p className="verdictBig">{game.seer_ans.ans.toUpperCase()}</p>{game.seer_ans.conf!=null && <div className="conf">seer is {game.seer_ans.conf}/10 sure</div>}<button className="primary full" onClick={()=>setDismissed(game.round)}>Feel them out ›</button></div>
       </div>
     )}
   </div>);
