@@ -11,7 +11,7 @@
 html, body { margin: 0; }
 :root {
   --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
-  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6;
+  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6; --yes:#7DF0A6; --no:#F26D8B;
 }
 body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height: 100vh; }
 .wrap { font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); max-width:520px; margin:0 auto; padding:16px 16px 30px; -webkit-font-smoothing:antialiased; }
@@ -64,7 +64,7 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 .seerQ { font-family:'Fraunces',serif; font-size:24px; line-height:1.25; margin:6px 0 18px; }
 .ansRow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .ans { font-family:inherit; font-weight:700; font-size:18px; padding:18px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
-.ans.y { border-color:var(--mint); color:var(--mint); } .ans.n { border-color:var(--rose); color:var(--rose); }
+.ans.y { border-color:var(--yes); color:var(--yes); } .ans.n { border-color:var(--no); color:var(--no); }
 .scaleRow { margin-top:14px; }
 .scaleRow input { width:100%; accent-color:var(--psychic); }
 .scaleVal { font-family:'JetBrains Mono',monospace; color:var(--psychic); font-weight:700; }
@@ -85,12 +85,12 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 .primary.full { width:100%; }
 .ghost { display:inline-flex; align-items:center; gap:6px; font-family:inherit; font-weight:600; font-size:14px; padding:14px 16px; border-radius:14px; cursor:pointer; background:var(--velvet); color:var(--mist); border:1px solid var(--haze); }
 .flash { position:fixed; inset:0; display:grid; place-items:center; padding:24px; text-align:center; z-index:15; }
-.flash.yes { background:radial-gradient(120% 90% at 50% 40%, rgba(74,222,128,.22), rgba(14,11,26,.92)); }
-.flash.no { background:radial-gradient(120% 90% at 50% 40%, rgba(242,109,139,.22), rgba(14,11,26,.92)); }
+.flash.yes { background:radial-gradient(120% 90% at 50% 40%, color-mix(in srgb, var(--yes) 22%, transparent), rgba(14,11,26,.92)); }
+.flash.no { background:radial-gradient(120% 90% at 50% 40%, color-mix(in srgb, var(--no) 22%, transparent), rgba(14,11,26,.92)); }
 .flashCard { max-width:420px; }
 .flashQ { font-size:13px; color:var(--dim); margin-bottom:14px; }
 .verdictBig { font-family:'Fraunces',serif; font-size:64px; font-weight:600; margin:0 0 8px; }
-.flash.yes .verdictBig { color:var(--mint); } .flash.no .verdictBig { color:var(--rose); }
+.flash.yes .verdictBig { color:var(--yes); } .flash.no .verdictBig { color:var(--no); }
 .conf { font-family:'JetBrains Mono',monospace; color:var(--dim); margin-bottom:18px; }
 .revealOverlay { position:fixed; inset:0; background:rgba(8,6,16,.82); display:grid; place-items:center; padding:20px; z-index:20; }
 .revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:22px; padding:24px 22px; max-width:460px; width:100%; text-align:center; box-shadow:0 30px 60px -20px #000; }
@@ -206,10 +206,11 @@ function SoloApp(){
   const [marks,setMarks] = useState({});
   const [showMode,setShowMode] = useState("score");
   const [intro,setIntro] = useState(true);
-  const [interrogated,setInterrogated] = useState(false);
   const [freed,setFreed] = useState({});
-  const [star,setStar] = useState(null);
-  const [ibMode,setIbMode] = useState("free");
+  const [vision,setVision] = useState(null);
+  const [visionDone,setVisionDone] = useState(false);
+  const [brief1,setBrief1] = useState(false);
+  const [brief2,setBrief2] = useState(false);
   const [hist,setHist] = useState([]);
   const [guess,setGuess] = useState(null);
   const [seerId,setSeerId] = useState(null);
@@ -235,7 +236,7 @@ function SoloApp(){
     if(leaderMode==="random") return players[Math.floor(Math.random()*players.length)].id;
     return players[0].id; // rotating starts with lowest number
   };
-  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setInterrogated(false); setFreed({}); setStar(null); setIbMode("free"); setHist([]); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
+  const start = ()=>{ setSeerId(chooseSeer()); setRole("detective"); setRound(1); setPhase("vote"); setAskedQ(""); setSeerAns(null); setStatus({}); setScore({}); setMarks({}); setGuess(null); setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); setHist([]); setSeed(Math.floor(Math.random()*1000000)+1); setScreen("game"); };
 
   const faces = useMemo(()=>{
     const source = faceFiles.length ? faceFiles : FACE_FILES;
@@ -315,32 +316,66 @@ function SoloApp(){
         <div className="verdict win" style={{fontSize:26,textAlign:"center",marginBottom:14}}>The Pendulum Case</div>
         <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>A crime was committed. The details are sealed — we can't tell you what they did. What we <i>can</i> tell you: we hired <b>you</b>, a psychic detective.</p>
         <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>Your tool is a pendulum, held by the <b>Seer</b>. It answers one thing: <b style={{color:"var(--mint)"}}>YES</b> or <b style={{color:"var(--rose)"}}>NO</b>. Each round, ask a question, read the vision, and narrow the lineup.</p>
-        <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>Tap everyone who fits each reading — the top match is your best guess. Halfway through there's an <b>Interrogation Break</b>: send two suspects home and <b style={{color:"var(--candle)"}}>★ star</b> your prime suspect.</p>
+        <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>First, one <b style={{color:"var(--psychic)"}}>psychic hunch</b> — call the suspect blind for a bonus. Then tap everyone who fits each reading. Two optional <b>Briefing Rooms</b> let you free the innocent for grace points. Lock your final answer at round 8.</p>
         <button className="primary full" onClick={()=>setIntro(false)}>Begin the séance ›</button>
       </div></div>
     </div>);
   }
 
-  if(round>=5 && !interrogated && role==="detective"){
-    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapIb = (id)=>{
-      if(ibMode==="free"){ setFreed(fr=>{ const n={...fr}; if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<2) n[id]=true; return n; }); }
-      else if(!freed[id]){ setStar(id); }
-    };
+  if(!visionDone && role==="detective"){
     return (<div className="wrap">
       <section className="qcard" style={{textAlign:"center"}}>
-        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Interrogation Break</div>
-        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>{ibMode==="free" ? <span>Four visions in. Send <b>two</b> suspects home. <b style={{color:"var(--candle)"}}>({2-freedCount} left)</b></span> : <span>Now <b>★ star your prime suspect</b>.</span>}</p>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Psychic Hunch</div>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — who does your gut say did it? Nail it for a big bonus. Optional.</p>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-        {faces.map(f=>{ const isFreed=!!freed[f.id]; const isStar=star===f.id; const cls=["cell",isFreed?"out":"",isStar?"picked":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapIb(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}{isStar && <span className="badge" style={{background:"var(--candle)"}}>★</span>}</button>);
+        {faces.map(f=>{ const isV=vision===f.id; const cls=["cell",isV?"picked":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>setVision(v=>v===f.id?null:f.id)}><Face file={f.file} seed={f.seed} />{isV && <span className="badge" style={{background:"var(--psychic)"}}>🔮</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}>
-        {ibMode==="free" ? <button className="primary full" disabled={freedCount!==2} onClick={()=>setIbMode("star")}>Star a suspect ›</button>
-          : <React.Fragment><button className="ghost" onClick={()=>setIbMode("free")}>Back</button><button className="primary" disabled={star===null} onClick={()=>setInterrogated(true)}>Resume ›</button></React.Fragment>}
+        <button className="ghost" onClick={()=>{ setVision(null); setVisionDone(true); }}>Skip</button>
+        <button className="primary" disabled={vision===null} onClick={()=>setVisionDone(true)}>Lock my hunch ›</button>
       </div>
+    </div>);
+  }
+
+  if(round>=4 && !brief1 && role==="detective"){
+    const freeMax = diff==="easy"?1 : diff==="hard"?3 : 2;
+    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
+    const tapFree = (id)=>{ setFreed(fr=>{ const n={...fr}; if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<freeMax) n[id]=true; return n; }); };
+    return (<div className="wrap">
+      <section className="qcard" style={{textAlign:"center"}}>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Briefing Room</div>
+        <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>Three readings in. Anyone you're sure is innocent?</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> — grace points for each innocent you send home. <b style={{color:"var(--candle)"}}>({freeMax-freedCount} left)</b> · optional</p>
+      </section>
+      <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
+        {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+        })}
+      </div>
+      <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>setBrief1(true)}>Continue ›</button></div>
+    </div>);
+  }
+
+  if(round>=6 && !brief2 && role==="detective"){
+    const freeMax = diff==="easy"?1 : diff==="hard"?3 : 2;
+    const cap = freeMax*2;
+    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
+    const tapFree = (id)=>{ setFreed(fr=>{ const n={...fr}; if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<cap) n[id]=true; return n; }); };
+    return (<div className="wrap">
+      <section className="qcard" style={{textAlign:"center"}}>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Second Briefing</div>
+        <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>More visions in. Anyone else clearly out?</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> more. <b style={{color:"var(--candle)"}}>({cap-freedCount} left)</b> · optional</p>
+      </section>
+      <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
+        {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+        })}
+      </div>
+      <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>setBrief2(true)}>Continue ›</button></div>
     </div>);
   }
 
@@ -409,7 +444,7 @@ function SoloApp(){
           <span className="counter">{String(round).padStart(2,"0")}<i>/{ROUNDS}</i></span>
           {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortLikely(v=>!v)}>Sort: {sortLikely?"likely first":"off"}</button>}
         </div>
-        <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>Seer said <span className="qhi">{seerAns&&seerAns.ans.toUpperCase()}</span></span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
+        <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>Lock in who's <b>the suspect</b>.</span>}</p>
         </section>
       )}
 
@@ -421,12 +456,14 @@ function SoloApp(){
           </div>
           {phase==="narrow" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="ghost" onClick={()=>setPhase("guessing")}>Guess now</button><button className="primary" onClick={next}>{round<ROUNDS?"Next question":"Time to guess"} ›</button></div>}
           <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-            {[...ordered].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(star===f.id?-1:0); return rk(a)-rk(b); }).map(f=>{
-              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isStar=star===f.id;
-              const cls=["cell",isFreed?"out":"",hit&&!isFreed&&phase!=="guessing"?"likely":"",picked?"picked":""].join(" ");
-              return (<button key={f.id} className={cls} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
+            {[...ordered].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(vision===f.id?-1:0); return rk(a)-rk(b); }).map(f=>{
+              const sc=score[f.id]||0; const hit=!!marks[round+":"+f.id]; const picked=phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isVision=vision===f.id;
+              const readYes=seerAns&&seerAns.ans==="yes";
+              const hitStyle=(hit&&!isFreed&&phase!=="guessing")?{ borderColor:readYes?"var(--yes)":"var(--no)", boxShadow:readYes?"0 0 0 3px color-mix(in srgb, var(--yes) 55%, transparent)":"0 0 0 3px color-mix(in srgb, var(--no) 55%, transparent)" }:{};
+              const cls=["cell",isFreed?"out":"",picked?"picked":""].join(" ");
+              return (<button key={f.id} className={cls} style={hitStyle} onClick={()=>tapFace(f.id)} aria-label={"Face "+(f.id+1)}>
                 <Face file={f.file} seed={f.seed} />
-                {isStar && <span className="badge" style={{background:"var(--candle)",left:5,right:"auto"}}>★</span>}
+                {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
                 {sc>0 && !isFreed && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
                 {isFreed && <span className="badge no">✕</span>}
                 {picked && <span className="badge pick">◆</span>}
@@ -451,16 +488,17 @@ function SoloApp(){
 
       {phase==="reveal" && (()=>{
         const pf=Object.keys(freed).filter(k=>freed[k]).map(Number); const innocent=pf.filter(i=>i!==secret).length; const freedGuilty=pf.indexOf(secret)>=0;
-        const total=(correct?100:0)+innocent*20-(freedGuilty?40:0)+(star===secret?50:0);
+        const visionHit=vision===secret; const total=(correct?100:0)+innocent*20-(freedGuilty?40:0)+(visionHit?5:0);
         return (<div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
           <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
+          {visionHit && <div style={{textAlign:"center",background:"color-mix(in srgb, var(--psychic) 18%, transparent)",border:"1px solid var(--psychic)",borderRadius:12,padding:"10px 12px",margin:"0 0 14px",color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC — you named the culprit blind!</div>}
           <div style={{display:"flex",justifyContent:"center",marginBottom:14}}><div className="rf"><div className="face"><Face file={faces[secret]?.file} seed={faces[secret]?.seed} /></div><span>The guilty suspect</span></div></div>
           <div className="label">Your score</div>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:28,fontWeight:700,color:"var(--psychic)",textAlign:"center"}}>{total} pts</div>
-          <div style={{fontSize:12,color:"var(--dim)",textAlign:"center",marginTop:4}}>{correct?"caught ✓ ":"missed "}{innocent>0?("· freed "+innocent+" "):""}{star===secret?"· ★ psychic ":""}{freedGuilty?"· ⚠ freed suspect":""}</div>
+          <div style={{fontSize:12,color:"var(--dim)",textAlign:"center",marginTop:4}}>{correct?"caught ✓ ":"missed "}{innocent>0?("· freed "+innocent+" "):""}{visionHit?"· 🔮 psychic hunch ":""}{freedGuilty?"· ⚠ freed suspect":""}</div>
           <div className="label">The readings</div>
           {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b>{h.conf!=null?(" ("+h.conf+"/10)"):""}</div>))}
-          <p className="note" style={{marginTop:12}}>+100 caught · +20 each innocent freed · +50 ★ correct · −40 freeing the suspect.</p>
+          <p className="note" style={{marginTop:12}}>+100 caught · +5 psychic hunch (+ eternal glory) · +20 each innocent freed · −40 freeing the suspect.</p>
           <div className="footer" style={{marginTop:14}}><button className="ghost" onClick={()=>setScreen("lobby")}>Lobby</button><button className="primary" onClick={start}>Play again ↻</button></div>
         </div></div>);
       })()}
@@ -479,6 +517,8 @@ const randId = () => Math.random().toString(36).slice(2,10);
 const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
 const ls = { get:(k)=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set:(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} }, del:(k)=>{ try{ localStorage.removeItem(k); }catch(e){} } };
 const persistId = ()=>{ let v=ls.get("cr_id"); if(!v){ v=randId(); ls.set("cr_id",v); } return v; };
+const PALETTES = { gr:{ yes:"#7DF0A6", no:"#F26D8B", label:"Green / Red" }, bo:{ yes:"#5AA9FF", no:"#F5A03D", label:"Blue / Orange" } };
+function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.documentElement.style.setProperty("--yes",c.yes); document.documentElement.style.setProperty("--no",c.no); }catch(e){} }
 const shortQ = (q)=> q ? q.replace(/^Does this person /,"").replace(/^Would this person /,"").replace(/\?$/,"") : "";
 function QR({ text, size }){
   const ref = React.useRef(null);
@@ -492,6 +532,8 @@ function QR({ text, size }){
 }
 
 function Home({configured,onPick}){
+  const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
+  const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   return (
     <div className="wrap" style={{display:"flex",flexDirection:"column",minHeight:"92vh"}}>
       <div className="brand" style={{justifyContent:"center",marginTop:6}}>◍&nbsp;COLD&nbsp;READ</div>
@@ -514,6 +556,12 @@ function Home({configured,onPick}){
       <div style={{flex:1,minHeight:16}} />
       <button className="go" onClick={()=>onPick("online")}>Play with friends ›</button>
       <button className="readyBtn" style={{marginTop:12}} onClick={()=>onPick("solo")}>Try it solo (one phone)</button>
+      <div style={{textAlign:"center",marginTop:16}}>
+        <div style={{fontSize:11,color:"var(--dim)",letterSpacing:".1em",textTransform:"uppercase",marginBottom:6}}>Colors</div>
+        <div className="sel" style={{justifyContent:"center"}}>
+          {Object.keys(PALETTES).map(k=>(<button key={k} className={"chip"+(pal===k?" on":"")} onClick={()=>pickPal(k)}>{PALETTES[k].label}</button>))}
+        </div>
+      </div>
       {!configured && <div className="hint" style={{marginTop:14}}>Online needs your Supabase URL and key in the top of this file.</div>}
     </div>
   );
@@ -536,10 +584,11 @@ function OnlineApp({ onExit }){
   const [pendingSeer,setPendingSeer] = useState(null);
   const [dismissed,setDismissed] = useState(0);
   const [intro,setIntro] = useState(true);
-  const [interrogated,setInterrogated] = useState(false);
   const [freed,setFreed] = useState({});
-  const [star,setStar] = useState(null);
-  const [ibMode,setIbMode] = useState("free");
+  const [vision,setVision] = useState(null);
+  const [visionDone,setVisionDone] = useState(false);
+  const [brief1,setBrief1] = useState(false);
+  const [brief2,setBrief2] = useState(false);
   const [score,setScore] = useState({});
   const [marks,setMarks] = useState({});
   const [showMode,setShowMode] = useState("score");
@@ -547,6 +596,8 @@ function OnlineApp({ onExit }){
   const firedRef = React.useRef(null);
   const resolveRef = React.useRef(null);
   const [err,setErr] = useState("");
+  const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
+  const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
 
   useEffect(()=>{
     fetch("./questions.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{});
@@ -622,7 +673,7 @@ function OnlineApp({ onExit }){
     const seer = (pendingSeer && players.some(p=>p.id===pendingSeer)) ? pendingSeer : players[Math.floor(Math.random()*players.length)].id;
     const suspect = Math.floor(Math.random()*cfg.n);
     await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, seed:Math.floor(Math.random()*1000000)+1, asked_q:null, seer_ans:null, history:[] }).eq("code",code);
-    await sb.from("players").update({ ready:false, vote:null, freed:[], star:null }).eq("code",code);
+    await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[] }).eq("code",code);
   };
   const castVote = async (i)=>{ await sb.from("players").update({ vote:i }).eq("id",myId); };
   const resolveVote = async ()=>{
@@ -642,13 +693,14 @@ function OnlineApp({ onExit }){
     else await sb.from("games").update({ phase:"guessing", asked_q:null, seer_ans:null, history:hist }).eq("code",code);
   };
   const lockGuess = async ()=>{ if(guess==null) return; await sb.from("players").update({ guess }).eq("id",myId); };
-  const finishInterrogation = async ()=>{ await sb.from("players").update({ freed:Object.keys(freed).filter(k=>freed[k]).map(Number), star }).eq("id",myId); setInterrogated(true); };
+  const lockHunch = async (v)=>{ setVision(v); await sb.from("players").update({ stars: v!=null?[v]:[] }).eq("id",myId); setVisionDone(true); };
+  const finishBrief = async (setBrief)=>{ await sb.from("players").update({ freed:Object.keys(freed).filter(k=>freed[k]).map(Number) }).eq("id",myId); setBrief(true); };
   const reveal = async ()=>{ await sb.from("games").update({ phase:"revealed" }).eq("code",code); };
   const toggleDone = async ()=>{ if(!me) return; await sb.from("players").update({ ready:!me.ready }).eq("id",myId); };
-  const backToLobby = async ()=>{ await sb.from("players").update({ ready:false, vote:null, freed:[], star:null }).eq("code",code); await sb.from("games").update({ phase:"lobby", seer_id:null, suspect_idx:null, asked_q:null, seer_ans:null, history:[], seed:Math.floor(Math.random()*1000000)+1 }).eq("code",code); };
+  const backToLobby = async ()=>{ await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[] }).eq("code",code); await sb.from("games").update({ phase:"lobby", seer_id:null, suspect_idx:null, asked_q:null, seer_ans:null, history:[], seed:Math.floor(Math.random()*1000000)+1 }).eq("code",code); };
 
-  useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; setIntro(true); setInterrogated(false); setFreed({}); setStar(null); setIbMode("free"); }, [game && game.seed]);
-  useEffect(()=>{ const m=players.find(p=>p.id===myId); if(m && m.star!=null && !interrogated){ setInterrogated(true); setStar(m.star); const fr={}; (m.freed||[]).forEach(i=>{ fr[i]=true; }); setFreed(fr); } }, [players, interrogated]);
+  useEffect(()=>{ setScore({}); setMarks({}); setGuess(null); firedRef.current=null; setIntro(true); setFreed({}); setVision(null); setVisionDone(false); setBrief1(false); setBrief2(false); }, [game && game.seed]);
+  useEffect(()=>{ const m=players.find(p=>p.id===myId); if(!m) return; if(m.stars && m.stars.length && vision===null && !visionDone){ setVision(m.stars[0]); setVisionDone(true); } if(m.freed && m.freed.length && Object.keys(freed).length===0){ const fr={}; m.freed.forEach(i=>{ fr[i]=true; }); setFreed(fr); } }, [players]);
   useEffect(()=>{ const t=setInterval(()=>setNowT(Date.now()), 300); return ()=>clearInterval(t); }, []);
   useEffect(()=>{
     if(!game || !amSeer) return;
@@ -719,6 +771,12 @@ function OnlineApp({ onExit }){
         ))}
       </div></div>
       <button className={"readyBtn"+(me&&me.ready?" on":"")} onClick={toggleReady}>{me&&me.ready?"✓ You are ready":"Ready up"}</button>
+      <div style={{textAlign:"center",marginTop:14}}>
+        <div style={{fontSize:11,color:"var(--dim)",letterSpacing:".1em",textTransform:"uppercase",marginBottom:6}}>Colors</div>
+        <div className="sel" style={{justifyContent:"center"}}>
+          {Object.keys(PALETTES).map(k=>(<button key={k} className={"chip"+(pal===k?" on":"")} onClick={()=>pickPal(k)}>{PALETTES[k].label}</button>))}
+        </div>
+      </div>
       {amHost && (<div>
         <div className="label">Grid size (host)</div>
         <div className="sel">{["easy","medium","hard"].map(d=>(<button key={d} className={"chip"+(game.difficulty===d?" on":"")} onClick={()=>setDiff(d)}>{d==="easy"?"3×3":d==="medium"?"4×4":"5×5"}</button>))}</div>
@@ -739,7 +797,7 @@ function OnlineApp({ onExit }){
 
   if(game.phase==="revealed"){
     const dets = players.filter(p=>p.id!==game.seer_id);
-    const scored = dets.map(p=>{ const pf=p.freed||[]; const innocent=pf.filter(i=>i!==suspect).length; const freedGuilty=pf.indexOf(suspect)>=0; const g=p.guess===suspect?100:0; const fr=innocent*20-(freedGuilty?40:0); const st=p.star===suspect?50:0; return { name:p.name, total:g+fr+st, correct:p.guess===suspect, innocent, freedGuilty, starHit:p.star===suspect }; }).sort((a,b)=>b.total-a.total);
+    const scored = dets.map(p=>{ const pf=p.freed||[]; const innocent=pf.filter(i=>i!==suspect).length; const freedGuilty=pf.indexOf(suspect)>=0; const g=p.guess===suspect?100:0; const fr=innocent*20-(freedGuilty?40:0); const sh=(p.stars||[]).indexOf(suspect)>=0; const st=sh?5:0; return { name:p.name, total:g+fr+st, correct:p.guess===suspect, innocent, freedGuilty, starHit:sh }; }).sort((a,b)=>b.total-a.total);
     const seerP2 = players.find(p=>p.id===game.seer_id);
     const hist = game.history||[];
     return (<div className="wrap">{header}
@@ -747,7 +805,7 @@ function OnlineApp({ onExit }){
         <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
         <div style={{display:"flex",justifyContent:"center",marginBottom:16}}><div className="rf"><div className="face"><Face file={faces[suspect]?.file} seed={faces[suspect]?.seed} /></div><span>The guilty suspect</span></div></div>
         <div className="label">Final scoreboard</div>
-        <div className="roster">{scored.map((b,i)=>(<div key={i} className="prow"><div className="pname"><span style={{color:i===0?"var(--candle)":"var(--mist)"}}>{i+1}. {b.name}</span></div><div style={{textAlign:"right"}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:"var(--psychic)"}}>{b.total} pts</div><div style={{fontSize:10.5,color:"var(--dim)"}}>{b.correct?"caught ✓ ":""}{b.innocent>0?("freed "+b.innocent+" "):""}{b.starHit?"★ psychic ":""}{b.freedGuilty?"⚠ freed suspect":""}</div></div></div>))}</div>
+        <div className="roster">{scored.map((b,i)=>(<div key={i} className="prow"><div className="pname"><span style={{color:i===0?"var(--candle)":"var(--mist)"}}>{i+1}. {b.name}</span></div><div style={{textAlign:"right"}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:"var(--psychic)"}}>{b.total} pts</div><div style={{fontSize:10.5,color:"var(--dim)"}}>{b.correct?"caught ✓ ":""}{b.innocent>0?("freed "+b.innocent+" "):""}{b.starHit && <span style={{color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC </span>}{b.freedGuilty?"⚠ freed suspect":""}</div></div></div>))}</div>
         <div style={{fontSize:12,color:"var(--dim)",margin:"6px 0 4px"}}>Seer this game: <b style={{color:"var(--mist)"}}>{seerP2?seerP2.name:"—"}</b></div>
         <div className="label">The readings</div>
         {hist.map((h,i)=>(<div key={i} style={{fontSize:13,padding:"7px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--mint)":"var(--rose)"}}>{h.ans?h.ans.toUpperCase():"—"}</b>{h.conf!=null?(" ("+h.conf+"/10)"):""}</div>))}
@@ -764,7 +822,7 @@ function OnlineApp({ onExit }){
         <div className="verdict win" style={{fontSize:26,textAlign:"center",marginBottom:14}}>The Pendulum Case</div>
         <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>A crime was committed. The details are sealed — we can't tell you what they did. What we <i>can</i> tell you: we hired <b>you</b>, a circle of psychic detectives.</p>
         <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>Your only tool is a pendulum, held by the <b>Seer</b>. It answers one thing: <b style={{color:"var(--mint)"}}>YES</b> or <b style={{color:"var(--rose)"}}>NO</b>. Each round the group <b>votes</b> on a question to ask it, the Seer reads the vision, and you narrow the lineup.</p>
-        <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>Tap everyone who fits each reading — the face with the most matches rises to the top. Halfway through there's an <b>Interrogation Break</b>: send two suspects home and <b style={{color:"var(--candle)"}}>★ star</b> your prime suspect.</p>
+        <p style={{fontSize:14,lineHeight:1.6,margin:"0 0 12px"}}>First, one <b style={{color:"var(--psychic)"}}>psychic hunch</b> — call the suspect blind for a bonus. Then tap everyone who fits each reading. Two optional <b>Briefing Rooms</b> let you free the innocent for grace points. Final answer locks at round 8.</p>
         <p style={{fontSize:13,lineHeight:1.6,color:"var(--dim)",margin:"0 0 18px"}}>Trust your gut, then name the suspect.</p>
         <button className="primary full" onClick={()=>setIntro(false)}>{amSeer?"Take the pendulum ›":"Begin the séance ›"}</button>
       </div></div>
@@ -809,35 +867,64 @@ function OnlineApp({ onExit }){
     </div>);
   }
 
-  if(game.phase==="playing" && game.round>=5 && !interrogated){
-    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
-    const tapIb = (id)=>{
-      if(ibMode==="free"){ setFreed(fr=>{ const n=Object.assign({},fr); if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<2) n[id]=true; return n; }); }
-      else if(!freed[id]){ setStar(id); }
-    };
+  if(!visionDone && game.round===1){
     return (<div className="wrap">{header}
       <section className="qcard" style={{textAlign:"center"}}>
-        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Interrogation Break</div>
-        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>{ibMode==="free" ? <span>Four visions in. Send <b>two</b> suspects home — the ones your gut says are innocent. <b style={{color:"var(--candle)"}}>({2-freedCount} left)</b></span> : <span>Now <b>★ star your prime suspect</b> — the hunch you carry to the end.</span>}</p>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Psychic Hunch</div>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Before any questions — who does your gut say did it? Nail it for a big bonus. Optional.</p>
       </section>
       <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-        {faces.map(f=>{ const isFreed=!!freed[f.id]; const isStar=star===f.id;
-          const cls=["cell",isFreed?"out":"",isStar?"picked":""].join(" ");
-          return (<button key={f.id} className={cls} onClick={()=>tapIb(f.id)}>
-            <Face file={f.file} seed={f.seed} />
-            {isFreed && <span className="badge no">✕</span>}
-            {isStar && <span className="badge" style={{background:"var(--candle)"}}>★</span>}
-          </button>);
+        {faces.map(f=>{ const isV=vision===f.id; const cls=["cell",isV?"picked":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>setVision(v=>v===f.id?null:f.id)}><Face file={f.file} seed={f.seed} />{isV && <span className="badge" style={{background:"var(--psychic)"}}>🔮</span>}</button>);
         })}
       </div>
       <div className="footer" style={{marginTop:14}}>
-        {ibMode==="free"
-          ? <button className="primary full" disabled={freedCount!==2} onClick={()=>setIbMode("star")}>Star a suspect ›</button>
-          : <React.Fragment><button className="ghost" onClick={()=>setIbMode("free")}>Back</button><button className="primary" disabled={star===null} onClick={finishInterrogation}>Resume ›</button></React.Fragment>}
+        <button className="ghost" onClick={()=>lockHunch(null)}>Skip</button>
+        <button className="primary" disabled={vision===null} onClick={()=>lockHunch(vision)}>Lock my hunch ›</button>
       </div>
     </div>);
   }
 
+  if(game.phase==="playing" && game.round>=4 && game.round<6 && !brief1){
+    const freeMax = cfg.n>=25?3:(cfg.n>=16?2:1);
+    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
+    const tapFree = (id)=>{ setFreed(fr=>{ const n=Object.assign({},fr); if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<freeMax) n[id]=true; return n; }); };
+    return (<div className="wrap">{header}
+      <section className="qcard" style={{textAlign:"center"}}>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Briefing Room</div>
+        <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>Three readings in. Anyone you're sure is innocent?</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> — grace points for each innocent. <b style={{color:"var(--candle)"}}>({freeMax-freedCount} left)</b> · optional</p>
+      </section>
+      <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
+        {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+        })}
+      </div>
+      <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>finishBrief(setBrief1)}>Continue ›</button></div>
+    </div>);
+  }
+
+  if(game.phase==="playing" && game.round>=6 && !brief2){
+    const freeMax = cfg.n>=25?3:(cfg.n>=16?2:1);
+    const cap = freeMax*2;
+    const freedCount = Object.keys(freed).filter(k=>freed[k]).length;
+    const tapFree = (id)=>{ setFreed(fr=>{ const n=Object.assign({},fr); if(n[id]) delete n[id]; else if(Object.keys(fr).filter(k=>fr[k]).length<cap) n[id]=true; return n; }); };
+    return (<div className="wrap">{header}
+      <section className="qcard" style={{textAlign:"center"}}>
+        <div className="verdict win" style={{fontSize:22,margin:"0 0 6px"}}>Second Briefing</div>
+        <p style={{fontSize:13,color:"var(--dim)",margin:"0 0 8px"}}>More visions in. Anyone else clearly out?</p>
+        <p style={{fontSize:14,lineHeight:1.5,margin:0}}>Free up to <b>{freeMax}</b> more. <b style={{color:"var(--candle)"}}>({cap-freedCount} left)</b> · optional</p>
+      </section>
+      <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
+        {faces.map(f=>{ const isFreed=!!freed[f.id]; const cls=["cell",isFreed?"out":""].join(" ");
+          return (<button key={f.id} className={cls} onClick={()=>tapFree(f.id)}><Face file={f.file} seed={f.seed} />{isFreed && <span className="badge no">✕</span>}</button>);
+        })}
+      </div>
+      <div className="footer" style={{marginTop:14}}><button className="primary full" onClick={()=>finishBrief(setBrief2)}>Continue ›</button></div>
+    </div>);
+  }
+
+  const roundMarks = Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(game.round)).length;
   const showFlash = game.phase==="playing" && game.seer_ans && dismissed!==game.round;
   return (<div className="wrap">{header}
     {game.phase==="playing" && !game.asked_q && (
@@ -857,7 +944,7 @@ function OnlineApp({ onExit }){
     )}
     {((game.phase==="playing" && game.seer_ans) || game.phase==="guessing") && (
       <section className="qcard"><div className="qmeta"><span className="counter">{String(Math.min(game.round,ROUNDS)).padStart(2,"0")}<i>/{ROUNDS}</i></span></div>
-        <p className="qtext small">{game.phase==="guessing" ? <span>Lock in who is <b>the suspect</b>.</span> : <span><b>Does {shortQ(game.asked_q)}?</b><br/>Seer said <span className="qhi">{game.seer_ans.ans.toUpperCase()}</span>{game.seer_ans.conf!=null?(" ("+game.seer_ans.conf+"/10)"):""}</span>}</p>
+        <p className="qtext small">{game.phase==="guessing" ? <span>Lock in who is <b>the suspect</b>.</span> : <span><b>Does {shortQ(game.asked_q)}?</b><br/>The pendulum said <b style={{color:game.seer_ans.ans==="yes"?"var(--yes)":"var(--no)"}}>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""} — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{roundMarks} marked</b></span>}</p>
       </section>
     )}
     {(game.phase==="guessing" || (game.phase==="playing" && game.seer_ans)) && (
@@ -869,12 +956,14 @@ function OnlineApp({ onExit }){
         {game.phase==="playing" && game.seer_ans && game.seer_ans.until && game.seer_ans.until>nowT && <div className="hint" style={{marginTop:-4,marginBottom:8,color:"var(--candle)"}}>Seer moving on in {Math.ceil((game.seer_ans.until-nowT)/1000)}s — mark fast!</div>}
         {game.phase==="playing" && <div className="footer" style={{marginTop:0,marginBottom:12}}><button className="primary full" style={me&&me.ready?{background:"var(--mint)",color:"var(--ink)"}:{}} onClick={toggleDone}>{me&&me.ready?"✓ Done — waiting for the seer":"I'm done marking"}</button></div>}
         <div className="grid" style={{ gridTemplateColumns:"repeat("+cfg.cols+", 1fr)" }}>
-          {[...faces].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(star===f.id?-1:0); return rk(a)-rk(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }).map(f=>{
-            const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isStar=star===f.id;
-            const cls=["cell",isFreed?"out":"",hit&&!isFreed&&game.phase!=="guessing"?"likely":"",picked?"picked":""].join(" ");
-            return (<button key={f.id} className={cls} onClick={()=>tapFace(f.id)}>
+          {[...faces].sort((a,b)=>{ const rk=(f)=>freed[f.id]?2:(vision===f.id?-1:0); return rk(a)-rk(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }).map(f=>{
+            const sc=score[f.id]||0; const hit=!!marks[game.round+":"+f.id]; const picked=game.phase==="guessing"&&guess===f.id; const isFreed=!!freed[f.id]; const isVision=vision===f.id;
+            const readYes=game.seer_ans&&game.seer_ans.ans==="yes";
+            const hitStyle=(hit&&!isFreed&&game.phase!=="guessing")?{ borderColor:readYes?"var(--yes)":"var(--no)", boxShadow:readYes?"0 0 0 3px color-mix(in srgb, var(--yes) 55%, transparent)":"0 0 0 3px color-mix(in srgb, var(--no) 55%, transparent)" }:{};
+            const cls=["cell",isFreed?"out":"",picked?"picked":""].join(" ");
+            return (<button key={f.id} className={cls} style={hitStyle} onClick={()=>tapFace(f.id)}>
               <Face file={f.file} seed={f.seed} />
-              {isStar && <span className="badge" style={{background:"var(--candle)",left:5,right:"auto"}}>★</span>}
+              {isVision && <span className="badge" style={{background:"var(--psychic)",left:5,right:"auto"}}>🔮</span>}
               {sc>0 && !isFreed && <span className="badge like" style={{minWidth:24,width:"auto",height:24,padding:"0 6px",fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:800}}>{showMode==="score"?sc:tallyMarks(sc)}</span>}
               {isFreed && <span className="badge no">✕</span>}
               {picked && <span className="badge pick">◆</span>}
@@ -897,6 +986,7 @@ function OnlineApp({ onExit }){
 
 function App(){
   const [mode,setMode] = useState(()=>{ try{ return new URLSearchParams(location.search).get("join") ? "online" : null; }catch(e){ return null; } });
+  useEffect(()=>{ applyPalette(ls.get("cr_palette")||"gr"); },[]);
   if(mode==="solo") return <SoloApp/>;
   if(mode==="online") return <OnlineApp onExit={()=>setMode(null)} />;
   return <Home configured={sbReady} onPick={setMode} />;
