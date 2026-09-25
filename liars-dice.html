@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Liar's Dice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+:root {
+  --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6;
+  --bone:#EFE7D6; --win:#7DF0A6; --lose:#F26D8B; --felt:#123a2e;
+}
+body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height: 100vh; }
+.wrap { font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); max-width:520px; margin:0 auto; padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(30px + env(safe-area-inset-bottom,0px)); -webkit-font-smoothing:antialiased; }
+.top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.brand { display:flex; align-items:center; gap:7px; letter-spacing:.22em; font-weight:700; font-size:14px; color:var(--candle); }
+.brandBig { font-family:'Fraunces',serif; font-weight:600; font-size:40px; letter-spacing:.02em; color:var(--candle); margin:16px 0 4px; line-height:1.05; }
+.sub { color:var(--dim); font-size:14px; margin-bottom:18px; line-height:1.5; }
+.who { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+.chip { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--dim); background:var(--velvet); border:1px solid var(--haze); border-radius:999px; padding:7px 12px; cursor:pointer; font-family:inherit; }
+.chip.on { color:var(--ink); background:var(--candle); border-color:var(--candle); }
+.sel { display:flex; gap:7px; flex-wrap:wrap; margin:8px 0 4px; }
+.label { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:18px 0 8px; }
+.card { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:20px; padding:16px 18px; box-shadow:0 18px 40px -24px #000; }
+.roster { display:flex; flex-direction:column; }
+.prow { display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--haze); }
+.prow:last-child { border-bottom:none; }
+.pname { font-weight:600; font-size:15px; display:flex; align-items:center; gap:8px; }
+.crown { color:var(--candle); }
+.rgt { display:flex; align-items:center; gap:8px; }
+.pill { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; }
+.pill.ready { color:var(--ink); background:var(--mint); }
+.pill.wait { color:var(--dim); border:1px solid var(--haze); }
+.pill.bot { color:var(--psychic); border:1px solid var(--psychic); }
+.kick { font-size:11px; font-weight:700; color:var(--rose); border:1px solid var(--rose); background:none; border-radius:999px; padding:4px 9px; cursor:pointer; font-family:inherit; }
+.readyBtn { width:100%; margin-top:12px; font-family:inherit; font-weight:700; font-size:15px; padding:13px; border-radius:13px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.readyBtn.on { background:rgba(125,240,166,.14); border-color:var(--mint); color:var(--mint); }
+.go { width:100%; margin-top:16px; font-family:'Fraunces',serif; font-weight:600; font-size:22px; letter-spacing:.03em; padding:16px; border-radius:16px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+.go:disabled { opacity:.4; cursor:not-allowed; }
+.hint { font-size:12px; color:var(--dim); text-align:center; margin-top:10px; line-height:1.5; }
+.inp { width:100%; padding:13px; border-radius:12px; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); font-family:inherit; font-size:16px; margin-bottom:10px; }
+.btnrow { display:flex; gap:10px; }
+.primary { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:inherit; font-weight:700; font-size:15px; padding:14px; border-radius:14px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+.primary:disabled { opacity:.4; cursor:not-allowed; }
+.primary.full { width:100%; }
+.ghost { display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:inherit; font-weight:600; font-size:14px; padding:14px 16px; border-radius:14px; cursor:pointer; background:var(--velvet); color:var(--mist); border:1px solid var(--haze); }
+.danger { color:var(--rose); border-color:var(--rose); }
+.mono { font-family:'JetBrains Mono',monospace; }
+.codeBig { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:34px; letter-spacing:.32em; color:var(--candle); text-align:center; }
+.qrbox { display:flex; justify-content:center; margin:14px 0 4px; }
+.qrbox > div { background:#fff; padding:10px; border-radius:14px; }
+
+/* dice */
+.hand { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+.die { filter:drop-shadow(0 6px 10px rgba(0,0,0,.35)); }
+.die.glow { filter:drop-shadow(0 0 10px var(--candle)) drop-shadow(0 4px 8px rgba(0,0,0,.4)); }
+.dback { width:26px; height:26px; border-radius:7px; background:linear-gradient(150deg,#2b2247,#3a2f5c); border:1px solid var(--haze); display:inline-grid; place-items:center; color:var(--dim); font-size:13px; font-weight:800; }
+.dback.sm { width:20px; height:20px; border-radius:5px; font-size:11px; }
+
+/* table */
+.status { display:flex; align-items:center; justify-content:space-between; margin:2px 2px 12px; }
+.rnd { font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--psychic); font-size:14px; }
+.tot { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--dim); }
+.tot b { color:var(--bone); }
+.seats { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.seat { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:14px; background:var(--velvet); }
+.seat.turn { border-color:var(--candle); box-shadow:0 0 0 2px rgba(245,177,76,.28); }
+.seat.out { opacity:.4; }
+.seatL { display:flex; align-items:center; gap:9px; min-width:0; }
+.seatName { font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.seatR { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.turnDot { color:var(--candle); font-size:12px; }
+.bidTag { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--candle); background:rgba(245,177,76,.12); border:1px solid rgba(245,177,76,.4); border-radius:999px; padding:3px 9px; display:inline-flex; align-items:center; gap:4px; }
+
+.bidBanner { text-align:center; background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:18px; padding:16px; margin-bottom:14px; }
+.bidBanner .who2 { font-size:13px; color:var(--dim); margin-bottom:6px; }
+.bidBanner .amt { font-family:'Fraunces',serif; font-size:30px; font-weight:600; color:var(--bone); display:flex; align-items:center; justify-content:center; gap:10px; }
+.bidBanner .amt .g { font-size:38px; line-height:1; }
+.openMsg { text-align:center; color:var(--dim); font-size:14px; padding:8px 0 16px; }
+
+.myhand { text-align:center; margin-bottom:16px; }
+.myhand .lbl { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
+
+.controls { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:18px; padding:16px; }
+.ctitle { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin-bottom:12px; text-align:center; }
+.stepRow { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:14px; }
+.stepBtn { width:44px; height:44px; border-radius:12px; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); font-size:24px; font-weight:700; cursor:pointer; font-family:inherit; display:grid; place-items:center; }
+.stepBtn:disabled { opacity:.3; }
+.qtyNum { font-family:'Fraunces',serif; font-size:44px; font-weight:600; color:var(--candle); min-width:56px; text-align:center; }
+.faces { display:flex; gap:7px; justify-content:center; margin-bottom:16px; }
+.faceBtn { border:1.5px solid var(--haze); background:var(--velvet); border-radius:12px; padding:6px; cursor:pointer; line-height:0; }
+.faceBtn.on { border-color:var(--candle); box-shadow:0 0 0 2px rgba(245,177,76,.35); background:rgba(245,177,76,.08); }
+.waitTurn { text-align:center; color:var(--dim); padding:16px 6px; font-size:15px; }
+.waitTurn .big { font-size:32px; margin-bottom:6px; }
+
+/* reveal */
+.overlay { position:fixed; inset:0; background:rgba(8,6,16,.86); display:grid; place-items:center; padding:18px; z-index:20; overflow:auto; }
+.revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:22px; padding:22px 18px calc(20px + env(safe-area-inset-bottom,0px)); max-width:460px; width:100%; box-shadow:0 30px 60px -20px #000; margin:auto; }
+.verdict { font-family:'Fraunces',serif; font-size:30px; font-weight:600; text-align:center; margin:0 0 4px; }
+.verdict.win { color:var(--win); } .verdict.lose { color:var(--lose); }
+.vsub { text-align:center; color:var(--dim); font-size:13px; margin-bottom:16px; }
+.count { text-align:center; font-family:'JetBrains Mono',monospace; font-size:15px; margin-bottom:16px; color:var(--bone); }
+.count b { color:var(--candle); }
+.rrow { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--haze); }
+.rrow:last-of-type { border-bottom:none; }
+.rname { font-size:13px; font-weight:600; width:88px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rdice { display:flex; gap:5px; flex-wrap:wrap; }
+.loserTag { font-size:11px; font-weight:800; color:var(--lose); margin-left:auto; white-space:nowrap; }
+.gainTag { font-size:11px; font-weight:800; color:var(--win); margin-left:auto; white-space:nowrap; }
+.revBtn { width:100%; margin-top:18px; font-family:'Fraunces',serif; font-weight:600; font-size:20px; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+.revWait { text-align:center; color:var(--dim); font-size:13px; margin-top:16px; }
+
+.winName { font-family:'Fraunces',serif; font-size:44px; font-weight:600; color:var(--candle); text-align:center; margin:6px 0; }
+.trophy { text-align:center; font-size:56px; margin-bottom:4px; }
+
+button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
+@keyframes rollin { from { transform:translateY(-8px) rotate(-8deg); opacity:0; } to { transform:none; opacity:1; } }
+.rollin { animation:rollin .35s ease-out both; }
+@media (prefers-reduced-motion: reduce) { * { animation:none !important; } }
+/* hero */
+.heroWrap { display:flex; justify-content:center; margin:10px 0 0; }
+.heroWrap svg { width:100%; max-width:290px; height:auto; overflow:visible; }
+.tagline { text-align:center; color:var(--dim); font-size:12px; letter-spacing:.28em; text-transform:uppercase; margin-bottom:18px; }
+.lead { font-family:'Fraunces',serif; font-size:19px; line-height:1.4; margin:0 0 10px; color:var(--mist); }
+.spot { animation:heroGlow 4.6s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+.dieFloatA, .dieFloatB, .dieTumble { transform-box:fill-box; transform-origin:center; }
+.dieFloatA { animation:floatA 5.2s ease-in-out infinite; }
+.dieFloatB { animation:floatB 6.1s ease-in-out infinite; }
+.dieTumble { animation:tumble 4.4s ease-in-out infinite; filter:drop-shadow(0 0 7px rgba(245,177,76,.75)); }
+@keyframes heroGlow { 0%,100%{ opacity:.5; } 50%{ opacity:.95; } }
+@keyframes floatA { 0%,100%{ transform:translateY(0) rotate(-8deg); } 50%{ transform:translateY(-5px) rotate(-8deg); } }
+@keyframes floatB { 0%,100%{ transform:translateY(0) rotate(9deg); } 50%{ transform:translateY(-4px) rotate(9deg); } }
+@keyframes tumble { 0%{ transform:translateY(0) rotate(-11deg); } 50%{ transform:translateY(-11px) rotate(13deg); } 100%{ transform:translateY(0) rotate(-11deg); } }
+@keyframes mote { 0%{ transform:translateY(0); opacity:0; } 20%{ opacity:.7; } 80%{ opacity:.5; } 100%{ transform:translateY(-44px); opacity:0; } }
+/* reveal + win skin */
+.revealCard { position:relative; overflow:hidden; }
+.revealCard { background:radial-gradient(120% 62% at 50% 0%, rgba(245,177,76,.16), rgba(245,177,76,0) 60%), linear-gradient(180deg,var(--panel),var(--velvet)); }
+.revSpot { position:absolute; top:-70px; left:50%; transform:translateX(-50%); width:300px; height:200px; background:radial-gradient(circle at 50% 40%, rgba(245,177,76,.30), transparent 62%); pointer-events:none; z-index:0; }
+.revealCard > *:not(.revSpot) { position:relative; z-index:1; }
+.verdict.win { text-shadow:0 0 22px color-mix(in srgb, var(--win) 45%, transparent); }
+.verdict.lose { text-shadow:0 0 22px color-mix(in srgb, var(--lose) 45%, transparent); }
+.tallyWrap { text-align:center; margin:10px 0 18px; }
+.tallyBig { font-family:'Fraunces',serif; font-size:52px; font-weight:600; color:var(--bone); line-height:1; display:inline-flex; align-items:center; gap:8px; }
+.tallyGlyph { font-size:44px; color:var(--candle); filter:drop-shadow(0 0 10px rgba(245,177,76,.6)); }
+.tallySub { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); margin-top:8px; }
+.c-win { color:var(--win); } .c-lose { color:var(--lose); }
+.revList { border-top:1px solid var(--haze); }
+.outcome { text-align:center; font-family:'Fraunces',serif; font-size:16px; margin-top:14px; }
+.outcome.lose { color:var(--lose); } .outcome.win { color:var(--win); }
+.winScene { position:relative; text-align:center; padding:18px 0 6px; margin-bottom:6px; }
+.winSpot { position:absolute; top:-30px; left:50%; transform:translateX(-50%); width:340px; height:230px; background:radial-gradient(circle at 50% 32%, rgba(245,177,76,.30), transparent 64%); pointer-events:none; }
+.winScene > *:not(.winSpot) { position:relative; }
+.crownBig { font-size:38px; color:var(--candle); filter:drop-shadow(0 0 16px rgba(245,177,76,.7)); margin-bottom:2px; }
+.winName { font-family:'Fraunces',serif; font-size:46px; font-weight:600; color:var(--candle); line-height:1.05; margin:2px 0 4px; text-shadow:0 0 28px color-mix(in srgb, var(--candle) 55%, transparent); }
+/* roll shake + reveal pop */
+@keyframes diceShake { 0%,100%{ transform:translate(0,0) rotate(0); } 20%{ transform:translate(-3px,2px) rotate(-7deg); } 40%{ transform:translate(3px,-2px) rotate(6deg); } 60%{ transform:translate(-2px,-3px) rotate(-5deg); } 80%{ transform:translate(3px,2px) rotate(5deg); } }
+.shaking { display:inline-block; animation:diceShake .22s linear infinite; }
+@keyframes cardPop { 0%{ transform:scale(.94); opacity:0; } 60%{ transform:scale(1.01); } 100%{ transform:scale(1); opacity:1; } }
+.revealCard { animation:cardPop .26s ease-out; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ============ SUPABASE (reuses the Cold Read project) ============ */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sbReady = SUPABASE_URL.indexOf("YOUR-") === -1;
+const sb = sbReady ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+/* ============ helpers ============ */
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set:(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} }, del:(k)=>{ try{ localStorage.removeItem(k); }catch(e){} } };
+const persistId = ()=>{ let v=ls.get("ld_id"); if(!v){ v=randId(); ls.set("ld_id",v); } return v; };
+const isBot = (id)=> typeof id==="string" && id.indexOf("bot_")===0;
+const rollN = (n)=> Array.from({length:Math.max(0,n)},()=>1+Math.floor(Math.random()*6));
+const DIE_GLYPH = ["","⚀","⚁","⚂","⚃","⚄","⚅"];
+const BOT_NAMES = ["Ada","Bishop","Cyd","Dot","Echo","Fen","Gus","Iris"];
+const PALETTES = { gr:{ win:"#7DF0A6", lose:"#F26D8B", label:"Green / Red" }, bo:{ win:"#5AA9FF", lose:"#F5A03D", label:"Blue / Orange" } };
+function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.documentElement.style.setProperty("--win",c.win); document.documentElement.style.setProperty("--lose",c.lose); }catch(e){} }
+
+/* ============ SFX (Web Audio, no assets) ============ */
+const SFX = (function(){
+  let ctx=null, muted = ls.get("ld_muted")==="1";
+  const ac = ()=>{ if(!ctx){ try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return ctx; };
+  const unlock = ()=>{ const c=ac(); if(c && c.state==="suspended"){ try{ c.resume(); }catch(e){} } };
+  function noiseBuf(c,dur){ const n=Math.floor(c.sampleRate*dur); const b=c.createBuffer(1,n,c.sampleRate); const d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1; return b; }
+  // one die "clack": short filtered-noise burst + a woody tap
+  function clack(c,t,gain,freq){
+    const s=c.createBufferSource(); s.buffer=noiseBuf(c,0.05);
+    const bp=c.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=freq; bp.Q.value=1.3;
+    const g=c.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain,t+0.004); g.gain.exponentialRampToValueAtTime(0.0007,t+0.06);
+    s.connect(bp); bp.connect(g); g.connect(c.destination); s.start(t); s.stop(t+0.09);
+    const o=c.createOscillator(); o.type="triangle"; o.frequency.value=freq*0.5;
+    const og=c.createGain(); og.gain.setValueAtTime(0,t); og.gain.linearRampToValueAtTime(gain*0.5,t+0.003); og.gain.exponentialRampToValueAtTime(0.0006,t+0.05);
+    o.connect(og); og.connect(c.destination); o.start(t); o.stop(t+0.06);
+  }
+  function roll(){ if(muted) return; const c=ac(); if(!c) return; unlock(); let t=c.currentTime;
+    const N=10+Math.floor(Math.random()*4);
+    for(let i=0;i<N;i++){ t += 0.02+Math.random()*0.045; clack(c,t,0.10+Math.random()*0.06,1200+Math.random()*1600); }
+    clack(c,t+0.09,0.22,900); clack(c,t+0.17,0.16,1500);   // settle
+  }
+  function lose(){ if(muted) return; const c=ac(); if(!c) return; const t=c.currentTime;
+    const o=c.createOscillator(); o.type="sine"; o.frequency.setValueAtTime(180,t); o.frequency.exponentialRampToValueAtTime(58,t+0.26);
+    const g=c.createGain(); g.gain.setValueAtTime(0.001,t); g.gain.linearRampToValueAtTime(0.32,t+0.01); g.gain.exponentialRampToValueAtTime(0.0006,t+0.3);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+0.32); clack(c,t,0.16,520);
+  }
+  function win(){ if(muted) return; const c=ac(); if(!c) return; const t=c.currentTime;
+    [523.25,659.25,783.99,1046.5].forEach((f,i)=>{ const tt=t+i*0.12; const o=c.createOscillator(); o.type="triangle"; o.frequency.value=f;
+      const g=c.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(0.22,tt+0.02); g.gain.exponentialRampToValueAtTime(0.0006,tt+0.5);
+      o.connect(g); g.connect(c.destination); o.start(tt); o.stop(tt+0.55); });
+  }
+  function tick(){ if(muted) return; const c=ac(); if(!c) return; clack(c,c.currentTime,0.12,2200); }
+  function call(){ if(muted) return; const c=ac(); if(!c) return; const t=c.currentTime;
+    const o=c.createOscillator(); o.type="sawtooth"; o.frequency.setValueAtTime(300,t); o.frequency.exponentialRampToValueAtTime(88,t+0.36);
+    const lp=c.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=1200;
+    const g=c.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.2,t+0.02); g.gain.exponentialRampToValueAtTime(0.0005,t+0.4);
+    o.connect(lp); lp.connect(g); g.connect(c.destination); o.start(t); o.stop(t+0.42);
+  }
+  return { unlock, roll, lose, win, tick, call, setMuted:(m)=>{ muted=m; ls.set("ld_muted",m?"1":"0"); if(!m) unlock(); }, isMuted:()=>muted };
+})();
+
+function higher(nq, nf, bid){ if(!bid) return nq>=1; if(nq>bid.qty) return true; if(nq===bid.qty && nf>bid.face) return true; return false; }
+function sortedAliveNums(players){ return players.filter(p=>p.alive && p.dice && p.dice.length>0).map(p=>p.num).sort((a,b)=>a-b); }
+function nextNum(fromNum, arr){ if(!arr.length) return null; for(const n of arr){ if(n>fromNum) return n; } return arr[0]; }
+
+/* ============ Die (SVG) ============ */
+function Die({ v, size=44, glow=false }){
+  const P = { c:[50,50], tl:[28,28], tr:[72,28], bl:[28,72], br:[72,72], ml:[28,50], mr:[72,50] };
+  const layouts = {1:["c"],2:["tl","br"],3:["tl","c","br"],4:["tl","tr","bl","br"],5:["tl","tr","c","bl","br"],6:["tl","tr","ml","mr","bl","br"]};
+  const pips = (layouts[v]||[]).map((k,i)=>(<circle key={i} cx={P[k][0]} cy={P[k][1]} r="8.5" fill="var(--ink)" />));
+  return (
+    <svg className={"die"+(glow?" glow":"")} width={size} height={size} viewBox="0 0 100 100">
+      <rect x="6" y="6" width="88" height="88" rx="18" fill="var(--bone)" />
+      <rect x="6" y="6" width="88" height="88" rx="18" fill="none" stroke="rgba(0,0,0,.12)" strokeWidth="2" />
+      {pips}
+    </svg>
+  );
+}
+function DiceRow({ dice, size=44, glowVal=null, wild=false, spotlight=false }){
+  return (<div className="hand">{dice.map((d,i)=>{
+    const match = glowVal!=null && (d===glowVal || (wild && glowVal!==1 && d===1));
+    return (<span key={i} className="rollin" style={{animationDelay:(i*60)+"ms", ...(spotlight&&!match?{opacity:.3,filter:"grayscale(.5)"}:{})}}><Die v={d} size={size} glow={match} /></span>);
+  })}</div>);
+}
+function Backs({ n, sm=false }){ return (<React.Fragment>{Array.from({length:n}).map((_,i)=>(<span key={i} className={"dback"+(sm?" sm":"")}>?</span>))}</React.Fragment>); }
+
+/* ============ QR ============ */
+function QR({ text, size }){
+  const ref = useRef(null);
+  useEffect(()=>{
+    if(!ref.current) return;
+    ref.current.innerHTML = "";
+    if(!window.QRCode) return;
+    try{ new window.QRCode(ref.current, { text, width:size, height:size, colorDark:"#0E0B1A", colorLight:"#ffffff", correctLevel: window.QRCode.CorrectLevel.M }); }catch(e){}
+  },[text,size]);
+  return <div ref={ref} style={{width:size,height:size}} />;
+}
+
+/* ============ Hero (animated landing scene) ============ */
+const PIP_LAYOUT = {1:["c"],2:["tl","br"],3:["tl","c","br"],4:["tl","tr","bl","br"],5:["tl","tr","c","bl","br"],6:["tl","tr","ml","mr","bl","br"]};
+const PIP_F = { c:[.5,.5], tl:[.28,.28], tr:[.72,.28], bl:[.28,.72], br:[.72,.72], ml:[.28,.5], mr:[.72,.5] };
+function pipsFor(x,y,S,v,fill){ return (PIP_LAYOUT[v]||[]).map((k,i)=>(<circle key={i} cx={x+PIP_F[k][0]*S} cy={y+PIP_F[k][1]*S} r={S*0.085} fill={fill} />)); }
+function HeroDie({ x, y, S, v, cls }){
+  return (
+    <g className={cls}>
+      <rect x={x} y={y} width={S} height={S} rx={S*0.18} fill="url(#dieface)" stroke="rgba(0,0,0,.16)" strokeWidth="1.2" />
+      <rect x={x+S*0.06} y={y+S*0.05} width={S*0.88} height={S*0.34} rx={S*0.14} fill="rgba(255,255,255,.35)" />
+      {pipsFor(x,y,S,v,"var(--ink)")}
+    </g>
+  );
+}
+function Hero(){
+  const [face,setFace] = useState(4);
+  useEffect(()=>{
+    let reduce=false; try{ reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+    if(reduce) return;
+    let last=4;
+    const id=setInterval(()=>{ let n; do{ n=1+Math.floor(Math.random()*6); }while(n===last); last=n; setFace(n); }, 820);
+    return ()=>clearInterval(id);
+  },[]);
+  return (
+    <div className="heroWrap">
+      <svg viewBox="0 0 250 186" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="spot" cx="50%" cy="34%" r="62%">
+            <stop offset="0%" stopColor="#F5B14C" stopOpacity=".55" />
+            <stop offset="58%" stopColor="#F5B14C" stopOpacity=".10" />
+            <stop offset="100%" stopColor="#F5B14C" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id="dieface" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F8F1E2" /><stop offset="100%" stopColor="#E2D6BC" />
+          </linearGradient>
+          <radialGradient id="fshadow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#000" stopOpacity=".5" /><stop offset="100%" stopColor="#000" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <ellipse className="spot" cx="124" cy="66" rx="118" ry="92" fill="url(#spot)" />
+        <circle className="mote" style={{animationDelay:"0s"}} cx="92" cy="118" r="1.7" fill="#F5B14C" opacity=".6" />
+        <circle className="mote" style={{animationDelay:"2.1s"}} cx="150" cy="128" r="1.3" fill="#F5B14C" opacity=".5" />
+        <circle className="mote" style={{animationDelay:"3.8s"}} cx="176" cy="110" r="1.1" fill="#F5B14C" opacity=".45" />
+        <ellipse cx="76" cy="166" rx="34" ry="8.5" fill="url(#fshadow)" />
+        <ellipse cx="182" cy="168" rx="29" ry="7.5" fill="url(#fshadow)" />
+        <ellipse cx="126" cy="146" rx="26" ry="7" fill="url(#fshadow)" opacity=".75" />
+        <HeroDie x={48} y={112} S={52} v={5} cls="dieFloatA" />
+        <HeroDie x={150} y={120} S={46} v={2} cls="dieFloatB" />
+        <HeroDie x={92} y={40} S={64} v={face} cls="dieTumble" />
+      </svg>
+    </div>
+  );
+}
+
+/* ============ Home ============ */
+function Home({ onEnter }){
+  const [name,setName] = useState(()=>ls.get("ld_name")||"");
+  const [codeInput,setCodeInput] = useState(()=>{ try{ return (new URLSearchParams(location.search).get("join")||"").toUpperCase(); }catch(e){ return ""; } });
+  const [pal,setPal] = useState(()=>ls.get("ld_palette")||"gr");
+  const [err,setErr] = useState("");
+  const saved = ls.get("ld_code");
+  const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("ld_palette",p); };
+  useEffect(()=>{ applyPalette(pal); },[]);
+
+  const go = (mode)=>{
+    SFX.unlock();
+    const nm = name.trim();
+    if(!nm){ setErr("Enter a name first."); return; }
+    ls.set("ld_name", nm);
+    if(mode==="join"){
+      const c = codeInput.trim().toUpperCase();
+      if(!c){ setErr("Enter a room code to join."); return; }
+      onEnter(nm, c, false);
+    } else {
+      onEnter(nm, randCode(), true);
+    }
+  };
+
+  return (
+    <div className="wrap">
+      <div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div><span className="who">bluff · bid · call</span></div>
+      <Hero />
+      <div className="brandBig" style={{textAlign:"center",fontSize:52,margin:"2px 0 4px"}}>Liar's Dice</div>
+      <div className="tagline">a backroom bluffing game</div>
+      <div className="card" style={{marginBottom:18}}>
+        <p className="lead">Five dice each. Everyone's bluffing. Someone's about to get caught.</p>
+        <p style={{fontSize:14,lineHeight:1.6,margin:0,color:"var(--dim)"}}>Bid how many of a face are hidden across the <b style={{color:"var(--bone)"}}>whole table</b> — then raise the stakes, or call the last player a <b style={{color:"var(--lose)"}}>liar</b>. Guess wrong and you lose a die. Last one holding wins.</p>
+      </div>
+
+      <div className="card">
+        <div className="label" style={{marginTop:0}}>Your name</div>
+        <input className="inp" value={name} maxLength={16} placeholder="e.g. Sam" onChange={e=>{setName(e.target.value); setErr("");}} />
+        <div className="label">Join a room</div>
+        <input className="inp mono" value={codeInput} maxLength={4} placeholder="4-letter code" style={{letterSpacing:".2em",textTransform:"uppercase"}} onChange={e=>{setCodeInput(e.target.value.toUpperCase()); setErr("");}} />
+        <div className="btnrow">
+          <button className="ghost" style={{flex:1}} onClick={()=>go("join")}>Join</button>
+          <button className="primary" onClick={()=>go("create")}>Create a room</button>
+        </div>
+        {err && <div className="hint" style={{color:"var(--rose)"}}>{err}</div>}
+        {saved && <div className="hint">You were in room <b className="mono" style={{color:"var(--candle)"}}>{saved}</b> — enter your name and use that code to rejoin.</div>}
+      </div>
+
+      <div className="label">Color scheme</div>
+      <div className="sel">
+        {Object.keys(PALETTES).map(k=>(<button key={k} className={"chip"+(pal===k?" on":"")} onClick={()=>pickPal(k)}>{PALETTES[k].label}</button>))}
+      </div>
+      {!sbReady && <div className="hint" style={{color:"var(--rose)"}}>Supabase not configured.</div>}
+    </div>
+  );
+}
+
+/* ============ Room (lobby + play + reveal + over) ============ */
+function Room({ myId, name, code, createIfMissing, onExit }){
+  const [game,setGame] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [joined,setJoined] = useState(false);
+  const [err,setErr] = useState("");
+  const [pal] = useState(()=>ls.get("ld_palette")||"gr");
+  useEffect(()=>{ applyPalette(pal); },[]);
+
+  const gameRef = useRef(null); gameRef.current = game;
+  const playersRef = useRef([]); playersRef.current = players;
+  const resolveRef = useRef(null);
+  const advanceRef = useRef(null);
+  const botRef = useRef(null);
+  const busyRef = useRef(false);
+  const joinRef = useRef(false);
+
+  // sound + roll animation
+  const [muted,setMutedState] = useState(()=>SFX.isMuted());
+  const [rolling,setRolling] = useState(false);
+  const [rollFaces,setRollFaces] = useState([]);
+  const roundRef = useRef(0);
+  const phaseRef = useRef(null);
+  const pendingRollRef = useRef(false);
+  const rollTimerRef = useRef(null);
+  const toggleMute = ()=>{ const m=!muted; setMutedState(m); SFX.setMuted(m); if(!m) SFX.unlock(); };
+
+  const refetch = async ()=>{
+    if(!sb) return;
+    const g = await sb.from("ld_games").select("*").eq("code",code).maybeSingle();
+    setGame(g.data||null);
+    const ps = await sb.from("ld_players").select("*").eq("code",code).order("num");
+    setPlayers(ps.data||[]);
+    return g.data;
+  };
+
+  // join / create on mount
+  useEffect(()=>{
+    if(!sb || joinRef.current) return;
+    joinRef.current = true;
+    (async()=>{
+      let g = await sb.from("ld_games").select("*").eq("code",code).maybeSingle();
+      if(!g.data){
+        if(!createIfMissing){ setErr("No room with that code."); return; }
+        const ins = await sb.from("ld_games").insert({ code, host_id:myId, phase:"lobby", round:0, wild:false, spoton:false }).select().maybeSingle();
+        if(ins.error){ setErr("Couldn't create room: "+ins.error.message); return; }
+        g = { data: ins.data };
+      }
+      // (re)insert self
+      await sb.from("ld_players").delete().eq("id",myId);
+      const ps = await sb.from("ld_players").select("num").eq("code",code);
+      const nums = (ps.data||[]).map(p=>p.num);
+      let n=1; while(nums.indexOf(n)!==-1) n++;
+      const pi = await sb.from("ld_players").insert({ id:myId, code, name, num:n, dice:[], alive:true, ready:false, wins:0 });
+      if(pi.error){ setErr("Couldn't join: "+pi.error.message); return; }
+      ls.set("ld_code", code); ls.set("ld_name", name);
+      setJoined(true);
+      refetch();
+    })();
+  },[]);
+
+  // realtime + poll
+  useEffect(()=>{
+    if(!sb || !joined) return;
+    const ch = sb.channel("ld:"+code)
+      .on("postgres_changes",{event:"*",schema:"public",table:"ld_games",filter:"code=eq."+code},()=>refetch())
+      .on("postgres_changes",{event:"*",schema:"public",table:"ld_players",filter:"code=eq."+code},()=>refetch())
+      .subscribe();
+    const poll = setInterval(refetch, 2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); };
+  },[joined]);
+
+  const me = players.find(p=>p.id===myId);
+  const amHost = game && game.host_id===myId;
+  const myNum = me ? me.num : null;
+
+  // round change -> roll sound + arm the shake for when my dice arrive
+  useEffect(()=>{
+    if(!game || game.phase!=="playing") return;
+    if(game.round!==roundRef.current){
+      roundRef.current = game.round;
+      if(game.round>0){ pendingRollRef.current = true; SFX.roll(); }
+    }
+  },[game]);
+  // my dice arrived while a roll is armed -> shake + tumble to values
+  useEffect(()=>{
+    if(!pendingRollRef.current || !me || !me.dice || me.dice.length===0) return;
+    pendingRollRef.current = false;
+    let reduce=false; try{ reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+    if(reduce) return;
+    const cnt = me.dice.length; let ticks=0;
+    setRolling(true);
+    clearInterval(rollTimerRef.current);
+    rollTimerRef.current = setInterval(()=>{
+      setRollFaces(Array.from({length:cnt},()=>1+Math.floor(Math.random()*6)));
+      if(++ticks>7){ clearInterval(rollTimerRef.current); setRolling(false); }
+    },70);
+  },[me]);
+  useEffect(()=>()=>clearInterval(rollTimerRef.current),[]);
+  // phase transitions -> reveal / lose / win sounds
+  useEffect(()=>{
+    if(!game) return;
+    const prev = phaseRef.current; phaseRef.current = game.phase;
+    if(prev===game.phase) return;
+    if(game.phase==="reveal"){
+      SFX.roll();
+      const la = game.last_action;
+      if(la && la.loserNum!=null) setTimeout(()=>SFX.lose(), 620);
+    } else if(game.phase==="over"){
+      setTimeout(()=>SFX.win(), 220);
+    }
+  },[game]);
+
+  /* ---------- shared action writers ---------- */
+  const placeBid = async (num, qty, face)=>{
+    const nxt = nextNum(num, sortedAliveNums(playersRef.current));
+    await sb.from("ld_games").update({ bid:{qty,face,by:num}, turn:nxt }).eq("code",code);
+  };
+  const challenge = async (num)=>{ await sb.from("ld_games").update({ pending:{type:"challenge",by:num} }).eq("code",code); };
+  const spoton = async (num)=>{ await sb.from("ld_games").update({ pending:{type:"spoton",by:num} }).eq("code",code); };
+
+  /* ---------- host: resolve a pending challenge/spoton ---------- */
+  const resolveChallenge = async (pending)=>{
+    const g = gameRef.current, ps = playersRef.current;
+    const bid = g.bid; if(!bid) return;
+    const wild = g.wild;
+    let actual = 0;
+    ps.forEach(p=>{ if(p.alive && p.dice) p.dice.forEach(d=>{ if(d===bid.face || (wild && bid.face!==1 && d===1)) actual++; }); });
+    const caller = ps.find(p=>p.num===pending.by);
+    let loserNum=null, correct=false, gainNum=null;
+    if(pending.type==="challenge"){
+      const bidTrue = actual >= bid.qty;
+      correct = !bidTrue;               // caller correct if the bid was a lie
+      loserNum = bidTrue ? pending.by : bid.by;
+    } else { // spot on
+      correct = (actual === bid.qty);
+      if(correct){ gainNum = pending.by; } else { loserNum = pending.by; }
+    }
+    const snapshot = ps.filter(p=>p.alive).map(p=>({ num:p.num, name:p.name, dice:p.dice, bot:isBot(p.id) }));
+    const sig = g.round+":"+pending.type+":"+pending.by;
+    await sb.from("ld_games").update({
+      phase:"reveal", pending:null,
+      last_action:{ type:pending.type, by:pending.by, target:bid.by, bid, actual, loserNum, gainNum, correct, wild, snapshot, sig }
+    }).eq("code",code);
+  };
+
+  useEffect(()=>{
+    if(!amHost || !game) return;
+    if(game.phase==="playing" && game.pending && !busyRef.current){
+      const sig = game.round+":"+game.pending.by+":"+game.pending.type;
+      if(resolveRef.current===sig) return;
+      resolveRef.current = sig; busyRef.current = true;
+      resolveChallenge(game.pending).finally(()=>{ busyRef.current=false; });
+    }
+  },[game, players, amHost]);
+
+  /* ---------- host: advance to next round (or game over) ---------- */
+  const advanceRound = async ()=>{
+    const g = gameRef.current, ps = playersRef.current;
+    if(!g || g.phase!=="reveal" || !g.last_action) return;
+    const la = g.last_action;
+    let next = ps.map(p=>({ ...p, dice:[...(p.dice||[])] }));
+    if(la.loserNum!=null){
+      const L = next.find(p=>p.num===la.loserNum);
+      if(L){ L.dice = L.dice.slice(0,-1); if(L.dice.length===0) L.alive=false; }
+    }
+    if(la.gainNum!=null){
+      const G = next.find(p=>p.num===la.gainNum);
+      if(G && G.dice.length<5){ G.dice = [...G.dice, 0]; }
+    }
+    const aliveAfter = next.filter(p=>p.alive && p.dice.length>0);
+
+    if(aliveAfter.length<=1){
+      const winner = aliveAfter[0];
+      for(const p of next){ await sb.from("ld_players").update({ dice:p.dice, alive:p.alive }).eq("id",p.id); }
+      if(winner){ await sb.from("ld_players").update({ wins:(winner.wins||0)+1 }).eq("id",winner.id); }
+      await sb.from("ld_games").update({ phase:"over", winner: winner?winner.id:null }).eq("code",code);
+      return;
+    }
+    // reroll everyone still alive
+    for(const p of next){ if(p.alive){ p.dice = rollN(p.dice.length); } }
+    for(const p of next){ await sb.from("ld_players").update({ dice:p.dice, alive:p.alive }).eq("id",p.id); }
+    const aliveNums = next.filter(p=>p.alive && p.dice.length>0).map(p=>p.num).sort((a,b)=>a-b);
+    let startNum;
+    const anchor = (la.type==="spoton") ? la.by : la.loserNum;
+    if(aliveNums.indexOf(anchor)!==-1) startNum = anchor; else startNum = nextNum(anchor, aliveNums);
+    await sb.from("ld_games").update({ phase:"playing", round:g.round+1, bid:null, pending:null, turn:startNum, starter:startNum, last_action:null }).eq("code",code);
+  };
+
+  const doAdvance = ()=>{
+    const g = gameRef.current; if(!g || g.phase!=="reveal" || !g.last_action) return;
+    const sig = g.last_action.sig;
+    if(advanceRef.current===sig) return;
+    advanceRef.current = sig;
+    advanceRound();
+  };
+  // host auto-advance fallback
+  useEffect(()=>{
+    if(!amHost || !game || game.phase!=="reveal") return;
+    const t = setTimeout(doAdvance, 8000);
+    return ()=>clearTimeout(t);
+  },[game, amHost]);
+
+  /* ---------- host: drive bot turns ---------- */
+  const botMove = (bot)=>{
+    const g = gameRef.current, ps = playersRef.current;
+    if(!g || g.phase!=="playing" || g.pending) return;
+    const alive = ps.filter(p=>p.alive && p.dice.length>0);
+    const T = alive.reduce((s,p)=>s+p.dice.length,0);
+    const wild = g.wild;
+    const myDice = bot.dice||[];
+    const mine = (f)=> myDice.filter(d=> d===f || (wild && f!==1 && d===1)).length;
+    const unknown = T - myDice.length;
+    const prob = (f)=> wild ? (f===1?1/6:2/6) : 1/6;
+
+    if(!g.bid){
+      let best=6, bc=-1;
+      for(let f=2; f<=6; f++){ const c=mine(f); if(c>bc){ bc=c; best=f; } }
+      const q = Math.max(1, mine(best) + Math.round(unknown*prob(best)));
+      placeBid(bot.num, Math.min(q, Math.max(1,T)), best);
+      return;
+    }
+    const bid = g.bid;
+    const expected = mine(bid.face) + unknown*prob(bid.face);
+    const gap = bid.qty - expected;
+    const callChance = gap<=0 ? 0.02 : gap<0.6 ? 0.12 : gap<1.2 ? 0.42 : gap<2 ? 0.74 : 0.93;
+    if(Math.random()<callChance || bid.qty>=T){ challenge(bot.num); return; }
+    // raise: prefer same qty on a higher face we hold, else qty+1 on our strongest
+    let nf=bid.face, nq=bid.qty, chosen=false;
+    let sf=0, sc=-1;
+    for(let f=bid.face+1; f<=6; f++){ const c=mine(f); if(c>sc){ sc=c; sf=f; } }
+    if(sf>bid.face){ nf=sf; nq=bid.qty; chosen=true; }
+    if(!chosen){ let s=1,c=-1; for(let f=1;f<=6;f++){ const cc=mine(f); if(cc>c){ c=cc; s=f; } } nq=bid.qty+1; nf=s; }
+    if(!higher(nq,nf,bid)){ nq=bid.qty+1; nf=bid.face; }
+    if(nq>T){ challenge(bot.num); return; }
+    placeBid(bot.num, nq, nf);
+  };
+
+  useEffect(()=>{
+    if(!amHost || !game || game.phase!=="playing" || game.pending) return;
+    const cur = players.find(p=>p.num===game.turn && p.alive && p.dice && p.dice.length>0);
+    if(!cur || !isBot(cur.id)) return;
+    const sig = game.round+":"+game.turn+":"+(game.bid?game.bid.qty+"-"+game.bid.face+"-"+game.bid.by:"open");
+    if(botRef.current===sig) return;
+    botRef.current = sig;
+    const t = setTimeout(()=>botMove(cur), 1100 + Math.random()*900);
+    return ()=>clearTimeout(t);
+  },[game, players, amHost]);
+
+  /* ---------- lobby actions ---------- */
+  const toggleReady = async ()=>{ if(!me) return; SFX.unlock(); await sb.from("ld_players").update({ ready:!me.ready }).eq("id",myId); };
+  const kick = async (id)=>{ await sb.from("ld_players").delete().eq("id",id); };
+  const addBot = async ()=>{
+    const nums = players.map(p=>p.num); let n=1; while(nums.indexOf(n)!==-1) n++;
+    const used = players.filter(p=>isBot(p.id)).length;
+    const nm = BOT_NAMES[used % BOT_NAMES.length] + " 🤖";
+    await sb.from("ld_players").insert({ id:"bot_"+randId(), code, name:nm, num:n, dice:[], alive:true, ready:true, wins:0 });
+  };
+  const setWild = async (v)=>{ await sb.from("ld_games").update({ wild:v }).eq("code",code); };
+  const setSpot = async (v)=>{ await sb.from("ld_games").update({ spoton:v }).eq("code",code); };
+  const startGame = async ()=>{
+    SFX.unlock();
+    const roster = playersRef.current.filter(p=>p.alive!==false);
+    if(roster.length<2) return;
+    for(const p of roster){ await sb.from("ld_players").update({ dice:rollN(5), alive:true, ready:false }).eq("id",p.id); }
+    const first = roster.map(p=>p.num).sort((a,b)=>a-b)[0];
+    resolveRef.current=null; advanceRef.current=null; botRef.current=null;
+    await sb.from("ld_games").update({ phase:"playing", round:1, bid:null, pending:null, turn:first, starter:first, last_action:null, winner:null }).eq("code",code);
+  };
+  const playAgain = async ()=>{
+    for(const p of playersRef.current){ await sb.from("ld_players").update({ dice:[], alive:true, ready:isBot(p.id) }).eq("id",p.id); }
+    await sb.from("ld_games").update({ phase:"lobby", round:0, bid:null, pending:null, last_action:null, winner:null }).eq("code",code);
+  };
+  const leave = async ()=>{ try{ await sb.from("ld_players").delete().eq("id",myId); }catch(e){} ls.del("ld_code"); onExit(); };
+
+  /* ---------- render ---------- */
+  if(err) return (<div className="wrap"><div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div></div><div className="card"><p style={{margin:0,lineHeight:1.5}}>{err}</p></div><button className="readyBtn" style={{marginTop:14}} onClick={onExit}>Back</button></div>);
+  if(!game || !me) return (<div className="wrap"><div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div></div><div className="waitTurn"><div className="big">🎲</div>Connecting to room {code}…</div></div>);
+
+  const totalDice = players.filter(p=>p.alive && p.dice).reduce((s,p)=>s+p.dice.length,0);
+
+  if(game.phase==="lobby") return (
+    <Lobby game={game} players={players} me={me} amHost={amHost} code={code} muted={muted} onMute={toggleMute}
+      onReady={toggleReady} onKick={kick} onAddBot={addBot} onWild={setWild} onSpot={setSpot} onStart={startGame} onLeave={leave} />
+  );
+
+  const alive = players.filter(p=>p.alive);
+  const iAmAlive = me.alive && me.dice && me.dice.length>0;
+  const myTurn = game.phase==="playing" && !game.pending && game.turn===myNum && iAmAlive;
+
+  return (
+    <div className="wrap">
+      <div className="top">
+        <div className="brand">⚄ LIAR'S&nbsp;DICE</div>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          <button className="chip" onClick={toggleMute} aria-label="mute">{muted?"🔇":"🔊"}</button>
+          <span className="who mono">{code}</span>
+        </div>
+      </div>
+      <div className="status">
+        <span className="rnd">Round {game.round}</span>
+        <span className="tot"><b>{totalDice}</b> dice on the table</span>
+      </div>
+
+      {game.phase==="over" ? (
+        <GameOver game={game} players={players} amHost={amHost} onAgain={playAgain} onLeave={leave} />
+      ) : (
+      <React.Fragment>
+        {/* seats */}
+        <div className="seats">
+          {players.slice().sort((a,b)=>a.num-b.num).map(p=>{
+            const out = !p.alive || !p.dice || p.dice.length===0;
+            const isTurn = game.phase==="playing" && !game.pending && game.turn===p.num && !out;
+            const bidHere = game.bid && game.bid.by===p.num;
+            return (
+              <div key={p.id} className={"seat"+(isTurn?" turn":"")+(out?" out":"")}>
+                <div className="seatL">
+                  {isTurn && <span className="turnDot">▶</span>}
+                  <span className="seatName">{p.name}{p.id===myId?" (you)":""}</span>
+                </div>
+                <div className="seatR">
+                  {bidHere && <span className="bidTag">{game.bid.qty} <span style={{fontSize:15}}>{DIE_GLYPH[game.bid.face]}</span></span>}
+                  {out ? <span className="tot">out</span> : <Backs n={p.dice.length} sm />}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* current bid */}
+        {game.bid ? (
+          <div className="bidBanner">
+            <div className="who2">{(players.find(p=>p.num===game.bid.by)||{}).name} bids</div>
+            <div className="amt">{game.bid.qty} <span className="g">{DIE_GLYPH[game.bid.face]}</span></div>
+          </div>
+        ) : (
+          <div className="openMsg">{game.turn===myNum ? "You open the round — make the first bid." : ((players.find(p=>p.num===game.turn)||{}).name || "Someone") + " opens the round…"}</div>
+        )}
+
+        {/* my hand */}
+        {iAmAlive && (
+          <div className="myhand">
+            <div className="lbl">{rolling?"Rolling…":"Your dice"}</div>
+            {rolling
+              ? <div className="hand">{(rollFaces.length?rollFaces:me.dice).map((d,i)=>(<span key={i} className="shaking"><Die v={d} size={46} /></span>))}</div>
+              : <DiceRow dice={me.dice} size={46} glowVal={game.bid?game.bid.face:null} wild={game.wild} />}
+          </div>
+        )}
+        {!iAmAlive && <div className="waitTurn" style={{padding:"8px 0 16px"}}>You're out — spectating till the winner.</div>}
+
+        {/* controls */}
+        {myTurn ? (
+          <BidControls bid={game.bid} totalDice={totalDice} wild={game.wild} spoton={game.spoton}
+            onBid={(q,f)=>{ SFX.unlock(); SFX.tick(); placeBid(myNum,q,f); }} onCall={()=>{ SFX.unlock(); SFX.call(); challenge(myNum); }} onSpot={()=>{ SFX.unlock(); SFX.call(); spoton(myNum); }} />
+        ) : game.phase==="playing" ? (
+          <div className="waitTurn"><div className="big">⏳</div>Waiting for <b style={{color:"var(--bone)"}}>{(players.find(p=>p.num===game.turn)||{}).name||"…"}</b></div>
+        ) : null}
+
+        {game.wild && <div className="hint" style={{marginTop:14}}>⚀ Wild ones — 1s count as every face except when the bid is on 1s.</div>}
+      </React.Fragment>
+      )}
+
+      {game.phase==="reveal" && game.last_action && (
+        <Reveal la={game.last_action} amHost={amHost} onNext={doAdvance} />
+      )}
+    </div>
+  );
+}
+
+/* ============ Lobby ============ */
+function Lobby({ game, players, me, amHost, code, muted, onMute, onReady, onKick, onAddBot, onWild, onSpot, onStart, onLeave }){
+  const joinUrl = location.origin + location.pathname + "?join=" + code;
+  const humans = players.filter(p=>!isBot(p.id));
+  const allReady = humans.every(p=>p.ready) && players.length>=2;
+  return (
+    <div className="wrap">
+      <div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div><div style={{display:"flex",gap:8}}><button className="chip" onClick={onMute} aria-label="mute">{muted?"🔇":"🔊"}</button><button className="chip" onClick={onLeave}>Leave</button></div></div>
+      <div className="label" style={{marginTop:6}}>Room code</div>
+      <div className="codeBig">{code}</div>
+      <div className="qrbox"><QR text={joinUrl} size={148} /></div>
+      <div className="hint">Scan to join, or share the code.</div>
+
+      <div className="label">In the room · {players.length}</div>
+      <div className="card">
+        <div className="roster">
+          {players.slice().sort((a,b)=>a.num-b.num).map(p=>(
+            <div key={p.id} className="prow">
+              <div className="pname">{game.host_id===p.id && <span className="crown">♛</span>}{p.name}{p.id===me.id?" (you)":""}</div>
+              <div className="rgt">
+                {isBot(p.id) ? <span className="pill bot">bot</span> : (p.ready ? <span className="pill ready">ready</span> : <span className="pill wait">waiting</span>)}
+                {amHost && p.id!==me.id && <button className="kick" onClick={()=>onKick(p.id)}>{isBot(p.id)?"×":"kick"}</button>}
+              </div>
+            </div>
+          ))}
+        </div>
+        {!isBot(me.id) && <button className={"readyBtn"+(me.ready?" on":"")} onClick={onReady}>{me.ready?"✓ Ready":"Tap when ready"}</button>}
+      </div>
+
+      {amHost && (
+        <React.Fragment>
+          <div className="label">House rules</div>
+          <div className="card">
+            <Rule title="Wild ones" desc="1s count as any face. Classic Perudo, harder to read." on={game.wild} onToggle={()=>onWild(!game.wild)} />
+            <div style={{height:1,background:"var(--haze)",margin:"12px 0"}} />
+            <Rule title="Spot-on calls" desc="Claim a bid is exactly right — nail it, win a die back." on={game.spoton} onToggle={()=>onSpot(!game.spoton)} />
+          </div>
+          <button className="ghost" style={{width:"100%",marginTop:12}} onClick={onAddBot}>+ Add a bot</button>
+          <button className="go" disabled={!allReady} onClick={onStart}>Deal the dice ›</button>
+          {!allReady && <div className="hint">Need 2+ players and everyone ready.</div>}
+        </React.Fragment>
+      )}
+      {!amHost && <div className="hint" style={{marginTop:16}}>Waiting for the host to deal…</div>}
+    </div>
+  );
+}
+function Rule({ title, desc, on, onToggle }){
+  return (
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+      <div style={{minWidth:0}}>
+        <div style={{fontWeight:700,fontSize:15}}>{title}</div>
+        <div style={{fontSize:12,color:"var(--dim)",lineHeight:1.4,marginTop:2}}>{desc}</div>
+      </div>
+      <button className={"readyBtn"+(on?" on":"")} style={{width:64,margin:0,flexShrink:0}} onClick={onToggle}>{on?"On":"Off"}</button>
+    </div>
+  );
+}
+
+/* ============ Bid controls ============ */
+function BidControls({ bid, totalDice, wild, spoton, onBid, onCall, onSpot }){
+  const initFace = bid ? (bid.face<6 ? bid.face+1 : 1) : 3;
+  const initQty  = bid ? (bid.face<6 ? bid.qty : bid.qty+1) : 1;
+  const [qty,setQty] = useState(initQty);
+  const [face,setFace] = useState(initFace);
+  useEffect(()=>{ setQty(initQty); setFace(initFace); },[bid?bid.qty+"-"+bid.face:"open"]);
+  const legal = higher(qty, face, bid);
+  const maxQ = Math.max(1, totalDice);
+  return (
+    <div className="controls">
+      <div className="ctitle">Your move</div>
+      <div className="stepRow">
+        <button className="stepBtn" disabled={qty<=1} onClick={()=>setQty(q=>Math.max(1,q-1))}>−</button>
+        <span className="qtyNum">{qty}</span>
+        <button className="stepBtn" disabled={qty>=maxQ} onClick={()=>setQty(q=>Math.min(maxQ,q+1))}>+</button>
+      </div>
+      <div className="faces">
+        {[1,2,3,4,5,6].map(f=>(
+          <button key={f} className={"faceBtn"+(face===f?" on":"")} onClick={()=>setFace(f)}><Die v={f} size={34} /></button>
+        ))}
+      </div>
+      <button className="primary full" style={{marginBottom:10}} disabled={!legal} onClick={()=>onBid(qty,face)}>
+        Bid {qty} {DIE_GLYPH[face]}{!legal && bid ? " — too low" : ""}
+      </button>
+      <div className="btnrow">
+        {bid && <button className="ghost danger" style={{flex:1}} onClick={onCall}>Call liar!</button>}
+        {bid && spoton && <button className="ghost" style={{flex:1}} onClick={onSpot}>Spot on</button>}
+      </div>
+    </div>
+  );
+}
+
+/* ============ Reveal ============ */
+function Reveal({ la, amHost, onNext }){
+  const bid = la.bid;
+  const nameOf = (n)=> (la.snapshot.find(p=>p.num===n)||{}).name || "—";
+  let title, cls;
+  if(la.type==="spoton"){ title = la.correct ? "Spot on." : "Not quite."; cls = la.correct ? "win" : "lose"; }
+  else { title = la.correct ? "Bluff called." : "The bid held."; cls = la.correct ? "win" : "lose"; }
+  const loser = la.snapshot.find(p=>p.num===la.loserNum);
+  const gainer = la.snapshot.find(p=>p.num===la.gainNum);
+  const met = la.actual >= bid.qty;
+  return (
+    <div className="overlay">
+      <div className="revealCard">
+        <div className="revSpot" />
+        <div className={"verdict "+cls}>{title}</div>
+        <div className="vsub">{nameOf(la.target)} bid {bid.qty} {DIE_GLYPH[bid.face]} · {nameOf(la.by)} {la.type==="spoton"?"called spot-on":"called liar"}</div>
+
+        <div className="tallyWrap">
+          <div className="tallyBig">{la.actual} <span className="tallyGlyph">{DIE_GLYPH[bid.face]}</span></div>
+          <div className="tallySub">on the table · bid was <b className={met?"c-win":"c-lose"}>{bid.qty}</b></div>
+        </div>
+
+        <div className="revList">
+          {la.snapshot.slice().sort((a,b)=>a.num-b.num).map(p=>(
+            <div key={p.num} className="rrow">
+              <span className="rname">{p.name}</span>
+              <div className="rdice"><DiceRow dice={p.dice} size={27} glowVal={bid.face} wild={la.wild} spotlight={true} /></div>
+              {la.loserNum===p.num && <span className="loserTag">−1</span>}
+              {la.gainNum===p.num && <span className="gainTag">+1</span>}
+            </div>
+          ))}
+        </div>
+
+        {loser && <div className="outcome lose">{loser.name} loses a die.</div>}
+        {gainer && <div className="outcome win">{gainer.name} wins a die back.</div>}
+        {amHost ? <button className="revBtn" onClick={onNext}>Next round ›</button> : <div className="revWait">Next round starting…</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ============ Game over ============ */
+function GameOver({ game, players, amHost, onAgain, onLeave }){
+  const winner = players.find(p=>p.id===game.winner);
+  const board = players.slice().sort((a,b)=>(b.wins||0)-(a.wins||0));
+  return (
+    <div>
+      <div className="winScene">
+        <div className="winSpot" />
+        <div className="crownBig">♛</div>
+        <div className="winName">{winner?winner.name:"—"}</div>
+        <div className="tagline" style={{marginBottom:14}}>last one holding dice</div>
+        {winner && winner.dice && winner.dice.length>0 &&
+          <div style={{marginBottom:6}}><DiceRow dice={winner.dice} size={40} /></div>}
+      </div>
+      <div className="label">Wins</div>
+      <div className="card">
+        <div className="roster">
+          {board.map(p=>(
+            <div key={p.id} className="prow">
+              <div className="pname">{p.id===game.winner && <span className="crown">♛ </span>}{p.name}</div>
+              <div className="rgt"><span className={"pill"+(p.id===game.winner?" ready":" wait")}>{p.wins||0}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {amHost ? <button className="go" onClick={onAgain}>Play again ›</button> : <div className="hint" style={{marginTop:16}}>Waiting for the host to restart…</div>}
+      <button className="ghost" style={{width:"100%",marginTop:10}} onClick={onLeave}>Leave room</button>
+    </div>
+  );
+}
+
+/* ============ App ============ */
+function App(){
+  const [myId] = useState(persistId);
+  const [route,setRoute] = useState(null); // {name, code, create}
+  const enter = (name, code, create)=> setRoute({ name, code, create });
+  const exit = ()=>{ try{ history.replaceState(null,"",location.pathname); }catch(e){} setRoute(null); };
+  if(!route) return <Home onEnter={enter} />;
+  return <Room myId={myId} name={route.name} code={route.code} createIfMissing={route.create} onExit={exit} />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

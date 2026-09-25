@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Last One Standing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+:root {
+  --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6;
+  --danger:#F2495C; --safe:#7DF0A6;
+}
+body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height: 100vh; }
+.wrap { font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); max-width:520px; margin:0 auto; padding:16px 16px 34px; -webkit-font-smoothing:antialiased; }
+.top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.brand { display:flex; align-items:center; gap:7px; letter-spacing:.22em; font-weight:700; font-size:13px; color:var(--rose); }
+.brandBig { font-family:'Fraunces',serif; font-weight:600; font-size:40px; line-height:1.02; letter-spacing:.01em; color:var(--candle); margin:16px 0 4px; }
+.sub { color:var(--dim); font-size:14px; margin-bottom:18px; }
+.who { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+.label { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:18px 0 8px; }
+.card { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:20px; padding:16px 18px; box-shadow:0 18px 40px -24px #000; }
+.input { width:100%; font-family:inherit; font-size:16px; color:var(--mist); background:var(--velvet); border:1px solid var(--haze); border-radius:13px; padding:13px 14px; margin-top:8px; }
+.input::placeholder{ color:var(--dim); }
+.go { width:100%; margin-top:14px; font-family:'Fraunces',serif; font-weight:600; font-size:22px; letter-spacing:.03em; padding:15px; border-radius:16px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+.go:disabled{ opacity:.4; cursor:default; }
+.ghost { width:100%; margin-top:10px; font-family:inherit; font-weight:700; font-size:15px; padding:13px; border-radius:13px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.code { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:34px; letter-spacing:.18em; color:var(--candle); text-align:center; }
+.qr { display:flex; justify-content:center; margin:14px 0 4px; }
+.qr canvas, .qr img { border-radius:12px; }
+.roster { display:flex; flex-direction:column; }
+.prow { display:flex; align-items:center; justify-content:space-between; padding:11px 2px; border-bottom:1px solid var(--haze); }
+.prow:last-child { border-bottom:none; }
+.pname { font-weight:600; font-size:15px; display:flex; align-items:center; gap:8px; }
+.pill { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; }
+.pill.ready { color:var(--ink); background:var(--safe); }
+.pill.wait { color:var(--dim); border:1px solid var(--haze); }
+.pill.dead { color:var(--danger); border:1px solid var(--danger); }
+.hdr { display:flex; align-items:center; justify-content:space-between; margin:6px 0 14px; }
+.tag { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--dim); background:var(--velvet); border:1px solid var(--haze); border-radius:999px; padding:6px 11px; }
+.tag.alive { color:var(--safe); border-color:rgba(125,240,166,.4); }
+.prompt { font-family:'Fraunces',serif; font-weight:600; font-size:26px; line-height:1.15; margin:6px 0 4px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+.opt { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:96px; padding:14px 10px; border-radius:16px; cursor:pointer; border:1.5px solid var(--haze); background:var(--velvet); color:var(--mist); font-family:inherit; font-weight:600; font-size:16px; transition:transform .05s ease, border-color .12s ease; }
+.opt:active { transform:scale(.97); }
+.opt .emo { font-size:30px; line-height:1; }
+.opt.picked { border-color:var(--candle); background:rgba(245,177,76,.12); }
+.opt.deadly { border-color:var(--danger); background:rgba(242,73,92,.16); color:#fff; }
+.opt.safe { border-color:var(--safe); background:rgba(125,240,166,.12); }
+.opt.dimmed { opacity:.45; }
+.opt .dot { width:12px; height:12px; border-radius:50%; }
+.note { color:var(--dim); font-size:13px; margin-top:12px; text-align:center; }
+.big { font-family:'Fraunces',serif; font-weight:600; font-size:32px; text-align:center; margin:10px 0; }
+.center { text-align:center; }
+.deadbanner { border:1px solid var(--danger); background:rgba(242,73,92,.1); color:var(--danger); border-radius:14px; padding:12px; text-align:center; font-weight:700; margin-bottom:12px; }
+.count { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--dim); text-align:center; margin-top:12px; }
+.timer { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:40px; text-align:center; color:var(--candle); margin:10px 0 2px; }
+.timer.hot { color:var(--danger); animation:pulse 1s ease-in-out infinite; }
+.durrow { display:flex; gap:8px; margin:8px 0 4px; }
+.durbtn { flex:1; font-family:inherit; font-weight:700; font-size:13px; padding:11px 6px; border-radius:12px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--dim); }
+.durbtn.on { border-color:var(--candle); background:rgba(245,177,76,.12); color:var(--mist); }
+.err { color:var(--danger); font-size:13px; margin-top:10px; text-align:center; }
+.link { color:var(--dim); font-size:12px; text-decoration:underline; cursor:pointer; background:none; border:none; font-family:inherit; }
+.namelist { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-top:10px; }
+.chip2 { font-size:13px; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid var(--haze); }
+.chip2.dead { color:var(--danger); border-color:var(--danger); text-decoration:line-through; opacity:.8; }
+.chip2.safe { color:var(--safe); border-color:rgba(125,240,166,.4); }
+.pulse { animation:pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
+</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ============ SAME SUPABASE PROJECT AS COLD READ ============ */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* Fallback rounds so it works before rounds.json is uploaded. Full pack loads from ./rounds.json */
+const FALLBACK_ROUNDS = [
+  { prompt:"The floor is about to drop. Stand on a color.", options:[{label:"Red",emoji:"\uD83D\uDFE5",color:"#e5484d"},{label:"Blue",emoji:"\uD83D\uDFE6",color:"#3b82f6"},{label:"Green",emoji:"\uD83D\uDFE9",color:"#22c55e"},{label:"Yellow",emoji:"\uD83D\uDFE8",color:"#eab308"}] },
+  { prompt:"Choose a door.", options:[{label:"Door 1",emoji:"\uD83D\uDEAA"},{label:"Door 2",emoji:"\uD83D\uDEAA"},{label:"Door 3",emoji:"\uD83D\uDEAA"},{label:"Door 4",emoji:"\uD83D\uDEAA"}] },
+  { prompt:"Sudden death. One tile holds, one falls.", options:[{label:"Left",emoji:"\u2B05\uFE0F"},{label:"Right",emoji:"\u27A1\uFE0F"}] },
+  { prompt:"Pineapple on pizza?", options:[{label:"Yes",emoji:"\uD83C\uDF4D"},{label:"No",emoji:"\uD83D\uDEAB"}] },
+  { prompt:"Cats or dogs?", options:[{label:"Cats",emoji:"\uD83D\uDC31"},{label:"Dogs",emoji:"\uD83D\uDC36"}] },
+  { prompt:"Drink a potion. One is poison.", options:[{label:"Red",emoji:"\uD83E\uDDEA",color:"#e5484d"},{label:"Green",emoji:"\uD83E\uDDEA",color:"#22c55e"},{label:"Purple",emoji:"\uD83E\uDDEA",color:"#a855f7"},{label:"Clear",emoji:"\uD83E\uDDEA",color:"#94a3b8"}] },
+  { prompt:"Would you rather...", options:[{label:"Fly",emoji:"\uD83D\uDD4A\uFE0F"},{label:"Be invisible",emoji:"\uD83E\uDEE5"}] },
+  { prompt:"Russian roulette. Pick a chamber.", options:[{label:"1",emoji:"\uD83D\uDD18"},{label:"2",emoji:"\uD83D\uDD18"},{label:"3",emoji:"\uD83D\uDD18"},{label:"4",emoji:"\uD83D\uDD18"},{label:"5",emoji:"\uD83D\uDD18"},{label:"6",emoji:"\uD83D\uDD18"}] },
+  { prompt:"Grab a weapon off the wall.", options:[{label:"Sword",emoji:"\u2694\uFE0F"},{label:"Bow",emoji:"\uD83C\uDFF9"},{label:"Dagger",emoji:"\uD83D\uDDE1\uFE0F"},{label:"Hammer",emoji:"\uD83D\uDD28"}] },
+  { prompt:"Beach or mountains?", options:[{label:"Beach",emoji:"\uD83C\uDFD6\uFE0F"},{label:"Mountains",emoji:"\uD83C\uDFD4\uFE0F"}] }
+];
+
+function hubId(){ let v=localStorage.getItem("hub_uid"); if(!v){ v="u"+Math.random().toString(36).slice(2,11); localStorage.setItem("hub_uid",v);} return v; }
+const MYID = hubId();
+const GAME_KEY = "lastman";
+function mkCode(){ const c="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s=""; for(let i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)]; return s; }
+
+function App(){
+  const [name,setName]   = useState(localStorage.getItem("hub_name")||"");
+  const [code,setCode]   = useState("");
+  const [role,setRole]   = useState(null);      // 'host' | 'player'
+  const [joined,setJoined]= useState(false);
+  const [game,setGame]   = useState(null);
+  const [players,setPlayers]=useState([]);
+  const [pool,setPool]   = useState(FALLBACK_ROUNDS);
+  const [err,setErr]     = useState("");
+  const lastRid = useRef(-1);
+
+  // load full pack
+  useEffect(()=>{ fetch("./rounds.json").then(r=>r.json()).then(d=>{
+    const arr = Array.isArray(d) ? d : (d.rounds||[]);
+    const clean = arr.filter(r=>Array.isArray(r.options)&&r.options.length>=2).map(r=>({prompt:r.prompt,options:r.options}));
+    if(clean.length) setPool(clean);
+  }).catch(()=>{}); },[]);
+
+  // prefill code from url, and auto-rejoin
+  useEffect(()=>{
+    const p=new URLSearchParams(location.search); const c=p.get("code");
+    if(c) setCode(c.toUpperCase());
+    const sc=localStorage.getItem("lms_code"), sr=localStorage.getItem("lms_role");
+    if(sc&&sr){ setCode(sc); setRole(sr); setJoined(true); }
+  },[]);
+
+  const refetch=useCallback(async(c)=>{
+    const gc=c||code; if(!gc) return;
+    const g=await sb.from("lms_rooms").select("*").eq("code",gc).maybeSingle();
+    setGame(g.data||null);
+    const ps=await sb.from("players").select("*").eq("code",gc).eq("game_key",GAME_KEY).order("num");
+    if(ps.data) setPlayers(ps.data);
+  },[code]);
+
+  useEffect(()=>{
+    if(!joined||!code) return;
+    refetch(code);
+    const ch=sb.channel("lms-"+code)
+      .on("postgres_changes",{event:"*",schema:"public",table:"lms_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+code},()=>refetch(code))
+      .subscribe();
+    const poll=setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); };
+  },[joined,code,refetch]);
+
+  const me = players.find(p=>p.id===MYID);
+  const isHost = !!game && game.host_id===MYID;
+  const contestants = players;                       // host is NOT a contestant
+  const alive = contestants.filter(p=>p.alive!==false);
+  const [dur,setDur] = useState(8);        // seconds per pick
+  const [,setTick]   = useState(0);        // forces countdown re-render
+  const revealing    = useRef(false);
+
+  function drawRound(){
+    if(!pool.length) return FALLBACK_ROUNDS[0];
+    let r, tries=0;
+    do { r=pool[Math.floor(Math.random()*pool.length)]; tries++; } while(game&&game.state&&game.state.prompt===r.prompt&&tries<8);
+    return r;
+  }
+
+  const saveSession=(c,r)=>{ localStorage.setItem("lms_code",c); localStorage.setItem("lms_role",r); if(name) localStorage.setItem("hub_name",name.trim()); };
+  const upsertUser=()=>{ try{ sb.from("users").upsert({ id:MYID, name:(name||"").trim(), last_seen:new Date().toISOString() }); }catch(e){} };
+  const leave=()=>{ localStorage.removeItem("lms_code"); localStorage.removeItem("lms_role"); setJoined(false); setRole(null); setGame(null); setPlayers([]); setErr(""); };
+
+  const createGame=async()=>{
+    setErr("");
+    const c=mkCode();
+    const g=await sb.from("lms_rooms").insert({ code:c, host_id:MYID, phase:"lobby", round:0, state:{} });
+    if(g.error){ setErr(g.error.message); return; }
+    upsertUser(); saveSession(c,"host"); setCode(c); setRole("host"); setJoined(true);
+  };
+  const joinGame=async()=>{
+    setErr("");
+    const c=(code||"").trim().toUpperCase();
+    if(!name.trim()){ setErr("Enter your name"); return; }
+    if(!c){ setErr("Enter a game code"); return; }
+    const g=await sb.from("lms_rooms").select("code,phase").eq("code",c).maybeSingle();
+    if(!g.data){ setErr("No game with that code"); return; }
+    if(g.data.phase!=="lobby"){ setErr("That game already started"); return; }
+    const ps=await sb.from("players").select("num").eq("code",c).eq("game_key",GAME_KEY);
+    const num=(ps.data&&ps.data.length?Math.max(...ps.data.map(p=>p.num||0)):0)+1;
+    await sb.from("players").delete().eq("id",MYID);
+    const pi=await sb.from("players").insert({ id:MYID, code:c, game_key:GAME_KEY, name:name.trim(), num, ready:false, alive:true, pick:null });
+    if(pi.error){ setErr(pi.error.message); return; }
+    upsertUser(); saveSession(c,"player"); setCode(c); setRole("player"); setJoined(true);
+  };
+
+  const start=async()=>{
+    const r=drawRound();
+    await sb.from("players").update({ alive:true, pick:null, ready:false }).eq("code",code);
+    await sb.from("lms_rooms").update({ phase:"arming", round:1, state:{ prompt:r.prompt, options:r.options, deadly:null, dur } }).eq("code",code);
+  };
+  const redraw=async()=>{ const r=drawRound(); await sb.from("lms_rooms").update({ state:{ prompt:r.prompt, options:r.options, deadly:null, dur:((game.state&&game.state.dur)||8) } }).eq("code",code); };
+  const arm=async(idx)=>{ const dl=Date.now()+(((game.state&&game.state.dur)||8)*1000); const st=Object.assign({},game.state,{deadly:idx, deadline:dl}); await sb.from("lms_rooms").update({ phase:"picking", state:st }).eq("code",code); };
+  const pick=async(idx)=>{ if(!me||me.alive===false) return; await sb.from("players").update({ pick:idx, ready:true }).eq("id",MYID); };
+  const reveal=async()=>{
+    if(!game||game.phase!=="picking") return;
+    const deadly=game.state.deadly;
+    const eliminated=alive.filter(p=>p.pick===deadly || p.pick==null);   // matched the trap, or never picked
+    const survivors =alive.filter(p=>!(p.pick===deadly || p.pick==null));
+    const miracle = survivors.length===0 && eliminated.length>0;
+    const killed = miracle ? [] : eliminated;
+    for(const p of killed){ await sb.from("players").update({ alive:false }).eq("id",p.id); }
+    await sb.from("lms_rooms").update({ phase:"reveal", state:Object.assign({},game.state,{ killed:killed.map(p=>p.id), miracle }) }).eq("code",code);
+  };
+  const next=async()=>{
+    const stillAlive=contestants.filter(p=>p.alive!==false);
+    if(stillAlive.length<=1){ await sb.from("lms_rooms").update({ phase:"over" }).eq("code",code); return; }
+    const r=drawRound();
+    await sb.from("players").update({ pick:null, ready:false }).eq("code",code);
+    await sb.from("lms_rooms").update({ phase:"arming", round:(game.round||1)+1, state:{ prompt:r.prompt, options:r.options, deadly:null, dur:((game.state&&game.state.dur)||8) } }).eq("code",code);
+  };
+  const again=async()=>{
+    await sb.from("players").update({ alive:true, pick:null, ready:false }).eq("code",code);
+    await sb.from("lms_rooms").update({ phase:"lobby", round:0, state:{} }).eq("code",code);
+  };
+
+  // shared countdown + host auto-reveal at the deadline
+  useEffect(()=>{
+    if(!game || game.phase!=="picking"){ revealing.current=false; return; }
+    const id=setInterval(()=>{
+      setTick(t=>t+1);
+      const dl=game.state && game.state.deadline;
+      if(dl && Date.now()>=dl && isHost && !revealing.current){ revealing.current=true; reveal(); }
+    },250);
+    return ()=>clearInterval(id);
+  },[game,isHost]);
+  const remain = (game&&game.state&&game.state.deadline) ? Math.max(0, Math.ceil((game.state.deadline-Date.now())/1000)) : null;
+
+  // ---------- RENDER ----------
+  const Header=()=>(
+    <div className="top">
+      <div className="brand">\u2620 LAST ONE STANDING</div>
+      <div className="who">{isHost?"HOST":(me?me.name:"")}{code?(" \u00B7 "+code):""}</div>
+    </div>
+  );
+
+  if(!joined){
+    return (<div className="wrap">
+      <Header/>
+      <div className="brandBig">Last One<br/>Standing</div>
+      <div className="sub">The host sets a secret trap each round. Pick anything you like \u2014 just don't land where the host did. Match the trap, you're out. No second lives.</div>
+      <div className="card">
+        <div className="label">Your name</div>
+        <input className="input" value={name} placeholder="e.g. Aaron" onChange={e=>setName(e.target.value)} maxLength={16}/>
+        <div className="label" style={{marginTop:16}}>Game code</div>
+        <input className="input" value={code} placeholder="4-letter code" onChange={e=>setCode(e.target.value.toUpperCase())} maxLength={4}/>
+        <button className="go" onClick={joinGame}>Join game</button>
+        <button className="ghost" onClick={createGame}>Host a new game</button>
+        {err&&<div className="err">{err}</div>}
+      </div>
+    </div>);
+  }
+
+  if(joined && !game){
+    return (<div className="wrap"><Header/>
+      <div className="card center"><div className="big">\u2026</div><div className="note">Looking for game {code}\u2026</div><button className="ghost" onClick={leave}>Back to menu</button></div>
+    </div>);
+  }
+
+  const st = game.state||{};
+  const opts = st.options||[];
+
+  // LOBBY
+  if(game.phase==="lobby"){
+    return (<div className="wrap"><Header/>
+      {isHost ? (<>
+        <div className="label">Invite</div>
+        <div className="card">
+          <div className="code">{code}</div>
+          <Qr code={code}/>
+          <div className="note">Scan to join, or enter the code at this page.</div>
+        </div>
+        <div className="label">Contestants ({contestants.length})</div>
+        <div className="card">
+          {contestants.length===0 && <div className="note">Waiting for players to join\u2026</div>}
+          <div className="roster">
+            {contestants.map(p=>(<div className="prow" key={p.id}><div className="pname">{p.name}</div><span className="pill ready">in</span></div>))}
+          </div>
+          <div className="label" style={{marginTop:4}}>Seconds to pick</div>
+          <div className="durrow">
+            {[5,8,12].map(s=>(<button key={s} className={"durbtn "+(dur===s?"on":"")} onClick={()=>setDur(s)}>{s===5?"Fast 5s":s===8?"Normal 8s":"Chill 12s"}</button>))}
+          </div>
+          <button className="go" disabled={contestants.length<1} onClick={start}>Start \u2014 {contestants.length} in</button>
+          <div className="note">You run the traps. You don't play. No pick before the clock = out.</div>
+        </div>
+        <button className="link" style={{marginTop:14}} onClick={leave}>End & leave</button>
+      </>) : (<>
+        <div className="card center">
+          <div className="big">You're in.</div>
+          <div className="note">Waiting for the host to start\u2026</div>
+          <div className="namelist">{contestants.map(p=>(<span key={p.id} className={"chip2 "+(p.id===MYID?"safe":"")}>{p.name}</span>))}</div>
+        </div>
+        <button className="link" style={{marginTop:14}} onClick={leave}>Leave</button>
+      </>)}
+    </div>);
+  }
+
+  const GameHdr=()=>(<div className="hdr"><span className="tag">Round {game.round}</span><span className="tag alive">{alive.length} alive</span></div>);
+
+  // ARMING
+  if(game.phase==="arming"){
+    if(isHost){
+      return (<div className="wrap"><Header/><GameHdr/>
+        <div className="card">
+          <div className="label">Set the trap \u2014 tap the deadly answer</div>
+          <div className="prompt">{st.prompt}</div>
+          <div className="grid">
+            {opts.map((o,i)=>(<button key={i} className="opt" onClick={()=>arm(i)}>
+              <span className="emo">{o.emoji||""}</span><span>{o.label}</span>
+              {o.color&&<span className="dot" style={{background:o.color}}/>}
+            </button>))}
+          </div>
+          <button className="ghost" onClick={redraw}>\uD83D\uDD00 Different prompt</button>
+          <div className="note">Players can't see this. Pick where you think the crowd will go.</div>
+        </div>
+      </div>);
+    }
+    return (<div className="wrap"><Header/><GameHdr/>
+      {me&&me.alive===false && <div className="deadbanner">You're out \u2014 spectating</div>}
+      <div className="card center"><div className="big pulse">\u2620</div><div className="note">The host is setting a trap\u2026</div></div>
+    </div>);
+  }
+
+  // PICKING
+  if(game.phase==="picking"){
+    const locked = alive.filter(p=>p.ready).length;
+    if(isHost){
+      return (<div className="wrap"><Header/><GameHdr/>
+        <div className="card">
+          <div className="label">Trap is set \u2014 deadly answer marked</div>
+          <div className="prompt">{st.prompt}</div>
+          <div className="grid">
+            {opts.map((o,i)=>(<div key={i} className={"opt "+(i===st.deadly?"deadly":"dimmed")}>
+              <span className="emo">{o.emoji||""}</span><span>{o.label}</span>
+              {i===st.deadly&&<span style={{fontSize:12}}>\uD83D\uDC80 deadly</span>}
+            </div>))}
+          </div>
+          <div className="count">{locked} / {alive.length} locked in</div>
+          {remain!==null && <div className={"timer "+(remain<=3?"hot":"")}>{remain}s</div>}
+          <button className="go" onClick={reveal}>Reveal now</button>
+        </div>
+      </div>);
+    }
+    // player
+    if(me&&me.alive===false){
+      return (<div className="wrap"><Header/><GameHdr/>
+        <div className="deadbanner">You're out \u2014 spectating</div>
+        <div className="card"><div className="prompt">{st.prompt}</div><div className="count">{locked} / {alive.length} still alive have picked</div></div>
+      </div>);
+    }
+    return (<div className="wrap"><Header/><GameHdr/>
+      <div className="card">
+        <div className="label">Pick anywhere \u2014 just avoid the host</div>
+        <div className="prompt">{st.prompt}</div>
+        {remain!==null && <div className={"timer "+(remain<=3?"hot":"")}>{remain}s</div>}
+        <div className="grid">
+          {opts.map((o,i)=>(<button key={i} className={"opt "+(me&&me.pick===i?"picked":"")} onClick={()=>pick(i)}>
+            <span className="emo">{o.emoji||""}</span><span>{o.label}</span>
+            {o.color&&<span className="dot" style={{background:o.color}}/>}
+          </button>))}
+        </div>
+        <div className="count">{me&&me.ready?("Locked: "+(opts[me.pick]?opts[me.pick].label:"")+" \u00B7 tap another to change"):"Tap your pick before the clock runs out"}</div>
+      </div>
+    </div>);
+  }
+
+  // REVEAL
+  if(game.phase==="reveal"){
+    const killedIds=(st.killed||[]);
+    const deadNames=contestants.filter(p=>killedIds.includes(p.id)).map(p=>p.name);
+    const survivorNames=alive.map(p=>p.name);
+    const iDied = me && killedIds.includes(me.id);
+    const gameOver = alive.length<=1;
+    return (<div className="wrap"><Header/><GameHdr/>
+      <div className="card">
+        <div className="label center">The trap was</div>
+        <div className="grid">
+          {opts.map((o,i)=>(<div key={i} className={"opt "+(i===st.deadly?"deadly":"safe")}>
+            <span className="emo">{o.emoji||""}</span><span>{o.label}</span>
+            {i===st.deadly&&<span style={{fontSize:12}}>\uD83D\uDC80</span>}
+          </div>))}
+        </div>
+        {st.miracle && <div className="note" style={{color:"var(--candle)"}}>Miracle \u2014 everyone alive picked the trap, so nobody falls.</div>}
+        {!st.miracle && (me?(iDied?<div className="deadbanner" style={{marginTop:14}}>You matched the host. You're out.</div>:<div className="note" style={{color:"var(--safe)",marginTop:14}}>You survived.</div>):null)}
+        {deadNames.length>0 && <><div className="label center">Eliminated</div><div className="namelist">{deadNames.map((n,i)=>(<span key={i} className="chip2 dead">{n}</span>))}</div></>}
+        <div className="label center">Still standing ({survivorNames.length})</div>
+        <div className="namelist">{survivorNames.map((n,i)=>(<span key={i} className="chip2 safe">{n}</span>))}</div>
+        {isHost && <button className="go" onClick={next}>{gameOver?"See the winner":"Next round"}</button>}
+        {!isHost && <div className="count">Waiting for host\u2026</div>}
+      </div>
+    </div>);
+  }
+
+  // OVER
+  if(game.phase==="over"){
+    const winner = alive[0];
+    return (<div className="wrap"><Header/>
+      <div className="card center">
+        <div className="label">Last one standing</div>
+        <div className="big">{winner?("\uD83C\uDFC6 "+winner.name):"No survivors"}</div>
+        <div className="note">{winner?(winner.id===MYID?"That's you. You out-read the host.":"They out-read the host."):"The whole lobby got wiped. Brutal."}</div>
+        {isHost && <button className="go" onClick={again}>Play again</button>}
+        {isHost && <button className="ghost" onClick={leave}>End game</button>}
+        {!isHost && <button className="ghost" onClick={leave}>Leave</button>}
+      </div>
+    </div>);
+  }
+
+  return (<div className="wrap"><Header/><div className="card center"><div className="note">Loading\u2026</div></div></div>);
+}
+
+function Qr({code}){
+  const ref=useRef(null);
+  useEffect(()=>{
+    if(!ref.current||!window.QRCode) return;
+    ref.current.innerHTML="";
+    const url=location.origin+location.pathname+"?code="+code;
+    new QRCode(ref.current,{ text:url, width:150, height:150, colorDark:"#0E0B1A", colorLight:"#E9E3F6", correctLevel:QRCode.CorrectLevel.M });
+  },[code]);
+  return <div className="qr" ref={ref}></div>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
