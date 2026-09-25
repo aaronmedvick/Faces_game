@@ -621,6 +621,7 @@ function OnlineApp({ onExit }){
   const [guess,setGuess] = useState(null);
   const [conf,setConf] = useState(7);
   const [pendingSeer,setPendingSeer] = useState(null);
+  const [seerMode,setSeerMode] = useState("random");
   const [dismissed,setDismissed] = useState(0);
   const [intro,setIntro] = useState(true);
   const [freed,setFreed] = useState({});
@@ -722,7 +723,7 @@ function OnlineApp({ onExit }){
   const setAns = async (m)=>{ await sb.from("games").update({ answer_mode:m }).eq("code",code); };
   const startGame = async ()=>{
     if(!(players.length>0 && players.every(p=>p.ready))) return;
-    const seer = (pendingSeer && players.some(p=>p.id===pendingSeer)) ? pendingSeer : players[Math.floor(Math.random()*players.length)].id;
+    const seer = (seerMode==="pick" && pendingSeer && players.some(p=>p.id===pendingSeer)) ? pendingSeer : players[Math.floor(Math.random()*players.length)].id;
     const suspect = Math.floor(Math.random()*cfg.n);
     const gu = await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, seed:Math.floor(Math.random()*1000000)+1, asked_q:null, seer_ans:null, history:[] }).eq("code",code);
     if(gu.error){ setErr("Start failed — run the setup SQL. ("+gu.error.message+")"); return; }
@@ -819,7 +820,7 @@ function OnlineApp({ onExit }){
             <div className="rgt">
               <span className={"pill "+(p.ready?"ready":"wait")}>{p.ready?"ready":"waiting"}</span>
               {amHost && p.id!==myId && <button className="kick" onClick={()=>kick(p.id)}>kick</button>}
-              {amHost && <button className="kick" style={{color:"var(--psychic)",borderColor:"var(--psychic)"}} onClick={()=>setPendingSeer(p.id)}>seer</button>}
+              {amHost && seerMode==="pick" && <button className="kick" style={{color:"var(--psychic)",borderColor:"var(--psychic)"}} onClick={()=>setPendingSeer(p.id)}>🔮 seer</button>}
             </div>
           </div>
         ))}
@@ -836,6 +837,12 @@ function OnlineApp({ onExit }){
         <div className="sel">{["easy","medium","hard"].map(d=>(<button key={d} className={"chip"+(game.difficulty===d?" on":"")} onClick={()=>setDiff(d)}>{d==="easy"?"3×3":d==="medium"?"4×4":"5×5"}</button>))}</div>
         <div className="label">Seer answers with (host)</div>
         <div className="sel">{[["yesno","Yes / No"],["scale","Sliding scale"]].map(([m,l])=>(<button key={m} className={"chip"+(game.answer_mode===m?" on":"")} onClick={()=>setAns(m)}>{l}</button>))}</div>
+        <div className="label">Who's the seer (host)</div>
+        <div className="sel">
+          <button className={"chip"+(seerMode==="random"?" on":"")} onClick={()=>{ setSeerMode("random"); setPendingSeer(null); }}>Random</button>
+          <button className={"chip"+(seerMode==="pick"?" on":"")} onClick={()=>setSeerMode("pick")}>Pick</button>
+        </div>
+        {seerMode==="pick" && <div className="hint" style={{marginTop:2}}>{pendingSeer?("Seer: "+((players.find(p=>p.id===pendingSeer)||{}).name||"?")):"Tap 🔮 seer next to a player above"}</div>}
         <button className="go" disabled={!allReady} onClick={startGame}>LET'S GOOOO</button>
         <div className="hint">{allReady?"Detectives ready.":"Waiting on everyone to ready up."}</div>
         {err && <div className="hint" style={{color:"var(--rose)"}}>{err}</div>}
