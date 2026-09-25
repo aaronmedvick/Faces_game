@@ -661,7 +661,8 @@ function OnlineApp({ onExit }){
       .on("postgres_changes",{event:"*",schema:"public",table:"games",filter:"code=eq."+code},()=>refetch(code))
       .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+code},()=>refetch(code))
       .subscribe();
-    return ()=>{ sb.removeChannel(ch); };
+    const poll = setInterval(()=>refetch(code), 2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); };
   },[code]);
 
   const me = players.find(p=>p.id===myId);
@@ -693,7 +694,8 @@ function OnlineApp({ onExit }){
     const c = randCode();
     const g = await sb.from("games").insert({ code:c, host_id:myId, phase:"lobby", difficulty:"medium", answer_mode:"yesno", seed:Math.floor(Math.random()*1000000)+1, round:1 });
     if(g.error){ setErr(g.error.message); return; }
-    await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
+    if(pi.error){ setErr("Couldn't create the room: "+pi.error.message); return; }
     ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
   };
@@ -705,7 +707,8 @@ function OnlineApp({ onExit }){
     if(!g.data){ setErr("No game with that code"); return; }
     const ps = await sb.from("players").select("num").eq("code",c);
     const num = (ps.data && ps.data.length ? Math.max.apply(null, ps.data.map(p=>p.num)) : 0) + 1;
-    await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num, ready:false });
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num, ready:false });
+    if(pi.error){ setErr("Couldn't join: "+pi.error.message); return; }
     ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
   };
@@ -801,11 +804,11 @@ function OnlineApp({ onExit }){
         <div style={{background:"#fff",borderRadius:16,padding:16,display:"inline-block",margin:"16px 0 8px"}}><QR text={(typeof location!=="undefined"?location.origin+location.pathname:"")+"?join="+code} size={230} /></div>
         <div style={{fontSize:11,color:"var(--dim)"}}>Scan to join — or share the code</div>
       </div>
-      <div className="label">In the room</div>
+      <div className="label" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>In the room ({players.length}) <button className="miniToggle" onClick={()=>refetch(code)}>↻ refresh</button></div>
       <div className="card"><div className="roster">
         {players.map(p=>(
           <div className="prow" key={p.id}>
-            <div className="pname">{p.name}{p.id===myId && <span className="who">you</span>}{p.id===game.host_id && <span className="who">host</span>}{pendingSeer===p.id && <span className="crown">🔮</span>}</div>
+            <div className="pname">{p.name||"(unnamed)"}{p.id===myId && <span className="who">you</span>}{p.id===game.host_id && <span className="who">host</span>}{pendingSeer===p.id && <span className="crown">🔮</span>}</div>
             <div className="rgt">
               <span className={"pill "+(p.ready?"ready":"wait")}>{p.ready?"ready":"waiting"}</span>
               {amHost && p.id!==myId && <button className="kick" onClick={()=>kick(p.id)}>kick</button>}
