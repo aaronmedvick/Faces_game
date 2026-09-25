@@ -215,6 +215,7 @@ function SoloApp(){
   const [reaction,setReaction] = useState(null);
   const [myVote,setMyVote] = useState(null);
   const [showStats,setShowStats] = useState(false);
+  const [showRecap,setShowRecap] = useState(false);
   const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   const [guess,setGuess] = useState(null);
@@ -461,6 +462,7 @@ function SoloApp(){
           {phase==="narrow" && <button className="miniToggle" onClick={()=>setSortMode(m=>m==="rounds"?"live":(m==="live"?"off":"rounds"))}>Sort: {sortMode==="rounds"?"between rounds":sortMode}</button>}
         </div>
         <p className="qtext small">{phase==="narrow" ? <span><b>Does {shortQ(askedQ)}?</b><br/>The pendulum said <b style={{color:seerAns&&seerAns.ans==="yes"?"var(--yes)":"var(--no)"}}>{seerAns&&seerAns.ans.toUpperCase()}</b> — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{Object.keys(marks).filter(k=>marks[k] && k.split(":")[0]===String(round)).length} marked</b></span> : <span>The pendulum points to the guilty party — <b>tap to accuse</b>, then lock the verdict.</span>}</p>
+        {hist.length>0 && <div style={{marginTop:6}}><button className="miniToggle" onClick={()=>setShowRecap(v=>!v)}>📜 Rounds so far ({hist.length})</button>{showRecap && <div style={{marginTop:8}}>{hist.map((h,i)=>(<div key={i} style={{fontSize:12,padding:"4px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--yes)":"var(--no)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></div>))}</div>}</div>}
         </section>
       )}
 
@@ -642,6 +644,7 @@ function OnlineApp({ onExit }){
   const [reaction,setReaction] = useState(null);
   const [sortMode,setSortMode] = useState("rounds");
   const [showStats,setShowStats] = useState(false);
+  const [showRecap,setShowRecap] = useState(false);
 
   useEffect(()=>{
     fetch("./questions.json").then(r=>r.json()).then(d=>{ if(Array.isArray(d)&&d.length) setPool(d.map(x=>x.text)); }).catch(()=>{});
@@ -1028,6 +1031,7 @@ function OnlineApp({ onExit }){
     {((game.phase==="playing" && game.seer_ans) || game.phase==="guessing") && (
       <section className="qcard"><div className="qmeta"><span className="counter">{String(Math.min(game.round,ROUNDS)).padStart(2,"0")}<i>/{ROUNDS}</i></span></div>
         <p className="qtext small">{game.phase==="guessing" ? <span>The pendulum points to the guilty party — <b>tap to accuse</b>, then lock the verdict.</span> : <span><b>Does {shortQ(game.asked_q)}?</b><br/>The pendulum said <b style={{color:game.seer_ans.ans==="yes"?"var(--yes)":"var(--no)"}}>{game.seer_ans.ans.toUpperCase()}</b>{game.seer_ans.conf!=null?(" · "+game.seer_ans.conf+"/10"):""} — tap the suspects who fit. <b style={{color:"var(--candle)"}}>{roundMarks} marked</b></span>}</p>
+        {game.history && game.history.length>0 && <div style={{marginTop:6}}><button className="miniToggle" onClick={()=>setShowRecap(v=>!v)}>📜 Rounds so far ({game.history.length})</button>{showRecap && <div style={{marginTop:8}}>{game.history.map((h,i)=>(<div key={i} style={{fontSize:12,padding:"4px 0",borderBottom:"1px solid var(--haze)"}}>Q{i+1}: Does {shortQ(h.q)}? — <b style={{color:h.ans==="yes"?"var(--yes)":"var(--no)"}}>{h.ans?h.ans.toUpperCase():"—"}</b></div>))}</div>}</div>}
       </section>
     )}
     {(game.phase==="guessing" || (game.phase==="playing" && game.seer_ans)) && (
