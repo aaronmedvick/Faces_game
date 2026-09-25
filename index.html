@@ -777,7 +777,6 @@ function OnlineApp({ onExit }){
     return (<div className="wrap">
       <div className="brand">◍ COLD&nbsp;READ</div>
       <div className="brandBig">Join the case</div>
-      {false && savedCode && <button className="go" style={{background:"var(--psychic)",marginBottom:6}} onClick={resume}>↩ Return to game {savedCode}</button>}
       <input style={inp} placeholder="Your detective name" value={name} onChange={e=>setName(e.target.value)} />
       <input style={inp} placeholder="Game code (e.g. K4TQ)" value={codeInput} onChange={e=>setCodeInput(e.target.value)} />
       <button className="go" onClick={joinGame}>Join game</button>
