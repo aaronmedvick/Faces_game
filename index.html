@@ -635,6 +635,7 @@ function OnlineApp({ onExit }){
   const firedRef = React.useRef(null);
   const resolveRef = React.useRef(null);
   const [err,setErr] = useState("");
+  const [copied,setCopied] = useState(false);
   const [pal,setPal] = useState(()=>ls.get("cr_palette")||"gr");
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("cr_palette",p); };
   const [reaction,setReaction] = useState(null);
@@ -798,11 +799,13 @@ function OnlineApp({ onExit }){
     const allReady = players.length>0 && players.every(p=>p.ready);
     return (<div className="wrap">
       <div className="brand">◍ COLD&nbsp;READ</div>
-      <div className="card" style={{marginTop:14,textAlign:"center"}}>
+      <div style={{textAlign:"center",margin:"8px 0 0",fontSize:14}}>You're in as <b style={{color:"var(--candle)"}}>{me?me.name:name}</b></div>
+      <div className="card" style={{marginTop:12,textAlign:"center"}}>
         <div className="label" style={{margin:"0 0 6px"}}>Share this code</div>
         <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:"40px",fontWeight:"700",letterSpacing:".2em",color:"var(--candle)"}}>{code}</div>
         <div style={{background:"#fff",borderRadius:16,padding:16,display:"inline-block",margin:"16px 0 8px"}}><QR text={(typeof location!=="undefined"?location.origin+location.pathname:"")+"?join="+code} size={230} /></div>
-        <div style={{fontSize:11,color:"var(--dim)"}}>Scan to join — or share the code</div>
+        <button className="readyBtn" style={{marginTop:4}} onClick={()=>{ const url=(typeof location!=="undefined"?location.origin+location.pathname:"")+"?join="+code; try{ navigator.clipboard.writeText(url).then(()=>{ setCopied(true); setTimeout(()=>setCopied(false),1600); }); }catch(e){} }}>{copied?"✓ Link copied!":"📋 Copy invite link"}</button>
+        <div style={{fontSize:11,color:"var(--dim)",marginTop:6}}>Send the link, share the code, or let them scan the QR.</div>
       </div>
       <div className="label" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>In the room ({players.length}) <button className="miniToggle" onClick={()=>refetch(code)}>↻ refresh</button></div>
       <div className="card"><div className="roster">
