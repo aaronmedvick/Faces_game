@@ -724,8 +724,10 @@ function OnlineApp({ onExit }){
     if(!(players.length>0 && players.every(p=>p.ready))) return;
     const seer = (pendingSeer && players.some(p=>p.id===pendingSeer)) ? pendingSeer : players[Math.floor(Math.random()*players.length)].id;
     const suspect = Math.floor(Math.random()*cfg.n);
-    await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, seed:Math.floor(Math.random()*1000000)+1, asked_q:null, seer_ans:null, history:[] }).eq("code",code);
-    await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[] }).eq("code",code);
+    const gu = await sb.from("games").update({ phase:"playing", round:1, seer_id:seer, suspect_idx:suspect, seed:Math.floor(Math.random()*1000000)+1, asked_q:null, seer_ans:null, history:[] }).eq("code",code);
+    if(gu.error){ setErr("Start failed — run the setup SQL. ("+gu.error.message+")"); return; }
+    const pu = await sb.from("players").update({ ready:false, vote:null, freed:[], stars:[], answers:{} }).eq("code",code);
+    if(pu.error){ setErr("Start failed — run the setup SQL. ("+pu.error.message+")"); }
   };
   const castVote = async (i)=>{ await sb.from("players").update({ vote:i }).eq("id",myId); };
   const resolveVote = async ()=>{
@@ -836,6 +838,7 @@ function OnlineApp({ onExit }){
         <div className="sel">{[["yesno","Yes / No"],["scale","Sliding scale"]].map(([m,l])=>(<button key={m} className={"chip"+(game.answer_mode===m?" on":"")} onClick={()=>setAns(m)}>{l}</button>))}</div>
         <button className="go" disabled={!allReady} onClick={startGame}>LET'S GOOOO</button>
         <div className="hint">{allReady?"Detectives ready.":"Waiting on everyone to ready up."}</div>
+        {err && <div className="hint" style={{color:"var(--rose)"}}>{err}</div>}
       </div>)}
       {!amHost && <div className="hint" style={{marginTop:14}}>Waiting for the host to start…</div>}
       <button className="readyBtn" style={{marginTop:16}} onClick={onExit}>Leave</button>
