@@ -847,6 +847,11 @@ function OnlineApp({ onExit }){
     const hist = game.history||[];
     const qStats = hist.map((h,i)=>{ const r=i+1; const answered=dets.filter(p=>p.answers && p.answers[r]!=null); const tracked=answered.filter(p=>(p.answers[r]||[]).indexOf(suspect)>=0).length; return { pct: answered.length?Math.round(tracked/answered.length*100):null }; });
     const accBoard = dets.map(p=>{ const a=p.answers||{}; let t=0; for(let r=1;r<=hist.length;r++){ if(a[r]!=null && (a[r]||[]).indexOf(suspect)>=0) t++; } return { name:p.name, tracked:t }; }).sort((x,y)=>y.tracked-x.tracked);
+    const gc={}; dets.forEach(p=>{ if(p.guess!=null) gc[p.guess]=(gc[p.guess]||0)+1; });
+    const maxG=Math.max.apply(null,Object.values(gc).concat([0]));
+    let tied=Object.keys(gc).filter(k=>gc[k]===maxG).map(Number); let teamPick=tied.length?tied[0]:null;
+    if(tied.length>1){ let best=-1; tied.forEach(fid=>{ const acc=dets.filter(p=>p.guess===fid); let hit=0,tot=0; acc.forEach(p=>{ const a=p.answers||{}; for(let r=1;r<=hist.length;r++){ if(a[r]!=null){ tot++; if((a[r]||[]).indexOf(suspect)>=0) hit++; } } }); const ratio=tot?hit/tot:0; if(ratio>best){ best=ratio; teamPick=fid; } }); }
+    const teamWin=teamPick!=null && teamPick===suspect;
     return (<div className="wrap">{header}
       <div className="revealOverlay"><div className="revealCard" style={{textAlign:"left",maxHeight:"86vh",overflowY:"auto"}}>
         <div className="verdict win" style={{textAlign:"center"}}>Case closed</div>
@@ -854,6 +859,10 @@ function OnlineApp({ onExit }){
           {!amSeer && me && me.guess!=null && <div className="rf"><div className="face" style={{position:"relative"}}><Face file={faces[me.guess]?.file} seed={faces[me.guess]?.seed} /><span style={{position:"absolute",inset:0,display:"grid",placeItems:"center"}}><span style={{transform:"rotate(-16deg)",border:"3px solid var(--no)",color:"var(--no)",fontWeight:900,fontSize:12,letterSpacing:".08em",padding:"1px 7px",borderRadius:4,background:"rgba(14,11,26,.45)"}}>GUILTY</span></span></div><span>You accused</span></div>}
           <div className="rf"><div className="face"><Face file={faces[suspect]?.file} seed={faces[suspect]?.seed} /></div><span style={{color:"var(--mint)"}}>Actually guilty</span></div>
         </div>
+        {maxG>0 && <div style={{textAlign:"center",margin:"0 0 14px",padding:"12px",borderRadius:12,border:"1px solid "+(teamWin?"var(--mint)":"var(--no)"),background:"color-mix(in srgb, "+(teamWin?"var(--mint)":"var(--no)")+" 12%, transparent)"}}>
+          <div style={{fontFamily:"'Fraunces',serif",fontSize:18,fontWeight:600,color:teamWin?"var(--mint)":"var(--no)"}}>{teamWin?"The team caught them! 🎉":"The team missed."}</div>
+          <div style={{fontSize:12,color:"var(--dim)",marginTop:4}}>Collective vote: <b>{maxG}</b> of {dets.length} pointed at the same face{tied.length>1?" (tie broken by cleanest reads)":""}.</div>
+        </div>}
         <div className="label">Final scoreboard</div>
         <div className="roster">{scored.map((b,i)=>(<div key={i} className="prow"><div className="pname"><span style={{color:i===0?"var(--candle)":"var(--mist)"}}>{i+1}. {b.name}</span></div><div style={{textAlign:"right"}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:"var(--psychic)"}}>{b.total} pts</div><div style={{fontSize:10.5,color:"var(--dim)"}}>{b.correct?"caught ✓ ":""}{b.innocent>0?("freed "+b.innocent+" "):""}{b.starHit && <span style={{color:"var(--psychic)",fontWeight:800}}>🔮 TRUE PSYCHIC </span>}{b.freedGuilty?"⚠ freed suspect":""}</div></div></div>))}</div>
         <div style={{fontSize:12,color:"var(--dim)",margin:"6px 0 4px"}}>Seer this game: <b style={{color:"var(--mist)"}}>{seerP2?seerP2.name:"—"}</b></div>
