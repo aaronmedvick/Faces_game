@@ -589,7 +589,7 @@ function Home({configured,onPick}){
       <div style={{textAlign:"center",color:"var(--dim)",fontSize:12,letterSpacing:".22em",textTransform:"uppercase",marginBottom:18}}>a psychic detective party game</div>
       <div className="card" style={{textAlign:"left"}}>
         <p style={{fontFamily:"'Fraunces',serif",fontSize:18,lineHeight:1.5,margin:"0 0 10px"}}>A crime. A sealed file. A lineup of strangers — and one of them did it.</p>
-        <p style={{fontSize:14,lineHeight:1.6,margin:0,color:"var(--dim)"}}>You're a circle of psychics with a single pendulum between you. It answers only <b style={{color:"var(--mint)"}}>yes</b> or <b style={{color:"var(--rose)"}}>no</b>. Vote the questions, read the visions, and name the guilty face before anyone else does.</p>
+        <p style={{fontSize:14,lineHeight:1.6,margin:0,color:"var(--dim)"}}>You're a circle of psychics with a single pendulum between you. It answers only <b style={{color:"var(--mint)"}}>yes</b> or <b style={{color:"var(--rose)"}}>no</b>. Vote the questions, read the visions, and name the guilty — from their face alone.</p>
       </div>
       <div style={{flex:1,minHeight:16}} />
       <button className="go" onClick={()=>onPick("online")}>Play with friends ›</button>
@@ -608,9 +608,10 @@ function Home({configured,onPick}){
 function OnlineApp({ onExit }){
   const inp = { width:"100%", padding:"13px", borderRadius:"12px", border:"1px solid var(--haze)", background:"var(--velvet)", color:"var(--mist)", fontFamily:"inherit", fontSize:"16px", marginBottom:"10px" };
   const [myId] = useState(persistId);
-  const [name,setName] = useState(()=>ls.get("cr_name")||"");
-  const [codeInput,setCodeInput] = useState(()=>{ try{ return new URLSearchParams(location.search).get("join")||ls.get("cr_code")||""; }catch(e){ return ls.get("cr_code")||""; } });
-  const [savedCode] = useState(()=>ls.get("cr_code")||"");
+  const [name,setName] = useState("");
+  const [codeInput,setCodeInput] = useState(()=>{ try{ return new URLSearchParams(location.search).get("join")||""; }catch(e){ return ""; } });
+  const [savedCode,setSavedCode] = useState(()=>ls.get("cr_code")||"");
+  const forgetGame = ()=>{ ls.del("cr_code"); setSavedCode(""); setCodeInput(""); };
   const [code,setCode] = useState("");
   const [game,setGame] = useState(null);
   const [players,setPlayers] = useState([]);
@@ -776,7 +777,7 @@ function OnlineApp({ onExit }){
     return (<div className="wrap">
       <div className="brand">◍ COLD&nbsp;READ</div>
       <div className="brandBig">Join the case</div>
-      {savedCode && <button className="go" style={{background:"var(--psychic)",marginBottom:16}} onClick={resume}>↩ Return to game {savedCode}</button>}
+      {false && savedCode && <button className="go" style={{background:"var(--psychic)",marginBottom:6}} onClick={resume}>↩ Return to game {savedCode}</button>}
       <input style={inp} placeholder="Your detective name" value={name} onChange={e=>setName(e.target.value)} />
       <input style={inp} placeholder="Game code (e.g. K4TQ)" value={codeInput} onChange={e=>setCodeInput(e.target.value)} />
       <button className="go" onClick={joinGame}>Join game</button>
