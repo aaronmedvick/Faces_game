@@ -695,7 +695,8 @@ function OnlineApp({ onExit }){
     const c = randCode();
     const g = await sb.from("games").insert({ code:c, host_id:myId, phase:"lobby", difficulty:"medium", answer_mode:"yesno", seed:Math.floor(Math.random()*1000000)+1, round:1 });
     if(g.error){ setErr(g.error.message); return; }
-    const pi = await sb.from("players").upsert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
+    await sb.from("players").delete().eq("id",myId);
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
     if(pi.error){ setErr("Couldn't create the room: "+pi.error.message); return; }
     ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
@@ -708,7 +709,8 @@ function OnlineApp({ onExit }){
     if(!g.data){ setErr("No game with that code"); return; }
     const ps = await sb.from("players").select("num").eq("code",c);
     const num = (ps.data && ps.data.length ? Math.max.apply(null, ps.data.map(p=>p.num)) : 0) + 1;
-    const pi = await sb.from("players").upsert({ id:myId, code:c, name:name.trim(), num, ready:false });
+    await sb.from("players").delete().eq("id",myId);
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num, ready:false });
     if(pi.error){ setErr("Couldn't join: "+pi.error.message); return; }
     ls.set("cr_code",c); ls.set("cr_name",name.trim());
     setCode(c);
