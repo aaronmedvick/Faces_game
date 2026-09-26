@@ -48,9 +48,9 @@ if(sessionStorage.getItem("cc_admin")!=="1"){
 }
 
 async function load(){ const r=await sb.from("pages").select("*").order("sort").order("name"); return r.data||[]; }
-async function setStatus(slug,status){ await sb.from("pages").update({status}).eq("slug",slug); render("Saved ✓"); }
-async function setUrl(slug){ const v=(document.getElementById("u_"+slug).value||"").trim(); await sb.from("pages").update({url:v}).eq("slug",slug); render("Link saved ✓"); }
-async function del(slug){ if(confirm("Delete this game from the hub?")){ await sb.from("pages").delete().eq("slug",slug); render("Deleted"); } }
+async function setStatus(slug,status){ const r=await sb.from("pages").update({status}).eq("slug",slug); if(r.error) alert("Save failed: "+r.error.message); render(r.error?("⚠ "+r.error.message):"Saved ✓", !!r.error); }
+async function setUrl(slug){ const v=(document.getElementById("u_"+slug).value||"").trim(); const r=await sb.from("pages").update({url:v}).eq("slug",slug); if(r.error) alert("Save failed: "+r.error.message); render(r.error?("⚠ "+r.error.message):"Link saved ✓", !!r.error); }
+async function del(slug){ if(!confirm("Delete this game from the hub?")) return; const r=await sb.from("pages").delete().eq("slug",slug); if(r.error) alert("Delete failed: "+r.error.message); render(r.error?("⚠ "+r.error.message):"Deleted", !!r.error); }
 async function addGame(){
   const name=document.getElementById("f_name").value.trim();
   const url=document.getElementById("f_url").value.trim();
@@ -60,11 +60,11 @@ async function addGame(){
     descr:document.getElementById("f_desc").value.trim(), status:document.getElementById("f_status").value,
     sort:parseInt(document.getElementById("f_sort").value||"0",10)||0 };
   const r=await sb.from("pages").upsert(row);
-  if(r.error){ document.getElementById("msg").textContent="Error: "+r.error.message; return; }
-  render("Added ✓");
+  if(r.error){ alert("Save failed: "+r.error.message); document.getElementById("msg").textContent="⚠ "+r.error.message; return; }
+  render("Saved ✓");
 }
 
-async function render(msg){
+async function render(msg,isError){
   const games=await load();
   app.innerHTML =
     "<h1>Game Admin</h1><div class='sub'>manage what shows on the hub</div>" +
@@ -80,7 +80,7 @@ async function render(msg){
     "<div class='row' style='gap:10px'><div style='flex:0 0 70px'><label>Emoji</label><input id='f_emoji' placeholder='🎲'></div><div style='flex:1'><label>Tag</label><input id='f_tag' placeholder='Party game'></div><div style='flex:0 0 70px'><label>Sort</label><input id='f_sort' type='number' value='0'></div></div>" +
     "<label>Description</label><textarea id='f_desc' placeholder='One-line pitch'></textarea>" +
     "<label>Status</label><select id='f_status'><option value='live'>live</option><option value='demo'>demo</option><option value='soon' selected>coming soon</option><option value='off'>off (hidden)</option></select>" +
-    "<button class='primary' onclick='addGame()'>Save game</button><div class='msg' id='msg'>"+(msg||"")+"</div></div>";
+    "<button class='primary' onclick='addGame()'>Save game</button><div class='msg' id='msg' style='color:"+(isError?"var(--rose)":"var(--mint)")+"'>"+esc(msg||"")+"</div></div>";
 }
 render();
 </script>
