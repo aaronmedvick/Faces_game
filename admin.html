@@ -49,6 +49,7 @@ if(sessionStorage.getItem("cc_admin")!=="1"){
 
 async function load(){ const r=await sb.from("pages").select("*").order("sort").order("name"); return r.data||[]; }
 async function setStatus(slug,status){ await sb.from("pages").update({status}).eq("slug",slug); render("Saved ✓"); }
+async function setUrl(slug){ const v=(document.getElementById("u_"+slug).value||"").trim(); await sb.from("pages").update({url:v}).eq("slug",slug); render("Link saved ✓"); }
 async function del(slug){ if(confirm("Delete this game from the hub?")){ await sb.from("pages").delete().eq("slug",slug); render("Deleted"); } }
 async function addGame(){
   const name=document.getElementById("f_name").value.trim();
@@ -69,7 +70,9 @@ async function render(msg){
     "<h1>Game Admin</h1><div class='sub'>manage what shows on the hub</div>" +
     games.map(g=>{
       const chips=STATUSES.map(s=>"<button class='chip"+(g.status===s?" on "+s:"")+"' onclick=\"setStatus('"+g.slug+"','"+s+"')\">"+s+"</button>").join("");
-      return "<div class='card'><div class='row'><div><div class='nm'>"+g.emoji+" "+esc(g.name)+"</div><div class='u'>"+(esc(g.url)||"— no link —")+"</div></div><button class='del' onclick=\"del('"+g.slug+"')\">delete</button></div><div style='margin-top:10px'>"+chips+"</div></div>";
+      return "<div class='card'><div class='row'><div style='flex:1'><div class='nm'>"+g.emoji+" "+esc(g.name)+"</div></div><button class='del' onclick=\"del('"+g.slug+"')\">delete</button></div>" +
+        "<div class='row' style='margin-top:8px;gap:8px'><input id='u_"+g.slug+"' value=\""+esc(g.url)+"\" placeholder='link e.g. liarspoker.html' style='flex:1'><button class='chip' style='padding:10px 12px' onclick=\"setUrl('"+g.slug+"')\">save link</button></div>" +
+        "<div style='margin-top:10px'>"+chips+"</div></div>";
     }).join("") +
     "<div class='card'><div class='nm' style='margin-bottom:4px'>Add / update a game</div>" +
     "<label>Name</label><input id='f_name' placeholder='Cold Read'>" +
