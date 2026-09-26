@@ -1,0 +1,1781 @@
+{
+  "show": "America's Next Top Model",
+  "source": "en.wikipedia.org/wiki/List_of_America's_Next_Top_Model_contestants",
+  "note": "Rosters only (name, age, hometown). No results included, by design.",
+  "seasons": [
+    {
+      "number": 1,
+      "name": "Cycle 1",
+      "cast": [
+        {
+          "name": "Tessa Carlson",
+          "age": 19,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Katie Cleary",
+          "age": 21,
+          "hometown": "Glenview, IL"
+        },
+        {
+          "name": "Nicole Panattoni",
+          "age": 22,
+          "hometown": "Rancho Murieta, CA"
+        },
+        {
+          "name": "Ebony Haith",
+          "age": 24,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Giselle Samson",
+          "age": 18,
+          "hometown": "Corona, CA"
+        },
+        {
+          "name": "Kesse Wallace",
+          "age": 21,
+          "hometown": "North Little Rock, AR"
+        },
+        {
+          "name": "Robin Manning",
+          "age": 27,
+          "hometown": "Memphis, TN"
+        },
+        {
+          "name": "Elyse Sewell",
+          "age": 20,
+          "hometown": "Albuquerque, NM"
+        },
+        {
+          "name": "Shannon Stewart",
+          "age": 18,
+          "hometown": "Franklin, OH"
+        },
+        {
+          "name": "Adrianne Curry",
+          "age": 20,
+          "hometown": "Joliet, IL"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Cycle 2",
+      "cast": [
+        {
+          "name": "Anna Bradfield",
+          "age": 24,
+          "hometown": "LaGrange, GA"
+        },
+        {
+          "name": "Bethany Harris",
+          "age": 22,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Heather Blumberg",
+          "age": 18,
+          "hometown": "Moreno Valley, CA"
+        },
+        {
+          "name": "Jenascia Chakos",
+          "age": 21,
+          "hometown": "Burien, WA"
+        },
+        {
+          "name": "Xiomara Frans",
+          "age": 25,
+          "hometown": "Morganville, NJ"
+        },
+        {
+          "name": "Catie Anderson",
+          "age": 18,
+          "hometown": "Willmar, MN"
+        },
+        {
+          "name": "Sara Racey-Tabrizi",
+          "age": 22,
+          "hometown": "Seattle, WA"
+        },
+        {
+          "name": "Camille McDonald",
+          "age": 25,
+          "hometown": "Mamaroneck, NY"
+        },
+        {
+          "name": "April Wilkner",
+          "age": 23,
+          "hometown": "Miami Beach, FL"
+        },
+        {
+          "name": "Shandi Sullivan",
+          "age": 21,
+          "hometown": "Kansas City, MO"
+        },
+        {
+          "name": "Mercedes Scelba-Shorte",
+          "age": 22,
+          "hometown": "Valencia, CA"
+        },
+        {
+          "name": "Yoanna House",
+          "age": 23,
+          "hometown": "Jacksonville, FL"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Cycle 3",
+      "cast": [
+        {
+          "name": "Magdalena Rivas",
+          "age": 24,
+          "hometown": "Worcester, MA"
+        },
+        {
+          "name": "Leah Darrow",
+          "age": 24,
+          "hometown": "Oklahoma City, OK"
+        },
+        {
+          "name": "Julie Titus",
+          "age": 20,
+          "hometown": "Kent, WA"
+        },
+        {
+          "name": "Kristi Grommet",
+          "age": 20,
+          "hometown": "St. Louis, MO"
+        },
+        {
+          "name": "Jennipher Frost",
+          "age": 22,
+          "hometown": "Pocatello, ID"
+        },
+        {
+          "name": "Kelle Jacob",
+          "age": 20,
+          "hometown": "New York City, NY"
+        },
+        {
+          "name": "Cassie Grisham",
+          "age": 19,
+          "hometown": "Norman, OK"
+        },
+        {
+          "name": "Toccara Jones",
+          "age": 23,
+          "hometown": "Dayton, OH"
+        },
+        {
+          "name": "Nicole Borud",
+          "age": 21,
+          "hometown": "Minot, ND"
+        },
+        {
+          "name": "Norelle Van Herk",
+          "age": 20,
+          "hometown": "Newport Beach, CA"
+        },
+        {
+          "name": "Ann Markley",
+          "age": 21,
+          "hometown": "Erie, PA"
+        },
+        {
+          "name": "Amanda Swafford",
+          "age": 25,
+          "hometown": "Hendersonville, NC"
+        },
+        {
+          "name": "Yaya DaCosta",
+          "age": 21,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Eva Pigford",
+          "age": 20,
+          "hometown": "Los Angeles"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Cycle 4",
+      "cast": [
+        {
+          "name": "Brita Petersons",
+          "age": 25,
+          "hometown": "La Cañada Flintridge, CA"
+        },
+        {
+          "name": "Sarah Dankelman",
+          "age": 20,
+          "hometown": "Baltimore, MD"
+        },
+        {
+          "name": "Brandy Rusher",
+          "age": 19,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Noelle Staggers",
+          "age": 20,
+          "hometown": "Reno, NV"
+        },
+        {
+          "name": "Lluvy Gomez",
+          "age": 21,
+          "hometown": "Modesto, CA"
+        },
+        {
+          "name": "Tiffany Richardson",
+          "age": 21,
+          "hometown": "Miami, FL"
+        },
+        {
+          "name": "Rebecca Epley",
+          "age": 22,
+          "hometown": "Stillwater, MN"
+        },
+        {
+          "name": "Tatiana Dante",
+          "age": 18,
+          "hometown": "Maui, HI"
+        },
+        {
+          "name": "Michelle Deighton",
+          "age": 19,
+          "hometown": "Terre Haute, IN"
+        },
+        {
+          "name": "Christina Murphy",
+          "age": 24,
+          "hometown": "Tallahassee, FL"
+        },
+        {
+          "name": "Brittany Brower",
+          "age": 22,
+          "hometown": "Tallahassee, FL"
+        },
+        {
+          "name": "Keenyah Hill",
+          "age": 19,
+          "hometown": "Compton, CA"
+        },
+        {
+          "name": "Kahlen Rondot",
+          "age": 20,
+          "hometown": "Broken Arrow, OK"
+        },
+        {
+          "name": "Naima Mora",
+          "age": 20,
+          "hometown": "Detroit, MI"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "Cycle 5",
+      "cast": [
+        {
+          "name": "Ashley Black",
+          "age": 22,
+          "hometown": "Fort Lauderdale, FL"
+        },
+        {
+          "name": "Ebony Taylor",
+          "age": 18,
+          "hometown": "Sylmar, CA"
+        },
+        {
+          "name": "Cassandra Whitehead",
+          "age": 19,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Sarah Rhoades",
+          "age": 18,
+          "hometown": "Boonville, MO"
+        },
+        {
+          "name": "Diane Hernandez",
+          "age": 23,
+          "hometown": "Orlando, FL"
+        },
+        {
+          "name": "Coryn Woitel",
+          "age": 19,
+          "hometown": "Minneapolis, MN"
+        },
+        {
+          "name": "Kyle Kavanagh",
+          "age": 19,
+          "hometown": "Dexter, MI"
+        },
+        {
+          "name": "Lisa D'Amato",
+          "age": 24,
+          "hometown": "Los Angeles"
+        },
+        {
+          "name": "Kim Stolz",
+          "age": 21,
+          "hometown": "New York City, NY"
+        },
+        {
+          "name": "Jayla Rubinelli",
+          "age": 20,
+          "hometown": "Tucson, AZ"
+        },
+        {
+          "name": "Bre Scullark",
+          "age": 20,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Nik Pace",
+          "age": 21,
+          "hometown": "Atlanta, GA"
+        },
+        {
+          "name": "Nicole Linkletter",
+          "age": 20,
+          "hometown": "Grand Forks, ND"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Cycle 6",
+      "cast": [
+        {
+          "name": "Kathy Hoxit",
+          "age": 20,
+          "hometown": "Brevard, NC"
+        },
+        {
+          "name": "Wendy Wiltz",
+          "age": 22,
+          "hometown": "New Orleans, LA"
+        },
+        {
+          "name": "Kari Schmidt",
+          "age": 18,
+          "hometown": "Brookings, SD"
+        },
+        {
+          "name": "Gina Choe",
+          "age": 21,
+          "hometown": "Odessa, FL"
+        },
+        {
+          "name": "Mollie Sue Steenis",
+          "age": 25,
+          "hometown": "Tampa, FL"
+        },
+        {
+          "name": "Leslie Mancia",
+          "age": 18,
+          "hometown": "Higley, AZ"
+        },
+        {
+          "name": "Brooke Staricha",
+          "age": 21,
+          "hometown": "Corpus Christi, TX"
+        },
+        {
+          "name": "Nnenna Agba",
+          "age": 24,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Furonda Brasfield",
+          "age": 24,
+          "hometown": "Stuttgart, AR"
+        },
+        {
+          "name": "Sara Albert",
+          "age": 21,
+          "hometown": "Davis, CA"
+        },
+        {
+          "name": "Jade Cole",
+          "age": 26,
+          "hometown": "New York City, NY"
+        },
+        {
+          "name": "Joanie Dodds",
+          "age": 24,
+          "hometown": "Beaver Falls, PA"
+        },
+        {
+          "name": "Danielle Evans",
+          "age": 20,
+          "hometown": "Little Rock, AR"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "name": "Cycle 7",
+      "cast": [
+        {
+          "name": "Christian Evans",
+          "age": 19,
+          "hometown": "Columbia, SC"
+        },
+        {
+          "name": "Megan Morris",
+          "age": 22,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "Monique Calhoun",
+          "age": 19,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Megg Morales",
+          "age": 18,
+          "hometown": "Los Angeles"
+        },
+        {
+          "name": "A.J Stewart",
+          "age": 20,
+          "hometown": "Sacramento, CA"
+        },
+        {
+          "name": "Brooke Miller",
+          "age": 18,
+          "hometown": "Keller, TX"
+        },
+        {
+          "name": "Anchal Joseph",
+          "age": 19,
+          "hometown": "Homestead, FL"
+        },
+        {
+          "name": "Jaeda Young",
+          "age": 18,
+          "hometown": "Parkersburg, IA"
+        },
+        {
+          "name": "Michelle Babin",
+          "age": 18,
+          "hometown": "Anaheim, CA"
+        },
+        {
+          "name": "Amanda Babin",
+          "age": 18,
+          "hometown": "Anaheim, CA"
+        },
+        {
+          "name": "Eugena Washington",
+          "age": 21,
+          "hometown": "Palmdale, CA"
+        },
+        {
+          "name": "Melrose Bickerstaff",
+          "age": 23,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "CariDee English",
+          "age": 21,
+          "hometown": "Fargo, ND"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "name": "Cycle 8",
+      "cast": [
+        {
+          "name": "Kathleen DuJour",
+          "age": 20,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Samantha Francis",
+          "age": 19,
+          "hometown": "Pinson, AL"
+        },
+        {
+          "name": "Cassandra Watson",
+          "age": 24,
+          "hometown": "Seattle, WA"
+        },
+        {
+          "name": "Felicia Provost",
+          "age": 19,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Diana Zalewski",
+          "age": 21,
+          "hometown": "Garfield, NJ"
+        },
+        {
+          "name": "Sarah VonderHaar",
+          "age": 20,
+          "hometown": "Lake Zurich, IL"
+        },
+        {
+          "name": "Whitney Cunningham",
+          "age": 21,
+          "hometown": "West Palm Beach, FL"
+        },
+        {
+          "name": "Jael Strauss",
+          "age": 22,
+          "hometown": "Detroit, MI"
+        },
+        {
+          "name": "Brittany Hatch",
+          "age": 21,
+          "hometown": "Savannah, GA"
+        },
+        {
+          "name": "Dionne Walters",
+          "age": 20,
+          "hometown": "Montgomery, AL"
+        },
+        {
+          "name": "Renee DeWitt",
+          "age": 20,
+          "hometown": "Maui, HI"
+        },
+        {
+          "name": "Natasha Galkina",
+          "age": 21,
+          "hometown": "Dallas, TX"
+        },
+        {
+          "name": "Jaslene Gonzalez",
+          "age": 20,
+          "hometown": "Chicago, IL"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "name": "Cycle 9",
+      "cast": [
+        {
+          "name": "Mila Bouzinova",
+          "age": 20,
+          "hometown": "Boston, MA"
+        },
+        {
+          "name": "Kimberly Leemans",
+          "age": 20,
+          "hometown": "Ocala, FL"
+        },
+        {
+          "name": "Victoria Marshman",
+          "age": 20,
+          "hometown": "New Haven, CT"
+        },
+        {
+          "name": "Janet Mills",
+          "age": 22,
+          "hometown": "Bainbridge, GA"
+        },
+        {
+          "name": "Ebony Morgan",
+          "age": 20,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Sarah Hartshorne",
+          "age": 20,
+          "hometown": "Heath, MA"
+        },
+        {
+          "name": "Ambreal Williams",
+          "age": 19,
+          "hometown": "Dallas, TX"
+        },
+        {
+          "name": "Lisa Jackson",
+          "age": 20,
+          "hometown": "Jersey City, NJ"
+        },
+        {
+          "name": "Heather Kuzmich",
+          "age": 21,
+          "hometown": "Valparaiso, IN"
+        },
+        {
+          "name": "Bianca Golden",
+          "age": 18,
+          "hometown": "Queens, NY"
+        },
+        {
+          "name": "Jenah Doucette",
+          "age": 18,
+          "hometown": "Farmington, CT"
+        },
+        {
+          "name": "Chantal Jones",
+          "age": 19,
+          "hometown": "Austin, TX"
+        },
+        {
+          "name": "Saleisha Stowers",
+          "age": 21,
+          "hometown": "Los Angeles"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "name": "Cycle 10",
+      "cast": [
+        {
+          "name": "Kim Rydzewski",
+          "age": 20,
+          "hometown": "Worcester, MA"
+        },
+        {
+          "name": "Atalya Slater",
+          "age": 18,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Allison Kuehn",
+          "age": 18,
+          "hometown": "Waunakee, WI"
+        },
+        {
+          "name": "Amis Jenkins",
+          "age": 20,
+          "hometown": "Bartlesville, OK"
+        },
+        {
+          "name": "Marvita Washington",
+          "age": 23,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "Aimee Wright",
+          "age": 18,
+          "hometown": "Spanaway, WA"
+        },
+        {
+          "name": "Claire Unabia",
+          "age": 24,
+          "hometown": "New York City, NY"
+        },
+        {
+          "name": "Stacy-Ann Fequiere",
+          "age": 22,
+          "hometown": "Miami, FL"
+        },
+        {
+          "name": "Lauren Utter",
+          "age": 22,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Katarzyna Dolinska",
+          "age": 22,
+          "hometown": "Roslyn, NY"
+        },
+        {
+          "name": "Dominique Reighard",
+          "age": 23,
+          "hometown": "Columbus, OH"
+        },
+        {
+          "name": "Fatima Siad",
+          "age": 21,
+          "hometown": "Boston, MA"
+        },
+        {
+          "name": "Anya Kop",
+          "age": 18,
+          "hometown": "Honolulu, HI"
+        },
+        {
+          "name": "Whitney Thompson",
+          "age": 20,
+          "hometown": "Atlantic Beach, FL"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "name": "Cycle 11",
+      "cast": [
+        {
+          "name": "Sharaun Brown",
+          "age": 18,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Nikeysha Clarke",
+          "age": 19,
+          "hometown": "Bronx, NY"
+        },
+        {
+          "name": "Brittany Rubalcaba",
+          "age": 19,
+          "hometown": "Henderson, NV"
+        },
+        {
+          "name": "Hannah White",
+          "age": 18,
+          "hometown": "Fairbanks, AK"
+        },
+        {
+          "name": "Isis King",
+          "age": 22,
+          "hometown": "Prince George's County, MD"
+        },
+        {
+          "name": "Clark Gilmer",
+          "age": 19,
+          "hometown": "Pawleys Island, SC"
+        },
+        {
+          "name": "Lauren Brie Harding",
+          "age": 20,
+          "hometown": "Charlottesville, VA"
+        },
+        {
+          "name": "Joslyn Pennywell",
+          "age": 23,
+          "hometown": "Lucky, LA"
+        },
+        {
+          "name": "Sheena Sakai",
+          "age": 21,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Elina Ivanova",
+          "age": 18,
+          "hometown": "Seattle, WA"
+        },
+        {
+          "name": "Marjorie Conrad",
+          "age": 19,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "Lio Tipton",
+          "age": 19,
+          "hometown": "Sacramento, CA"
+        },
+        {
+          "name": "Samantha Potter",
+          "age": 18,
+          "hometown": "Woodland Hills, CA"
+        },
+        {
+          "name": "McKey Sullivan",
+          "age": 19,
+          "hometown": "Lake Forest, IL"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "name": "Cycle 12",
+      "cast": [
+        {
+          "name": "Isabella Falk",
+          "age": 19,
+          "hometown": "Barboursville, VA"
+        },
+        {
+          "name": "Jessica Santiago",
+          "age": 18,
+          "hometown": "Caguas, PR"
+        },
+        {
+          "name": "Nijah Harris",
+          "age": 18,
+          "hometown": "Rancho Cucamonga, CA"
+        },
+        {
+          "name": "Kortnie Coles",
+          "age": 24,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Sandra Nyanchoka",
+          "age": 19,
+          "hometown": "Rockville, MD"
+        },
+        {
+          "name": "Tahlia Brookins",
+          "age": 18,
+          "hometown": "Phoenix, AZ"
+        },
+        {
+          "name": "London Levi",
+          "age": 18,
+          "hometown": "Arlington, TX"
+        },
+        {
+          "name": "Natalie Pack",
+          "age": 19,
+          "hometown": "Palos Verdes, CA"
+        },
+        {
+          "name": "Fo Porter",
+          "age": 19,
+          "hometown": "Albuquerque, NM"
+        },
+        {
+          "name": "Celia Ammerman",
+          "age": 25,
+          "hometown": "Cynthiana, KY"
+        },
+        {
+          "name": "Aminat Ayinde",
+          "age": 21,
+          "hometown": "Union, NJ"
+        },
+        {
+          "name": "Allison Harvard",
+          "age": 20,
+          "hometown": "New Orleans, LA"
+        },
+        {
+          "name": "Teyona Anderson",
+          "age": 20,
+          "hometown": "Woodstown, NJ"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "name": "Cycle 13",
+      "cast": [
+        {
+          "name": "Amber DePace",
+          "age": 18,
+          "hometown": "Oceanside, CA"
+        },
+        {
+          "name": "Lisa Ramos",
+          "age": 19,
+          "hometown": "Queens, NY"
+        },
+        {
+          "name": "Rachel Echelberger",
+          "age": 18,
+          "hometown": "Woodland, CA"
+        },
+        {
+          "name": "Courtney Davies",
+          "age": 22,
+          "hometown": "Plantation, FL"
+        },
+        {
+          "name": "Lulu Braithwaite",
+          "age": 19,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Bianca Richardson",
+          "age": 21,
+          "hometown": "Columbia, SC"
+        },
+        {
+          "name": "Ashley Howard",
+          "age": 22,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Kara Vincent",
+          "age": 18,
+          "hometown": "Fort Wayne, IN"
+        },
+        {
+          "name": "Rae Weisz",
+          "age": 21,
+          "hometown": "Rochester, MN"
+        },
+        {
+          "name": "Brittany Markert",
+          "age": 21,
+          "hometown": "Livermore, CA"
+        },
+        {
+          "name": "Sundai Love",
+          "age": 18,
+          "hometown": "Bakersfield, CA"
+        },
+        {
+          "name": "Jennifer An",
+          "age": 23,
+          "hometown": "Philadelphia, PA"
+        },
+        {
+          "name": "Erin Wagner",
+          "age": 18,
+          "hometown": "Spring Grove, IL"
+        },
+        {
+          "name": "Laura Kirkpatrick",
+          "age": 19,
+          "hometown": "Stanford, KY"
+        },
+        {
+          "name": "Nicole Fox",
+          "age": 18,
+          "hometown": "Louisville, CO"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "name": "Cycle 14",
+      "cast": [
+        {
+          "name": "Gabrielle Kniery",
+          "age": 18,
+          "hometown": "St. Louis, MO"
+        },
+        {
+          "name": "Naduah Rugely",
+          "age": 22,
+          "hometown": "San Diego, CA"
+        },
+        {
+          "name": "Ren Vokes",
+          "age": 22,
+          "hometown": "Dallas, TX"
+        },
+        {
+          "name": "Simone Lewis",
+          "age": 19,
+          "hometown": "Lenexa, KS"
+        },
+        {
+          "name": "Tatianna Kern",
+          "age": 21,
+          "hometown": "ʻEwa Beach, HI"
+        },
+        {
+          "name": "Brenda Arens",
+          "age": 23,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Anslee Payne-Franklin",
+          "age": 23,
+          "hometown": "Dacula, GA"
+        },
+        {
+          "name": "Alasia Ballard",
+          "age": 18,
+          "hometown": "Marietta, GA"
+        },
+        {
+          "name": "Jessica Serfaty",
+          "age": 18,
+          "hometown": "Conway, AR"
+        },
+        {
+          "name": "Angelea Preston",
+          "age": 23,
+          "hometown": "Buffalo, NY"
+        },
+        {
+          "name": "Alexandra Underwood",
+          "age": 21,
+          "hometown": "Kerrville, TX"
+        },
+        {
+          "name": "Raina Hein",
+          "age": 22,
+          "hometown": "Minnetonka, MN"
+        },
+        {
+          "name": "Krista White",
+          "age": 25,
+          "hometown": "Pine Bluff, AR"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "name": "Cycle 15",
+      "cast": [
+        {
+          "name": "Anamaria Mirdita",
+          "age": 18,
+          "hometown": "Queens, NY"
+        },
+        {
+          "name": "Terra White",
+          "age": 24,
+          "hometown": "Arlington, TX"
+        },
+        {
+          "name": "Sara Blackamore",
+          "age": 21,
+          "hometown": "Menifee, CA"
+        },
+        {
+          "name": "Rhianna Atwood",
+          "age": 20,
+          "hometown": "San Diego, CA"
+        },
+        {
+          "name": "Lexie Tomchek",
+          "age": 18,
+          "hometown": "Geneva, IL"
+        },
+        {
+          "name": "Kacey Leggett",
+          "age": 20,
+          "hometown": "Palmdale, CA"
+        },
+        {
+          "name": "Kendal Brown",
+          "age": 23,
+          "hometown": "Northport, AL"
+        },
+        {
+          "name": "Esther Petrack",
+          "age": 18,
+          "hometown": "Boston, MA"
+        },
+        {
+          "name": "Liz Williams",
+          "age": 21,
+          "hometown": "Arlington, TX"
+        },
+        {
+          "name": "Chris White",
+          "age": 20,
+          "hometown": "Arlington, TX"
+        },
+        {
+          "name": "Kayla Ferrel",
+          "age": 19,
+          "hometown": "Rockford, IL"
+        },
+        {
+          "name": "Jane Randall",
+          "age": 19,
+          "hometown": "Baltimore, MD"
+        },
+        {
+          "name": "Chelsey Hersley",
+          "age": 23,
+          "hometown": "Boise, ID"
+        },
+        {
+          "name": "Ann Ward",
+          "age": 19,
+          "hometown": "Dallas, TX"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "name": "Cycle 16",
+      "cast": [
+        {
+          "name": "Angelia Alvarez",
+          "age": 20,
+          "hometown": "Miami, FL"
+        },
+        {
+          "name": "Ondrei Edwards",
+          "age": 18,
+          "hometown": "Muskegon, MI"
+        },
+        {
+          "name": "Nicole Lucas",
+          "age": 20,
+          "hometown": "Orlando, FL"
+        },
+        {
+          "name": "Dominique Waldrup",
+          "age": 23,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Rune Longoria",
+          "age": 18,
+          "hometown": "Edinburg, TX"
+        },
+        {
+          "name": "Dalya Morrow",
+          "age": 21,
+          "hometown": "Corona, CA"
+        },
+        {
+          "name": "Monique Weingart",
+          "age": 19,
+          "hometown": "Hebron, IL"
+        },
+        {
+          "name": "Mikaela Schipani",
+          "age": 21,
+          "hometown": "Boca Raton, FL"
+        },
+        {
+          "name": "Jaclyn Poole",
+          "age": 20,
+          "hometown": "Belton, TX"
+        },
+        {
+          "name": "Kasia Pilewicz",
+          "age": 26,
+          "hometown": "Wheaton, IL"
+        },
+        {
+          "name": "Alexandria Everett",
+          "age": 21,
+          "hometown": "Huntington Beach, CA"
+        },
+        {
+          "name": "Hannah Jones",
+          "age": 20,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Molly O'Connell",
+          "age": 22,
+          "hometown": "Charleston, SC"
+        },
+        {
+          "name": "Brittani Kline",
+          "age": 19,
+          "hometown": "Beech Creek, PA"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "name": "Cycle 17",
+      "cast": [
+        {
+          "name": "Brittany Brower",
+          "age": 29,
+          "hometown": "Tallahassee, FL"
+        },
+        {
+          "name": "Sheena Sakai",
+          "age": 24,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Isis King",
+          "age": 25,
+          "hometown": "Prince George's County, MD"
+        },
+        {
+          "name": "Camille McDonald",
+          "age": 33,
+          "hometown": "Mamaroneck, NY"
+        },
+        {
+          "name": "Bre Scullark",
+          "age": 26,
+          "hometown": "Harlem, NY"
+        },
+        {
+          "name": "Kayla Ferrel",
+          "age": 20,
+          "hometown": "Rockford, IL"
+        },
+        {
+          "name": "Bianca Golden",
+          "age": 22,
+          "hometown": "Queens, NY"
+        },
+        {
+          "name": "Alexandria Everett",
+          "age": 22,
+          "hometown": "Huntington Beach, CA"
+        },
+        {
+          "name": "Shannon Stewart",
+          "age": 27,
+          "hometown": "Franklin, OH"
+        },
+        {
+          "name": "Dominique Reighard",
+          "age": 26,
+          "hometown": "Columbus, OH"
+        },
+        {
+          "name": "Laura Kirkpatrick",
+          "age": 22,
+          "hometown": "Stanford, KY"
+        },
+        {
+          "name": "Angelea Preston",
+          "age": 25,
+          "hometown": "Buffalo, NY"
+        },
+        {
+          "name": "Allison Harvard",
+          "age": 23,
+          "hometown": "New Orleans, LA"
+        },
+        {
+          "name": "Lisa D'Amato",
+          "age": 30,
+          "hometown": "Los Angeles"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "name": "Cycle 18",
+      "cast": [
+        {
+          "name": "Jasmia Robinson",
+          "age": 24,
+          "hometown": "London, England"
+        },
+        {
+          "name": "Mariah Watchman",
+          "age": 20,
+          "hometown": "Pendleton, OR"
+        },
+        {
+          "name": "Louise Watts",
+          "age": 25,
+          "hometown": "South London, England"
+        },
+        {
+          "name": "Candace Smith",
+          "age": 22,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Ashley Brown",
+          "age": 22,
+          "hometown": "Armadale, Scotland"
+        },
+        {
+          "name": "AzMarie Livingston",
+          "age": 24,
+          "hometown": "Milwaukee, WI"
+        },
+        {
+          "name": "Kyle Gober",
+          "age": 20,
+          "hometown": "Magnolia, TX"
+        },
+        {
+          "name": "Seymone Cohen-Fobish",
+          "age": 19,
+          "hometown": "Augusta, GA"
+        },
+        {
+          "name": "Catherine Thomas",
+          "age": 21,
+          "hometown": "Folkestone, England"
+        },
+        {
+          "name": "Eboni Davis",
+          "age": 18,
+          "hometown": "Seattle, WA"
+        },
+        {
+          "name": "Alisha White",
+          "age": 20,
+          "hometown": "South London, England"
+        },
+        {
+          "name": "Annaliese Dayes",
+          "age": 24,
+          "hometown": "London, England"
+        },
+        {
+          "name": "Laura LaFrate",
+          "age": 20,
+          "hometown": "Scotia, NY"
+        },
+        {
+          "name": "Sophie Sumner",
+          "age": 21,
+          "hometown": "Oxford, England"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "name": "Cycle 19",
+      "cast": [
+        {
+          "name": "Jessie Rabideau",
+          "age": 23,
+          "hometown": "Speedway, IN"
+        },
+        {
+          "name": "Maria Tucker",
+          "age": 22,
+          "hometown": "Las Cruces, NM"
+        },
+        {
+          "name": "Darian Ellis",
+          "age": 22,
+          "hometown": "Baton Rouge, LA"
+        },
+        {
+          "name": "Destiny Strudwick",
+          "age": 18,
+          "hometown": "Columbus, OH"
+        },
+        {
+          "name": "Yvonne Powless",
+          "age": 20,
+          "hometown": "Minneapolis, MN"
+        },
+        {
+          "name": "Allyssa Vuelma",
+          "age": 20,
+          "hometown": "Fort Lauderdale, FL"
+        },
+        {
+          "name": "Brittany Brown",
+          "age": 18,
+          "hometown": "Gilbert, AZ"
+        },
+        {
+          "name": "Victoria Henley",
+          "age": 18,
+          "hometown": "Colquitt, GA"
+        },
+        {
+          "name": "Kristin Kagay",
+          "age": 19,
+          "hometown": "Jacksonville, FL"
+        },
+        {
+          "name": "Nastasia Scott",
+          "age": 19,
+          "hometown": "East Stroudsburg, PA"
+        },
+        {
+          "name": "Leila Goldkuhl",
+          "age": 20,
+          "hometown": "Framingham, MA"
+        },
+        {
+          "name": "Kiara Belen",
+          "age": 22,
+          "hometown": "Las Vegas, NV"
+        },
+        {
+          "name": "Laura James",
+          "age": 21,
+          "hometown": "Cambridge, NY"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Cycle 20",
+      "cast": [
+        {
+          "name": "Bianca Alexa",
+          "age": 18,
+          "hometown": "Los Angeles"
+        },
+        {
+          "name": "Chris Schellenger",
+          "age": 24,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Chlea Ramirez",
+          "age": 20,
+          "hometown": "Bear, DE"
+        },
+        {
+          "name": "Mike Scocozza",
+          "age": 27,
+          "hometown": "Los Angeles"
+        },
+        {
+          "name": "Kanani Andaluz",
+          "age": 19,
+          "hometown": "Chicago, IL"
+        },
+        {
+          "name": "Jiana Davis",
+          "age": 20,
+          "hometown": "Denver, CO"
+        },
+        {
+          "name": "Phil Sullivan",
+          "age": 24,
+          "hometown": "Lanesborough, MA"
+        },
+        {
+          "name": "Alexandra Agro",
+          "age": 21,
+          "hometown": "Palm City, FL"
+        },
+        {
+          "name": "Don Benjamin",
+          "age": 25,
+          "hometown": "Minneapolis, MN"
+        },
+        {
+          "name": "Nina Burns",
+          "age": 18,
+          "hometown": "Berkeley Heights, NJ"
+        },
+        {
+          "name": "Jeremy Rohmer",
+          "age": 20,
+          "hometown": "Mission Viejo, CA"
+        },
+        {
+          "name": "Renee Bhagwandeen",
+          "age": 24,
+          "hometown": "Fort Lauderdale, FL"
+        },
+        {
+          "name": "Chris Hernandez",
+          "age": 25,
+          "hometown": "North Bergen, NJ"
+        },
+        {
+          "name": "Cory Hindorff",
+          "age": 22,
+          "hometown": "Philadelphia, PA"
+        },
+        {
+          "name": "Marvin Cortés",
+          "age": 20,
+          "hometown": "Bronx, NY"
+        },
+        {
+          "name": "Jourdan Miller",
+          "age": 19,
+          "hometown": "Bend, OR"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "name": "Cycle 21",
+      "cast": [
+        {
+          "name": "Ivy Timlin",
+          "age": 20,
+          "hometown": "Buffalo, NY"
+        },
+        {
+          "name": "Romeo Tostado",
+          "age": 23,
+          "hometown": "Salinas, CA"
+        },
+        {
+          "name": "Ben Schreen",
+          "age": 24,
+          "hometown": "Waverly, IA"
+        },
+        {
+          "name": "Kari Calhoun",
+          "age": 23,
+          "hometown": "Coppell, TX"
+        },
+        {
+          "name": "Matthew Smith",
+          "age": 24,
+          "hometown": "Highlands Ranch, CO"
+        },
+        {
+          "name": "Denzel Wells",
+          "age": 23,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Mirjana Puhar",
+          "age": 18,
+          "hometown": "Charlotte, NC"
+        },
+        {
+          "name": "Raelia Lewis",
+          "age": 22,
+          "hometown": "Philadelphia, PA"
+        },
+        {
+          "name": "Chantelle Young",
+          "age": 19,
+          "hometown": "Toronto, Canada"
+        },
+        {
+          "name": "Shei Phan",
+          "age": 22,
+          "hometown": "Oklahoma City, OK"
+        },
+        {
+          "name": "Lenox Tillman",
+          "age": 19,
+          "hometown": "Newnan, GA"
+        },
+        {
+          "name": "Adam Smith",
+          "age": 26,
+          "hometown": "Memphis, TX"
+        },
+        {
+          "name": "Will Jardell",
+          "age": 23,
+          "hometown": "Nederland, TX"
+        },
+        {
+          "name": "Keith Carlos",
+          "age": 26,
+          "hometown": "Bridgeport, CT"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "name": "Cycle 22",
+      "cast": [
+        {
+          "name": "Delanie Dischert",
+          "age": 21,
+          "hometown": "Wilmington, DE"
+        },
+        {
+          "name": "Stefano Churchill",
+          "age": 23,
+          "hometown": "Virginia Beach, VA"
+        },
+        {
+          "name": "Ava Capra",
+          "age": 19,
+          "hometown": "Los Angeles"
+        },
+        {
+          "name": "Ashley Molina",
+          "age": 21,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "Courtney DuPerow",
+          "age": 21,
+          "hometown": "Avon Lake, OH"
+        },
+        {
+          "name": "Bello Sánchez",
+          "age": 26,
+          "hometown": "Los Angeles, CA"
+        },
+        {
+          "name": "Justin Kim",
+          "age": 23,
+          "hometown": "Springfield, VA"
+        },
+        {
+          "name": "Dustin McNeer",
+          "age": 18,
+          "hometown": "Kernersville, NC"
+        },
+        {
+          "name": "Hadassah Richardson",
+          "age": 23,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Devin Clark",
+          "age": 22,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "Mikey Heverly",
+          "age": 26,
+          "hometown": "Hollywood, FL"
+        },
+        {
+          "name": "Lacey Rogers",
+          "age": 18,
+          "hometown": "El Dorado, AR"
+        },
+        {
+          "name": "Mamé Adjei",
+          "age": 23,
+          "hometown": "Silver Spring, MD"
+        },
+        {
+          "name": "Nyle DiMarco",
+          "age": 25,
+          "hometown": "Washington, D.C."
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "name": "Cycle 23",
+      "cast": [
+        {
+          "name": "Justine Biticon",
+          "age": 18,
+          "hometown": "Panorama City, CA"
+        },
+        {
+          "name": "Cherish Waters",
+          "age": 25,
+          "hometown": "Los Angeles, CA"
+        },
+        {
+          "name": "Giah Hardeman",
+          "age": 21,
+          "hometown": "Bryan-College Station, TX"
+        },
+        {
+          "name": "Krislian Rodriguez",
+          "age": 25,
+          "hometown": "Los Angeles, CA"
+        },
+        {
+          "name": "Kyle McCoy",
+          "age": 23,
+          "hometown": "Darien, CT"
+        },
+        {
+          "name": "Binta Dibba",
+          "age": 25,
+          "hometown": "Seattle, WA"
+        },
+        {
+          "name": "Marissa Hopkins",
+          "age": 18,
+          "hometown": "Houston, TX"
+        },
+        {
+          "name": "Paige Mobley",
+          "age": 22,
+          "hometown": "Birmingham, MI"
+        },
+        {
+          "name": "Tash Wells",
+          "age": 26,
+          "hometown": "San Jose, CA"
+        },
+        {
+          "name": "Cody Wells",
+          "age": 26,
+          "hometown": "San Jose, CA"
+        },
+        {
+          "name": "Courtney Nelson",
+          "age": 25,
+          "hometown": "San Francisco, CA"
+        },
+        {
+          "name": "CoryAnne Roberts",
+          "age": 19,
+          "hometown": "Denpasar, Bali, Indonesia"
+        },
+        {
+          "name": "Tatiana Price",
+          "age": 21,
+          "hometown": "Brooklyn, NY"
+        },
+        {
+          "name": "India Gants",
+          "age": 20,
+          "hometown": "Seattle, WA"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "name": "Cycle 24",
+      "cast": [
+        {
+          "name": "Maggie Keating",
+          "age": 20,
+          "hometown": "Surry, ME"
+        },
+        {
+          "name": "Ivana Thomas",
+          "age": 23,
+          "hometown": "Durham, NC"
+        },
+        {
+          "name": "Liz Woodbury",
+          "age": 24,
+          "hometown": "Greenville, MA"
+        },
+        {
+          "name": "Rhiyan Carreker",
+          "age": 20,
+          "hometown": "Orange County, CA"
+        },
+        {
+          "name": "Coura Fall",
+          "age": 24,
+          "hometown": "Eastvale, CA"
+        },
+        {
+          "name": "Liberty Netuschil",
+          "age": 20,
+          "hometown": "Lava Hot Springs, ID"
+        },
+        {
+          "name": "Christina McDonald",
+          "age": 34,
+          "hometown": "Jenkintown, PA"
+        },
+        {
+          "name": "Sandra Shehab",
+          "age": 22,
+          "hometown": "Cliffside Park, NJ"
+        },
+        {
+          "name": "Brendi K Seiner",
+          "age": 22,
+          "hometown": "Nashville, TN"
+        },
+        {
+          "name": "Erin Green",
+          "age": 42,
+          "hometown": "Pasadena, CA"
+        },
+        {
+          "name": "Rio Summers",
+          "age": 23,
+          "hometown": "Detroit, MI"
+        },
+        {
+          "name": "Shanice Carroll",
+          "age": 25,
+          "hometown": "Murfreesboro, TN"
+        },
+        {
+          "name": "Khrystyana Kazakova",
+          "age": 32,
+          "hometown": "New York, NY"
+        },
+        {
+          "name": "Jeana Turner",
+          "age": 24,
+          "hometown": "Minneapolis, MN"
+        },
+        {
+          "name": "Kyla Coleman",
+          "age": 20,
+          "hometown": "Lacey, WA"
+        }
+      ]
+    }
+  ]
+}

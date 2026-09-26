@@ -1,0 +1,5941 @@
+{
+  "show": "Survivor (US)",
+  "source": "en.wikipedia.org/wiki/List_of_Survivor_(American_TV_series)_contestants",
+  "note": "Rosters only. No elimination order or results included, by design.",
+  "seasons": [
+    {
+      "number": 1,
+      "name": "Survivor: Borneo",
+      "cast": [
+        {
+          "name": "Sonja Christopher",
+          "age": 63,
+          "hometown": "Walnut Creek, CA",
+          "profession": "Musician"
+        },
+        {
+          "name": "Bill \"B.B.\" Andersen",
+          "age": 64,
+          "hometown": "Mission Hills, KS",
+          "profession": "Real Estate Developer"
+        },
+        {
+          "name": "Stacey Stillman",
+          "age": 27,
+          "hometown": "San Francisco, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Ramona Gray",
+          "age": 29,
+          "hometown": "Edison, NJ",
+          "profession": "Biochemist"
+        },
+        {
+          "name": "Dirk Been",
+          "age": 23,
+          "hometown": "Spring Green, WI",
+          "profession": "Dairy Farmer"
+        },
+        {
+          "name": "Joel Klug",
+          "age": 27,
+          "hometown": "Sherwood, AR",
+          "profession": "Health Club Consultant"
+        },
+        {
+          "name": "Gretchen Cordy",
+          "age": 38,
+          "hometown": "Clarksville, TN",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Greg Buis",
+          "age": 24,
+          "hometown": "Gold Hill, CO",
+          "profession": "Ivy League Graduate"
+        },
+        {
+          "name": "Jenna Lewis",
+          "age": 22,
+          "hometown": "Franklin, NH",
+          "profession": "Student"
+        },
+        {
+          "name": "Gervase Peterson",
+          "age": 30,
+          "hometown": "Willingboro, NJ",
+          "profession": "YMCA Basketball Coach"
+        },
+        {
+          "name": "Colleen Haskell",
+          "age": 23,
+          "hometown": "Miami Beach, FL",
+          "profession": "Student"
+        },
+        {
+          "name": "Sean Kenniff",
+          "age": 30,
+          "hometown": "Carle Place, NY",
+          "profession": "Neurologist"
+        },
+        {
+          "name": "Sue Hawk",
+          "age": 38,
+          "hometown": "Palmyra, WI",
+          "profession": "Truck Driver"
+        },
+        {
+          "name": "Rudy Boesch",
+          "age": 72,
+          "hometown": "Virginia Beach, VA",
+          "profession": "Retired NAVY Seal"
+        },
+        {
+          "name": "Kelly Wiglesworth",
+          "age": 22,
+          "hometown": "Kernville, CA",
+          "profession": "River Rafting Guide"
+        },
+        {
+          "name": "Richard Hatch",
+          "age": 39,
+          "hometown": "Newport, RI",
+          "profession": "Corporate Trainer"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Survivor: The Australian Outback",
+      "cast": [
+        {
+          "name": "Debb Eaton",
+          "age": 45,
+          "hometown": "Milan, NH",
+          "profession": "Corrections Officer"
+        },
+        {
+          "name": "Kel Gleason",
+          "age": 32,
+          "hometown": "Fort Hood, TX",
+          "profession": "Army Intelligence Officer"
+        },
+        {
+          "name": "Maralyn \"Mad Dog\" Hershey",
+          "age": 51,
+          "hometown": "Wakefield, VA",
+          "profession": "Retired Police Officer"
+        },
+        {
+          "name": "Mitchell Olson",
+          "age": 23,
+          "hometown": "Union City, NJ",
+          "profession": "Singer/Songwriter"
+        },
+        {
+          "name": "Kimmi Kappenberg",
+          "age": 28,
+          "hometown": "Ronkonkoma, NY",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Michael Skupin",
+          "age": 38,
+          "hometown": "White Lake, MI",
+          "profession": "Software Publisher"
+        },
+        {
+          "name": "Jeff Varner",
+          "age": 34,
+          "hometown": "New York, NY",
+          "profession": "Internet Projects Manager"
+        },
+        {
+          "name": "Alicia Calaway",
+          "age": 32,
+          "hometown": "New York, NY",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Jerri Manthey",
+          "age": 30,
+          "hometown": "Los Angeles, CA",
+          "profession": "Aspiring Actress"
+        },
+        {
+          "name": "Nick Brown",
+          "age": 23,
+          "hometown": "Steilacoom, WA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Amber Brkich",
+          "age": 22,
+          "hometown": "Beaver, PA",
+          "profession": "Administrative Assistant"
+        },
+        {
+          "name": "Rodger Bingham",
+          "age": 53,
+          "hometown": "Crittenden, KY",
+          "profession": "Teacher/Farmer"
+        },
+        {
+          "name": "Elisabeth Filarski",
+          "age": 23,
+          "hometown": "Newton, MA",
+          "profession": "Footwear Designer"
+        },
+        {
+          "name": "Keith Famie",
+          "age": 40,
+          "hometown": "West Bloomfield, MI",
+          "profession": "Chef"
+        },
+        {
+          "name": "Colby Donaldson",
+          "age": 26,
+          "hometown": "Dallas, TX",
+          "profession": "Auto Customizer"
+        },
+        {
+          "name": "Tina Wesson",
+          "age": 39,
+          "hometown": "Knoxville, TN",
+          "profession": "Personal Nurse"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Survivor: Africa",
+      "cast": [
+        {
+          "name": "Diane Ogden",
+          "age": 42,
+          "hometown": "Lincoln, NE",
+          "profession": "Mail Carrier"
+        },
+        {
+          "name": "Yesenia \"Jessie\" Camacho",
+          "age": 27,
+          "hometown": "Orlando, FL",
+          "profession": "Sheriff"
+        },
+        {
+          "name": "Carl Bilancione",
+          "age": 46,
+          "hometown": "Winter Springs, FL",
+          "profession": "Dentist"
+        },
+        {
+          "name": "Linda Spencer",
+          "age": 44,
+          "hometown": "Boston, MA",
+          "profession": "Career Counselor"
+        },
+        {
+          "name": "Silas Gaither",
+          "age": 23,
+          "hometown": "Los Angeles, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Lindsey Richter",
+          "age": 27,
+          "hometown": "Portland, OR",
+          "profession": "Advertising Executive"
+        },
+        {
+          "name": "Clarence Black",
+          "age": 24,
+          "hometown": "Detroit, MI",
+          "profession": "Basketball Coach"
+        },
+        {
+          "name": "Kelly Goldsmith",
+          "age": 22,
+          "hometown": "San Diego, CA",
+          "profession": "Behavior Analyst"
+        },
+        {
+          "name": "Brandon Quinton",
+          "age": 25,
+          "hometown": "Dallas, TX",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Frank Garrison",
+          "age": 43,
+          "hometown": "Odessa, NY",
+          "profession": "Telephone Technician"
+        },
+        {
+          "name": "Kimberly \"Kim\" Powers",
+          "age": 29,
+          "hometown": "Conshohocken, PA",
+          "profession": "Freelance Marketer"
+        },
+        {
+          "name": "Teresa Cooper",
+          "age": 42,
+          "hometown": "Jackson, GA",
+          "profession": "Flight Attendant"
+        },
+        {
+          "name": "Tom \"Big Tom\" Buchanan",
+          "age": 46,
+          "hometown": "Rich Valley, VA",
+          "profession": "Goat Farmer"
+        },
+        {
+          "name": "Alexis \"Lex\" van den Berghe",
+          "age": 38,
+          "hometown": "Santa Cruz, CA",
+          "profession": "Marketing Manager"
+        },
+        {
+          "name": "Kim Johnson",
+          "age": 57,
+          "hometown": "Oyster Bay, NY",
+          "profession": "Retired Teacher"
+        },
+        {
+          "name": "Ethan Zohn",
+          "age": 27,
+          "hometown": "New York, NY",
+          "profession": "Professional Soccer Player"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Survivor: Marquesas",
+      "cast": [
+        {
+          "name": "Peter Harkey",
+          "age": 45,
+          "hometown": "Millis, MA",
+          "profession": "Bowling Alley Owner"
+        },
+        {
+          "name": "Patricia Jackson",
+          "age": 49,
+          "hometown": "Lugoff, SC",
+          "profession": "Truck Assembler"
+        },
+        {
+          "name": "Hunter Ellis",
+          "age": 33,
+          "hometown": "La Jolla, CA",
+          "profession": "Ex-Navy Fighter Pilot"
+        },
+        {
+          "name": "Sarah Jones",
+          "age": 24,
+          "hometown": "Newport Beach, CA",
+          "profession": "Account Manager"
+        },
+        {
+          "name": "Gabriel \"Gabe\" Cade",
+          "age": 23,
+          "hometown": "Hollywood, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Gina Crews",
+          "age": 28,
+          "hometown": "Gainesville, FL",
+          "profession": "Nature Guide"
+        },
+        {
+          "name": "Robert \"Rob\" Mariano",
+          "age": 26,
+          "hometown": "Canton, MA",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "John Carroll",
+          "age": 36,
+          "hometown": "Omaha, NE",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Zoe Zanidakis",
+          "age": 35,
+          "hometown": "Monhegan Island, ME",
+          "profession": "Fishing Boat Captain"
+        },
+        {
+          "name": "Tammy Leitner",
+          "age": 29,
+          "hometown": "Mesa, AZ",
+          "profession": "Crime Reporter"
+        },
+        {
+          "name": "Robert \"The General\" DeCanio",
+          "age": 38,
+          "hometown": "College Point, NY",
+          "profession": "Limousine Driver"
+        },
+        {
+          "name": "Sean Rector",
+          "age": 30,
+          "hometown": "Los Angeles, CA",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Paschal \"Pappy\" English",
+          "age": 57,
+          "hometown": "Thomaston, GA",
+          "profession": "Judge"
+        },
+        {
+          "name": "Kathleen \"Kathy\" Vavrick-O'Brien",
+          "age": 47,
+          "hometown": "Burlington, VT",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Neleh Dennis",
+          "age": 21,
+          "hometown": "Layton, UT",
+          "profession": "Student"
+        },
+        {
+          "name": "Vecepia Towery",
+          "age": 36,
+          "hometown": "Hayward, CA",
+          "profession": "Office Manager"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "Survivor: Thailand",
+      "cast": [
+        {
+          "name": "John Raymond",
+          "age": 40,
+          "hometown": "Slidell, LA",
+          "profession": "Pastor"
+        },
+        {
+          "name": "Tanya Vance",
+          "age": 27,
+          "hometown": "Kingsport, TN",
+          "profession": "Social Worker"
+        },
+        {
+          "name": "Jed Hildebrand",
+          "age": 25,
+          "hometown": "Dallas, TX",
+          "profession": "Dental Student"
+        },
+        {
+          "name": "Ghandia Johnson",
+          "age": 33,
+          "hometown": "Denver, CO",
+          "profession": "Legal Secretary"
+        },
+        {
+          "name": "Stephanie Dill",
+          "age": 29,
+          "hometown": "Fayetteville, AR",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Robert \"Robb\" Zbacnik",
+          "age": 23,
+          "hometown": "Scottsdale, AZ",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Shii Ann Huang",
+          "age": 28,
+          "hometown": "New York, NY",
+          "profession": "Executive Recruiter"
+        },
+        {
+          "name": "Erin Collins",
+          "age": 26,
+          "hometown": "Austin, TX",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Kenneth \"Ken\" Stafford",
+          "age": 30,
+          "hometown": "Brooklyn, NY",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Penny Ramsey",
+          "age": 27,
+          "hometown": "Plano, TX",
+          "profession": "Pharmaceutical Saleswoman"
+        },
+        {
+          "name": "Jake Billingsley",
+          "age": 61,
+          "hometown": "McKinney, TX",
+          "profession": "Land Broker"
+        },
+        {
+          "name": "Ted Rogers, Jr.",
+          "age": 37,
+          "hometown": "Durham, NC",
+          "profession": "Software Developer"
+        },
+        {
+          "name": "Helen Glover",
+          "age": 47,
+          "hometown": "Middletown, RI",
+          "profession": "Navy Swim Instructor"
+        },
+        {
+          "name": "Jan Gentry",
+          "age": 53,
+          "hometown": "Tampa, FL",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Clay Jordan",
+          "age": 46,
+          "hometown": "Monroe, LA",
+          "profession": "Restaurant Owner"
+        },
+        {
+          "name": "Brian Heidik",
+          "age": 34,
+          "hometown": "Quartz Hill, CA",
+          "profession": "Used Car Salesman"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Survivor: The Amazon",
+      "cast": [
+        {
+          "name": "Ryan Aiken",
+          "age": 23,
+          "hometown": "Ellicott City, MD",
+          "profession": "Model"
+        },
+        {
+          "name": "Janet Koth",
+          "age": 47,
+          "hometown": "Manchester, MO",
+          "profession": "Homemaker"
+        },
+        {
+          "name": "Daniel Lue",
+          "age": 27,
+          "hometown": "Houston, TX",
+          "profession": "Tax Accountant"
+        },
+        {
+          "name": "JoAnna Ward",
+          "age": 31,
+          "hometown": "Orangeburg, SC",
+          "profession": "Guidance Counselor"
+        },
+        {
+          "name": "Jeanne Hebert",
+          "age": 41,
+          "hometown": "North Attleborough, MA",
+          "profession": "Marketing Director"
+        },
+        {
+          "name": "Shawna Mitchell",
+          "age": 23,
+          "hometown": "Redwood City, CA",
+          "profession": "Retail Saleswoman"
+        },
+        {
+          "name": "Roger Sexton",
+          "age": 56,
+          "hometown": "Valencia, CA",
+          "profession": "Construction Company Vice President"
+        },
+        {
+          "name": "Dave Johnson",
+          "age": 24,
+          "hometown": "Pasadena, CA",
+          "profession": "Rocket Scientist"
+        },
+        {
+          "name": "Deena Bennett",
+          "age": 35,
+          "hometown": "Riverside, CA",
+          "profession": "Deputy District Attorney"
+        },
+        {
+          "name": "Alex Bell",
+          "age": 32,
+          "hometown": "Los Angeles, CA",
+          "profession": "Triathlon Coach"
+        },
+        {
+          "name": "Christy Smith",
+          "age": 24,
+          "hometown": "Basalt, CO",
+          "profession": "Children's Adventure Guide"
+        },
+        {
+          "name": "Heidi Strobel",
+          "age": 24,
+          "hometown": "Jefferson City, MO",
+          "profession": "Gym Teacher"
+        },
+        {
+          "name": "Butch Lockley",
+          "age": 50,
+          "hometown": "Olney, IL",
+          "profession": "School Principal"
+        },
+        {
+          "name": "Rob Cesternino",
+          "age": 24,
+          "hometown": "Wantagh, NY",
+          "profession": "Computer Projects Coordinator"
+        },
+        {
+          "name": "Matthew von Ertfelda",
+          "age": 33,
+          "hometown": "Washington, D.C.",
+          "profession": "Restaurant Designer"
+        },
+        {
+          "name": "Jenna Morasca",
+          "age": 21,
+          "hometown": "Pittsburgh, PA",
+          "profession": "Swimsuit Model"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "name": "Survivor: Pearl Islands",
+      "cast": [
+        {
+          "name": "Nicole Delma",
+          "age": 24,
+          "hometown": "Hermosa Beach, CA",
+          "profession": "Massage Therapist"
+        },
+        {
+          "name": "Ryan Shoulders",
+          "age": 23,
+          "hometown": "Clarksville, TN",
+          "profession": "Produce Clerk"
+        },
+        {
+          "name": "Michelle Tesauro",
+          "age": 22,
+          "hometown": "Pittstown, NJ",
+          "profession": "Student"
+        },
+        {
+          "name": "Trish Dunn",
+          "age": 42,
+          "hometown": "Annapolis, MD",
+          "profession": "Sales Executive"
+        },
+        {
+          "name": "Shawn Cohen",
+          "age": 28,
+          "hometown": "New York, NY",
+          "profession": "Advertising Salesman"
+        },
+        {
+          "name": "Osten Taylor",
+          "age": 27,
+          "hometown": "Boston, MA",
+          "profession": "Equity Trade Manager"
+        },
+        {
+          "name": "Andrew Savage",
+          "age": 40,
+          "hometown": "Chicago, IL",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Ryan Opray",
+          "age": 31,
+          "hometown": "Los Gatos, CA",
+          "profession": "Electrician"
+        },
+        {
+          "name": "Rupert Boneham",
+          "age": 39,
+          "hometown": "Indianapolis, IN",
+          "profession": "Troubled Teens Mentor"
+        },
+        {
+          "name": "Tijuana Bradley",
+          "age": 27,
+          "hometown": "St. Louis, MO",
+          "profession": "Pharmaceutical Saleswoman"
+        },
+        {
+          "name": "Christa Hastie",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Computer Programmer"
+        },
+        {
+          "name": "Burton Roberts",
+          "age": 31,
+          "hometown": "San Francisco, CA",
+          "profession": "Marketing Executive"
+        },
+        {
+          "name": "Darrah Johnson",
+          "age": 22,
+          "hometown": "Liberty, MS",
+          "profession": "Mortician"
+        },
+        {
+          "name": "Jon \"Jonny Fairplay\" Dalton",
+          "age": 29,
+          "hometown": "Danville, VA",
+          "profession": "Art Consultant"
+        },
+        {
+          "name": "Lillian Morris",
+          "age": 51,
+          "hometown": "Cincinnati, OH",
+          "profession": "Scoutmaster"
+        },
+        {
+          "name": "Sandra Diaz-Twine",
+          "age": 29,
+          "hometown": "Fort Lewis, WA",
+          "profession": "Office Assistant"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "name": "Survivor: All-Stars",
+      "cast": [
+        {
+          "name": "Tina Wesson",
+          "age": 42,
+          "hometown": "Knoxville, TN",
+          "profession": "Motivational Speaker"
+        },
+        {
+          "name": "Rudy Boesch",
+          "age": 75,
+          "hometown": "Virginia Beach, VA",
+          "profession": "Retired Navy Seal"
+        },
+        {
+          "name": "Jenna Morasca",
+          "age": 22,
+          "hometown": "Pittsburgh, PA",
+          "profession": "Swimsuit Model"
+        },
+        {
+          "name": "Rob Cesternino",
+          "age": 25,
+          "hometown": "Wantagh, NY",
+          "profession": "Computer Projects Coordinator"
+        },
+        {
+          "name": "Richard Hatch",
+          "age": 42,
+          "hometown": "Newport, RI",
+          "profession": "Corporate Trainer"
+        },
+        {
+          "name": "Sue Hawk",
+          "age": 42,
+          "hometown": "Palmyra, WI",
+          "profession": "Waitress/Bartender"
+        },
+        {
+          "name": "Colby Donaldson",
+          "age": 29,
+          "hometown": "Dallas, TX",
+          "profession": "Actor"
+        },
+        {
+          "name": "Ethan Zohn",
+          "age": 30,
+          "hometown": "Lexington, MA",
+          "profession": "Motivational Speaker"
+        },
+        {
+          "name": "Jerri Manthey",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Actress"
+        },
+        {
+          "name": "Alexis \"Lex\" van den Berghe",
+          "age": 40,
+          "hometown": "Santa Cruz, CA",
+          "profession": "Freelance Writer"
+        },
+        {
+          "name": "Kathy Vavrick-O'Brien",
+          "age": 49,
+          "hometown": "Burlington, VT",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Alicia Calaway",
+          "age": 35,
+          "hometown": "New York, NY",
+          "profession": "Health and Fitness Reporter"
+        },
+        {
+          "name": "Shii Ann Huang",
+          "age": 30,
+          "hometown": "New York, NY",
+          "profession": "Executive Recruiter"
+        },
+        {
+          "name": "Tom Buchanan",
+          "age": 48,
+          "hometown": "Rich Valley, VA",
+          "profession": "Goat Farmer"
+        },
+        {
+          "name": "Rupert Boneham",
+          "age": 40,
+          "hometown": "Indianapolis, IN",
+          "profession": "Troubled Teens Mentor"
+        },
+        {
+          "name": "Jenna Lewis",
+          "age": 26,
+          "hometown": "Franklin, NH",
+          "profession": "Actress"
+        },
+        {
+          "name": "Rob Mariano",
+          "age": 28,
+          "hometown": "Canton, MA",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "Amber Brkich",
+          "age": 25,
+          "hometown": "Beaver, PA",
+          "profession": "Administrative Assistant"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "name": "Survivor: Vanuatu",
+      "cast": [
+        {
+          "name": "Brook Geraghty",
+          "age": 27,
+          "hometown": "Winthrop, MA",
+          "profession": "Document Manager"
+        },
+        {
+          "name": "Janean \"Dolly\" Neely",
+          "age": 25,
+          "hometown": "Mercer, PA",
+          "profession": "Sheep Farmer"
+        },
+        {
+          "name": "John \"J.P.\" Palyok",
+          "age": 31,
+          "hometown": "Los Angeles, CA",
+          "profession": "Sales Manager"
+        },
+        {
+          "name": "Mia Galeotalanza",
+          "age": 30,
+          "hometown": "Toms River, NJ",
+          "profession": "Bookkeeper"
+        },
+        {
+          "name": "Brady Finta",
+          "age": 33,
+          "hometown": "Huntington Beach, CA",
+          "profession": "FBI Agent"
+        },
+        {
+          "name": "Travis \"Bubba\" Sampson",
+          "age": 33,
+          "hometown": "Blountville, TN",
+          "profession": "Security Officer"
+        },
+        {
+          "name": "Lisa Keiffer",
+          "age": 44,
+          "hometown": "New Orleans, LA",
+          "profession": "Real State Agent"
+        },
+        {
+          "name": "John Kenney",
+          "age": 22,
+          "hometown": "Los Angeles, CA",
+          "profession": "Mechanical Bull Operator/Model"
+        },
+        {
+          "name": "Rory Freeman",
+          "age": 35,
+          "hometown": "Des Moines, IA",
+          "profession": "Housing Case Manager"
+        },
+        {
+          "name": "Lea \"Sarge\" Masters",
+          "age": 40,
+          "hometown": "Columbia, SC",
+          "profession": "Drill Sergeant"
+        },
+        {
+          "name": "James \"Chad\" Crittenden",
+          "age": 35,
+          "hometown": "Oakland, CA",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Leann Slaby",
+          "age": 35,
+          "hometown": "Kansasville, WI",
+          "profession": "Equity Research Assistant"
+        },
+        {
+          "name": "Ami Cusack",
+          "age": 31,
+          "hometown": "Lakewood, CO",
+          "profession": "Coffee Barista"
+        },
+        {
+          "name": "Julie Berry",
+          "age": 23,
+          "hometown": "Gorham, ME",
+          "profession": "Youth Mentor"
+        },
+        {
+          "name": "Eliza Orlins",
+          "age": 21,
+          "hometown": "Syracuse, NY",
+          "profession": "Pre-Law Student"
+        },
+        {
+          "name": "Scout Cloud Lee",
+          "age": 59,
+          "hometown": "Stillwater, OK",
+          "profession": "Rancher"
+        },
+        {
+          "name": "Twila Tanner",
+          "age": 41,
+          "hometown": "Marshall, MO",
+          "profession": "Highway Repair Worker"
+        },
+        {
+          "name": "Chris Daugherty",
+          "age": 33,
+          "hometown": "South Vienna, OH",
+          "profession": "Highway Construction Worker"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "name": "Survivor: Palau",
+      "cast": [
+        {
+          "name": "Jonathan Libby",
+          "age": 23,
+          "hometown": "Dallas, TX",
+          "profession": "Sales & Marketing Associate"
+        },
+        {
+          "name": "Wanda Shirk",
+          "age": 55,
+          "hometown": "Ulysses, PA",
+          "profession": "English Teacher"
+        },
+        {
+          "name": "Jolanda Jones",
+          "age": 39,
+          "hometown": "Houston, TX",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Ashlee Ashby",
+          "age": 22,
+          "hometown": "Easley, SC",
+          "profession": "Student"
+        },
+        {
+          "name": "Jeff Wilson",
+          "age": 21,
+          "hometown": "Ventura, CA",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Kim Mullen",
+          "age": 25,
+          "hometown": "Huber Heights, OH",
+          "profession": "Graduate Student"
+        },
+        {
+          "name": "Willard Smith",
+          "age": 57,
+          "hometown": "Bellevue, WA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Cassandra \"Angie\" Jakusz",
+          "age": 24,
+          "hometown": "New Orleans, LA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "James Miller",
+          "age": 33,
+          "hometown": "Mobile, AL",
+          "profession": "Steelworker"
+        },
+        {
+          "name": "Ibrehem Rahman",
+          "age": 27,
+          "hometown": "Birmingham, AL",
+          "profession": "Model"
+        },
+        {
+          "name": "Bobby Jon Drinkard",
+          "age": 27,
+          "hometown": "Troy, AL",
+          "profession": "Waiter"
+        },
+        {
+          "name": "Coby Archa",
+          "age": 32,
+          "hometown": "Dallas, TX",
+          "profession": "Hairdresser"
+        },
+        {
+          "name": "Janu Tornell",
+          "age": 39,
+          "hometown": "Las Vegas, NV",
+          "profession": "Vegas Showgirl"
+        },
+        {
+          "name": "Stephenie LaGrossa",
+          "age": 25,
+          "hometown": "Glenolden, PA",
+          "profession": "Pharmaceutical Sales Representative"
+        },
+        {
+          "name": "Gregg Carey",
+          "age": 27,
+          "hometown": "Chicago, IL",
+          "profession": "Business Consultant"
+        },
+        {
+          "name": "Caryn Groedel",
+          "age": 46,
+          "hometown": "Solon, OH",
+          "profession": "Civil Rights Attorney"
+        },
+        {
+          "name": "Jennifer Lyon",
+          "age": 32,
+          "hometown": "Encino, CA",
+          "profession": "Nanny"
+        },
+        {
+          "name": "Ian Rosenberger",
+          "age": 23,
+          "hometown": "Key Largo, FL",
+          "profession": "Dolphin Trainer"
+        },
+        {
+          "name": "Katie Gallagher",
+          "age": 29,
+          "hometown": "Merced, CA",
+          "profession": "Advertising Executive"
+        },
+        {
+          "name": "Tom Westman",
+          "age": 41,
+          "hometown": "Sayville, NY",
+          "profession": "Firefighter"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "name": "Survivor: Guatemala",
+      "cast": [
+        {
+          "name": "James \"Jim\" Lynch",
+          "age": 63,
+          "hometown": "Northglenn, CO",
+          "profession": "Retired Fire Captain"
+        },
+        {
+          "name": "Morgan McDevitt",
+          "age": 21,
+          "hometown": "Decatur, IL",
+          "profession": "Magician's Assistant"
+        },
+        {
+          "name": "Brianna Varela",
+          "age": 21,
+          "hometown": "Edmonds, WA",
+          "profession": "Retail Salesperson"
+        },
+        {
+          "name": "Brooke Struck",
+          "age": 26,
+          "hometown": "Hood River, OR",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Blake Towsley",
+          "age": 24,
+          "hometown": "Dallas, TX",
+          "profession": "Real Estate Broker"
+        },
+        {
+          "name": "Margaret Bobonich",
+          "age": 43,
+          "hometown": "Chardon, OH",
+          "profession": "Nursing Practitioner"
+        },
+        {
+          "name": "Brian Corridan",
+          "age": 22,
+          "hometown": "New York, NY",
+          "profession": "Ivy League Student"
+        },
+        {
+          "name": "Amy O'Hara",
+          "age": 39,
+          "hometown": "Revere, MA",
+          "profession": "Police Sergeant"
+        },
+        {
+          "name": "Brandon Bellinger",
+          "age": 22,
+          "hometown": "Manhattan, KS",
+          "profession": "Farmer"
+        },
+        {
+          "name": "Bobby Jon Drinkard",
+          "age": 27,
+          "hometown": "Troy, AL",
+          "profession": "Waiter"
+        },
+        {
+          "name": "Jamie Newton",
+          "age": 24,
+          "hometown": "North Hollywood, CA",
+          "profession": "Water Skiing Instructor"
+        },
+        {
+          "name": "Gary Hogeboom",
+          "age": 46,
+          "hometown": "Grand Haven, MI",
+          "profession": "Former NFL Quarterback"
+        },
+        {
+          "name": "Judd Sergeant",
+          "age": 34,
+          "hometown": "Ridgefield, NJ",
+          "profession": "Hotel Doorman"
+        },
+        {
+          "name": "Cindy Hall",
+          "age": 31,
+          "hometown": "Naples, FL",
+          "profession": "Zookeeper"
+        },
+        {
+          "name": "Lydia Morales",
+          "age": 42,
+          "hometown": "Lakewood, WA",
+          "profession": "Fishmonnger"
+        },
+        {
+          "name": "Rafe Judkins",
+          "age": 22,
+          "hometown": "Providence, RI",
+          "profession": "Wilderness Guide"
+        },
+        {
+          "name": "Stephenie LaGrossa",
+          "age": 25,
+          "hometown": "Philadelphia, PA",
+          "profession": "Pharmaceutical Sales Representative"
+        },
+        {
+          "name": "Danielle \"Danni\" Boatwright",
+          "age": 30,
+          "hometown": "Tonganoxie, KS",
+          "profession": "Sports Radio Host"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "name": "Survivor: Panama",
+      "cast": [
+        {
+          "name": "Tina Scheer",
+          "age": 45,
+          "hometown": "Hayward, WI",
+          "profession": "Lumberjill"
+        },
+        {
+          "name": "Melinda Hyder",
+          "age": 32,
+          "hometown": "Sevierville, TN",
+          "profession": "Singer/Entertainer"
+        },
+        {
+          "name": "Misty Giles",
+          "age": 24,
+          "hometown": "Dallas, TX",
+          "profession": "Missile Engineer"
+        },
+        {
+          "name": "Ruth Marie Milliman",
+          "age": 48,
+          "hometown": "Greenville, SC",
+          "profession": "Property Developer"
+        },
+        {
+          "name": "Bobby Mason",
+          "age": 32,
+          "hometown": "Los Angeles, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Dan Barry",
+          "age": 52,
+          "hometown": "South Hadley, MA",
+          "profession": "Astronaut"
+        },
+        {
+          "name": "Nicholas \"Nick\" Stanbury",
+          "age": 25,
+          "hometown": "Tempe, AZ",
+          "profession": "Financial Salesman"
+        },
+        {
+          "name": "Austin Carty",
+          "age": 24,
+          "hometown": "High Point, NC",
+          "profession": "Writer"
+        },
+        {
+          "name": "Sally Schumann",
+          "age": 27,
+          "hometown": "Chicago, IL",
+          "profession": "Social Worker"
+        },
+        {
+          "name": "Bruce Kanegai",
+          "age": 58,
+          "hometown": "Simi Valley, CA",
+          "profession": "Art Teacher"
+        },
+        {
+          "name": "Courtney Marit",
+          "age": 31,
+          "hometown": "Los Angeles, CA",
+          "profession": "Fire Dancer"
+        },
+        {
+          "name": "Shane Powers",
+          "age": 35,
+          "hometown": "Los Angeles, CA",
+          "profession": "Marketing Executive"
+        },
+        {
+          "name": "Cirie Fields",
+          "age": 34,
+          "hometown": "Walterboro, SC",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Terry Deitz",
+          "age": 46,
+          "hometown": "Simsbury, CT",
+          "profession": "Pilot"
+        },
+        {
+          "name": "Danielle DiLorenzo",
+          "age": 24,
+          "hometown": "Pompano Beach, FL",
+          "profession": "Medical Sales Representative"
+        },
+        {
+          "name": "Aras Baskauskas",
+          "age": 24,
+          "hometown": "Santa Monica, CA",
+          "profession": "Yoga Instructor"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "name": "Survivor: Cook Islands",
+      "cast": [
+        {
+          "name": "Sekou Bunch",
+          "age": 46,
+          "hometown": "Los Angeles, CA",
+          "profession": "Jazz Musician"
+        },
+        {
+          "name": "Virgilio \"Billy\" Garcia",
+          "age": 36,
+          "hometown": "New York, NY",
+          "profession": "Heavy Metal Musician"
+        },
+        {
+          "name": "Cecilia Mansilla",
+          "age": 29,
+          "hometown": "Oakland, CA",
+          "profession": "Risk Consultant"
+        },
+        {
+          "name": "John Paul \"J.P.\" Calderon",
+          "age": 30,
+          "hometown": "Marina Del Rey, CA",
+          "profession": "Profession Volleyball Player"
+        },
+        {
+          "name": "Stephannie Favor",
+          "age": 35,
+          "hometown": "Columbia, SC",
+          "profession": "Nursing Student"
+        },
+        {
+          "name": "Anh-Tuan \"Cao Boi\" Bui",
+          "age": 42,
+          "hometown": "Christiansburg, VA",
+          "profession": "Nail Salon Manager"
+        },
+        {
+          "name": "Cristina Coria",
+          "age": 35,
+          "hometown": "Los Angeles, CA",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Jessica \"Flicka\" Smith",
+          "age": 27,
+          "hometown": "Chico, CA",
+          "profession": "Roller Girl"
+        },
+        {
+          "name": "Bradley \"Brad\" Virata",
+          "age": 27,
+          "hometown": "Los Angeles, CA",
+          "profession": "Fashion Director"
+        },
+        {
+          "name": "Rebecca Borman",
+          "age": 34,
+          "hometown": "Laurelton, NY",
+          "profession": "Makeup Artist"
+        },
+        {
+          "name": "Jenny Guzon-Bae",
+          "age": 36,
+          "hometown": "Lake Forest, IL",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Nathan \"Nate\" Gonzalez",
+          "age": 26,
+          "hometown": "Los Angeles, CA",
+          "profession": "Shoe Salesman"
+        },
+        {
+          "name": "Candice Woodcock",
+          "age": 23,
+          "hometown": "Fayetteville, NC",
+          "profession": "Pre-Med Student"
+        },
+        {
+          "name": "Jonathan Penner",
+          "age": 44,
+          "hometown": "Los Angeles, CA",
+          "profession": "Writer"
+        },
+        {
+          "name": "Parvati Shallow",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Boxer"
+        },
+        {
+          "name": "Adam Gentry",
+          "age": 28,
+          "hometown": "San Diego, CA",
+          "profession": "Copier Sales Executive"
+        },
+        {
+          "name": "Sundra Oakley",
+          "age": 31,
+          "hometown": "Los Angeles, CA",
+          "profession": "Actress"
+        },
+        {
+          "name": "Rebekah \"Becky\" Lee",
+          "age": 28,
+          "hometown": "Washington, D.C.",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Ozzy Lusth",
+          "age": 25,
+          "hometown": "Venice, CA",
+          "profession": "Waiter"
+        },
+        {
+          "name": "Yul Kwon",
+          "age": 31,
+          "hometown": "San Mateo, CA",
+          "profession": "Management Consultant"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "name": "Survivor: Fiji",
+      "cast": [
+        {
+          "name": "Jessica deBen",
+          "age": 27,
+          "hometown": "Los Angeles, CA",
+          "profession": "Fashion Stylist"
+        },
+        {
+          "name": "Erica Durousseau",
+          "age": 27,
+          "hometown": "Lake Charles, LA",
+          "profession": "Non-Profit Fundraiser"
+        },
+        {
+          "name": "Sylvia Kwan",
+          "age": 52,
+          "hometown": "Ross, CA",
+          "profession": "Architect"
+        },
+        {
+          "name": "Gary Stritesky",
+          "age": 55,
+          "hometown": "Ramsey, MN",
+          "profession": "School Bus Driver"
+        },
+        {
+          "name": "Liliana Gomez",
+          "age": 25,
+          "hometown": "Oxnard, CA",
+          "profession": "Loan Officer"
+        },
+        {
+          "name": "Rita Verreos",
+          "age": 38,
+          "hometown": "San Antonio, TX",
+          "profession": "Single Mother"
+        },
+        {
+          "name": "Anthony Robinson",
+          "age": 32,
+          "hometown": "Compton, CA",
+          "profession": "Expert Witness Locator"
+        },
+        {
+          "name": "James \"Rocky\" Reid",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Lisette \"Lisi\" Linares",
+          "age": 36,
+          "hometown": "Los Angeles, CA",
+          "profession": "Customer Service Representative"
+        },
+        {
+          "name": "Michelle Yi",
+          "age": 23,
+          "hometown": "Cincinnati, OH",
+          "profession": "Student"
+        },
+        {
+          "name": "Edgardo Rivera",
+          "age": 28,
+          "hometown": "Miami Beach, FL",
+          "profession": "Advertising Executive"
+        },
+        {
+          "name": "Mookie Lee",
+          "age": 25,
+          "hometown": "Chicago, IL",
+          "profession": "Business Consultant"
+        },
+        {
+          "name": "Alejandro \"Alex\" Angarita",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Stacy Kimball",
+          "age": 27,
+          "hometown": "Boulder, CO",
+          "profession": "Web Producer"
+        },
+        {
+          "name": "Kenward \"Boo\" Bernis",
+          "age": 34,
+          "hometown": "Lafayette, LA",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "Yau-Man Chan",
+          "age": 54,
+          "hometown": "Martinez, CA",
+          "profession": "Internet Technology Director"
+        },
+        {
+          "name": "Cassandra Franklin",
+          "age": 42,
+          "hometown": "Los Angeles, CA",
+          "profession": "College Administrator"
+        },
+        {
+          "name": "Andria \"Dreamz\" Herd",
+          "age": 25,
+          "hometown": "Wilmington, NC",
+          "profession": "Cheerleading Coach"
+        },
+        {
+          "name": "Earl Cole",
+          "age": 35,
+          "hometown": "Santa Monica, CA",
+          "profession": "Advertising Executive"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "name": "Survivor: China",
+      "cast": [
+        {
+          "name": "Steve \"Chicken\" Morris",
+          "age": 47,
+          "hometown": "Marion, VA",
+          "profession": "Chicken Farmer"
+        },
+        {
+          "name": "Ashley Massaro",
+          "age": 28,
+          "hometown": "East Northport, NY",
+          "profession": "Professional Wrestler"
+        },
+        {
+          "name": "Leslie Nease",
+          "age": 38,
+          "hometown": "Tega Cay, SC",
+          "profession": "Christian Radio Host"
+        },
+        {
+          "name": "Dave Cruser",
+          "age": 37,
+          "hometown": "Simi Valley, CA",
+          "profession": "Former Model"
+        },
+        {
+          "name": "Aaron Reisberger",
+          "age": 32,
+          "hometown": "Venice, CA",
+          "profession": "Surfing Instructor"
+        },
+        {
+          "name": "Sherea Lloyd",
+          "age": 26,
+          "hometown": "Atlanta, GA",
+          "profession": "Elementary Teacher"
+        },
+        {
+          "name": "Jaime Dugan",
+          "age": 22,
+          "hometown": "Columbia, SC",
+          "profession": "Student"
+        },
+        {
+          "name": "Jean-Robert Bellande",
+          "age": 36,
+          "hometown": "Las Vegas, NV",
+          "profession": "Profession Poker Player"
+        },
+        {
+          "name": "Michael \"Frosti\" Zernow",
+          "age": 20,
+          "hometown": "Chicago, IL",
+          "profession": "Student/Athlete"
+        },
+        {
+          "name": "James Clement",
+          "age": 30,
+          "hometown": "Lafayette, LA",
+          "profession": "Gravedigger"
+        },
+        {
+          "name": "Erik Huffman",
+          "age": 26,
+          "hometown": "Nashville, TN",
+          "profession": "Musician"
+        },
+        {
+          "name": "Peih-Gee Law",
+          "age": 29,
+          "hometown": "Marina Del Rey, CA",
+          "profession": "Jeweler"
+        },
+        {
+          "name": "Denise Martin",
+          "age": 40,
+          "hometown": "Douglas, MA",
+          "profession": "School Lunch Lady"
+        },
+        {
+          "name": "Amanda Kimmel",
+          "age": 23,
+          "hometown": "Kalispell, MT",
+          "profession": "Hiking Guide"
+        },
+        {
+          "name": "Courtney Yates",
+          "age": 26,
+          "hometown": "New York, NY",
+          "profession": "Waitress"
+        },
+        {
+          "name": "Todd Herzog",
+          "age": 22,
+          "hometown": "Pleasant Grove, UT",
+          "profession": "Flight Attendant"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "name": "Survivor: Micronesia",
+      "cast": [
+        {
+          "name": "Jon \"Jonny Fairplay\" Dalton",
+          "age": 33,
+          "hometown": "Danville, VA",
+          "profession": "Art Consultant"
+        },
+        {
+          "name": "Mary Sartain",
+          "age": 29,
+          "hometown": "Emeryville, CA",
+          "profession": "Real Estate Manager"
+        },
+        {
+          "name": "Yau-Man Chan",
+          "age": 55,
+          "hometown": "Martinez, CA",
+          "profession": "Internet Technology Director"
+        },
+        {
+          "name": "Michael \"Mikey B\" Bortone",
+          "age": 34,
+          "hometown": "Los Angeles, CA",
+          "profession": "Aspiring Writer"
+        },
+        {
+          "name": "Joel Anderson",
+          "age": 32,
+          "hometown": "Avondale, AZ",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Jonathan Penner",
+          "age": 45,
+          "hometown": "Los Angeles, CA",
+          "profession": "Writer"
+        },
+        {
+          "name": "Chet Welch",
+          "age": 48,
+          "hometown": "Ford City, PA",
+          "profession": "Pageant Coach"
+        },
+        {
+          "name": "Kathleen \"Kathy\" Sleckman",
+          "age": 45,
+          "hometown": "Glen Ellyn, IL",
+          "profession": "Golf Course Vendor"
+        },
+        {
+          "name": "Tracy Hughes-Wolf",
+          "age": 43,
+          "hometown": "Fredericksburg, VA",
+          "profession": "Residential Builder"
+        },
+        {
+          "name": "Ami Cusack",
+          "age": 34,
+          "hometown": "Golden, CO",
+          "profession": "Nanny"
+        },
+        {
+          "name": "Eliza Orlins",
+          "age": 25,
+          "hometown": "New York, NY",
+          "profession": "Law School Student"
+        },
+        {
+          "name": "Ozzy Lusth",
+          "age": 26,
+          "hometown": "Venice, CA",
+          "profession": "Photographer"
+        },
+        {
+          "name": "Jason Siska",
+          "age": 22,
+          "hometown": "Fox River Grove, IL",
+          "profession": "Gymnastics Coach"
+        },
+        {
+          "name": "James Clement",
+          "age": 30,
+          "hometown": "Lafayette, LA",
+          "profession": "Gravedigger"
+        },
+        {
+          "name": "Alexis Jones",
+          "age": 24,
+          "hometown": "Beverly Hills, CA",
+          "profession": "Motivational Speaker"
+        },
+        {
+          "name": "Erik Reichenbach",
+          "age": 22,
+          "hometown": "Pinckney, MI",
+          "profession": "Ice Cream Scooper"
+        },
+        {
+          "name": "Natalie Bolton",
+          "age": 32,
+          "hometown": "Los Angeles, CA",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Cirie Fields",
+          "age": 37,
+          "hometown": "Norwalk, CT",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Amanda Kimmel",
+          "age": 23,
+          "hometown": "Los Angeles, CA",
+          "profession": "Aspiring Designer"
+        },
+        {
+          "name": "Parvati Shallow",
+          "age": 25,
+          "hometown": "Los Angeles, CA",
+          "profession": "Charity Organizer"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "name": "Survivor: Gabon",
+      "cast": [
+        {
+          "name": "Michelle Chase",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Music Producer"
+        },
+        {
+          "name": "Gillian Larson",
+          "age": 61,
+          "hometown": "Temecula, CA",
+          "profession": "Retired Nurse"
+        },
+        {
+          "name": "Paloma Soto-Castillo",
+          "age": 24,
+          "hometown": "Downey, CA",
+          "profession": "Student"
+        },
+        {
+          "name": "Jacquie Berg",
+          "age": 25,
+          "hometown": "Santa Barbara, CA",
+          "profession": "Medical Saleswoman"
+        },
+        {
+          "name": "Danny \"GC\" Brown",
+          "age": 26,
+          "hometown": "Portland, OR",
+          "profession": "Maintenance Man"
+        },
+        {
+          "name": "Kelly Czarnecki",
+          "age": 22,
+          "hometown": "Buffalo Grove, IL",
+          "profession": "Retail Saleswoman"
+        },
+        {
+          "name": "Ace Gordon",
+          "age": 27,
+          "hometown": "Naples, FL",
+          "profession": "Jewelry Salesman/Photographer"
+        },
+        {
+          "name": "Dan Kay",
+          "age": 32,
+          "hometown": "Boston, MA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Marcus Lehman",
+          "age": 28,
+          "hometown": "Atlanta, GA",
+          "profession": "Doctor"
+        },
+        {
+          "name": "Charlie Herschel",
+          "age": 29,
+          "hometown": "New York, NY",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Randy Bailey",
+          "age": 49,
+          "hometown": "Eagle Rock, MO",
+          "profession": "Wedding Videographer"
+        },
+        {
+          "name": "Corinne Kaplan",
+          "age": 29,
+          "hometown": "Los Angeles, CA",
+          "profession": "Pharmaceutical Saleswoman"
+        },
+        {
+          "name": "Crystal Cox",
+          "age": 29,
+          "hometown": "Durham, NC",
+          "profession": "Olympic Gold Medalist"
+        },
+        {
+          "name": "Ken Hoang",
+          "age": 22,
+          "hometown": "Westminster, CA",
+          "profession": "Professional Gamer"
+        },
+        {
+          "name": "Matty Whitmore",
+          "age": 29,
+          "hometown": "Pacific Palisades, CA",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Jessica \"Sugar\" Kiper",
+          "age": 29,
+          "hometown": "Brooklyn, NY",
+          "profession": "Pin-Up Model"
+        },
+        {
+          "name": "Jesusita \"Susie\" Smith",
+          "age": 47,
+          "hometown": "Charles City, IA",
+          "profession": "Hairdresser"
+        },
+        {
+          "name": "Robert \"Bob\" Crowley",
+          "age": 57,
+          "hometown": "Portland, ME",
+          "profession": "Physics Teacher"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "name": "Survivor: Tocantins",
+      "cast": [
+        {
+          "name": "Carolina Eastwood",
+          "age": 26,
+          "hometown": "West Hollywood, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Candace Smith",
+          "age": 31,
+          "hometown": "Dayton, OH",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Jerry Sims",
+          "age": 49,
+          "hometown": "Rock Hill, SC",
+          "profession": "U.S. Army Sergeant"
+        },
+        {
+          "name": "Sandy Burgin",
+          "age": 53,
+          "hometown": "Louisville, KY",
+          "profession": "Bus Driver"
+        },
+        {
+          "name": "Spencer Duhm",
+          "age": 19,
+          "hometown": "Lakeland, FL",
+          "profession": "Student"
+        },
+        {
+          "name": "Sydney Wheeler",
+          "age": 24,
+          "hometown": "Raleigh, NC",
+          "profession": "Model"
+        },
+        {
+          "name": "Joe Dowdle",
+          "age": 26,
+          "hometown": "Austin, TX",
+          "profession": "Real Estate Salesman"
+        },
+        {
+          "name": "Brendan Synnott",
+          "age": 30,
+          "hometown": "New York, NY",
+          "profession": "Entrepreneur"
+        },
+        {
+          "name": "Tyson Apostol",
+          "age": 29,
+          "hometown": "Lindon, UT",
+          "profession": "Professional Cyclist"
+        },
+        {
+          "name": "Sierra Reed",
+          "age": 23,
+          "hometown": "Los Angeles, CA",
+          "profession": "Model"
+        },
+        {
+          "name": "Debra \"Debbie\" Beebe",
+          "age": 46,
+          "hometown": "Auburn, AL",
+          "profession": "School Principal"
+        },
+        {
+          "name": "Benjamin \"Coach\" Wade",
+          "age": 37,
+          "hometown": "Bolivar, MO",
+          "profession": "Soccer Coach/Musician"
+        },
+        {
+          "name": "Tamara \"Taj\" Johnson-George",
+          "age": 37,
+          "hometown": "Nashville, TN",
+          "profession": "Former Pop Star"
+        },
+        {
+          "name": "Erinn Lobdell",
+          "age": 26,
+          "hometown": "Waukesha, WI",
+          "profession": "Hairdresser"
+        },
+        {
+          "name": "Stephen Fishbach",
+          "age": 29,
+          "hometown": "New York, NY",
+          "profession": "Corporate Consultant"
+        },
+        {
+          "name": "James \"J.T.\" Thomas, Jr.",
+          "age": 24,
+          "hometown": "Samson, AL",
+          "profession": "Cattle Rancher"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "name": "Survivor: Samoa",
+      "cast": [
+        {
+          "name": "Marisa Calihan",
+          "age": 26,
+          "hometown": "Cincinnati, OH",
+          "profession": "Student"
+        },
+        {
+          "name": "Mike Borassi",
+          "age": 62,
+          "hometown": "Marina del Rey, CA",
+          "profession": "Personal Chef"
+        },
+        {
+          "name": "Betsy Bolan",
+          "age": 48,
+          "hometown": "Campton, NH",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Ben Browning",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Bar Manager"
+        },
+        {
+          "name": "Yasmin Giles",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Hairstylist"
+        },
+        {
+          "name": "Ashley Trainer",
+          "age": 22,
+          "hometown": "Maple Grove, MN",
+          "profession": "Spa Saleswoman"
+        },
+        {
+          "name": "Russell Swan",
+          "age": 42,
+          "hometown": "Glenside, PA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Elizabeth \"Liz\" Kim",
+          "age": 33,
+          "hometown": "New York, NY",
+          "profession": "Urban Planner"
+        },
+        {
+          "name": "Erik Cardona",
+          "age": 28,
+          "hometown": "Ontario, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Kelly Sharbaugh",
+          "age": 25,
+          "hometown": "Los Angeles, CA",
+          "profession": "Hairstylist"
+        },
+        {
+          "name": "Laura Morett",
+          "age": 39,
+          "hometown": "Salem, OR",
+          "profession": "Office Manager"
+        },
+        {
+          "name": "John Fincher",
+          "age": 25,
+          "hometown": "Los Angeles, CA",
+          "profession": "Rocket Scientist"
+        },
+        {
+          "name": "Dave Ball",
+          "age": 38,
+          "hometown": "Los Angeles, CA",
+          "profession": "Fitness Instructor"
+        },
+        {
+          "name": "Monica Padilla",
+          "age": 25,
+          "hometown": "San Diego, CA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Shannon \"Shambo\" Waters",
+          "age": 45,
+          "hometown": "Renton, WA",
+          "profession": "Saleswoman"
+        },
+        {
+          "name": "Jaison Robinson",
+          "age": 28,
+          "hometown": "Chicago, IL",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Brett Clouser",
+          "age": 23,
+          "hometown": "Los Angeles, CA",
+          "profession": "T-shirt Designer"
+        },
+        {
+          "name": "Mick Trimming",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Doctor"
+        },
+        {
+          "name": "Russell Hantz",
+          "age": 36,
+          "hometown": "Dayton, TX",
+          "profession": "Oil Company Owner"
+        },
+        {
+          "name": "Natalie White",
+          "age": 26,
+          "hometown": "Van Buren, AR",
+          "profession": "Pharmaceutical Saleswoman"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Survivor: Heroes vs. Villains",
+      "cast": [
+        {
+          "name": "Jessica \"Sugar\" Kiper",
+          "age": 30,
+          "hometown": "Los Angeles, CA",
+          "profession": "Pin-Up Model"
+        },
+        {
+          "name": "Stephenie LaGrossa",
+          "age": 29,
+          "hometown": "Philadelphia, PA",
+          "profession": "Pharmaceutical Sales Representative"
+        },
+        {
+          "name": "Randy Bailey",
+          "age": 50,
+          "hometown": "Eagle Rock, MO",
+          "profession": "Wedding Videographer"
+        },
+        {
+          "name": "Cirie Fields",
+          "age": 39,
+          "hometown": "Norwalk, CT",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Tom Westman",
+          "age": 45,
+          "hometown": "Sayville, NY",
+          "profession": "Motivational Speaker"
+        },
+        {
+          "name": "Tyson Apostol",
+          "age": 29,
+          "hometown": "Lindon, UT",
+          "profession": "Former Professional Cyclist"
+        },
+        {
+          "name": "James Clement",
+          "age": 32,
+          "hometown": "Lafayette, LA",
+          "profession": "Gravedigger"
+        },
+        {
+          "name": "Rob Mariano",
+          "age": 33,
+          "hometown": "Pensacola, FL",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "Benjamin \"Coach\" Wade",
+          "age": 38,
+          "hometown": "Los Angeles, CA",
+          "profession": "Soccer Coach/Musician"
+        },
+        {
+          "name": "Courtney Yates",
+          "age": 29,
+          "hometown": "New York, NY",
+          "profession": "Waitress"
+        },
+        {
+          "name": "James \"J.T.\" Thomas, Jr.",
+          "age": 25,
+          "hometown": "Samson, AL",
+          "profession": "Cattle Rancher"
+        },
+        {
+          "name": "Amanda Kimmel",
+          "age": 25,
+          "hometown": "Los Angeles, CA",
+          "profession": "Aspiring Designer"
+        },
+        {
+          "name": "Candice Woodcock",
+          "age": 27,
+          "hometown": "Washington, DC",
+          "profession": "Physician"
+        },
+        {
+          "name": "Danielle DiLorenzo",
+          "age": 28,
+          "hometown": "Pompano Beach, FL",
+          "profession": "Medical Sales Representative"
+        },
+        {
+          "name": "Rupert Boneham",
+          "age": 45,
+          "hometown": "Indianapolis, IN",
+          "profession": "Troubled Teens Mentor"
+        },
+        {
+          "name": "Colby Donaldson",
+          "age": 35,
+          "hometown": "Dallas, TX",
+          "profession": "Actor"
+        },
+        {
+          "name": "Jerri Manthey",
+          "age": 38,
+          "hometown": "Los Angeles, CA",
+          "profession": "Actress"
+        },
+        {
+          "name": "Russell Hantz",
+          "age": 36,
+          "hometown": "Dayton, TX",
+          "profession": "Oil Company Owner"
+        },
+        {
+          "name": "Parvati Shallow",
+          "age": 27,
+          "hometown": "Los Angeles, CA",
+          "profession": "Charity Organizer"
+        },
+        {
+          "name": "Sandra Diaz-Twine",
+          "age": 35,
+          "hometown": "Fayetteville, NC",
+          "profession": "Office Assistant"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "name": "Survivor: Nicaragua",
+      "cast": [
+        {
+          "name": "Wendy Jo DeSmidt-Kohlhoff",
+          "age": 48,
+          "hometown": "Fromberg, MT",
+          "profession": "Goat Rancher"
+        },
+        {
+          "name": "Shannon Elkins",
+          "age": 30,
+          "hometown": "Lafayette, LA",
+          "profession": "Pest Control Company Owner"
+        },
+        {
+          "name": "Jimmy Johnson",
+          "age": 67,
+          "hometown": "Islamorada, FL",
+          "profession": "Former NFL Coach"
+        },
+        {
+          "name": "Jimmy Tarantino",
+          "age": 48,
+          "hometown": "Gloucester, MA",
+          "profession": "Commercial Fisherman"
+        },
+        {
+          "name": "Tyrone Davis",
+          "age": 42,
+          "hometown": "Inglewood, CA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Kelly Bruno",
+          "age": 26,
+          "hometown": "Durham, NC",
+          "profession": "Medical Student"
+        },
+        {
+          "name": "Yvette \"Yve\" Rojas",
+          "age": 41,
+          "hometown": "Kansas City, MO",
+          "profession": "Homemaker"
+        },
+        {
+          "name": "Jill Behm",
+          "age": 43,
+          "hometown": "Erie, PA",
+          "profession": "ER Doctor"
+        },
+        {
+          "name": "Alina Wilson",
+          "age": 23,
+          "hometown": "Downey, CA",
+          "profession": "Art Student"
+        },
+        {
+          "name": "Marty Piombo",
+          "age": 48,
+          "hometown": "Mill Valley, CA",
+          "profession": "Technology Executive"
+        },
+        {
+          "name": "Brenda Lowe",
+          "age": 27,
+          "hometown": "Miami, FL",
+          "profession": "Paddleboard Company Owner"
+        },
+        {
+          "name": "NaOnka Mixon",
+          "age": 27,
+          "hometown": "Los Angeles, CA",
+          "profession": "P.E. Teacher"
+        },
+        {
+          "name": "Kelly Shinn",
+          "age": 20,
+          "hometown": "Mesa, AZ",
+          "profession": "Nursing Student"
+        },
+        {
+          "name": "Ben \"Benry\" Henry",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Club Promoter"
+        },
+        {
+          "name": "Jane Bright",
+          "age": 56,
+          "hometown": "Jackson Springs, NC",
+          "profession": "Dog Trainer"
+        },
+        {
+          "name": "Dan Lembo",
+          "age": 63,
+          "hometown": "Watermill, NY",
+          "profession": "Real Estate Executive"
+        },
+        {
+          "name": "Holly Hoffman",
+          "age": 44,
+          "hometown": "Eureka, SD",
+          "profession": "Swim Coach"
+        },
+        {
+          "name": "Matthew \"Sash\" Lenahan",
+          "age": 30,
+          "hometown": "New York, NY",
+          "profession": "Real Estate Broker"
+        },
+        {
+          "name": "Chase Rice",
+          "age": 24,
+          "hometown": "Fairview, NC",
+          "profession": "Professional Racecar Jackman"
+        },
+        {
+          "name": "Jud \"Fabio\" Birza",
+          "age": 21,
+          "hometown": "Venice, CA",
+          "profession": "Student"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "name": "Survivor: Redemption Island",
+      "cast": [
+        {
+          "name": "Francesca Hogi",
+          "age": 36,
+          "hometown": "Washington, DC",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Russell Hantz",
+          "age": 38,
+          "hometown": "Dayton, TX",
+          "profession": "Oil Company Owner"
+        },
+        {
+          "name": "Kristina Kell",
+          "age": 46,
+          "hometown": "Malibu, CA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Krista Klumpp",
+          "age": 25,
+          "hometown": "Columbia, SC",
+          "profession": "Pharmaceutical Representative"
+        },
+        {
+          "name": "Stephanie Valencia",
+          "age": 26,
+          "hometown": "Long Beach, CA",
+          "profession": "Waitress"
+        },
+        {
+          "name": "Sarita White",
+          "age": 36,
+          "hometown": "Santa Monica, CA",
+          "profession": "Visual Effects Producer"
+        },
+        {
+          "name": "David Murphy",
+          "age": 31,
+          "hometown": "West Hollywood, CA",
+          "profession": "Defense Attorney"
+        },
+        {
+          "name": "Julie Wolfe",
+          "age": 50,
+          "hometown": "Oceanside, CA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Steve Wright",
+          "age": 51,
+          "hometown": "Huntington Beach, CA",
+          "profession": "Ex-NFL Player"
+        },
+        {
+          "name": "Ralph Kiser",
+          "age": 45,
+          "hometown": "Lebanon, VA",
+          "profession": "Farmer"
+        },
+        {
+          "name": "Grant Mattos",
+          "age": 29,
+          "hometown": "West Hollywood, CA",
+          "profession": "Ex-NFL Player"
+        },
+        {
+          "name": "Matt Elrod",
+          "age": 22,
+          "hometown": "Nashville, TN",
+          "profession": "Pre-Med Student"
+        },
+        {
+          "name": "Mike Chiesl",
+          "age": 31,
+          "hometown": "Del Mar, CA",
+          "profession": "Iraq War Veteran"
+        },
+        {
+          "name": "Andrea Boehlke",
+          "age": 21,
+          "hometown": "Random Lake, WI",
+          "profession": "Student"
+        },
+        {
+          "name": "Ashley Underwood",
+          "age": 25,
+          "hometown": "Benton, ME",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Natalie Tenerelli",
+          "age": 19,
+          "hometown": "Acton, CA",
+          "profession": "Professional Dancer"
+        },
+        {
+          "name": "Phillip Sheppard",
+          "age": 52,
+          "hometown": "Santa Monica, CA",
+          "profession": "Former Federal Agent"
+        },
+        {
+          "name": "Rob Mariano",
+          "age": 34,
+          "hometown": "Pensacola, FL",
+          "profession": "Construction Worker"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "name": "Survivor: South Pacific",
+      "cast": [
+        {
+          "name": "Semhar Tadesse",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Spoken Word Artist"
+        },
+        {
+          "name": "Mark \"Papa Bear\" Caruso",
+          "age": 48,
+          "hometown": "Forest Hills, NY",
+          "profession": "Retired NYPD Detective"
+        },
+        {
+          "name": "Stacey Powell",
+          "age": 44,
+          "hometown": "Grand Prairie, TX",
+          "profession": "Mortician"
+        },
+        {
+          "name": "Elyse Umemoto",
+          "age": 27,
+          "hometown": "Las Vegas, NV",
+          "profession": "Dance Team Manager"
+        },
+        {
+          "name": "Mikayla Wingle",
+          "age": 22,
+          "hometown": "Tampa, FL",
+          "profession": "Lingerie Football Player"
+        },
+        {
+          "name": "Christine Shields-Markoski",
+          "age": 39,
+          "hometown": "Merrick, NY",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Jim Rice",
+          "age": 35,
+          "hometown": "Denver, CO",
+          "profession": "Medical Marijuana Dispenser"
+        },
+        {
+          "name": "Keith Tollefson",
+          "age": 26,
+          "hometown": "Edina, MN",
+          "profession": "Water Treatment Technician"
+        },
+        {
+          "name": "Dawn Meehan",
+          "age": 41,
+          "hometown": "South Jordan, UT",
+          "profession": "English Professor"
+        },
+        {
+          "name": "Whitney Duncan",
+          "age": 26,
+          "hometown": "Nashville, TN",
+          "profession": "Country Music Singer"
+        },
+        {
+          "name": "John Cochran",
+          "age": 24,
+          "hometown": "Washington, D.C.",
+          "profession": "Harvard Law Student"
+        },
+        {
+          "name": "Edna Ma",
+          "age": 35,
+          "hometown": "Los Angeles, CA",
+          "profession": "Anesthesiologist"
+        },
+        {
+          "name": "Brandon Hantz",
+          "age": 19,
+          "hometown": "Katy, TX",
+          "profession": "Oil Tanker Crewman"
+        },
+        {
+          "name": "Rick Nelson",
+          "age": 51,
+          "hometown": "Aurora, UT",
+          "profession": "Rancher"
+        },
+        {
+          "name": "Ozzy Lusth",
+          "age": 30,
+          "hometown": "Venice, CA",
+          "profession": "Photographer"
+        },
+        {
+          "name": "Albert Destrade",
+          "age": 26,
+          "hometown": "Plantation, FL",
+          "profession": "Baseball/Dating Coach"
+        },
+        {
+          "name": "Benjamin \"Coach\" Wade",
+          "age": 39,
+          "hometown": "Susanville, CA",
+          "profession": "Soccer Coach/Musician"
+        },
+        {
+          "name": "Sophie Clarke",
+          "age": 22,
+          "hometown": "Willsboro, NY",
+          "profession": "Medical Student"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "name": "Survivor: One World",
+      "cast": [
+        {
+          "name": "Kourtney Moon",
+          "age": 29,
+          "hometown": "Austin, TX",
+          "profession": "Motorcycle Repairwoman"
+        },
+        {
+          "name": "Nina Acosta",
+          "age": 51,
+          "hometown": "Clovis, CA",
+          "profession": "Retired LAPD Officer"
+        },
+        {
+          "name": "Matt Quinlan",
+          "age": 33,
+          "hometown": "San Francisco, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Bill Posley",
+          "age": 28,
+          "hometown": "Venice, CA",
+          "profession": "Stand-Up Comedian"
+        },
+        {
+          "name": "Monica Culpepper",
+          "age": 41,
+          "hometown": "Tampa, FL",
+          "profession": "Ex-NFL Player's Wife"
+        },
+        {
+          "name": "Colton Cumbie",
+          "age": 21,
+          "hometown": "Monroeville, AL",
+          "profession": "Student"
+        },
+        {
+          "name": "Jonas Otsuji",
+          "age": 37,
+          "hometown": "Lehi, UT",
+          "profession": "Sushi Chef"
+        },
+        {
+          "name": "Michael Jefferson",
+          "age": 30,
+          "hometown": "Seattle, WA",
+          "profession": "Banker"
+        },
+        {
+          "name": "Jay Byars",
+          "age": 25,
+          "hometown": "Gaffney, SC",
+          "profession": "Model"
+        },
+        {
+          "name": "Leif Manson",
+          "age": 27,
+          "hometown": "San Diego, CA",
+          "profession": "Phlebotomist"
+        },
+        {
+          "name": "Troy \"Troyzan\" Robertson",
+          "age": 50,
+          "hometown": "Miami, FL",
+          "profession": "Swimsuit Photographer"
+        },
+        {
+          "name": "Kat Edorsson",
+          "age": 22,
+          "hometown": "Orlando, FL",
+          "profession": "Timeshare Representative"
+        },
+        {
+          "name": "Greg \"Tarzan\" Smith",
+          "age": 64,
+          "hometown": "Houston, TX",
+          "profession": "Plastic Surgeon"
+        },
+        {
+          "name": "Alicia Rosa",
+          "age": 25,
+          "hometown": "Chicago, IL",
+          "profession": "Special Education Teacher"
+        },
+        {
+          "name": "Christina Cha",
+          "age": 29,
+          "hometown": "West Hollywood, CA",
+          "profession": "Career Consultant"
+        },
+        {
+          "name": "Chelsea Meissner",
+          "age": 26,
+          "hometown": "Charleston, SC",
+          "profession": "Medical Saleswoman"
+        },
+        {
+          "name": "Sabrina Thompson",
+          "age": 33,
+          "hometown": "Brooklyn, NY",
+          "profession": "High School Teacher"
+        },
+        {
+          "name": "Kim Spradlin",
+          "age": 29,
+          "hometown": "San Antonio, TX",
+          "profession": "Bridal Shop Owner"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "name": "Survivor: Philippines",
+      "cast": [
+        {
+          "name": "Zane Knight",
+          "age": 28,
+          "hometown": "Danville, VA",
+          "profession": "Tire Repairman"
+        },
+        {
+          "name": "Roxanne \"Roxy\" Morris",
+          "age": 28,
+          "hometown": "Brooklyn, NY",
+          "profession": "Seminary Student"
+        },
+        {
+          "name": "Angie Layton",
+          "age": 20,
+          "hometown": "Provo, UT",
+          "profession": "Model/Student"
+        },
+        {
+          "name": "Russell Swan",
+          "age": 45,
+          "hometown": "Glenside, PA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Dana Lambert",
+          "age": 32,
+          "hometown": "Winston-Salem, NC",
+          "profession": "Cosmetologist"
+        },
+        {
+          "name": "Sarah Dawson",
+          "age": 28,
+          "hometown": "Silver Spring, MD",
+          "profession": "Insurance Saleswoman"
+        },
+        {
+          "name": "Katie Hanson",
+          "age": 22,
+          "hometown": "Newark, DE",
+          "profession": "Former Miss Delaware"
+        },
+        {
+          "name": "Roberta \"R.C.\" Saint-Amour",
+          "age": 27,
+          "hometown": "New York, NY",
+          "profession": "Investment Banker"
+        },
+        {
+          "name": "Jeff Kent",
+          "age": 44,
+          "hometown": "Austin, TX",
+          "profession": "Former MLB Player"
+        },
+        {
+          "name": "Artis Silvester",
+          "age": 53,
+          "hometown": "Terrytown, LA",
+          "profession": "Computer Engineer"
+        },
+        {
+          "name": "Peter \"Pete\" Yurkowski",
+          "age": 24,
+          "hometown": "Holmdel, NJ",
+          "profession": "Engineer Graduate/Model"
+        },
+        {
+          "name": "Jonathan Penner",
+          "age": 50,
+          "hometown": "Los Angeles, CA",
+          "profession": "Writer"
+        },
+        {
+          "name": "Carter Williams",
+          "age": 24,
+          "hometown": "Shawnee, KS",
+          "profession": "Track Coach"
+        },
+        {
+          "name": "Abi-Maria Gomes",
+          "age": 32,
+          "hometown": "Los Angeles, CA",
+          "profession": "Business Student"
+        },
+        {
+          "name": "Malcolm Freberg",
+          "age": 25,
+          "hometown": "Hermosa Beach, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Lisa Whelchel",
+          "age": 49,
+          "hometown": "Dallas, TX",
+          "profession": "Former TV Teen Star"
+        },
+        {
+          "name": "Michael Skupin",
+          "age": 50,
+          "hometown": "White Lake, MI",
+          "profession": "Professional Speaker"
+        },
+        {
+          "name": "Denise Stapley",
+          "age": 41,
+          "hometown": "Cedar Rapids, IA",
+          "profession": "Sex Therapist"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "name": "Survivor: Caramoan",
+      "cast": [
+        {
+          "name": "Francesca Hogi",
+          "age": 38,
+          "hometown": "Brooklyn, NY",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Alexandra \"Allie\" Pohevitz",
+          "age": 25,
+          "hometown": "Oceanside, NY",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Hope Driskill",
+          "age": 23,
+          "hometown": "Jefferson City, MO",
+          "profession": "Pre-Law Student"
+        },
+        {
+          "name": "Shamar Thomas",
+          "age": 27,
+          "hometown": "Brooklyn, NY",
+          "profession": "Iraq War Veteran"
+        },
+        {
+          "name": "Laura Alexander",
+          "age": 23,
+          "hometown": "Washington DC",
+          "profession": "Administrative Officer"
+        },
+        {
+          "name": "Brandon Hantz",
+          "age": 21,
+          "hometown": "Katy, TX",
+          "profession": "Chemical Disposal"
+        },
+        {
+          "name": "Matt Bischoff",
+          "age": 38,
+          "hometown": "Cincinnati, OH",
+          "profession": "BMX Bike Salesman"
+        },
+        {
+          "name": "Julia Landauer",
+          "age": 21,
+          "hometown": "Stanford, CA",
+          "profession": "Racecar Driver"
+        },
+        {
+          "name": "Corinne Kaplan",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Pharmaceutical Sales"
+        },
+        {
+          "name": "Michael Snow",
+          "age": 44,
+          "hometown": "New York, NY",
+          "profession": "Event Planner"
+        },
+        {
+          "name": "Phillip Sheppard",
+          "age": 54,
+          "hometown": "Santa Monica, CA",
+          "profession": "Software Sales"
+        },
+        {
+          "name": "Malcolm Freberg",
+          "age": 26,
+          "hometown": "Hermosa Beach, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Reynold Toepfer",
+          "age": 30,
+          "hometown": "San Francisco, CA",
+          "profession": "Real Estate Salesman"
+        },
+        {
+          "name": "Andrea Boehlke",
+          "age": 23,
+          "hometown": "New York, NY",
+          "profession": "Entertainment Host and Writer"
+        },
+        {
+          "name": "Brenda Lowe",
+          "age": 30,
+          "hometown": "Miami, FL",
+          "profession": "Paddleboard Company Owner"
+        },
+        {
+          "name": "Erik Reichenbach",
+          "age": 27,
+          "hometown": "Santa Clarita, CA",
+          "profession": "Comic Book Artist"
+        },
+        {
+          "name": "Edward \"Eddie\" Fox",
+          "age": 23,
+          "hometown": "East Brunswick, NJ",
+          "profession": "Fireman/EMT"
+        },
+        {
+          "name": "Sherri Biethman",
+          "age": 41,
+          "hometown": "Boise, ID",
+          "profession": "Fast Food Franchisee"
+        },
+        {
+          "name": "Dawn Meehan",
+          "age": 42,
+          "hometown": "South Jordan, UT",
+          "profession": "English professor"
+        },
+        {
+          "name": "John Cochran",
+          "age": 25,
+          "hometown": "Washington DC",
+          "profession": "Harvard Law Student"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "name": "Survivor: Blood vs. Water",
+      "cast": [
+        {
+          "name": "Rupert Boneham",
+          "age": 49,
+          "hometown": "Indianapolis, IN",
+          "profession": "Troubled Teens Mentor"
+        },
+        {
+          "name": "Colton Cumbie",
+          "age": 22,
+          "hometown": "Monroeville, AL",
+          "profession": "Student Teacher"
+        },
+        {
+          "name": "Rachel Foulger",
+          "age": 33,
+          "hometown": "Orem, UT",
+          "profession": "Cocktail Waitress/Graphic Designer"
+        },
+        {
+          "name": "Marissa Peterson",
+          "age": 21,
+          "hometown": "Chapel Hill, NC",
+          "profession": "Student"
+        },
+        {
+          "name": "Candice Cody",
+          "age": 30,
+          "hometown": "Washington DC",
+          "profession": "Physician"
+        },
+        {
+          "name": "Brad Culpepper",
+          "age": 44,
+          "hometown": "Tampa, FL",
+          "profession": "Attorney/Retired NFL Player"
+        },
+        {
+          "name": "Kat Edorsson",
+          "age": 23,
+          "hometown": "Orlando, FL",
+          "profession": "Full-Time Student/Sales"
+        },
+        {
+          "name": "John Cody",
+          "age": 30,
+          "hometown": "Washington DC",
+          "profession": "Physician/Army Orthopedic Surgery Resident"
+        },
+        {
+          "name": "Laura Boneham",
+          "age": 44,
+          "hometown": "Indianapolis, IN",
+          "profession": "Merchandiser"
+        },
+        {
+          "name": "Aras Baskauskas",
+          "age": 31,
+          "hometown": "Santa Monica, CA",
+          "profession": "Musician"
+        },
+        {
+          "name": "Vytas Baskauskas",
+          "age": 33,
+          "hometown": "Santa Monica, CA",
+          "profession": "Yoga Instructor/Math Instructor"
+        },
+        {
+          "name": "Caleb Bankston",
+          "age": 26,
+          "hometown": "Crossville, AL",
+          "profession": "Post Office Manager/Farmer"
+        },
+        {
+          "name": "Katie Collins",
+          "age": 25,
+          "hometown": "New York, NY",
+          "profession": "Hedge Fund Support"
+        },
+        {
+          "name": "Hayden Moss",
+          "age": 27,
+          "hometown": "Tempe, AZ",
+          "profession": "Real Estate"
+        },
+        {
+          "name": "Laura Morett",
+          "age": 43,
+          "hometown": "Salem, OR",
+          "profession": "Fitness Instructor"
+        },
+        {
+          "name": "Ciera Eastin",
+          "age": 24,
+          "hometown": "Salem, OR",
+          "profession": "Cosmetology Student"
+        },
+        {
+          "name": "Tina Wesson",
+          "age": 52,
+          "hometown": "Knoxville, TN",
+          "profession": "Motivational Speaker"
+        },
+        {
+          "name": "Gervase Peterson",
+          "age": 43,
+          "hometown": "Willingboro, NJ",
+          "profession": "Cigar Lounge Owner"
+        },
+        {
+          "name": "Monica Culpepper",
+          "age": 42,
+          "hometown": "Tampa, FL",
+          "profession": "Homemaker"
+        },
+        {
+          "name": "Tyson Apostol",
+          "age": 34,
+          "hometown": "Heber, UT",
+          "profession": "Former Pro Cyclist/Shop Manager"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "name": "Survivor: Cagayan",
+      "cast": [
+        {
+          "name": "David Samson",
+          "age": 45,
+          "hometown": "Plantation, FL",
+          "profession": "Miami Marlins President"
+        },
+        {
+          "name": "Garrett Adelstein",
+          "age": 27,
+          "hometown": "Santa Monica, CA",
+          "profession": "Professional Poker Player"
+        },
+        {
+          "name": "Brice Johnston",
+          "age": 27,
+          "hometown": "Center City Philadelphia, PA",
+          "profession": "Social Worker"
+        },
+        {
+          "name": "J'Tia Taylor",
+          "age": 31,
+          "hometown": "Chicago, IL",
+          "profession": "Nuclear Engineer"
+        },
+        {
+          "name": "Cliff Robinson",
+          "age": 46,
+          "hometown": "Newark, NJ",
+          "profession": "Former NBA All-Star"
+        },
+        {
+          "name": "Lindsey Ogle",
+          "age": 29,
+          "hometown": "Kokomo, IN",
+          "profession": "Hairstylist"
+        },
+        {
+          "name": "Alexis Maxwell",
+          "age": 21,
+          "hometown": "Addison, IL",
+          "profession": "Student"
+        },
+        {
+          "name": "Sarah Lacina",
+          "age": 29,
+          "hometown": "Cedar Rapids, IA",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Morgan McLeod",
+          "age": 21,
+          "hometown": "San Jose, CA",
+          "profession": "Ex-NFL Cheerleader"
+        },
+        {
+          "name": "Leon Joseph \"LJ\" McKanas",
+          "age": 34,
+          "hometown": "Boston, MA",
+          "profession": "Horse Trainer"
+        },
+        {
+          "name": "Jeremiah Wood",
+          "age": 34,
+          "hometown": "Dobson, NC",
+          "profession": "Male Model"
+        },
+        {
+          "name": "Jefra Bland",
+          "age": 22,
+          "hometown": "Campbellsville, KY",
+          "profession": "Miss Kentucky Teen USA"
+        },
+        {
+          "name": "Latasha \"Tasha\" Fox",
+          "age": 37,
+          "hometown": "St. Louis, MO",
+          "profession": "Accountant"
+        },
+        {
+          "name": "Trish Hegarty",
+          "age": 48,
+          "hometown": "Needham, MA",
+          "profession": "Pilates Teacher"
+        },
+        {
+          "name": "Spencer Bledsoe",
+          "age": 21,
+          "hometown": "Chicago, IL",
+          "profession": "Economics Student"
+        },
+        {
+          "name": "Kassandra \"Kass\" McQuillen",
+          "age": 41,
+          "hometown": "Tehachapi, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Yung \"Woo\" Hwang",
+          "age": 29,
+          "hometown": "Newport Beach, CA",
+          "profession": "Martial Arts Instructor"
+        },
+        {
+          "name": "Tony Vlachos",
+          "age": 39,
+          "hometown": "Jersey City, NJ",
+          "profession": "Police Officer"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "name": "Survivor: San Juan del Sur",
+      "cast": [
+        {
+          "name": "Nadiya Anderson",
+          "age": 28,
+          "hometown": "Edgewater, NJ",
+          "profession": "Crossfit Coach/Project Coordinator"
+        },
+        {
+          "name": "Val Collins",
+          "age": 35,
+          "hometown": "Foxborough, MA",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "John Rocker",
+          "age": 39,
+          "hometown": "Atlanta, GA",
+          "profession": "Former MLB Player"
+        },
+        {
+          "name": "Drew Christy",
+          "age": 25,
+          "hometown": "Winter Park, FL",
+          "profession": "Traveling Sales Representative"
+        },
+        {
+          "name": "Kelley Wentworth",
+          "age": 28,
+          "hometown": "Seattle, WA",
+          "profession": "Marketing Manager"
+        },
+        {
+          "name": "Dale Wentworth",
+          "age": 55,
+          "hometown": "Ephrata, WA",
+          "profession": "Farmer"
+        },
+        {
+          "name": "Julie McGee",
+          "age": 34,
+          "hometown": "Atlanta, GA",
+          "profession": "Model/Spray Tan Business Owner"
+        },
+        {
+          "name": "Josh Canfield",
+          "age": 32,
+          "hometown": "New York, NY",
+          "profession": "Singer/Actor/Writer"
+        },
+        {
+          "name": "Jeremy Collins",
+          "age": 36,
+          "hometown": "Foxborough, MA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Wes Nale",
+          "age": 24,
+          "hometown": "Shreveport, LA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Reed Kelly",
+          "age": 31,
+          "hometown": "New York, NY",
+          "profession": "Broadway Performer/Model/Aerialist"
+        },
+        {
+          "name": "Alec Christy",
+          "age": 22,
+          "hometown": "Winter Park, FL",
+          "profession": "Student"
+        },
+        {
+          "name": "Jon Misch",
+          "age": 26,
+          "hometown": "Waterford, MI",
+          "profession": "Financial Assistant"
+        },
+        {
+          "name": "Baylor Wilson",
+          "age": 20,
+          "hometown": "Nashville, TN",
+          "profession": "Student"
+        },
+        {
+          "name": "Keith Nale",
+          "age": 53,
+          "hometown": "Shreveport, LA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Missy Payne",
+          "age": 47,
+          "hometown": "Dallas, TX",
+          "profession": "Competitive Cheerleading Gym Owner"
+        },
+        {
+          "name": "Jaclyn Schultz",
+          "age": 25,
+          "hometown": "Wyandotte, MI",
+          "profession": "Media Buyer"
+        },
+        {
+          "name": "Natalie Anderson",
+          "age": 28,
+          "hometown": "Edgewater, NJ",
+          "profession": "Crossfit Coach/Physical Therapy Student"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "name": "Survivor: Worlds Apart",
+      "cast": [
+        {
+          "name": "Charlotte \"So\" Kim",
+          "age": 31,
+          "hometown": "Long Beach, CA",
+          "profession": "Retail Buyer"
+        },
+        {
+          "name": "Vince Sly",
+          "age": 32,
+          "hometown": "Santa Monica, CA",
+          "profession": "Coconut Vendor"
+        },
+        {
+          "name": "Nina Poersch",
+          "age": 51,
+          "hometown": "Palmdale, CA",
+          "profession": "Hearing Advocate"
+        },
+        {
+          "name": "Lindsey Cascaddan",
+          "age": 24,
+          "hometown": "College Park, FL",
+          "profession": "Hairdresser"
+        },
+        {
+          "name": "Max Dawson",
+          "age": 37,
+          "hometown": "Topanga, CA",
+          "profession": "Media Consultant"
+        },
+        {
+          "name": "Joaquin Souberbielle",
+          "age": 27,
+          "hometown": "Valley Stream, NY",
+          "profession": "Marketing Director"
+        },
+        {
+          "name": "Kelly Remington",
+          "age": 44,
+          "hometown": "Grand Island, NY",
+          "profession": "State Trooper"
+        },
+        {
+          "name": "Hali Ford",
+          "age": 25,
+          "hometown": "San Francisco, CA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Joe Anglim",
+          "age": 25,
+          "hometown": "Scottsdale, AZ",
+          "profession": "Jewelry Designer"
+        },
+        {
+          "name": "Jenn Brown",
+          "age": 22,
+          "hometown": "Long Beach, CA",
+          "profession": "Sailing Instructor"
+        },
+        {
+          "name": "Shirin Oskooi",
+          "age": 31,
+          "hometown": "San Francisco, CA",
+          "profession": "Yahoo! Executive"
+        },
+        {
+          "name": "Tyler Fredrickson",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Ex-Talent Agent Assistant"
+        },
+        {
+          "name": "Dan Foley",
+          "age": 47,
+          "hometown": "Gorham, ME",
+          "profession": "Postal Worker"
+        },
+        {
+          "name": "Sierra Dawn Thomas",
+          "age": 27,
+          "hometown": "Roy, UT",
+          "profession": "Barrel Racer"
+        },
+        {
+          "name": "Rodney Lavoie, Jr.",
+          "age": 24,
+          "hometown": "Boston, MA",
+          "profession": "General Contractor"
+        },
+        {
+          "name": "Will Sims II",
+          "age": 41,
+          "hometown": "Sherman Oaks, CA",
+          "profession": "YouTube Sensation"
+        },
+        {
+          "name": "Carolyn Rivera",
+          "age": 52,
+          "hometown": "Tampa, FL",
+          "profession": "Corporate Executive"
+        },
+        {
+          "name": "Mike Holloway",
+          "age": 38,
+          "hometown": "North Richland Hills, TX",
+          "profession": "Oil Driller"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "name": "Survivor: Cambodia",
+      "cast": [
+        {
+          "name": "Vytas Baskauskas",
+          "age": 35,
+          "hometown": "Santa Monica, CA",
+          "profession": "Yoga Instructor/Math Professor"
+        },
+        {
+          "name": "Shirin Oskooi",
+          "age": 32,
+          "hometown": "San Francisco, CA",
+          "profession": "Yahoo! Executive"
+        },
+        {
+          "name": "Peih-Gee Law",
+          "age": 37,
+          "hometown": "San Francisco, CA",
+          "profession": "Jeweler"
+        },
+        {
+          "name": "Jeff Varner",
+          "age": 49,
+          "hometown": "Greensboro, NC",
+          "profession": "Internet Projects Manager"
+        },
+        {
+          "name": "Monica Padilla",
+          "age": 30,
+          "hometown": "Queens, NY",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Terry Deitz",
+          "age": 55,
+          "hometown": "Simsbury, CT",
+          "profession": "Pilot"
+        },
+        {
+          "name": "Yung \"Woo\" Hwang",
+          "age": 31,
+          "hometown": "Newport Beach, CA",
+          "profession": "Martial Arts Instructor"
+        },
+        {
+          "name": "Kassandra \"Kass\" McQuillen",
+          "age": 42,
+          "hometown": "Tehachapi, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Andrew Savage",
+          "age": 51,
+          "hometown": "San Jose, CA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Kelly Wiglesworth",
+          "age": 37,
+          "hometown": "Greensboro, NC",
+          "profession": "River Guide"
+        },
+        {
+          "name": "Ciera Eastin",
+          "age": 26,
+          "hometown": "Salem, OR",
+          "profession": "Cosmetology Student"
+        },
+        {
+          "name": "Stephen Fishbach",
+          "age": 36,
+          "hometown": "New York NY",
+          "profession": "Corporate Consultant"
+        },
+        {
+          "name": "Joe Anglim",
+          "age": 25,
+          "hometown": "Scottsdale, AZ",
+          "profession": "Jewelry Designer"
+        },
+        {
+          "name": "Abi-Maria Gomes",
+          "age": 35,
+          "hometown": "Los Angeles, CA",
+          "profession": "Business Student"
+        },
+        {
+          "name": "Kimmi Kappenberg",
+          "age": 42,
+          "hometown": "The Woodlands, TX",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Keith Nale",
+          "age": 54,
+          "hometown": "Keithville, LA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Kelley Wentworth",
+          "age": 29,
+          "hometown": "Seattle, WA",
+          "profession": "Marketing Manager"
+        },
+        {
+          "name": "Spencer Bledsoe",
+          "age": 22,
+          "hometown": "Chicago, IL",
+          "profession": "Economics Student"
+        },
+        {
+          "name": "Latasha \"Tasha\" Fox",
+          "age": 39,
+          "hometown": "St. Louis, MO",
+          "profession": "Accountant"
+        },
+        {
+          "name": "Jeremy Collins",
+          "age": 37,
+          "hometown": "Foxborough, MA",
+          "profession": "Firefighter"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "name": "Survivor: Kaôh Rōng",
+      "cast": [
+        {
+          "name": "Darnell Hamilton",
+          "age": 27,
+          "hometown": "Chicago, IL",
+          "profession": "Postal Worker"
+        },
+        {
+          "name": "Jennifer Lanzetti",
+          "age": 38,
+          "hometown": "Salt Lake City, UT",
+          "profession": "Contractor"
+        },
+        {
+          "name": "Elisabeth \"Liz\" Markham",
+          "age": 27,
+          "hometown": "Brooklyn, NY",
+          "profession": "Quantitative Strategist"
+        },
+        {
+          "name": "Caleb Reynolds",
+          "age": 28,
+          "hometown": "Hopkinsville, KY",
+          "profession": "Army Veteran"
+        },
+        {
+          "name": "Alecia Holden",
+          "age": 24,
+          "hometown": "Dallas, TX",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Anna Khait",
+          "age": 26,
+          "hometown": "Brooklyn, NY",
+          "profession": "Professional Poker Player"
+        },
+        {
+          "name": "Peter Baggenstos",
+          "age": 34,
+          "hometown": "Minneapolis, MN",
+          "profession": "ER Doctor"
+        },
+        {
+          "name": "Neal Gottlieb",
+          "age": 38,
+          "hometown": "Sausalito, CA",
+          "profession": "Ice Cream Entrepreneur"
+        },
+        {
+          "name": "Nick Maiorano",
+          "age": 30,
+          "hometown": "Redondo Beach, CA",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Debbie Wanner",
+          "age": 49,
+          "hometown": "Reading, PA",
+          "profession": "Chemist"
+        },
+        {
+          "name": "Scot Pollard",
+          "age": 40,
+          "hometown": "Carmel, IN",
+          "profession": "Former NBA Player"
+        },
+        {
+          "name": "Julia Sokolowski",
+          "age": 19,
+          "hometown": "Boston, MA",
+          "profession": "College Student"
+        },
+        {
+          "name": "Kyle Jason",
+          "age": 31,
+          "hometown": "Detroit, MI",
+          "profession": "Bounty Hunter"
+        },
+        {
+          "name": "Joe Del Campo",
+          "age": 71,
+          "hometown": "Vero Beach, FL",
+          "profession": "Former FBI Agent"
+        },
+        {
+          "name": "Cydney Gillon",
+          "age": 23,
+          "hometown": "Douglasville, GA",
+          "profession": "Bodybuilder"
+        },
+        {
+          "name": "Tai Trang",
+          "age": 51,
+          "hometown": "San Francisco, CA",
+          "profession": "Gardener"
+        },
+        {
+          "name": "Aubry Bracco",
+          "age": 29,
+          "hometown": "Cambridge, MA",
+          "profession": "Social Media Marketer"
+        },
+        {
+          "name": "Michele Fitzgerald",
+          "age": 24,
+          "hometown": "Freehold, NJ",
+          "profession": "Bartender"
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "name": "Survivor: Millennials vs. Gen X",
+      "cast": [
+        {
+          "name": "Rachel Ako",
+          "age": 37,
+          "hometown": "Los Angeles, CA",
+          "profession": "Recruiting Director"
+        },
+        {
+          "name": "Mari Takahashi",
+          "age": 31,
+          "hometown": "Los Angeles, CA",
+          "profession": "Gamer"
+        },
+        {
+          "name": "Paul Wachter",
+          "age": 52,
+          "hometown": "Sugarloaf Key, FL",
+          "profession": "Boat Mechanic"
+        },
+        {
+          "name": "Lucy Huang",
+          "age": 42,
+          "hometown": "Diamond Bar, CA",
+          "profession": "Dietitian"
+        },
+        {
+          "name": "Ciandre \"CeCe\" Taylor",
+          "age": 39,
+          "hometown": "Granada Hills, CA",
+          "profession": "Insurance Adjuster"
+        },
+        {
+          "name": "Jessica \"Figgy\" Figueroa",
+          "age": 23,
+          "hometown": "Nashville, TN",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Michaela Bradshaw",
+          "age": 25,
+          "hometown": "Fort Worth, TX",
+          "profession": "Vacation Club Saleswoman"
+        },
+        {
+          "name": "Michelle Schubert",
+          "age": 28,
+          "hometown": "Yakima, WA",
+          "profession": "Missionary Recruiter"
+        },
+        {
+          "name": "Taylor Lee Stocker",
+          "age": 24,
+          "hometown": "Post Falls, ID",
+          "profession": "Snowboard Instructor"
+        },
+        {
+          "name": "Chris Hammons",
+          "age": 38,
+          "hometown": "Moore, OK",
+          "profession": "Trial Attorney"
+        },
+        {
+          "name": "Jessica Lewis",
+          "age": 37,
+          "hometown": "Voorheesville, NY",
+          "profession": "Assistant District Attorney"
+        },
+        {
+          "name": "Zeke Smith",
+          "age": 28,
+          "hometown": "Brooklyn, NY",
+          "profession": "Asset Manager"
+        },
+        {
+          "name": "Will Wahl",
+          "age": 18,
+          "hometown": "Long Valley, NJ",
+          "profession": "High School Student"
+        },
+        {
+          "name": "Sunday Burquest",
+          "age": 45,
+          "hometown": "Otsego, MN",
+          "profession": "Youth Pastor"
+        },
+        {
+          "name": "Justin \"Jay\" Starrett",
+          "age": 27,
+          "hometown": "Fort Lauderdale, FL",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Bret LaBelle",
+          "age": 42,
+          "hometown": "Dedham, MA",
+          "profession": "Police Sergeant"
+        },
+        {
+          "name": "David Wright",
+          "age": 42,
+          "hometown": "Sherman Oaks, CA",
+          "profession": "Television Writer"
+        },
+        {
+          "name": "Hannah Shapiro",
+          "age": 24,
+          "hometown": "West Hollywood, CA",
+          "profession": "Barista"
+        },
+        {
+          "name": "Ken McNickle",
+          "age": 33,
+          "hometown": "Denver, CO",
+          "profession": "Model"
+        },
+        {
+          "name": "Adam Klein",
+          "age": 25,
+          "hometown": "San Francisco, CA",
+          "profession": "Homeless Shelter Manager"
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "name": "Survivor: Game Changers",
+      "cast": [
+        {
+          "name": "Ciera Eastin",
+          "age": 27,
+          "hometown": "Salem, OR",
+          "profession": "Cosmetology Student"
+        },
+        {
+          "name": "Tony Vlachos",
+          "age": 42,
+          "hometown": "Jersey City, NJ",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Caleb Reynolds",
+          "age": 28,
+          "hometown": "Hopkinsville, KY",
+          "profession": "Army Veteran"
+        },
+        {
+          "name": "Malcolm Freberg",
+          "age": 29,
+          "hometown": "Hermosa Beach, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "James \"J.T.\" Thomas, Jr.",
+          "age": 31,
+          "hometown": "Mobile, AL",
+          "profession": "Cattle Rancher"
+        },
+        {
+          "name": "Sandra Diaz-Twine",
+          "age": 42,
+          "hometown": "Fayetteville, NC",
+          "profession": "Office Assistant"
+        },
+        {
+          "name": "Jeff Varner",
+          "age": 50,
+          "hometown": "High Point, NC",
+          "profession": "Internet Project Manager"
+        },
+        {
+          "name": "Hali Ford",
+          "age": 26,
+          "hometown": "Knoxville, TN",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Ozzy Lusth",
+          "age": 34,
+          "hometown": "Venice, CA",
+          "profession": "Photographer"
+        },
+        {
+          "name": "Debbie Wanner",
+          "age": 51,
+          "hometown": "Reading, PA",
+          "profession": "Chemist"
+        },
+        {
+          "name": "Zeke Smith",
+          "age": 28,
+          "hometown": "Brooklyn, NY",
+          "profession": "Asset Manager"
+        },
+        {
+          "name": "Sierra Dawn Thomas",
+          "age": 29,
+          "hometown": "Roy, UT",
+          "profession": "Barrel Racer"
+        },
+        {
+          "name": "Andrea Boehlke",
+          "age": 27,
+          "hometown": "New York, NY",
+          "profession": "Entertainment Host/Writer"
+        },
+        {
+          "name": "Michaela Bradshaw",
+          "age": 25,
+          "hometown": "Fort Worth, TX",
+          "profession": "Vacation Club Sales"
+        },
+        {
+          "name": "Cirie Fields",
+          "age": 45,
+          "hometown": "Norwalk, CT",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Aubry Bracco",
+          "age": 30,
+          "hometown": "Cambridge, MA",
+          "profession": "Social Media Marketer"
+        },
+        {
+          "name": "Tai Trang",
+          "age": 52,
+          "hometown": "San Francisco, CA",
+          "profession": "Gardener"
+        },
+        {
+          "name": "Troy \"Troyzan\" Robertson",
+          "age": 54,
+          "hometown": "Miami, FL",
+          "profession": "Swimsuit Photographer"
+        },
+        {
+          "name": "Brad Culpepper",
+          "age": 47,
+          "hometown": "Tampa, FL",
+          "profession": "Attorney/Former NFL Player"
+        },
+        {
+          "name": "Sarah Lacina",
+          "age": 32,
+          "hometown": "Marion, IA",
+          "profession": "Police Officer"
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "name": "Survivor: Heroes vs. Healers vs. Hustlers",
+      "cast": [
+        {
+          "name": "Katrina Radke",
+          "age": 46,
+          "hometown": "Excelsior, MN",
+          "profession": "Olympian"
+        },
+        {
+          "name": "Simone Nguyen",
+          "age": 25,
+          "hometown": "New York, NY",
+          "profession": "Diversity Advocate"
+        },
+        {
+          "name": "Patrick Bolton",
+          "age": 24,
+          "hometown": "Auburn, AL",
+          "profession": "Small Business Owner"
+        },
+        {
+          "name": "Alan Ball",
+          "age": 31,
+          "hometown": "Houston, TX",
+          "profession": "NFL Player"
+        },
+        {
+          "name": "Roark Luskin",
+          "age": 27,
+          "hometown": "Santa Monica, CA",
+          "profession": "Social Worker"
+        },
+        {
+          "name": "Alexandrea \"Ali\" Elliott",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Celebrity Assistant"
+        },
+        {
+          "name": "Jessica Johnston",
+          "age": 29,
+          "hometown": "Louisville, KY",
+          "profession": "Nurse Practitioner"
+        },
+        {
+          "name": "Desiree \"Desi\" Williams",
+          "age": 27,
+          "hometown": "Newport News, VA",
+          "profession": "Physical Therapist"
+        },
+        {
+          "name": "Cole Medders",
+          "age": 24,
+          "hometown": "Little Rock, AR",
+          "profession": "Wilderness Therapy Guide"
+        },
+        {
+          "name": "John Paul \"JP\" Hilsabeck",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Joe Mena",
+          "age": 34,
+          "hometown": "Tolland, CT",
+          "profession": "Probation Officer"
+        },
+        {
+          "name": "Lauren Rimmer",
+          "age": 35,
+          "hometown": "Beaufort, NC",
+          "profession": "Fisherwoman"
+        },
+        {
+          "name": "Ashley Nolan",
+          "age": 26,
+          "hometown": "Satellite Beach, FL",
+          "profession": "Lifeguard"
+        },
+        {
+          "name": "Mike Zahalsky",
+          "age": 43,
+          "hometown": "Parkland, FL",
+          "profession": "Urologist"
+        },
+        {
+          "name": "Devon Pinto",
+          "age": 24,
+          "hometown": "Solana Beach, CA",
+          "profession": "Surf Instructor"
+        },
+        {
+          "name": "Ryan Ulrich",
+          "age": 23,
+          "hometown": "North Arlington, NJ",
+          "profession": "Bellhop"
+        },
+        {
+          "name": "Chrissy Hofbeck",
+          "age": 46,
+          "hometown": "Lebanon Township, NJ",
+          "profession": "Actuary"
+        },
+        {
+          "name": "Ben Driebergen",
+          "age": 34,
+          "hometown": "Boise, ID",
+          "profession": "Marine"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "name": "Survivor: Ghost Island",
+      "cast": [
+        {
+          "name": "Stephanie Gonzalez",
+          "age": 26,
+          "hometown": "Ocala, FL",
+          "profession": "Graphic Saleswoman"
+        },
+        {
+          "name": "Jacob Derwin",
+          "age": 22,
+          "hometown": "Merrick, NY",
+          "profession": "Music Teacher"
+        },
+        {
+          "name": "Morgan Ricke",
+          "age": 29,
+          "hometown": "Orlando, FL",
+          "profession": "Marine Animal Trainer"
+        },
+        {
+          "name": "Brendan Shapiro",
+          "age": 41,
+          "hometown": "Herndon, VA",
+          "profession": "Physical Education Teacher"
+        },
+        {
+          "name": "Stephanie Johnson",
+          "age": 34,
+          "hometown": "Chicago, IL",
+          "profession": "Yoga Instructor"
+        },
+        {
+          "name": "James Lim",
+          "age": 24,
+          "hometown": "New York, NY",
+          "profession": "Business Analyst"
+        },
+        {
+          "name": "Bradley Kleihege",
+          "age": 26,
+          "hometown": "Los Angeles, CA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Chris Noble",
+          "age": 27,
+          "hometown": "Brooklyn, NY",
+          "profession": "Male Model"
+        },
+        {
+          "name": "Libby Vincek",
+          "age": 24,
+          "hometown": "Nashville, TN",
+          "profession": "Social Media Strategist"
+        },
+        {
+          "name": "Desiree Afuye",
+          "age": 21,
+          "hometown": "Brooklyn, NY",
+          "profession": "Student"
+        },
+        {
+          "name": "Jenna Bowman",
+          "age": 23,
+          "hometown": "Venice Beach, CA",
+          "profession": "Advertising Account Executive"
+        },
+        {
+          "name": "Michael Yerger",
+          "age": 18,
+          "hometown": "Los Angeles, CA",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Chelsea Townsend",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "EMT/Pro Cheerleader"
+        },
+        {
+          "name": "Kellyn Bechtold",
+          "age": 31,
+          "hometown": "Denver, CO",
+          "profession": "Career Counselor"
+        },
+        {
+          "name": "Sebastian Noel",
+          "age": 22,
+          "hometown": "Melbourne, FL",
+          "profession": "Fishing Guide"
+        },
+        {
+          "name": "Donathan Hurley",
+          "age": 26,
+          "hometown": "Kimper, KY",
+          "profession": "Caretaker"
+        },
+        {
+          "name": "Angela Perkins",
+          "age": 42,
+          "hometown": "Cincinnati, OH",
+          "profession": "Army Veteran"
+        },
+        {
+          "name": "Laurel Johnson",
+          "age": 29,
+          "hometown": "Minneapolis, MN",
+          "profession": "Financial Consultant"
+        },
+        {
+          "name": "Domenick Abbate",
+          "age": 38,
+          "hometown": "Nesconset, NY",
+          "profession": "Construction Supervisor"
+        },
+        {
+          "name": "Wendell Holland",
+          "age": 33,
+          "hometown": "Philadelphia, PA",
+          "profession": "Furniture Company Owner"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "name": "Survivor: David vs. Goliath",
+      "cast": [
+        {
+          "name": "Pat Cusack",
+          "age": 41,
+          "hometown": "Cohoes, NY",
+          "profession": "Maintenance Manager"
+        },
+        {
+          "name": "Jessica Peet",
+          "age": 19,
+          "hometown": "Lakeland, FL",
+          "profession": "Waitress"
+        },
+        {
+          "name": "Jeremy Crawford",
+          "age": 40,
+          "hometown": "Clover, SC",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Bi Nguyen",
+          "age": 28,
+          "hometown": "Houston, TX",
+          "profession": "Mixed Martial Arts Fighter"
+        },
+        {
+          "name": "Natalia Azoqa",
+          "age": 25,
+          "hometown": "Irvine, CA",
+          "profession": "Industrial Engineer"
+        },
+        {
+          "name": "Natalie Cole",
+          "age": 57,
+          "hometown": "Los Angeles, CA",
+          "profession": "Publishing CEO"
+        },
+        {
+          "name": "Lyrsa Torres",
+          "age": 36,
+          "hometown": "Boston, MA",
+          "profession": "Airline Agent"
+        },
+        {
+          "name": "Elizabeth Olson",
+          "age": 31,
+          "hometown": "Longview, TX",
+          "profession": "Kitchen Staff Member"
+        },
+        {
+          "name": "John Hennigan",
+          "age": 38,
+          "hometown": "Los Angeles, CA",
+          "profession": "Professional Wrestler"
+        },
+        {
+          "name": "Dan Rengering",
+          "age": 27,
+          "hometown": "Lake Butler, FL",
+          "profession": "S.W.A.T. Officer"
+        },
+        {
+          "name": "Alec Merlino",
+          "age": 24,
+          "hometown": "San Clemente, CA",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Carl Boudreaux",
+          "age": 41,
+          "hometown": "Beaumont, TX",
+          "profession": "Truck Driver"
+        },
+        {
+          "name": "Gabby Pascuzzi",
+          "age": 25,
+          "hometown": "St. Augustine, FL",
+          "profession": "Technical Writer"
+        },
+        {
+          "name": "Christian Hubicki",
+          "age": 32,
+          "hometown": "Tallahassee, FL",
+          "profession": "Robotics Scientist"
+        },
+        {
+          "name": "Davie Rickenbacker",
+          "age": 30,
+          "hometown": "Orangeburg, SC",
+          "profession": "Social Media Manager"
+        },
+        {
+          "name": "Alison Raybould",
+          "age": 28,
+          "hometown": "Chapel Hill, NC",
+          "profession": "Physician"
+        },
+        {
+          "name": "Kara Kay",
+          "age": 30,
+          "hometown": "San Diego, CA",
+          "profession": "Realtor"
+        },
+        {
+          "name": "Angelina Keeley",
+          "age": 28,
+          "hometown": "Sparks, NV",
+          "profession": "Financial Consultant"
+        },
+        {
+          "name": "Mike White",
+          "age": 47,
+          "hometown": "Los Angeles, CA",
+          "profession": "Filmmaker"
+        },
+        {
+          "name": "Nick Wilson",
+          "age": 27,
+          "hometown": "Williamsburg, KY",
+          "profession": "Public Defender"
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "name": "Survivor: Edge of Extinction",
+      "cast": [
+        {
+          "name": "Reem Daly",
+          "age": 46,
+          "hometown": "Ashburn, VA",
+          "profession": "Sales Representative"
+        },
+        {
+          "name": "Keith Sowell",
+          "age": 19,
+          "hometown": "Durham, NC",
+          "profession": "Pre-Med Student"
+        },
+        {
+          "name": "Aubry Bracco",
+          "age": 32,
+          "hometown": "Los Angeles, CA",
+          "profession": "Marketing Director"
+        },
+        {
+          "name": "Wendy Diaz",
+          "age": 25,
+          "hometown": "Bell, CA",
+          "profession": "Small Business Owner"
+        },
+        {
+          "name": "Joe Anglim",
+          "age": 29,
+          "hometown": "Ogden, UT",
+          "profession": "Multimedia Artist"
+        },
+        {
+          "name": "Eric Hafemann",
+          "age": 35,
+          "hometown": "Livermore, CA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Julia Carter",
+          "age": 25,
+          "hometown": "Bethesda, MD",
+          "profession": "Medical Assistant"
+        },
+        {
+          "name": "David Wright",
+          "age": 44,
+          "hometown": "Sherman Oaks, CA",
+          "profession": "Television Writer"
+        },
+        {
+          "name": "Kelley Wentworth",
+          "age": 31,
+          "hometown": "Seattle, WA",
+          "profession": "Marketing Manager"
+        },
+        {
+          "name": "Dan \"Wardog\" DaSilva",
+          "age": 38,
+          "hometown": "Los Angeles, CA",
+          "profession": "Law Student/Former Military"
+        },
+        {
+          "name": "Ron Clark",
+          "age": 46,
+          "hometown": "Atlanta, GA",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Aurora McCreary",
+          "age": 32,
+          "hometown": "Orlando, FL",
+          "profession": "Divorce Attorney"
+        },
+        {
+          "name": "Victoria Baamonde",
+          "age": 23,
+          "hometown": "Bronx, NY",
+          "profession": "Waitress"
+        },
+        {
+          "name": "Lauren O'Connell",
+          "age": 21,
+          "hometown": "Washington, DC",
+          "profession": "Student"
+        },
+        {
+          "name": "Rick Devens",
+          "age": 33,
+          "hometown": "Macon, GA",
+          "profession": "Morning News Anchor"
+        },
+        {
+          "name": "Julie Rosenberg",
+          "age": 46,
+          "hometown": "New York, NY",
+          "profession": "Toymaker"
+        },
+        {
+          "name": "Gavin Whitson",
+          "age": 23,
+          "hometown": "Erwin, TN",
+          "profession": "YMCA Program Director"
+        },
+        {
+          "name": "Chris Underwood",
+          "age": 25,
+          "hometown": "Greenville, SC",
+          "profession": "District Sales Manager"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "name": "Survivor: Island of the Idols",
+      "cast": [
+        {
+          "name": "Ronnie Bardah",
+          "age": 35,
+          "hometown": "Henderson, NV",
+          "profession": "Poker Player"
+        },
+        {
+          "name": "Molly Byman",
+          "age": 27,
+          "hometown": "Durham, NC",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Vince Moua",
+          "age": 27,
+          "hometown": "Palo Alto, CA",
+          "profession": "Admissions Counselor"
+        },
+        {
+          "name": "Chelsea Walker",
+          "age": 26,
+          "hometown": "Los Angeles, CA",
+          "profession": "Digital Content Creator"
+        },
+        {
+          "name": "Tom Laidlaw",
+          "age": 60,
+          "hometown": "Greenwich, CT",
+          "profession": "Former NHL Player"
+        },
+        {
+          "name": "Jason Linden",
+          "age": 32,
+          "hometown": "New York, NY",
+          "profession": "Personal Injury Attorney"
+        },
+        {
+          "name": "Jack Nichting",
+          "age": 23,
+          "hometown": "Harrisonburg, VA",
+          "profession": "Grad Student"
+        },
+        {
+          "name": "Kellee Kim",
+          "age": 29,
+          "hometown": "Philadelphia, PA",
+          "profession": "MBA Student"
+        },
+        {
+          "name": "Jamal Shipman",
+          "age": 33,
+          "hometown": "Providence, RI",
+          "profession": "College Administrator"
+        },
+        {
+          "name": "Aaron Meredith",
+          "age": 36,
+          "hometown": "Warwick, RI",
+          "profession": "Gym Owner"
+        },
+        {
+          "name": "Tra'mese \"Missy\" Byrd",
+          "age": 24,
+          "hometown": "Tacoma, WA",
+          "profession": "Air Force Veteran"
+        },
+        {
+          "name": "Elizabeth Beisel",
+          "age": 26,
+          "hometown": "Saunderstown, RI",
+          "profession": "Olympic Medalist"
+        },
+        {
+          "name": "Karishma Patel",
+          "age": 37,
+          "hometown": "Houston, TX",
+          "profession": "Personal Injury Attorney"
+        },
+        {
+          "name": "Elaine Stott",
+          "age": 41,
+          "hometown": "Rockholds, KY",
+          "profession": "Factory Worker"
+        },
+        {
+          "name": "Dan Spilo",
+          "age": 48,
+          "hometown": "Los Angeles, CA",
+          "profession": "Talent Manager"
+        },
+        {
+          "name": "Janet Carbin",
+          "age": 59,
+          "hometown": "Palm Bay, FL",
+          "profession": "Chief Lifeguard"
+        },
+        {
+          "name": "Lauren Beck",
+          "age": 28,
+          "hometown": "Glendale, CA",
+          "profession": "Nanny"
+        },
+        {
+          "name": "Noura Salman",
+          "age": 36,
+          "hometown": "North Potomac, MD",
+          "profession": "Entrepreneur"
+        },
+        {
+          "name": "Dean Kowalski",
+          "age": 28,
+          "hometown": "New York, NY",
+          "profession": "Tech Sales"
+        },
+        {
+          "name": "Tommy Sheehan",
+          "age": 26,
+          "hometown": "Long Beach, NY",
+          "profession": "4th Grade Teacher"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "name": "Survivor: Winners at War",
+      "cast": [
+        {
+          "name": "Amber Mariano",
+          "age": 40,
+          "hometown": "Pensacola, FL",
+          "profession": "Director of Marketing & Communications"
+        },
+        {
+          "name": "Danni Boatwright",
+          "age": 43,
+          "hometown": "Shawnee, KS",
+          "profession": "Sideline Chic Owner"
+        },
+        {
+          "name": "Ethan Zohn",
+          "age": 45,
+          "hometown": "Hillsborough, NH",
+          "profession": "Keynote Speaker/Social Entrepreneur"
+        },
+        {
+          "name": "Rob Mariano",
+          "age": 43,
+          "hometown": "Pensacola, FL",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "Parvati Shallow",
+          "age": 36,
+          "hometown": "Los Angeles, CA",
+          "profession": "Life Coach/Speaker/Yoga Teacher"
+        },
+        {
+          "name": "Sandra Diaz-Twine",
+          "age": 44,
+          "hometown": "Riverview, FL",
+          "profession": "Case Manager"
+        },
+        {
+          "name": "Yul Kwon",
+          "age": 44,
+          "hometown": "Los Altos, CA",
+          "profession": "Product Management"
+        },
+        {
+          "name": "Wendell Holland",
+          "age": 35,
+          "hometown": "Philadelphia, PA",
+          "profession": "Furniture Designer"
+        },
+        {
+          "name": "Adam Klein",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Host/Keynote Speaker"
+        },
+        {
+          "name": "Tyson Apostol",
+          "age": 39,
+          "hometown": "Mesa, AZ",
+          "profession": "Former Pro Cyclist/Shop Manager"
+        },
+        {
+          "name": "Sophie Clarke",
+          "age": 29,
+          "hometown": "Santa Monica, CA",
+          "profession": "Healthcare Consultant"
+        },
+        {
+          "name": "Kim Spradlin-Wolfe",
+          "age": 36,
+          "hometown": "San Antonio, TX",
+          "profession": "Interior Designer"
+        },
+        {
+          "name": "Jeremy Collins",
+          "age": 41,
+          "hometown": "Foxborough, MA",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Nick Wilson",
+          "age": 28,
+          "hometown": "Williamsburg, KY",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Denise Stapley",
+          "age": 48,
+          "hometown": "Marion, IA",
+          "profession": "Sex Therapist"
+        },
+        {
+          "name": "Ben Driebergen",
+          "age": 36,
+          "hometown": "Boise, ID",
+          "profession": "Real Estate Agent/Stay-at-home Dad"
+        },
+        {
+          "name": "Sarah Lacina",
+          "age": 35,
+          "hometown": "Cedar Rapids, IA",
+          "profession": "Police Officer"
+        },
+        {
+          "name": "Michele Fitzgerald",
+          "age": 29,
+          "hometown": "Hoboken, NJ",
+          "profession": "Business Development Manager"
+        },
+        {
+          "name": "Natalie Anderson",
+          "age": 33,
+          "hometown": "Edgewater, NJ",
+          "profession": "CrossFit Trainer"
+        },
+        {
+          "name": "Tony Vlachos",
+          "age": 45,
+          "hometown": "Allendale, NJ",
+          "profession": "Police Officer"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "name": "Survivor 41",
+      "cast": [
+        {
+          "name": "Eric Abraham",
+          "age": 51,
+          "hometown": "San Antonio, TX",
+          "profession": "Cyber Security Analyst"
+        },
+        {
+          "name": "Sara Wilson",
+          "age": 24,
+          "hometown": "Boston, MA",
+          "profession": "Healthcare Consultant"
+        },
+        {
+          "name": "David Voce",
+          "age": 35,
+          "hometown": "Chicago, IL",
+          "profession": "Neurosurgeon"
+        },
+        {
+          "name": "Brad Reese",
+          "age": 50,
+          "hometown": "Shawnee, WY",
+          "profession": "Rancher"
+        },
+        {
+          "name": "Jairus \"JD\" Robinson",
+          "age": 20,
+          "hometown": "Oklahoma City, OK",
+          "profession": "College Student"
+        },
+        {
+          "name": "Genie Chen",
+          "age": 46,
+          "hometown": "Portland, OR",
+          "profession": "Grocery Clerk"
+        },
+        {
+          "name": "Sydney Segal",
+          "age": 26,
+          "hometown": "Brooklyn, NY",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Tiffany Seely",
+          "age": 47,
+          "hometown": "Plainview, NY",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Naseer Muttalif",
+          "age": 37,
+          "hometown": "Morgan Hill, CA",
+          "profession": "Sales Manager"
+        },
+        {
+          "name": "Evelyn \"Evvie\" Jagoda",
+          "age": 28,
+          "hometown": "Arlington, MA",
+          "profession": "PhD Student"
+        },
+        {
+          "name": "Shantel \"Shan\" Smith",
+          "age": 34,
+          "hometown": "Washington, DC",
+          "profession": "Pastor"
+        },
+        {
+          "name": "Liana Wallace",
+          "age": 20,
+          "hometown": "Washington, DC",
+          "profession": "College Student"
+        },
+        {
+          "name": "Danny McCray",
+          "age": 33,
+          "hometown": "Frisco, TX",
+          "profession": "Ex-NFL Player"
+        },
+        {
+          "name": "Ricard Foyé",
+          "age": 31,
+          "hometown": "Sedro-Woolley, WA",
+          "profession": "Flight Attendant"
+        },
+        {
+          "name": "Heather Aldret",
+          "age": 52,
+          "hometown": "Charleston, SC",
+          "profession": "Stay-at-Home Mom"
+        },
+        {
+          "name": "Alexander \"Xander\" Hastings",
+          "age": 21,
+          "hometown": "Chicago, IL",
+          "profession": "App Developer"
+        },
+        {
+          "name": "Deshawn Radden",
+          "age": 26,
+          "hometown": "Miami, FL",
+          "profession": "Medical Student"
+        },
+        {
+          "name": "Erika Casupanan",
+          "age": 32,
+          "hometown": "Toronto, ON (Canada)",
+          "profession": "Communications Manager"
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "name": "Survivor 42",
+      "cast": [
+        {
+          "name": "Jackson Fox",
+          "age": 48,
+          "hometown": "Houston, TX",
+          "profession": "Healthcare Worker"
+        },
+        {
+          "name": "Zachary \"Zach\" Wurtenberger",
+          "age": 22,
+          "hometown": "St. Louis, MO",
+          "profession": "Student"
+        },
+        {
+          "name": "Marya Sherron",
+          "age": 47,
+          "hometown": "Noblesville, IN",
+          "profession": "Stay-at-Home Mom"
+        },
+        {
+          "name": "Jenny Kim",
+          "age": 43,
+          "hometown": "Brooklyn, NY",
+          "profession": "Creative Director"
+        },
+        {
+          "name": "Swati Goel",
+          "age": 19,
+          "hometown": "Palo Alto, CA",
+          "profession": "Ivy League Student"
+        },
+        {
+          "name": "Daniel Strunk",
+          "age": 30,
+          "hometown": "New Haven, CT",
+          "profession": "Law Clerk"
+        },
+        {
+          "name": "Lydia Meredith",
+          "age": 22,
+          "hometown": "Santa Monica, CA",
+          "profession": "Waitress"
+        },
+        {
+          "name": "Chanelle Howell",
+          "age": 29,
+          "hometown": "New York, NY",
+          "profession": "Executive Recruiter"
+        },
+        {
+          "name": "Rocksroy Bailey",
+          "age": 44,
+          "hometown": "Las Vegas, NV",
+          "profession": "Stay-at-Home Dad"
+        },
+        {
+          "name": "Tori Meehan",
+          "age": 25,
+          "hometown": "Rogers, AR",
+          "profession": "Therapist"
+        },
+        {
+          "name": "Hai Giang",
+          "age": 29,
+          "hometown": "New Orleans, LA",
+          "profession": "Data Scientist"
+        },
+        {
+          "name": "Andrea \"Drea\" Wheeler",
+          "age": 35,
+          "hometown": "Montreal, QC (Canada)",
+          "profession": "Fitness Consultant"
+        },
+        {
+          "name": "Omar Zaheer",
+          "age": 31,
+          "hometown": "Whitby, ON (Canada)",
+          "profession": "Veterinarian"
+        },
+        {
+          "name": "Lindsay Dolashewich",
+          "age": 31,
+          "hometown": "Asbury Park, NJ",
+          "profession": "Dietitian"
+        },
+        {
+          "name": "Jonathan Young",
+          "age": 29,
+          "hometown": "Gulf Shores, AL",
+          "profession": "Beach Service Company Owner"
+        },
+        {
+          "name": "Romeo Escobar",
+          "age": 37,
+          "hometown": "Norwalk, CA",
+          "profession": "Pageant Coach"
+        },
+        {
+          "name": "Michael \"Mike\" Turner",
+          "age": 58,
+          "hometown": "Hoboken, NJ",
+          "profession": "Retired Firefighter"
+        },
+        {
+          "name": "Maryanne Oketch",
+          "age": 24,
+          "hometown": "Ajax, ON (Canada)",
+          "profession": "Seminary Student"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "name": "Survivor 43",
+      "cast": [
+        {
+          "name": "Morriah Young",
+          "age": 28,
+          "hometown": "Philadelphia, PA",
+          "profession": "Teacher"
+        },
+        {
+          "name": "Justine Brennan",
+          "age": 29,
+          "hometown": "Marina del Ray, CA",
+          "profession": "Cyber Security Saleswoman"
+        },
+        {
+          "name": "Nneka Ejere",
+          "age": 43,
+          "hometown": "Weatherford, TX",
+          "profession": "Pharmacist"
+        },
+        {
+          "name": "Lindsay Carmine",
+          "age": 42,
+          "hometown": "Downingtown, PA",
+          "profession": "Pediatric Nurse"
+        },
+        {
+          "name": "Geo Bustamante",
+          "age": 35,
+          "hometown": "Honolulu, HI",
+          "profession": "Project Manager"
+        },
+        {
+          "name": "Elisabeth \"Elie\" Scott",
+          "age": 31,
+          "hometown": "Salt Lake City, UT",
+          "profession": "Clinical Psychologist"
+        },
+        {
+          "name": "Dwight Moore",
+          "age": 22,
+          "hometown": "Collierville, TN",
+          "profession": "Graduate Student"
+        },
+        {
+          "name": "Jeanine Zheng",
+          "age": 24,
+          "hometown": "San Francisco, CA",
+          "profession": "UX Designer"
+        },
+        {
+          "name": "James Jones",
+          "age": 37,
+          "hometown": "Philadelphia, PA",
+          "profession": "Event Planner"
+        },
+        {
+          "name": "Ryan Medrano",
+          "age": 24,
+          "hometown": "El Paso, TX",
+          "profession": "Warehouse Associate"
+        },
+        {
+          "name": "Noelle Lambert",
+          "age": 25,
+          "hometown": "Manchester, NH",
+          "profession": "Paralympian"
+        },
+        {
+          "name": "Sami Layadi",
+          "age": 19,
+          "hometown": "Las Vegas, NV",
+          "profession": "Pet Cremator"
+        },
+        {
+          "name": "Cody Assenmacher",
+          "age": 35,
+          "hometown": "Honolulu, HI",
+          "profession": "Elevator Salesman"
+        },
+        {
+          "name": "Karla Cruz Godoy",
+          "age": 28,
+          "hometown": "Newark, DE",
+          "profession": "Educational Project Manager"
+        },
+        {
+          "name": "Jesse Lopez",
+          "age": 30,
+          "hometown": "Durham, NC",
+          "profession": "Political Science PhD"
+        },
+        {
+          "name": "Owen Knight",
+          "age": 29,
+          "hometown": "New Orleans, LA",
+          "profession": "College Admissions Director"
+        },
+        {
+          "name": "Cassidy Clark",
+          "age": 26,
+          "hometown": "Austin, TX",
+          "profession": "Designer"
+        },
+        {
+          "name": "Mike Gabler",
+          "age": 52,
+          "hometown": "Meridian, ID",
+          "profession": "Heart Valve Specialist"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "name": "Survivor 44",
+      "cast": [
+        {
+          "name": "Bruce Perreault",
+          "age": 46,
+          "hometown": "West Warwick, RI",
+          "profession": "Insurance Agent"
+        },
+        {
+          "name": "Maddy Pomilla",
+          "age": 28,
+          "hometown": "Huntingtown, MD",
+          "profession": "Charity Projects Manager"
+        },
+        {
+          "name": "Helen Li",
+          "age": 29,
+          "hometown": "San Francisco, CA",
+          "profession": "Product Manager"
+        },
+        {
+          "name": "Claire Rafson",
+          "age": 25,
+          "hometown": "Highland Park, IL",
+          "profession": "Tech Investor"
+        },
+        {
+          "name": "Sarah Wade",
+          "age": 27,
+          "hometown": "Rochester, MN",
+          "profession": "Management Consultant"
+        },
+        {
+          "name": "Matthew Grinstead-Mayle",
+          "age": 43,
+          "hometown": "Pickerington, OH",
+          "profession": "Barbershop Owner"
+        },
+        {
+          "name": "Josh Wilder",
+          "age": 34,
+          "hometown": "Cincinnati, OH",
+          "profession": "Surgical Podiatrist"
+        },
+        {
+          "name": "Matthew \"Matt\" Blankinship",
+          "age": 27,
+          "hometown": "Albany, CA",
+          "profession": "Security Software Engineer"
+        },
+        {
+          "name": "Brandon Cottom",
+          "age": 30,
+          "hometown": "Newtown, PA",
+          "profession": "Security Specialist"
+        },
+        {
+          "name": "Kane Fritzler",
+          "age": 25,
+          "hometown": "Moose Jaw, SK (Canada)",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Frannie Marin",
+          "age": 23,
+          "hometown": "St. Paul, MN",
+          "profession": "Research Coordinator"
+        },
+        {
+          "name": "Danny Massa",
+          "age": 32,
+          "hometown": "Bronx, NY",
+          "profession": "Firefighter"
+        },
+        {
+          "name": "Jaime Lynn Ruiz",
+          "age": 35,
+          "hometown": "Mesa, AZ",
+          "profession": "Yogi"
+        },
+        {
+          "name": "Lauren Harpe",
+          "age": 31,
+          "hometown": "Port Arthur, TX",
+          "profession": "Elementary School Teacher"
+        },
+        {
+          "name": "Carson Garrett",
+          "age": 20,
+          "hometown": "Atlanta, GA",
+          "profession": "NASA Engineering Student"
+        },
+        {
+          "name": "Carolyn Wiger",
+          "age": 35,
+          "hometown": "North St. Paul, MN",
+          "profession": "Drug Counselor"
+        },
+        {
+          "name": "Heidi Lagares-Greenblatt",
+          "age": 43,
+          "hometown": "Pittsburgh, PA",
+          "profession": "Engineering Manager"
+        },
+        {
+          "name": "Yamil \"Yam Yam\" Arocho",
+          "age": 36,
+          "hometown": "Bayamón, Puerto Rico",
+          "profession": "Salon Owner"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "name": "Survivor 45",
+      "cast": [
+        {
+          "name": "Hannah Rose",
+          "age": 33,
+          "hometown": "Baltimore, MD",
+          "profession": "Therapist"
+        },
+        {
+          "name": "Brandon Donlon",
+          "age": 26,
+          "hometown": "Sicklerville, NJ",
+          "profession": "Content Producer"
+        },
+        {
+          "name": "Sabiyah Broderick",
+          "age": 28,
+          "hometown": "Jacksonville, NC",
+          "profession": "Truck Driver"
+        },
+        {
+          "name": "Sean Edwards",
+          "age": 35,
+          "hometown": "Provo, UT",
+          "profession": "School Principal"
+        },
+        {
+          "name": "Brandon \"Brando\" Meyer",
+          "age": 23,
+          "hometown": "Seattle, WA",
+          "profession": "Software Developer"
+        },
+        {
+          "name": "Janani \"J. Maya\" Krishnan-Jha",
+          "age": 24,
+          "hometown": "Los Angeles, CA",
+          "profession": "Singer"
+        },
+        {
+          "name": "Nicholas \"Sifu\" Alsup",
+          "age": 30,
+          "hometown": "O'Fallon, IL",
+          "profession": "Gym Owner"
+        },
+        {
+          "name": "Kaleb Gebrewold",
+          "age": 29,
+          "hometown": "Vancouver, BC (Canada)",
+          "profession": "Software Sales"
+        },
+        {
+          "name": "Kellie Nalbandian",
+          "age": 29,
+          "hometown": "New York City, NY",
+          "profession": "Critical Care Nurse"
+        },
+        {
+          "name": "Kendra McQuarrie",
+          "age": 31,
+          "hometown": "Steamboat Springs, CO",
+          "profession": "Bartender"
+        },
+        {
+          "name": "Bruce Perreault",
+          "age": 47,
+          "hometown": "West Warwick, RI",
+          "profession": "Insurance Agent"
+        },
+        {
+          "name": "Emily Flippen",
+          "age": 28,
+          "hometown": "Laurel, MD",
+          "profession": "Investment Analyst"
+        },
+        {
+          "name": "Drew Basile",
+          "age": 23,
+          "hometown": "Philadelphia PA",
+          "profession": "Grad Student"
+        },
+        {
+          "name": "Julie Alley",
+          "age": 49,
+          "hometown": "Brentwood, TN",
+          "profession": "Estate Attorney"
+        },
+        {
+          "name": "Katurah Topps",
+          "age": 35,
+          "hometown": "Brooklyn, NY",
+          "profession": "Civil Rights Attorney"
+        },
+        {
+          "name": "Jake O'Kane",
+          "age": 26,
+          "hometown": "Boston, MA",
+          "profession": "Attorney"
+        },
+        {
+          "name": "Austin Li Coon",
+          "age": 26,
+          "hometown": "Chicago, IL",
+          "profession": "Grad Student"
+        },
+        {
+          "name": "Dianelys \"Dee\" Valladares",
+          "age": 26,
+          "hometown": "Miami, FL",
+          "profession": "Entrepreneur"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "name": "Survivor 46",
+      "cast": [
+        {
+          "name": "David Jelinsky",
+          "age": 22,
+          "hometown": "Las Vegas, NV",
+          "profession": "Slot Machine Salesman"
+        },
+        {
+          "name": "Jessica \"Jess\" Chong",
+          "age": 37,
+          "hometown": "San Francisco, CA",
+          "profession": "Software Engineer"
+        },
+        {
+          "name": "Randen Montalvo",
+          "age": 41,
+          "hometown": "Orlando, FL",
+          "profession": "Aerospace Tech"
+        },
+        {
+          "name": "Bhanu Gopal",
+          "age": 41,
+          "hometown": "Acton, MA",
+          "profession": "IT Quality Analyst"
+        },
+        {
+          "name": "Jemila \"Jem\" Hussain-Adams",
+          "age": 31,
+          "hometown": "Chicago, IL",
+          "profession": "International Brand Mentor"
+        },
+        {
+          "name": "Moriah Gaynor",
+          "age": 28,
+          "hometown": "San Diego, CA",
+          "profession": "Program Coordinator"
+        },
+        {
+          "name": "Tim Spicer",
+          "age": 31,
+          "hometown": "Atlanta, GA",
+          "profession": "College Coach"
+        },
+        {
+          "name": "Sodasia \"Soda\" Thompson",
+          "age": 27,
+          "hometown": "Lake Hopatcong, NJ",
+          "profession": "Special Ed Teacher"
+        },
+        {
+          "name": "Tevin Davis",
+          "age": 24,
+          "hometown": "Richmond, VA",
+          "profession": "Actor"
+        },
+        {
+          "name": "Hunter McKnight",
+          "age": 28,
+          "hometown": "French Camp, MS",
+          "profession": "Science Teacher"
+        },
+        {
+          "name": "Tiffany Nicole Ervin",
+          "age": 33,
+          "hometown": "Elizabeth, NJ",
+          "profession": "Artist"
+        },
+        {
+          "name": "Venus Vafa",
+          "age": 24,
+          "hometown": "Toronto, ON (Canada)",
+          "profession": "Data Analyst"
+        },
+        {
+          "name": "Quintavius \"Q\" Burdette",
+          "age": 29,
+          "hometown": "Memphis, TN",
+          "profession": "Real Estate Agent"
+        },
+        {
+          "name": "Maria Shrime Gonzalez",
+          "age": 48,
+          "hometown": "Dallas, TX",
+          "profession": "Parent Coach"
+        },
+        {
+          "name": "Liz Wilcox",
+          "age": 35,
+          "hometown": "Orlando, FL",
+          "profession": "Marketing Strategist"
+        },
+        {
+          "name": "Ben Katzman",
+          "age": 31,
+          "hometown": "Miami, FL",
+          "profession": "Musician"
+        },
+        {
+          "name": "Charlie Davis",
+          "age": 26,
+          "hometown": "Boston, MA",
+          "profession": "Law Student"
+        },
+        {
+          "name": "Kenzie Petty",
+          "age": 29,
+          "hometown": "Charlotte, NC",
+          "profession": "Salon Owner"
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "name": "Survivor 47",
+      "cast": [
+        {
+          "name": "Jon Lovett",
+          "age": 42,
+          "hometown": "Los Angeles, CA",
+          "profession": "Podcast Host"
+        },
+        {
+          "name": "Terran \"TK\" Foster",
+          "age": 31,
+          "hometown": "Upper Marlboro, MD",
+          "profession": "Athlete Marketing Manager"
+        },
+        {
+          "name": "Aysha Welch",
+          "age": 32,
+          "hometown": "Houston, TX",
+          "profession": "IT Consultant"
+        },
+        {
+          "name": "Kishan Patel",
+          "age": 28,
+          "hometown": "San Francisco, CA",
+          "profession": "ER Doctor"
+        },
+        {
+          "name": "Anika Dhar",
+          "age": 26,
+          "hometown": "Los Angeles, CA",
+          "profession": "Marketing Manager"
+        },
+        {
+          "name": "Jerome \"Rome\" Cooney",
+          "age": 30,
+          "hometown": "Phoenix, AZ",
+          "profession": "E-Sports Commentator"
+        },
+        {
+          "name": "Tiyana Hallums",
+          "age": 27,
+          "hometown": "Aiea, HI",
+          "profession": "Flight Attendant"
+        },
+        {
+          "name": "Sierra Wright",
+          "age": 27,
+          "hometown": "Phoenixville, PA",
+          "profession": "Nurse"
+        },
+        {
+          "name": "Solomon \"Sol\" Yi",
+          "age": 43,
+          "hometown": "Norwalk, CT",
+          "profession": "Medical Device Sales"
+        },
+        {
+          "name": "Gabe Ortis",
+          "age": 26,
+          "hometown": "Baltimore, MD",
+          "profession": "Radio Host"
+        },
+        {
+          "name": "Kyle Ostwald",
+          "age": 31,
+          "hometown": "Cheboygan, MI",
+          "profession": "Construction Worker"
+        },
+        {
+          "name": "Caroline Vidmar",
+          "age": 27,
+          "hometown": "Chicago, IL",
+          "profession": "Strategy Consultant"
+        },
+        {
+          "name": "Andy Rueda",
+          "age": 31,
+          "hometown": "Brooklyn, NY",
+          "profession": "AI Research Assistant"
+        },
+        {
+          "name": "Genevieve Mushaluk",
+          "age": 33,
+          "hometown": "Winnipeg, MB (Canada)",
+          "profession": "Corporate Lawyer"
+        },
+        {
+          "name": "Teeny Chirichillo",
+          "age": 24,
+          "hometown": "Manahawkin, NJ",
+          "profession": "Freelance Writer"
+        },
+        {
+          "name": "Sue Smey",
+          "age": 59,
+          "hometown": "Putnam Valley, NY",
+          "profession": "Flight School Owner"
+        },
+        {
+          "name": "Sam Phalen",
+          "age": 24,
+          "hometown": "Nashville, TN",
+          "profession": "Sports Reporter"
+        },
+        {
+          "name": "Rachel LaMont",
+          "age": 34,
+          "hometown": "Southfield, MI",
+          "profession": "Graphic Designer"
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "name": "Survivor 48",
+      "cast": [
+        {
+          "name": "Stephanie Berger",
+          "age": 38,
+          "hometown": "Brooklyn, NY",
+          "profession": "Tech Product Lead"
+        },
+        {
+          "name": "Kevin Leung",
+          "age": 34,
+          "hometown": "Livermore, CA",
+          "profession": "Finance Manager"
+        },
+        {
+          "name": "Justin Pioppi",
+          "age": 29,
+          "hometown": "Winthrop, MA",
+          "profession": "Pizzeria Manager"
+        },
+        {
+          "name": "Thomas Krottinger",
+          "age": 34,
+          "hometown": "Los Angeles, CA",
+          "profession": "Music Executive"
+        },
+        {
+          "name": "Bianca Roses",
+          "age": 33,
+          "hometown": "Arlington, VA",
+          "profession": "PR Consultant"
+        },
+        {
+          "name": "Charity Nelms",
+          "age": 34,
+          "hometown": "St. Petersburg, FL",
+          "profession": "Flight Attendant"
+        },
+        {
+          "name": "Saiounia \"Sai\" Hughley",
+          "age": 30,
+          "hometown": "Simi Valley, CA",
+          "profession": "Marketing Professional"
+        },
+        {
+          "name": "Cedrek McFadden",
+          "age": 45,
+          "hometown": "Greenville, SC",
+          "profession": "Surgeon"
+        },
+        {
+          "name": "Chrissy Sarnowsky",
+          "age": 55,
+          "hometown": "Chicago, IL",
+          "profession": "Fire Lieutenant"
+        },
+        {
+          "name": "David Kinne",
+          "age": 39,
+          "hometown": "Buena Park, CA",
+          "profession": "Stunt Performer"
+        },
+        {
+          "name": "Star Toomey",
+          "age": 28,
+          "hometown": "Augusta, GA",
+          "profession": "Sales Expert"
+        },
+        {
+          "name": "Mary Zheng",
+          "age": 31,
+          "hometown": "Philadelphia, PA",
+          "profession": "Substance Abuse Counselor"
+        },
+        {
+          "name": "Shauhin Davari",
+          "age": 38,
+          "hometown": "Costa Mesa, CA",
+          "profession": "Debate Professor"
+        },
+        {
+          "name": "Mitch Guerra",
+          "age": 34,
+          "hometown": "Waco, TX",
+          "profession": "P.E. Coach"
+        },
+        {
+          "name": "Kamilla Karthigesu",
+          "age": 31,
+          "hometown": "Foster City, CA",
+          "profession": "Software Engineer"
+        },
+        {
+          "name": "Joe Hunter",
+          "age": 45,
+          "hometown": "Sacramento, CA",
+          "profession": "Fire Captain"
+        },
+        {
+          "name": "Eva Erickson",
+          "age": 24,
+          "hometown": "Providence, RI",
+          "profession": "PhD Candidate"
+        },
+        {
+          "name": "Kyle Fraser",
+          "age": 31,
+          "hometown": "Brooklyn, NY",
+          "profession": "Attorney"
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "name": "Survivor 49",
+      "cast": [
+        {
+          "name": "Nicole Mazullo",
+          "age": 26,
+          "hometown": "Philadelphia, PA",
+          "profession": "Financial Crime Consultant"
+        },
+        {
+          "name": "Kimberly \"Annie\" Davis",
+          "age": 49,
+          "hometown": "Austin, TX",
+          "profession": "Musician"
+        },
+        {
+          "name": "Jake Latimer",
+          "age": 36,
+          "hometown": "St. Albert, AB (Canada)",
+          "profession": "Correctional Officer"
+        },
+        {
+          "name": "Jeremiah Ing",
+          "age": 39,
+          "hometown": "Toronto, ON (Canada)",
+          "profession": "Global Events Manager"
+        },
+        {
+          "name": "Matt Williams",
+          "age": 52,
+          "hometown": "St. George, UT",
+          "profession": "Airport Ramp Agent"
+        },
+        {
+          "name": "Jason Treul",
+          "age": 32,
+          "hometown": "Santa Ana, CA",
+          "profession": "Law Clerk"
+        },
+        {
+          "name": "Shannon Fairweather",
+          "age": 28,
+          "hometown": "Boston, MA",
+          "profession": "Wellness Specialist"
+        },
+        {
+          "name": "Nate Moore",
+          "age": 47,
+          "hometown": "Hermosa Beach, CA",
+          "profession": "Film Producer"
+        },
+        {
+          "name": "Michelle \"MC\" Chukwujekwu",
+          "age": 29,
+          "hometown": "San Diego, CA",
+          "profession": "Fitness Trainer"
+        },
+        {
+          "name": "Alex Moore",
+          "age": 26,
+          "hometown": "Washington, D.C.",
+          "profession": "Political Comms Director"
+        },
+        {
+          "name": "Jawan Pitts",
+          "age": 28,
+          "hometown": "Los Angeles, CA",
+          "profession": "Video Editor"
+        },
+        {
+          "name": "Sophie Segreti",
+          "age": 31,
+          "hometown": "New York, NY",
+          "profession": "Strategy Associate"
+        },
+        {
+          "name": "Steven Ramm",
+          "age": 35,
+          "hometown": "Denver, CO",
+          "profession": "Rocket Scientist"
+        },
+        {
+          "name": "Kristina Mills",
+          "age": 36,
+          "hometown": "Edmond, OK",
+          "profession": "MBA Career Coach"
+        },
+        {
+          "name": "Rizo Velovic",
+          "age": 25,
+          "hometown": "Yonkers, NY",
+          "profession": "Tech Sales"
+        },
+        {
+          "name": "Sage Ahrens-Nichols",
+          "age": 30,
+          "hometown": "Olympia, WA",
+          "profession": "Clinical Social Worker"
+        },
+        {
+          "name": "Sophi Balerdi",
+          "age": 27,
+          "hometown": "Miami, FL",
+          "profession": "Entrepreneur"
+        },
+        {
+          "name": "Savannah Louie",
+          "age": 31,
+          "hometown": "Atlanta, GA",
+          "profession": "Former Reporter"
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "name": "Survivor 50: In the Hands of the Fans",
+      "cast": [
+        {
+          "name": "Jenna Lewis-Dougherty",
+          "age": 47,
+          "hometown": "Woodland, CA",
+          "profession": "Realtor"
+        },
+        {
+          "name": "Kyle Fraser",
+          "age": 31,
+          "hometown": "Brooklyn, NY",
+          "profession": "Defense Attorney"
+        },
+        {
+          "name": "Savannah Louie",
+          "age": 31,
+          "hometown": "Atlanta, GA",
+          "profession": "Communications & Marketing Specialist"
+        },
+        {
+          "name": "Quintavius \"Q\" Burdette",
+          "age": 31,
+          "hometown": "Germantown, TN",
+          "profession": "Real Estate Broker"
+        },
+        {
+          "name": "Mike White",
+          "age": 54,
+          "hometown": "Santa Monica, CA",
+          "profession": "Filmmaker"
+        },
+        {
+          "name": "Angelina Keeley",
+          "age": 35,
+          "hometown": "San Diego, CA",
+          "profession": "Entrepreneur/Small Business Owner"
+        },
+        {
+          "name": "Charlie Davis",
+          "age": 27,
+          "hometown": "Boston, MA",
+          "profession": "Associate Attorney"
+        },
+        {
+          "name": "Kamilla Karthigesu",
+          "age": 31,
+          "hometown": "Foster City, CA",
+          "profession": "Software Engineer"
+        },
+        {
+          "name": "Genevieve Mushaluk",
+          "age": 33,
+          "hometown": "Winnipeg, MB (Canada)",
+          "profession": "Corporate Lawyer"
+        },
+        {
+          "name": "Colby Donaldson",
+          "age": 51,
+          "hometown": "Austin, TX",
+          "profession": "Rancher/Welder"
+        },
+        {
+          "name": "Dianelys \"Dee\" Valladares",
+          "age": 28,
+          "hometown": "Miami, FL",
+          "profession": "Entrepreneur"
+        },
+        {
+          "name": "Chrissy Hofbeck",
+          "age": 54,
+          "hometown": "The Villages, FL",
+          "profession": "Actuary"
+        },
+        {
+          "name": "Benjamin \"Coach\" Wade",
+          "age": 53,
+          "hometown": "Susanville, CA",
+          "profession": "Music Teacher/Coach/Super Dad"
+        },
+        {
+          "name": "Christian Hubicki",
+          "age": 39,
+          "hometown": "Tallahassee, FL",
+          "profession": "Robotics Professor"
+        },
+        {
+          "name": "Stephenie LaGrossa Kendrick",
+          "age": 45,
+          "hometown": "Dunedin, FL",
+          "profession": "Part Time Recess Monitor/Full Time Mom"
+        },
+        {
+          "name": "Emily Flippen",
+          "age": 30,
+          "hometown": "Laurel, MD",
+          "profession": "Investment Analyst"
+        },
+        {
+          "name": "Ozzy Lusth",
+          "age": 43,
+          "hometown": "Guanajuato, GJ (Mexico)",
+          "profession": "Music Venue, Vinyl Bar, Restaurant Owner"
+        },
+        {
+          "name": "Rick Devens",
+          "age": 41,
+          "hometown": "Macon, GA",
+          "profession": "Communications Director"
+        },
+        {
+          "name": "Cirie Fields",
+          "age": 54,
+          "hometown": "Jersey City, NJ",
+          "profession": "Registered Nurse"
+        },
+        {
+          "name": "Tiffany Nicole Ervin",
+          "age": 34,
+          "hometown": "Los Angeles, CA",
+          "profession": "Artist/Creative Producer"
+        },
+        {
+          "name": "Rizo Velovic",
+          "age": 25,
+          "hometown": "Yonkers, NY",
+          "profession": "Tech Sales"
+        },
+        {
+          "name": "Joe Hunter",
+          "age": 45,
+          "hometown": "West Sacramento, CA",
+          "profession": "Fire Captain"
+        },
+        {
+          "name": "Jonathan Young",
+          "age": 32,
+          "hometown": "Gulf Shores, AL",
+          "profession": "Beach Service Company Owner"
+        },
+        {
+          "name": "Aubry Bracco",
+          "age": 39,
+          "hometown": "Hampton Falls, NH",
+          "profession": "Marketing Director"
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "name": "Survivor 51",
+      "cast": [
+        {
+          "name": "Rob Antonson",
+          "age": 40,
+          "hometown": "Cumberland, RI",
+          "profession": "Airport Operations"
+        },
+        {
+          "name": "Brady Booker",
+          "age": 27,
+          "hometown": "Knoxville, TN",
+          "profession": "Pro Wrestler"
+        },
+        {
+          "name": "Patt Cannaday",
+          "age": 33,
+          "hometown": "Washington, D.C.",
+          "profession": "Federal Prosecutor"
+        },
+        {
+          "name": "Linnea Capobianco",
+          "age": 25,
+          "hometown": "Jersey City, NJ",
+          "profession": "Entrepreneur"
+        },
+        {
+          "name": "Cristian Chavez",
+          "age": 26,
+          "hometown": "Salt Lake City, UT",
+          "profession": "Human Resources Executive"
+        },
+        {
+          "name": "Sharonda Cox",
+          "age": 34,
+          "hometown": "Richmond, KY",
+          "profession": "OBGYN"
+        },
+        {
+          "name": "Jenna Doore",
+          "age": 30,
+          "hometown": "Toledo, OH",
+          "profession": "Wedding Videographer"
+        },
+        {
+          "name": "Kristin Flickhinger",
+          "age": 49,
+          "hometown": "Santa Barbara, CA",
+          "profession": "Crisis management"
+        },
+        {
+          "name": "Ori Jean-Charles",
+          "age": 27,
+          "hometown": "Spring Valley, NY",
+          "profession": "Personal Trainer"
+        },
+        {
+          "name": "Lewis Kelly",
+          "age": 28,
+          "hometown": "Puerto Rico",
+          "profession": "Farmer"
+        },
+        {
+          "name": "Danny \"Kilby\" Kilby",
+          "age": 30,
+          "hometown": "London, ON (Canada)",
+          "profession": "Game Studio Founder"
+        },
+        {
+          "name": "Carter Krull",
+          "age": 24,
+          "hometown": "Sioux Falls, SD",
+          "profession": "Livestock farmer"
+        },
+        {
+          "name": "Alexis Levine",
+          "age": 34,
+          "hometown": "Atlanta, GA",
+          "profession": "Criminal Defense Attorney"
+        },
+        {
+          "name": "Angelica \"Jelly\" Loblack",
+          "age": 29,
+          "hometown": "Bloomington, IN",
+          "profession": "Sociology Professor"
+        },
+        {
+          "name": "Eric Macksoud",
+          "age": 34,
+          "hometown": "Windsor Locks, CT",
+          "profession": "Mental Health Therapist"
+        },
+        {
+          "name": "Maggie Nestor",
+          "age": 40,
+          "hometown": "Charlestown, WV",
+          "profession": "Farmer"
+        },
+        {
+          "name": "An \"Thien An\" Nguyen",
+          "age": 24,
+          "hometown": "Forth Worth, TX",
+          "profession": "Medical Student"
+        },
+        {
+          "name": "Michael Pinsky",
+          "age": 32,
+          "hometown": "New York City, NY",
+          "profession": "Baseball Operations"
+        },
+        {
+          "name": "Aaliyah Puglia",
+          "age": 24,
+          "hometown": "Providence, RI",
+          "profession": "Chef"
+        },
+        {
+          "name": "Ana Sani",
+          "age": 34,
+          "hometown": "Toronto, ON (Canada)",
+          "profession": "Voice actress"
+        },
+        {
+          "name": "Devin Way",
+          "age": 33,
+          "hometown": "Los Angeles, CA",
+          "profession": "Actor/Model"
+        }
+      ]
+    }
+  ]
+}
