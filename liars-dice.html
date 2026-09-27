@@ -161,6 +161,7 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 .shaking { display:inline-block; animation:diceShake .22s linear infinite; }
 @keyframes cardPop { 0%{ transform:scale(.94); opacity:0; } 60%{ transform:scale(1.01); } 100%{ transform:scale(1); opacity:1; } }
 .revealCard { animation:cardPop .26s ease-out; }
+.saybubble { font-family:'Fraunces',serif; font-style:italic; font-size:14px; color:var(--psychic); margin-top:8px; }
 </style>
 </head>
 <body>
@@ -236,6 +237,28 @@ const SFX = (function(){
 function higher(nq, nf, bid){ if(!bid) return nq>=1; if(nq>bid.qty) return true; if(nq===bid.qty && nf>bid.face) return true; return false; }
 function sortedAliveNums(players){ return players.filter(p=>p.alive && p.dice && p.dice.length>0).map(p=>p.num).sort((a,b)=>a-b); }
 function nextNum(fromNum, arr){ if(!arr.length) return null; for(const n of arr){ if(n>fromNum) return n; } return arr[0]; }
+
+/* ============ bot brains (personalities + probability + banter) ============ */
+const BOT_PERSONAS = [
+  { key:"rock",   name:"the Rock",    bluff:0.12, sus:0.78, aggr:0.6,  spot:false, speed:1.25 },
+  { key:"shark",  name:"the Shark",   bluff:0.32, sus:0.62, aggr:1.0,  spot:true,  speed:1.0  },
+  { key:"maniac", name:"the Maniac",  bluff:0.58, sus:0.44, aggr:1.6,  spot:false, speed:0.7  },
+  { key:"fish",   name:"the Fish",    bluff:0.30, sus:0.36, aggr:1.1,  spot:false, speed:0.9  },
+  { key:"grind",  name:"the Grinder", bluff:0.20, sus:0.70, aggr:0.85, spot:true,  speed:1.15 },
+];
+function hashStr(s){ let h=0; s=s||""; for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
+function personaFor(id){ return BOT_PERSONAS[ hashStr(id) % BOT_PERSONAS.length ]; }
+function clamp(x,a,b){ return x<a?a:(x>b?b:x); }
+function binomAtLeast(k,n,p){ if(k<=0) return 1; if(k>n) return 0; const q=1-p; let pmf=Math.pow(q,n), cum=0; for(let i=0;i<=n;i++){ if(i>=k) cum+=pmf; pmf=pmf*((n-i)/(i+1))*(p/q); } return clamp(cum,0,1); }
+function binomExact(k,n,p){ if(k<0||k>n) return 0; const q=1-p; let pmf=Math.pow(q,n); for(let i=0;i<k;i++){ pmf=pmf*((n-i)/(i+1))*(p/q); } return clamp(pmf,0,1); }
+const SAY = {
+  open:  ["Let's set the tone.","Opening light.","Here we go.","Feeling this one."],
+  raise: ["Bumping it.","Comfortable.","Up we go.","I'll raise that.","Seems low, honestly.","Nudging."],
+  bluff: ["Trust me.","Easy money.","Would I lie?","Read 'em and weep.","All day long.","I'm feeling generous.","Believe it.","Locked in.","Wouldn't dream of lying."],
+  call:  ["Nope — liar.","Not buying it.","No way that's real.","Called. Show me.","You're bluffing.","Absolutely not.","I smell it."],
+  spot:  ["Exactly that. Watch.","Spot on — to the number.","Called it precisely."]
+};
+function pickSay(kind, chance){ if(Math.random()>chance) return null; const pool=SAY[kind]||[]; return pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
 
 /* ============ Die (SVG) ============ */
 function Die({ v, size=44, glow=false }){
@@ -493,13 +516,13 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     }
   },[game]);
 
-  /* ---------- shared action writers ---------- */
-  const placeBid = async (num, qty, face)=>{
+  /* ---------- shared action writers (say = optional bot banter) ---------- */
+  const placeBid = async (num, qty, face, say=null)=>{
     const nxt = nextNum(num, sortedAliveNums(playersRef.current));
-    await sb.from("ld_games").update({ bid:{qty,face,by:num}, turn:nxt }).eq("code",code);
+    await sb.from("ld_games").update({ bid:{qty,face,by:num,say}, turn:nxt }).eq("code",code);
   };
-  const challenge = async (num)=>{ await sb.from("ld_games").update({ pending:{type:"challenge",by:num} }).eq("code",code); };
-  const spoton = async (num)=>{ await sb.from("ld_games").update({ pending:{type:"spoton",by:num} }).eq("code",code); };
+  const challenge = async (num, say=null)=>{ await sb.from("ld_games").update({ pending:{type:"challenge",by:num,say} }).eq("code",code); };
+  const spoton = async (num, say=null)=>{ await sb.from("ld_games").update({ pending:{type:"spoton",by:num,say} }).eq("code",code); };
 
   /* ---------- host: resolve a pending challenge/spoton ---------- */
   const resolveChallenge = async (pending)=>{
@@ -522,7 +545,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     const sig = g.round+":"+pending.type+":"+pending.by;
     await sb.from("ld_games").update({
       phase:"reveal", pending:null,
-      last_action:{ type:pending.type, by:pending.by, target:bid.by, bid, actual, loserNum, gainNum, correct, wild, snapshot, sig }
+      last_action:{ type:pending.type, by:pending.by, target:bid.by, bid, actual, loserNum, gainNum, correct, wild, say:pending.say||null, snapshot, sig }
     }).eq("code",code);
   };
 
@@ -583,39 +606,56 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     return ()=>clearTimeout(t);
   },[game, amHost]);
 
-  /* ---------- host: drive bot turns ---------- */
+  /* ---------- host: drive bot turns (personas, bluffing, binomial calling) ---------- */
   const botMove = (bot)=>{
     const g = gameRef.current, ps = playersRef.current;
     if(!g || g.phase!=="playing" || g.pending) return;
     const alive = ps.filter(p=>p.alive && p.dice.length>0);
     const T = alive.reduce((s,p)=>s+p.dice.length,0);
     const wild = g.wild;
-    const myDice = bot.dice||[];
-    const mine = (f)=> myDice.filter(d=> d===f || (wild && f!==1 && d===1)).length;
-    const unknown = T - myDice.length;
-    const prob = (f)=> wild ? (f===1?1/6:2/6) : 1/6;
+    const my = bot.dice||[];
+    const mine = (f)=> my.filter(d=> d===f || (wild && f!==1 && d===1)).length;
+    const unknown = T - my.length;
+    const pf = (f)=> wild ? (f===1?1/6:1/3) : 1/6;   // odds an unknown die shows this face
+    const per = personaFor(bot.id);
 
+    // OPENING BID
     if(!g.bid){
-      let best=6, bc=-1;
-      for(let f=2; f<=6; f++){ const c=mine(f); if(c>bc){ bc=c; best=f; } }
-      const q = Math.max(1, mine(best) + Math.round(unknown*prob(best)));
-      placeBid(bot.num, Math.min(q, Math.max(1,T)), best);
-      return;
+      let face;
+      if(Math.random() < per.bluff*0.6){ face = 2 + Math.floor(Math.random()*5); }   // bluff: pick a face on a whim
+      else { let best=6, bc=-1; for(let f=2; f<=6; f++){ const c=mine(f); if(c>bc){ bc=c; best=f; } } face=best; }
+      let qty = Math.max(1, mine(face) + Math.round(unknown*pf(face)) + (Math.random()<per.bluff ? Math.round(per.aggr) : 0));
+      return placeBid(bot.num, Math.min(qty, Math.max(1,T)), face, pickSay("open",0.3));
     }
+
+    // FACING A BID: how likely is it actually true?
     const bid = g.bid;
-    const expected = mine(bid.face) + unknown*prob(bid.face);
-    const gap = bid.qty - expected;
-    const callChance = gap<=0 ? 0.02 : gap<0.6 ? 0.12 : gap<1.2 ? 0.42 : gap<2 ? 0.74 : 0.93;
-    if(Math.random()<callChance || bid.qty>=T){ challenge(bot.num); return; }
-    // raise: prefer same qty on a higher face we hold, else qty+1 on our strongest
-    let nf=bid.face, nq=bid.qty, chosen=false;
-    let sf=0, sc=-1;
-    for(let f=bid.face+1; f<=6; f++){ const c=mine(f); if(c>sc){ sc=c; sf=f; } }
-    if(sf>bid.face){ nf=sf; nq=bid.qty; chosen=true; }
-    if(!chosen){ let s=1,c=-1; for(let f=1;f<=6;f++){ const cc=mine(f); if(cc>c){ c=cc; s=f; } } nq=bid.qty+1; nf=s; }
+    const need = bid.qty - mine(bid.face);                 // more successes needed from unknown dice
+    const pTrue = binomAtLeast(need, unknown, pf(bid.face));
+    const callCut = clamp(0.18 + per.sus*0.30 + (Math.random()-0.5)*0.14, 0.05, 0.62);
+    if(bid.qty > T || pTrue < 0.06 || pTrue < callCut){
+      return challenge(bot.num, pickSay("call", 0.5));
+    }
+    // spot-on: only the calculating personas, only when an exact hit is plausible
+    if(g.spoton && per.spot && unknown<=6 && need>=0 && binomExact(need,unknown,pf(bid.face))>0.24 && Math.random()<0.45){
+      return spoton(bot.num, pickSay("spot", 0.7));
+    }
+
+    // RAISE — honest bump, or a bluff
+    const bluffing = Math.random() < per.bluff;
+    let nf, nq;
+    if(!bluffing){
+      let sf=0, sc=-1; for(let f=bid.face+1; f<=6; f++){ const c=mine(f); if(c>sc){ sc=c; sf=f; } }
+      if(sf>bid.face && sc>=1){ nf=sf; nq=bid.qty; }                 // same count, higher face we hold
+      else { let s=1,c=-1; for(let f=1;f<=6;f++){ const cc=mine(f); if(cc>c){ c=cc; s=f; } } nf=s; nq=bid.qty+1; }
+    } else {
+      const jump = 1 + Math.floor(Math.random()*Math.max(1, Math.round(per.aggr)));
+      if(Math.random()<0.45 && bid.face<6){ nf=bid.face+1; nq=bid.qty; }   // sneaky small lie
+      else { nf = 1+Math.floor(Math.random()*6); nq = bid.qty + jump; }    // brazen overbid
+    }
     if(!higher(nq,nf,bid)){ nq=bid.qty+1; nf=bid.face; }
-    if(nq>T){ challenge(bot.num); return; }
-    placeBid(bot.num, nq, nf);
+    if(nq>T){ return challenge(bot.num, pickSay("call",0.5)); }
+    return placeBid(bot.num, nq, nf, pickSay(bluffing?"bluff":"raise", bluffing?0.5:0.3));
   };
 
   useEffect(()=>{
@@ -625,7 +665,8 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     const sig = game.round+":"+game.turn+":"+(game.bid?game.bid.qty+"-"+game.bid.face+"-"+game.bid.by:"open");
     if(botRef.current===sig) return;
     botRef.current = sig;
-    const t = setTimeout(()=>botMove(cur), 1100 + Math.random()*900);
+    const per = personaFor(cur.id);
+    const t = setTimeout(()=>botMove(cur), (650 + Math.random()*1500) * per.speed);   // human-ish think time
     return ()=>clearTimeout(t);
   },[game, players, amHost]);
 
@@ -714,6 +755,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
           <div className="bidBanner">
             <div className="who2">{(players.find(p=>p.num===game.bid.by)||{}).name} bids</div>
             <div className="amt">{game.bid.qty} <span className="g">{DIE_GLYPH[game.bid.face]}</span></div>
+            {game.bid.say && <div className="saybubble">“{game.bid.say}”</div>}
           </div>
         ) : (
           <div className="openMsg">{game.turn===myNum ? "You open the round — make the first bid." : ((players.find(p=>p.num===game.turn)||{}).name || "Someone") + " opens the round…"}</div>
@@ -769,7 +811,7 @@ function Lobby({ game, players, me, amHost, code, muted, onMute, onReady, onKick
             <div key={p.id} className="prow">
               <div className="pname">{game.host_id===p.id && <span className="crown">♛</span>}{p.name}{p.id===me.id?" (you)":""}</div>
               <div className="rgt">
-                {isBot(p.id) ? <span className="pill bot">bot</span> : (p.ready ? <span className="pill ready">ready</span> : <span className="pill wait">waiting</span>)}
+                {isBot(p.id) ? <span className="pill bot">{personaFor(p.id).name}</span> : (p.ready ? <span className="pill ready">ready</span> : <span className="pill wait">waiting</span>)}
                 {amHost && p.id!==me.id && <button className="kick" onClick={()=>onKick(p.id)}>{isBot(p.id)?"×":"kick"}</button>}
               </div>
             </div>
@@ -856,6 +898,7 @@ function Reveal({ la, amHost, onNext }){
         <div className="revSpot" />
         <div className={"verdict "+cls}>{title}</div>
         <div className="vsub">{nameOf(la.target)} bid {bid.qty} {DIE_GLYPH[bid.face]} · {nameOf(la.by)} {la.type==="spoton"?"called spot-on":"called liar"}</div>
+        {la.say && <div className="saybubble" style={{textAlign:"center",marginBottom:6}}>“{la.say}”</div>}
 
         <div className="tallyWrap">
           <div className="tallyBig">{la.actual} <span className="tallyGlyph">{DIE_GLYPH[bid.face]}</span></div>
