@@ -417,6 +417,9 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   const resolveRef = useRef(null);
   const advanceRef = useRef(null);
   const botRef = useRef(null);
+  const botTimerRef = useRef(null);
+  const advSchedRef = useRef(null);
+  const advTimerRef = useRef(null);
   const busyRef = useRef(false);
   const joinRef = useRef(false);
 
@@ -599,12 +602,16 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     advanceRef.current = sig;
     advanceRound();
   };
-  // host auto-advance fallback
+  // host auto-advance fallback (schedule once per reveal; poll re-renders must not reset it)
   useEffect(()=>{
-    if(!amHost || !game || game.phase!=="reveal") return;
-    const t = setTimeout(doAdvance, 8000);
-    return ()=>clearTimeout(t);
+    if(!amHost || !game || game.phase!=="reveal" || !game.last_action) return;
+    const sig = game.last_action.sig;
+    if(advSchedRef.current===sig) return;
+    advSchedRef.current = sig;
+    clearTimeout(advTimerRef.current);
+    advTimerRef.current = setTimeout(doAdvance, 8000);
   },[game, amHost]);
+  useEffect(()=>()=>clearTimeout(advTimerRef.current),[]);
 
   /* ---------- host: drive bot turns (personas, bluffing, binomial calling) ---------- */
   const botMove = (bot)=>{
@@ -663,12 +670,21 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     const cur = players.find(p=>p.num===game.turn && p.alive && p.dice && p.dice.length>0);
     if(!cur || !isBot(cur.id)) return;
     const sig = game.round+":"+game.turn+":"+(game.bid?game.bid.qty+"-"+game.bid.face+"-"+game.bid.by:"open");
-    if(botRef.current===sig) return;
+    if(botRef.current===sig) return;            // already scheduled/acted for this exact state
     botRef.current = sig;
     const per = personaFor(cur.id);
-    const t = setTimeout(()=>botMove(cur), (650 + Math.random()*1500) * per.speed);   // human-ish think time
-    return ()=>clearTimeout(t);
+    clearTimeout(botTimerRef.current);
+    // NOTE: no cleanup that clears this — a re-render from the 2.5s poll must not cancel the move.
+    botTimerRef.current = setTimeout(()=>{
+      const g = gameRef.current;
+      if(!g || g.phase!=="playing" || g.pending || g.turn!==cur.num) return;   // state moved on
+      const now = g.round+":"+g.turn+":"+(g.bid?g.bid.qty+"-"+g.bid.face+"-"+g.bid.by:"open");
+      if(now!==sig) return;
+      const liveBot = playersRef.current.find(p=>p.id===cur.id) || cur;
+      botMove(liveBot);
+    }, (650 + Math.random()*1500) * per.speed);   // human-ish think time
   },[game, players, amHost]);
+  useEffect(()=>()=>clearTimeout(botTimerRef.current),[]);
 
   /* ---------- lobby actions ---------- */
   const toggleReady = async ()=>{ if(!me) return; SFX.unlock(); await sb.from("ld_players").update({ ready:!me.ready }).eq("id",myId); };
