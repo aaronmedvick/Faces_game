@@ -552,16 +552,6 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     }).eq("code",code);
   };
 
-  useEffect(()=>{
-    if(!amHost || !game) return;
-    if(game.phase==="playing" && game.pending && !busyRef.current){
-      const sig = game.round+":"+game.pending.by+":"+game.pending.type;
-      if(resolveRef.current===sig) return;
-      resolveRef.current = sig; busyRef.current = true;
-      resolveChallenge(game.pending).finally(()=>{ busyRef.current=false; });
-    }
-  },[game, players, amHost]);
-
   /* ---------- host: advance to next round (or game over) ---------- */
   const advanceRound = async ()=>{
     const g = gameRef.current, ps = playersRef.current;
@@ -602,18 +592,55 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     advanceRef.current = sig;
     advanceRound();
   };
-  // host auto-advance fallback (schedule once per reveal; poll re-renders must not reset it)
-  useEffect(()=>{
-    if(!amHost || !game || game.phase!=="reveal" || !game.last_action) return;
-    const sig = game.last_action.sig;
-    if(advSchedRef.current===sig) return;
-    advSchedRef.current = sig;
-    clearTimeout(advTimerRef.current);
-    advTimerRef.current = setTimeout(doAdvance, 8000);
-  },[game, amHost]);
-  useEffect(()=>()=>clearTimeout(advTimerRef.current),[]);
 
-  /* ---------- host: drive bot turns (personas, bluffing, binomial calling) ---------- */
+  /* ---------- the engine: one steady loop drives everything host-side ----------
+     Runs a few times a second off the latest state (via refs), so the constant
+     sync re-renders can't interfere. Whoever is the driver (the host, or the
+     lowest-seat human if the host isn't in the room) resolves challenges,
+     advances rounds, and plays the bots' turns. Self-heals if a step is missed. */
+  const engineRef = useRef({ botSig:null, botAt:0, revealSig:null, revealAt:0 });
+  useEffect(()=>{
+    if(!sb || !joined) return;
+    const tick = async ()=>{
+      const g = gameRef.current, ps = playersRef.current;
+      if(!g || !ps.length) return;
+      const humans = ps.filter(p=>!isBot(p.id));
+      const hostPresent = humans.some(h=>h.id===g.host_id);
+      const lowHuman = humans.slice().sort((a,b)=>a.num-b.num)[0];
+      const amDriver = (g.host_id===myId) || (!hostPresent && lowHuman && lowHuman.id===myId);
+      if(!amDriver) return;
+      const E = engineRef.current;
+
+      // 1) resolve a pending challenge / spot-on
+      if(g.phase==="playing" && g.pending && !busyRef.current){
+        const sig = g.round+":"+g.pending.by+":"+g.pending.type;
+        if(resolveRef.current!==sig){ resolveRef.current=sig; busyRef.current=true;
+          try{ await resolveChallenge(g.pending); } finally { busyRef.current=false; } }
+        return;
+      }
+      // 2) auto-advance the reveal after a beat
+      if(g.phase==="reveal" && g.last_action){
+        const sig = g.last_action.sig;
+        if(E.revealSig!==sig){ E.revealSig=sig; E.revealAt=Date.now()+8000; return; }
+        if(Date.now()>=E.revealAt) doAdvance();
+        return;
+      }
+      // 3) play a bot's turn
+      if(g.phase==="playing" && !g.pending){
+        const cur = ps.find(p=>p.num===g.turn && p.alive && p.dice && p.dice.length>0);
+        if(cur && isBot(cur.id)){
+          const per = personaFor(cur.id);
+          const sig = g.round+":"+g.turn+":"+(g.bid?g.bid.qty+"-"+g.bid.face+"-"+g.bid.by:"open");
+          if(E.botSig!==sig){ E.botSig=sig; E.botAt=Date.now() + (500+Math.random()*1400)*per.speed; return; }
+          if(Date.now()>=E.botAt){ E.botAt=Date.now()+5000; botMove(cur); }
+        }
+      }
+    };
+    const id = setInterval(tick, 350);
+    return ()=>clearInterval(id);
+  },[joined]);
+
+  /* ---------- bot brain (personas, bluffing, binomial calling) ---------- */
   const botMove = (bot)=>{
     const g = gameRef.current, ps = playersRef.current;
     if(!g || g.phase!=="playing" || g.pending) return;
@@ -664,27 +691,6 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     if(nq>T){ return challenge(bot.num, pickSay("call",0.5)); }
     return placeBid(bot.num, nq, nf, pickSay(bluffing?"bluff":"raise", bluffing?0.5:0.3));
   };
-
-  useEffect(()=>{
-    if(!amHost || !game || game.phase!=="playing" || game.pending) return;
-    const cur = players.find(p=>p.num===game.turn && p.alive && p.dice && p.dice.length>0);
-    if(!cur || !isBot(cur.id)) return;
-    const sig = game.round+":"+game.turn+":"+(game.bid?game.bid.qty+"-"+game.bid.face+"-"+game.bid.by:"open");
-    if(botRef.current===sig) return;            // already scheduled/acted for this exact state
-    botRef.current = sig;
-    const per = personaFor(cur.id);
-    clearTimeout(botTimerRef.current);
-    // NOTE: no cleanup that clears this — a re-render from the 2.5s poll must not cancel the move.
-    botTimerRef.current = setTimeout(()=>{
-      const g = gameRef.current;
-      if(!g || g.phase!=="playing" || g.pending || g.turn!==cur.num) return;   // state moved on
-      const now = g.round+":"+g.turn+":"+(g.bid?g.bid.qty+"-"+g.bid.face+"-"+g.bid.by:"open");
-      if(now!==sig) return;
-      const liveBot = playersRef.current.find(p=>p.id===cur.id) || cur;
-      botMove(liveBot);
-    }, (650 + Math.random()*1500) * per.speed);   // human-ish think time
-  },[game, players, amHost]);
-  useEffect(()=>()=>clearTimeout(botTimerRef.current),[]);
 
   /* ---------- lobby actions ---------- */
   const toggleReady = async ()=>{ if(!me) return; SFX.unlock(); await sb.from("ld_players").update({ ready:!me.ready }).eq("id",myId); };
