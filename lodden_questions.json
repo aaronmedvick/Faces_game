@@ -1,0 +1,3098 @@
+{
+ "game": "lodden",
+ "version": 1,
+ "note": "Whole-number-answer questions for Lodden Thinks. Tags (estimate/hypothetical/silly) are a starting point to refine into funny/serious later. In play, the answerer's number is the only truth — real answers don't matter.",
+ "count": 618,
+ "questions": [
+  {
+   "id": 1,
+   "q": "How many sticky notes would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 2,
+   "q": "How many text messages are sent worldwide every second?",
+   "tag": "estimate"
+  },
+  {
+   "id": 3,
+   "q": "How many grains of rice would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 4,
+   "q": "How many squirrels are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 5,
+   "q": "How many bones are in the human body?",
+   "tag": "estimate"
+  },
+  {
+   "id": 6,
+   "q": "How many total cups of water will you drink in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 7,
+   "q": "How many miles of road are there in the United States?",
+   "tag": "estimate"
+  },
+  {
+   "id": 8,
+   "q": "How many times does the average person lose their train of thought in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 9,
+   "q": "How much would you pay for a personal robot butler for life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 10,
+   "q": "How many pigeons on the ground are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 11,
+   "q": "How many spiders are in the average house?",
+   "tag": "estimate"
+  },
+  {
+   "id": 12,
+   "q": "How many tacos would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 13,
+   "q": "How much money would it take for you to never eat pizza again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 14,
+   "q": "How many stop signs are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 15,
+   "q": "How many total naps will you take in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 16,
+   "q": "How much money would it take for you to never use social media again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 17,
+   "q": "How many tennis balls would fit inside a walk-in closet?",
+   "tag": "estimate"
+  },
+  {
+   "id": 18,
+   "q": "How many times have you checked your phone in the last hour?",
+   "tag": "silly"
+  },
+  {
+   "id": 19,
+   "q": "How many dice would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 20,
+   "q": "How many bubbles are in a can of soda?",
+   "tag": "estimate"
+  },
+  {
+   "id": 21,
+   "q": "How many trees are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 22,
+   "q": "How much money would it take for you to never use emojis again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 23,
+   "q": "How many slices of pizza could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 24,
+   "q": "How many staircases are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 25,
+   "q": "How many crows are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 26,
+   "q": "How many rubber ducks would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 27,
+   "q": "How much money would it take for you to never drink coffee again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 28,
+   "q": "How many jellybeans would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 29,
+   "q": "How much money would it take for you to wear the same hat every single day for a year?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 30,
+   "q": "How many pillows are on your bed right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 31,
+   "q": "How much money would it take for you to jump into a freezing lake in winter?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 32,
+   "q": "How many total times will you say sorry in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 33,
+   "q": "How many trees are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 34,
+   "q": "How many golf balls would fit inside a movie theater?",
+   "tag": "estimate"
+  },
+  {
+   "id": 35,
+   "q": "How many escalators are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 36,
+   "q": "How many chairs are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 37,
+   "q": "How much money would it take for you to never listen to music again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 38,
+   "q": "How many potholes are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 39,
+   "q": "How many benches are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 40,
+   "q": "How many total times will you re-watch your favorite movie in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 41,
+   "q": "How many seagulls are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 42,
+   "q": "How many vending machines are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 43,
+   "q": "How many pigeons are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 44,
+   "q": "How many toilets are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 45,
+   "q": "How many earthworms are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 46,
+   "q": "How many soda cans would fit inside a walk-in closet?",
+   "tag": "estimate"
+  },
+  {
+   "id": 47,
+   "q": "How many bouncy balls would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 48,
+   "q": "How many cups of coffee are drunk worldwide each day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 49,
+   "q": "How many total cups of coffee will you drink in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 50,
+   "q": "How many days could you survive eating only cereal?",
+   "tag": "silly"
+  },
+  {
+   "id": 51,
+   "q": "How many doors are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 52,
+   "q": "How many total muscles are in the human body?",
+   "tag": "estimate"
+  },
+  {
+   "id": 53,
+   "q": "How many streetlights are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 54,
+   "q": "How many toothpicks would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 55,
+   "q": "How many rubber ducks would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 56,
+   "q": "How many pigeons on the ground are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 57,
+   "q": "How many total books will you finish in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 58,
+   "q": "How many jellybeans would fit inside a shoebox?",
+   "tag": "estimate"
+  },
+  {
+   "id": 59,
+   "q": "How many times does the average person say the word 'like' in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 60,
+   "q": "How many bouncy balls would fit inside a phone booth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 61,
+   "q": "How many rats are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 62,
+   "q": "How many soda cans would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 63,
+   "q": "How many earthworms are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 64,
+   "q": "How many water fountains are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 65,
+   "q": "How many balloons could you blow up before getting dizzy?",
+   "tag": "silly"
+  },
+  {
+   "id": 66,
+   "q": "How many times does the average person sneeze in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 67,
+   "q": "How many socks go missing worldwide each year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 68,
+   "q": "How many apps are on your phone right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 69,
+   "q": "How many trees are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 70,
+   "q": "How many golf balls would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 71,
+   "q": "How many total pizzas will you eat in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 72,
+   "q": "How many light switches are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 73,
+   "q": "How many toothpicks would fit inside a five-gallon jug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 74,
+   "q": "How many parking spots are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 75,
+   "q": "How many earthworms are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 76,
+   "q": "How many times does the average person open the fridge in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 77,
+   "q": "How many movies with a number in the title could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 78,
+   "q": "How many pennies would fit inside a mini fridge?",
+   "tag": "estimate"
+  },
+  {
+   "id": 79,
+   "q": "How much money would it take for you to give a 10-minute speech with zero preparation?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 80,
+   "q": "How many times does the average person lose their train of thought in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 81,
+   "q": "How many times does the average person take a step in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 82,
+   "q": "How much money would it take for you to name your next pet whatever the internet votes for?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 83,
+   "q": "How many trees are there on planet Earth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 84,
+   "q": "How many times does the average person sip a drink in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 85,
+   "q": "How many traffic lights are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 86,
+   "q": "How many ATMs are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 87,
+   "q": "How much money would it take for you to never eat cheese again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 88,
+   "q": "How many chairs are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 89,
+   "q": "How many jellybeans would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 90,
+   "q": "How many sticky notes would fit inside a car trunk?",
+   "tag": "estimate"
+  },
+  {
+   "id": 91,
+   "q": "How many seagulls are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 92,
+   "q": "How much money would it take for you to spend a night alone in a 'haunted' house?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 93,
+   "q": "How many windows are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 94,
+   "q": "How much money would it take for you to never chew gum again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 95,
+   "q": "How many car brands could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 96,
+   "q": "How many golf balls would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 97,
+   "q": "How much money would it take for you to never wear shoes again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 98,
+   "q": "How many security cameras are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 99,
+   "q": "How many gumballs would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 100,
+   "q": "How many seconds could you hold a plank?",
+   "tag": "silly"
+  },
+  {
+   "id": 101,
+   "q": "How much money would it take for you to delete every photo on your phone right now?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 102,
+   "q": "How many times does the average person check their phone in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 103,
+   "q": "How many pens in your house actually work?",
+   "tag": "silly"
+  },
+  {
+   "id": 104,
+   "q": "How many M&Ms would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 105,
+   "q": "How many dice would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 106,
+   "q": "How many stars can you see with the naked eye on a perfectly clear night?",
+   "tag": "estimate"
+  },
+  {
+   "id": 107,
+   "q": "How many ceiling tiles are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 108,
+   "q": "How many soda cans would fit inside a mini fridge?",
+   "tag": "estimate"
+  },
+  {
+   "id": 109,
+   "q": "How many tacos would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 110,
+   "q": "How many streetlights are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 111,
+   "q": "How many sheets are on a fresh roll of toilet paper?",
+   "tag": "estimate"
+  },
+  {
+   "id": 112,
+   "q": "How many security cameras are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 113,
+   "q": "How many pancakes could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 114,
+   "q": "How many tacos would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 115,
+   "q": "How many times does the average person smile in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 116,
+   "q": "How much money would it take for you to never sit in a comfortable chair again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 117,
+   "q": "How many squirrels are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 118,
+   "q": "How many rubber ducks would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 119,
+   "q": "How many total times will you hit the snooze button in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 120,
+   "q": "How many basketballs would fit inside a classroom?",
+   "tag": "estimate"
+  },
+  {
+   "id": 121,
+   "q": "How many basketballs would fit inside a walk-in closet?",
+   "tag": "estimate"
+  },
+  {
+   "id": 122,
+   "q": "How many M&Ms would fit inside a five-gallon jug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 123,
+   "q": "How much money would it take for you to hold a live tarantula for a full minute?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 124,
+   "q": "How many times have you watched your comfort movie?",
+   "tag": "silly"
+  },
+  {
+   "id": 125,
+   "q": "How many raindrops fall in a single thunderstorm?",
+   "tag": "estimate"
+  },
+  {
+   "id": 126,
+   "q": "How many pigeons are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 127,
+   "q": "How many total haircuts will you get in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 128,
+   "q": "How many manhole covers are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 129,
+   "q": "How many dice would fit inside a classroom?",
+   "tag": "estimate"
+  },
+  {
+   "id": 130,
+   "q": "How many toilets are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 131,
+   "q": "How many licks does it take to reach the center of a lollipop?",
+   "tag": "estimate"
+  },
+  {
+   "id": 132,
+   "q": "How many raccoons are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 133,
+   "q": "How many times does the average person laugh in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 134,
+   "q": "How many ice cubes would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 135,
+   "q": "How many water fountains are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 136,
+   "q": "How many seconds could you hold your breath?",
+   "tag": "silly"
+  },
+  {
+   "id": 137,
+   "q": "How many ice cubes would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 138,
+   "q": "How many stop signs are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 139,
+   "q": "How many ATMs are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 140,
+   "q": "How many ATMs are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 141,
+   "q": "How many pennies would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 142,
+   "q": "How many total times will you stub your toe in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 143,
+   "q": "How many escalators are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 144,
+   "q": "How many red cars will drive past the nearest busy road in the next hour?",
+   "tag": "estimate"
+  },
+  {
+   "id": 145,
+   "q": "How much would you pay for a talking dog?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 146,
+   "q": "How many minutes late are you, usually?",
+   "tag": "silly"
+  },
+  {
+   "id": 147,
+   "q": "How many marbles would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 148,
+   "q": "How many water fountains are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 149,
+   "q": "How many vending machines are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 150,
+   "q": "How many trees are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 151,
+   "q": "How many benches are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 152,
+   "q": "How much money would it take for you to never see the ocean again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 153,
+   "q": "How much money would it take for you to never watch a movie in a theater again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 154,
+   "q": "How much would you pay for the ability to talk to animals?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 155,
+   "q": "How many times does the average person take a step in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 156,
+   "q": "How many marbles would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 157,
+   "q": "How many benches are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 158,
+   "q": "How many steps do you think you've taken today?",
+   "tag": "silly"
+  },
+  {
+   "id": 159,
+   "q": "How many chairs are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 160,
+   "q": "How many bouncy balls would fit inside a shoebox?",
+   "tag": "estimate"
+  },
+  {
+   "id": 161,
+   "q": "How many bees are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 162,
+   "q": "How many light switches are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 163,
+   "q": "How many security cameras are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 164,
+   "q": "How much money would it take for you to never pet a dog again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 165,
+   "q": "How many ping-pong balls would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 166,
+   "q": "How many browser tabs do you have open right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 167,
+   "q": "How much would you pay for never needing sleep and still feeling great?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 168,
+   "q": "How many crows are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 169,
+   "q": "How many parking spots are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 170,
+   "q": "How many times does the average person tap a screen in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 171,
+   "q": "How much money would it take for you to sing karaoke completely sober in a packed bar?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 172,
+   "q": "How many pizza toppings could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 173,
+   "q": "How many bouncy balls would fit inside a bank vault?",
+   "tag": "estimate"
+  },
+  {
+   "id": 174,
+   "q": "How many tacos would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 175,
+   "q": "How many staircases are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 176,
+   "q": "How many vending machines are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 177,
+   "q": "How many unread emails are in your inbox right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 178,
+   "q": "How many raccoons are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 179,
+   "q": "How many basketballs would fit inside a kiddie pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 180,
+   "q": "How many grapes would fit inside a five-gallon jug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 181,
+   "q": "How many streetlights are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 182,
+   "q": "How many potholes are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 183,
+   "q": "How many times does the average person send a text in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 184,
+   "q": "How many ping-pong balls would fit inside a five-gallon jug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 185,
+   "q": "How many total pairs of shoes will you own in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 186,
+   "q": "How many LEGO bricks would fit inside a phone booth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 187,
+   "q": "How many toothpicks would fit inside a shoebox?",
+   "tag": "estimate"
+  },
+  {
+   "id": 188,
+   "q": "How many houseflies are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 189,
+   "q": "How many cats are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 190,
+   "q": "How many grains of rice would fit inside a movie theater?",
+   "tag": "estimate"
+  },
+  {
+   "id": 191,
+   "q": "How much money would it take for you to never use the internet again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 192,
+   "q": "How many crows are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 193,
+   "q": "How many times does the average person open the fridge in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 194,
+   "q": "How many cats are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 195,
+   "q": "How many toilets are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 196,
+   "q": "How many mosquitoes are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 197,
+   "q": "How much money would it take for you to never cut your hair again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 198,
+   "q": "How many total push-ups will you do in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 199,
+   "q": "How many times could you say 'toy boat' fast before messing it up?",
+   "tag": "silly"
+  },
+  {
+   "id": 200,
+   "q": "How many parking spots are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 201,
+   "q": "How many vending machines are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 202,
+   "q": "How many soda cans would fit inside a bank vault?",
+   "tag": "estimate"
+  },
+  {
+   "id": 203,
+   "q": "How many times does the average person open the fridge in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 204,
+   "q": "How many ice cubes would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 205,
+   "q": "How many seconds could you keep a straight face while being tickled?",
+   "tag": "silly"
+  },
+  {
+   "id": 206,
+   "q": "How many times does the average person take a step in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 207,
+   "q": "How many spiders are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 208,
+   "q": "How many fire hydrants are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 209,
+   "q": "How many breaths does a person take in a day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 210,
+   "q": "How many total umbrellas will you lose in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 211,
+   "q": "How many times does a human heart beat in a day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 212,
+   "q": "How many LEGO bricks would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 213,
+   "q": "How many dogs are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 214,
+   "q": "How many leaves are on a full-grown oak tree?",
+   "tag": "estimate"
+  },
+  {
+   "id": 215,
+   "q": "How many pigeons are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 216,
+   "q": "How much money would it take for you to never eat chocolate again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 217,
+   "q": "How many security cameras are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 218,
+   "q": "How much money would it take for you to eat a whole raw onion like an apple?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 219,
+   "q": "How many escalators are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 220,
+   "q": "How many pennies would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 221,
+   "q": "How many times does the average person sneeze in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 222,
+   "q": "How many fire hydrants are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 223,
+   "q": "How many pennies would fit inside a phone booth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 224,
+   "q": "How much money would it take for you to never drink anything cold again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 225,
+   "q": "How many M&Ms would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 226,
+   "q": "How many hot dogs are eaten on the 4th of July in America?",
+   "tag": "estimate"
+  },
+  {
+   "id": 227,
+   "q": "How many houseflies are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 228,
+   "q": "How many windows are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 229,
+   "q": "How many toothpicks would fit inside a kiddie pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 230,
+   "q": "How many pennies would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 231,
+   "q": "How many cotton balls would fit inside a car trunk?",
+   "tag": "estimate"
+  },
+  {
+   "id": 232,
+   "q": "How many parking spots are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 233,
+   "q": "How many stairs could you climb before needing a break?",
+   "tag": "silly"
+  },
+  {
+   "id": 234,
+   "q": "How much would you pay for a lifetime supply of your favorite food?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 235,
+   "q": "How many gumballs would fit inside a classroom?",
+   "tag": "estimate"
+  },
+  {
+   "id": 236,
+   "q": "How many times does the average person say a word out loud in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 237,
+   "q": "How many times does the average person tap a screen in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 238,
+   "q": "How many water balloons would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 239,
+   "q": "How many manhole covers are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 240,
+   "q": "How many times does the average person tap a screen in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 241,
+   "q": "How many umbrellas are lost in this city every year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 242,
+   "q": "How much money would it take for you to never use a pillow again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 243,
+   "q": "How many times does the average person sip a drink in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 244,
+   "q": "How many miles does the average person walk in a lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 245,
+   "q": "How many manhole covers are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 246,
+   "q": "How many ceiling tiles are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 247,
+   "q": "How much would you pay for instantly speak every language?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 248,
+   "q": "How many seconds could you stare without blinking?",
+   "tag": "silly"
+  },
+  {
+   "id": 249,
+   "q": "How many ATMs are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 250,
+   "q": "How much money would it take for you to never watch TV again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 251,
+   "q": "How many french fries are eaten in the US every minute?",
+   "tag": "estimate"
+  },
+  {
+   "id": 252,
+   "q": "How many light switches are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 253,
+   "q": "How many gumballs would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 254,
+   "q": "How many mailboxes are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 255,
+   "q": "How many houseplants have you accidentally killed?",
+   "tag": "silly"
+  },
+  {
+   "id": 256,
+   "q": "How much money would it take for you to never eat fast food again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 257,
+   "q": "How many rooms are in Buckingham Palace?",
+   "tag": "estimate"
+  },
+  {
+   "id": 258,
+   "q": "How many bouncy balls would fit inside a movie theater?",
+   "tag": "estimate"
+  },
+  {
+   "id": 259,
+   "q": "How many squirrels are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 260,
+   "q": "How many paperclips would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 261,
+   "q": "How many bouncy balls would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 262,
+   "q": "How many mosquitoes are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 263,
+   "q": "How many times does the average person complain about something in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 264,
+   "q": "How many stop signs are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 265,
+   "q": "How much money would it take for you to never take a hot shower again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 266,
+   "q": "How many total times will you say 'I'm five minutes away' when you're not in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 267,
+   "q": "How many animals could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 268,
+   "q": "How many times does the average person blink in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 269,
+   "q": "How many times does the average person yawn in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 270,
+   "q": "How many total miles will you walk in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 271,
+   "q": "How many pennies are lost in couch cushions across America?",
+   "tag": "estimate"
+  },
+  {
+   "id": 272,
+   "q": "How many photos are on your phone right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 273,
+   "q": "How much money would it take for you to never eat spicy food again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 274,
+   "q": "How many kernels are in a bag of microwave popcorn?",
+   "tag": "estimate"
+  },
+  {
+   "id": 275,
+   "q": "How much money would it take for you to never use a fork again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 276,
+   "q": "How many staircases are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 277,
+   "q": "How many dice would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 278,
+   "q": "How many cartoon characters could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 279,
+   "q": "How much money would it take for you to never wear socks again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 280,
+   "q": "How many LEGO bricks would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 281,
+   "q": "How many times does the average person laugh in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 282,
+   "q": "How many board games could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 283,
+   "q": "How many people are in an elevator somewhere in the world right this second?",
+   "tag": "estimate"
+  },
+  {
+   "id": 284,
+   "q": "How many people are singing karaoke somewhere in the world right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 285,
+   "q": "How many jellybeans would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 286,
+   "q": "How much would you pay for the ability to fly?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 287,
+   "q": "How many times does the average person say a word out loud in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 288,
+   "q": "How many staircases are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 289,
+   "q": "How many keys are on your keychain?",
+   "tag": "silly"
+  },
+  {
+   "id": 290,
+   "q": "How many traffic lights are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 291,
+   "q": "How many soda cans would fit inside a five-gallon jug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 292,
+   "q": "How many benches are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 293,
+   "q": "How many light switches are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 294,
+   "q": "How many bouncy balls would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 295,
+   "q": "How many times does the average person say a word out loud in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 296,
+   "q": "How many LEGO bricks would fit inside a car trunk?",
+   "tag": "estimate"
+  },
+  {
+   "id": 297,
+   "q": "How many gumballs would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 298,
+   "q": "How many paperclips would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 299,
+   "q": "How many total times will you sing happy birthday in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 300,
+   "q": "How many chairs are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 301,
+   "q": "How much money would it take for you to never use a microwave again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 302,
+   "q": "How many mailboxes are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 303,
+   "q": "How many times does the average person blink in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 304,
+   "q": "How many bouncy balls would fit inside a kiddie pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 305,
+   "q": "How tall is the Eiffel Tower in feet?",
+   "tag": "estimate"
+  },
+  {
+   "id": 306,
+   "q": "How many people are flying in airplanes right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 307,
+   "q": "How many sticky notes would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 308,
+   "q": "How many donuts would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 309,
+   "q": "How many donuts would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 310,
+   "q": "How many phone chargers do you currently own?",
+   "tag": "silly"
+  },
+  {
+   "id": 311,
+   "q": "How many pigeons on the ground are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 312,
+   "q": "How many water fountains are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 313,
+   "q": "How many pigeons on the ground are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 314,
+   "q": "How many chairs are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 315,
+   "q": "How many pairs of shoes do you own?",
+   "tag": "silly"
+  },
+  {
+   "id": 316,
+   "q": "How many words are in the English dictionary?",
+   "tag": "estimate"
+  },
+  {
+   "id": 317,
+   "q": "How many french fries could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 318,
+   "q": "How many mailboxes are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 319,
+   "q": "How many cotton balls would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 320,
+   "q": "How many rats are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 321,
+   "q": "How many M&Ms would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 322,
+   "q": "How many times does the average person say the word 'like' in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 323,
+   "q": "How many basketballs would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 324,
+   "q": "How many M&Ms would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 325,
+   "q": "How many times does the average person send a text in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 326,
+   "q": "How many benches are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 327,
+   "q": "How many fire hydrants are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 328,
+   "q": "How many trees are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 329,
+   "q": "How many toilets are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 330,
+   "q": "How many stop signs are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 331,
+   "q": "How many countries could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 332,
+   "q": "How many potholes are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 333,
+   "q": "How much would you pay for the power to read minds?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 334,
+   "q": "How many houseflies are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 335,
+   "q": "How many donuts would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 336,
+   "q": "How many dreams does a person have in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 337,
+   "q": "How much money would it take for you to never eat ice cream again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 338,
+   "q": "How many total times will you lose your keys in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 339,
+   "q": "How many marshmallows could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 340,
+   "q": "How many pigeons on the ground are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 341,
+   "q": "How many emails are sent worldwide every minute?",
+   "tag": "estimate"
+  },
+  {
+   "id": 342,
+   "q": "How many vending machines are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 343,
+   "q": "How many traffic lights are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 344,
+   "q": "How many bouncy balls would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 345,
+   "q": "How many escalators are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 346,
+   "q": "How many mismatched socks are in your drawer?",
+   "tag": "silly"
+  },
+  {
+   "id": 347,
+   "q": "How many donuts would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 348,
+   "q": "How many escalators are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 349,
+   "q": "How many ice cubes could you hold in one hand?",
+   "tag": "silly"
+  },
+  {
+   "id": 350,
+   "q": "How many stop signs are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 351,
+   "q": "How much money would it take for you to shave your head bald?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 352,
+   "q": "How many water balloons would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 353,
+   "q": "How many tacos would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 354,
+   "q": "How many times does the average person check their phone in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 355,
+   "q": "How many times does the average person send a text in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 356,
+   "q": "How many potholes are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 357,
+   "q": "How many basketballs would fit inside a shoebox?",
+   "tag": "estimate"
+  },
+  {
+   "id": 358,
+   "q": "How many times does the average person complain about something in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 359,
+   "q": "How many times does the average person blink in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 360,
+   "q": "How many fire hydrants are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 361,
+   "q": "How many crows are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 362,
+   "q": "How many gumballs would fit inside a shoebox?",
+   "tag": "estimate"
+  },
+  {
+   "id": 363,
+   "q": "How many benches are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 364,
+   "q": "How many grains of sand are on an average beach?",
+   "tag": "estimate"
+  },
+  {
+   "id": 365,
+   "q": "How many potholes are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 366,
+   "q": "How much money would it take for you to never take a nap again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 367,
+   "q": "How many airports are there in the world?",
+   "tag": "estimate"
+  },
+  {
+   "id": 368,
+   "q": "How many security cameras are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 369,
+   "q": "How many security cameras are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 370,
+   "q": "How many escalators are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 371,
+   "q": "How many times does the average person sneeze in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 372,
+   "q": "How many basketballs would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 373,
+   "q": "How many dice would fit inside a kiddie pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 374,
+   "q": "How much would you pay for never having to do laundry again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 375,
+   "q": "How many cotton balls would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 376,
+   "q": "How many times does the average person sip a drink in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 377,
+   "q": "How many marbles would fit inside a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 378,
+   "q": "How many vending machines are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 379,
+   "q": "How many golf balls would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 380,
+   "q": "How many geese could you fend off with a pool noodle?",
+   "tag": "silly"
+  },
+  {
+   "id": 381,
+   "q": "How much would you pay for teleportation to anywhere, once a day?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 382,
+   "q": "How many water fountains are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 383,
+   "q": "How many toilets are there in a big hospital?",
+   "tag": "estimate"
+  },
+  {
+   "id": 384,
+   "q": "How many bees are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 385,
+   "q": "How many times does the average person smile in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 386,
+   "q": "How many languages are spoken in the world today?",
+   "tag": "estimate"
+  },
+  {
+   "id": 387,
+   "q": "How many windows are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 388,
+   "q": "How many times does the average person say a word out loud in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 389,
+   "q": "How much money would it take for you to never celebrate your birthday again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 390,
+   "q": "How many soda cans would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 391,
+   "q": "How many ping-pong balls would it take to fill your bedroom?",
+   "tag": "estimate"
+  },
+  {
+   "id": 392,
+   "q": "How many times will your alarm go off tomorrow before you get up?",
+   "tag": "silly"
+  },
+  {
+   "id": 393,
+   "q": "How many ants are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 394,
+   "q": "How many ping-pong balls would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 395,
+   "q": "How many donuts could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 396,
+   "q": "How many grapes would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 397,
+   "q": "How many ice cream flavors could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 398,
+   "q": "How many M&Ms would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 399,
+   "q": "How many M&Ms would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 400,
+   "q": "How many jellybeans would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 401,
+   "q": "How much money would it take for you to never sleep in on weekends again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 402,
+   "q": "How many times does the average person sneeze in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 403,
+   "q": "How many cats are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 404,
+   "q": "How many times a week do you eat the exact same meal?",
+   "tag": "silly"
+  },
+  {
+   "id": 405,
+   "q": "How many cotton balls would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 406,
+   "q": "How many security cameras are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 407,
+   "q": "How many pizzas are delivered in the US every hour?",
+   "tag": "estimate"
+  },
+  {
+   "id": 408,
+   "q": "How many grains of rice would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 409,
+   "q": "How many blankets are on your bed in winter?",
+   "tag": "silly"
+  },
+  {
+   "id": 410,
+   "q": "How many times does the average person open the fridge in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 411,
+   "q": "How many pigeons are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 412,
+   "q": "How many jellybeans would fit inside a car trunk?",
+   "tag": "estimate"
+  },
+  {
+   "id": 413,
+   "q": "How many total high-fives will you give in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 414,
+   "q": "How many bouncy balls would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 415,
+   "q": "How much money would it take for you to let a friend pick your outfit for a month?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 416,
+   "q": "How many potholes are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 417,
+   "q": "How many words can a person read in one minute?",
+   "tag": "estimate"
+  },
+  {
+   "id": 418,
+   "q": "How many piano tuners are there in Chicago?",
+   "tag": "estimate"
+  },
+  {
+   "id": 419,
+   "q": "How many ceiling tiles are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 420,
+   "q": "How many ping-pong balls would fit inside a dumpster?",
+   "tag": "estimate"
+  },
+  {
+   "id": 421,
+   "q": "How many spiders are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 422,
+   "q": "How many doors are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 423,
+   "q": "How many times does the average person send a text in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 424,
+   "q": "How many rubber ducks would fit inside a coffee mug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 425,
+   "q": "How many keys are on a standard piano?",
+   "tag": "estimate"
+  },
+  {
+   "id": 426,
+   "q": "How many vending machines are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 427,
+   "q": "How many fire hydrants are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 428,
+   "q": "How many chairs are in the room you're in right now?",
+   "tag": "silly"
+  },
+  {
+   "id": 429,
+   "q": "How many jellybeans would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 430,
+   "q": "How many sticky notes would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 431,
+   "q": "How many times does the average person smile in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 432,
+   "q": "How many ice cubes would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 433,
+   "q": "How much would you pay for always knowing the fastest route anywhere?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 434,
+   "q": "How many total hours will you spend waiting in line in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 435,
+   "q": "How many seconds could you stand perfectly still?",
+   "tag": "silly"
+  },
+  {
+   "id": 436,
+   "q": "How many ATMs are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 437,
+   "q": "How many taste buds does a person have?",
+   "tag": "estimate"
+  },
+  {
+   "id": 438,
+   "q": "How many total jokes will you tell in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 439,
+   "q": "How many mailboxes are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 440,
+   "q": "How many islands does Greece have?",
+   "tag": "estimate"
+  },
+  {
+   "id": 441,
+   "q": "How many bricks were used to build the Great Wall of China?",
+   "tag": "estimate"
+  },
+  {
+   "id": 442,
+   "q": "How many dice would fit inside a movie theater?",
+   "tag": "estimate"
+  },
+  {
+   "id": 443,
+   "q": "How much money would it take for you to never eat at a restaurant again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 444,
+   "q": "How many tennis balls would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 445,
+   "q": "How many parking spots are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 446,
+   "q": "How many cotton balls would fit inside a phone booth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 447,
+   "q": "How many pigeons live in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 448,
+   "q": "How many doors are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 449,
+   "q": "How much money would it take for you to get a stranger's name tattooed on your arm?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 450,
+   "q": "How many times does the average person tap a screen in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 451,
+   "q": "How much money would it take for you to never wear the color blue again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 452,
+   "q": "How many times does the average person complain about something in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 453,
+   "q": "How many manhole covers are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 454,
+   "q": "How much money would it take for you to never eat breakfast again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 455,
+   "q": "How many grains of salt are in a full salt shaker?",
+   "tag": "estimate"
+  },
+  {
+   "id": 456,
+   "q": "How many doors are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 457,
+   "q": "How many ice cubes would fit inside a walk-in closet?",
+   "tag": "estimate"
+  },
+  {
+   "id": 458,
+   "q": "How many balloons would it take to lift a house off the ground?",
+   "tag": "estimate"
+  },
+  {
+   "id": 459,
+   "q": "How many water fountains are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 460,
+   "q": "How many mosquitoes are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 461,
+   "q": "How many McDonald's restaurants are there on Earth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 462,
+   "q": "How many US states could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 463,
+   "q": "How many rats are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 464,
+   "q": "How many pigeons on the ground are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 465,
+   "q": "How many tacos could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 466,
+   "q": "How many cotton balls would fit inside a coffee mug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 467,
+   "q": "How many stop signs are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 468,
+   "q": "How many mailboxes are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 469,
+   "q": "How much money would it take for you to never wear a jacket again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 470,
+   "q": "How much money would it take for you to never drink soda again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 471,
+   "q": "How many chicken wings could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 472,
+   "q": "How many tacos would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 473,
+   "q": "How many toilets are there in a major train station?",
+   "tag": "estimate"
+  },
+  {
+   "id": 474,
+   "q": "How many rats are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 475,
+   "q": "How many total times will you fly on a plane in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 476,
+   "q": "How many times does the average person say the word 'like' in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 477,
+   "q": "How many raccoons are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 478,
+   "q": "How many contacts are in your phone?",
+   "tag": "silly"
+  },
+  {
+   "id": 479,
+   "q": "How many raccoons are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 480,
+   "q": "How many M&Ms would fit inside a mini fridge?",
+   "tag": "estimate"
+  },
+  {
+   "id": 481,
+   "q": "How many traffic lights are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 482,
+   "q": "How many tennis balls would fit inside a coffee mug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 483,
+   "q": "How many grains of rice would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 484,
+   "q": "How many LEGO bricks would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 485,
+   "q": "How many potholes are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 486,
+   "q": "How many basketballs would fit inside a mini fridge?",
+   "tag": "estimate"
+  },
+  {
+   "id": 487,
+   "q": "How many hours could you binge-watch TV without moving?",
+   "tag": "silly"
+  },
+  {
+   "id": 488,
+   "q": "How many hot dogs could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 489,
+   "q": "How many ceiling tiles are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 490,
+   "q": "How many squirrels are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 491,
+   "q": "How many water balloons would fit inside a classroom?",
+   "tag": "estimate"
+  },
+  {
+   "id": 492,
+   "q": "How many doors are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 493,
+   "q": "How many times does the average person yawn in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 494,
+   "q": "How many sticky notes would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 495,
+   "q": "How much money would it take for you to never laugh out loud again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 496,
+   "q": "How much money would it take for you to wear a clown costume to a fancy dinner?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 497,
+   "q": "How much would you pay for an extra hour in every day?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 498,
+   "q": "How many pages are in War and Peace?",
+   "tag": "estimate"
+  },
+  {
+   "id": 499,
+   "q": "How many golf balls would fit inside an Olympic swimming pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 500,
+   "q": "How many earthworms are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 501,
+   "q": "How many parking spots are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 502,
+   "q": "How many gumballs would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 503,
+   "q": "How many words could you type in one minute?",
+   "tag": "silly"
+  },
+  {
+   "id": 504,
+   "q": "How many manhole covers are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 505,
+   "q": "How many light switches are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 506,
+   "q": "How many bouncy balls would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 507,
+   "q": "How many clouds are in the sky right now over your city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 508,
+   "q": "How much money would it take for you to never use your phone again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 509,
+   "q": "How many traffic lights are there in this neighborhood?",
+   "tag": "estimate"
+  },
+  {
+   "id": 510,
+   "q": "How many total sneezes will you sneeze in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 511,
+   "q": "How many windows are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 512,
+   "q": "How many honey bees does it take to make one jar of honey?",
+   "tag": "estimate"
+  },
+  {
+   "id": 513,
+   "q": "How many words are in the average novel?",
+   "tag": "estimate"
+  },
+  {
+   "id": 514,
+   "q": "How many streetlights are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 515,
+   "q": "How many bees are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 516,
+   "q": "How many traffic lights are there in a small town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 517,
+   "q": "How many times does the average person take a step in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 518,
+   "q": "How many manhole covers are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 519,
+   "q": "How much would you pay for the power to pause time for 10 minutes a day?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 520,
+   "q": "How many manhole covers are there in a large college campus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 521,
+   "q": "How many photos are taken worldwide every day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 522,
+   "q": "How many dogs are named 'Max' in the United States?",
+   "tag": "estimate"
+  },
+  {
+   "id": 523,
+   "q": "How many grapes would fit inside a kiddie pool?",
+   "tag": "estimate"
+  },
+  {
+   "id": 524,
+   "q": "How many tacos would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 525,
+   "q": "How many high-fives could you give in 30 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 526,
+   "q": "How many times could you spin in a circle before falling over?",
+   "tag": "silly"
+  },
+  {
+   "id": 527,
+   "q": "How much money would it take for you to never use air conditioning again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 528,
+   "q": "How many chicken nuggets could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 529,
+   "q": "How many times does the average person smile in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 530,
+   "q": "How many basketballs would fit inside a phone booth?",
+   "tag": "estimate"
+  },
+  {
+   "id": 531,
+   "q": "How many times does the average person blink in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 532,
+   "q": "How many gumballs are in a full gumball machine?",
+   "tag": "estimate"
+  },
+  {
+   "id": 533,
+   "q": "How many cotton balls would fit inside a school bus?",
+   "tag": "estimate"
+  },
+  {
+   "id": 534,
+   "q": "How many ice cubes would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 535,
+   "q": "How many total handshakes will you give in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 536,
+   "q": "How many total times will you move to a new home in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 537,
+   "q": "How many tennis balls would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 538,
+   "q": "How many times does the average person lose their train of thought in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 539,
+   "q": "How many times does the average person check their phone in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 540,
+   "q": "How many times does the average person say the word 'like' in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 541,
+   "q": "How many stairs are in the Empire State Building?",
+   "tag": "estimate"
+  },
+  {
+   "id": 542,
+   "q": "How much money would it take for you to never eat meat again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 543,
+   "q": "How many times does the average person laugh in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 544,
+   "q": "How much money would it take for you to go a full week without saying a single word?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 545,
+   "q": "How many total photos will you take in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 546,
+   "q": "How many light switches are there in the average airport?",
+   "tag": "estimate"
+  },
+  {
+   "id": 547,
+   "q": "How many windows are there in a typical shopping mall?",
+   "tag": "estimate"
+  },
+  {
+   "id": 548,
+   "q": "How many dog breeds could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 549,
+   "q": "How many LEGO bricks would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 550,
+   "q": "How many streetlights are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 551,
+   "q": "How many dice would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 552,
+   "q": "How many fruits could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 553,
+   "q": "How many dogs are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 554,
+   "q": "How many cotton balls would fit inside a hot air balloon?",
+   "tag": "estimate"
+  },
+  {
+   "id": 555,
+   "q": "How many cats are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 556,
+   "q": "How many condiment packets are in your fridge door?",
+   "tag": "silly"
+  },
+  {
+   "id": 557,
+   "q": "How many times does the average person lose their train of thought in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 558,
+   "q": "How many jumping jacks could you do in a minute?",
+   "tag": "silly"
+  },
+  {
+   "id": 559,
+   "q": "How many socks could you fit on one foot?",
+   "tag": "silly"
+  },
+  {
+   "id": 560,
+   "q": "How many cereal brands could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 561,
+   "q": "How many ping-pong balls would fit inside a cargo van?",
+   "tag": "estimate"
+  },
+  {
+   "id": 562,
+   "q": "How many people share your exact birthday worldwide?",
+   "tag": "estimate"
+  },
+  {
+   "id": 563,
+   "q": "How many Oreos could you eat in one sitting?",
+   "tag": "silly"
+  },
+  {
+   "id": 564,
+   "q": "How many seagulls are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 565,
+   "q": "How many pigeons on the ground are there in downtown Los Angeles?",
+   "tag": "estimate"
+  },
+  {
+   "id": 566,
+   "q": "How many superheroes could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 567,
+   "q": "How many toothpicks would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 568,
+   "q": "How many grapes could you catch in your mouth out of 100 throws?",
+   "tag": "silly"
+  },
+  {
+   "id": 569,
+   "q": "How many stuffed animals could you hold at once?",
+   "tag": "silly"
+  },
+  {
+   "id": 570,
+   "q": "How many water balloons would fit inside a coffee mug?",
+   "tag": "estimate"
+  },
+  {
+   "id": 571,
+   "q": "How many ants are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 572,
+   "q": "How much money would it take for you to never eat dessert again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 573,
+   "q": "How many toothpicks would fit inside a bathtub?",
+   "tag": "estimate"
+  },
+  {
+   "id": 574,
+   "q": "How many stop signs are there in Las Vegas?",
+   "tag": "estimate"
+  },
+  {
+   "id": 575,
+   "q": "How many parking spots are there in New York City?",
+   "tag": "estimate"
+  },
+  {
+   "id": 576,
+   "q": "How many benches are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 577,
+   "q": "How many types of pasta could you name in 60 seconds?",
+   "tag": "silly"
+  },
+  {
+   "id": 578,
+   "q": "How many steps are inside the Statue of Liberty?",
+   "tag": "estimate"
+  },
+  {
+   "id": 579,
+   "q": "How many times does the average person complain about something in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 580,
+   "q": "How many seconds could you balance on one foot?",
+   "tag": "silly"
+  },
+  {
+   "id": 581,
+   "q": "How many traffic lights are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 582,
+   "q": "How many pages are in the entire Harry Potter series?",
+   "tag": "estimate"
+  },
+  {
+   "id": 583,
+   "q": "How many hairs are on the average human head?",
+   "tag": "estimate"
+  },
+  {
+   "id": 584,
+   "q": "How many times does the average person laugh in a year?",
+   "tag": "estimate"
+  },
+  {
+   "id": 585,
+   "q": "How many grapes would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 586,
+   "q": "How many times does the average person sip a drink in a single day?",
+   "tag": "estimate"
+  },
+  {
+   "id": 587,
+   "q": "How many times does the average person yawn in a week?",
+   "tag": "estimate"
+  },
+  {
+   "id": 588,
+   "q": "How many tennis balls would fit inside an elevator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 589,
+   "q": "How many ATMs are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 590,
+   "q": "How much money would it take for you to eat a spoonful of the world's spiciest hot sauce?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 591,
+   "q": "How many lakes are in Minnesota?",
+   "tag": "estimate"
+  },
+  {
+   "id": 592,
+   "q": "How many ceiling tiles are there in a football stadium?",
+   "tag": "estimate"
+  },
+  {
+   "id": 593,
+   "q": "How many spiders are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 594,
+   "q": "How much money would it take for you to never wear sunglasses again?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 595,
+   "q": "How many seagulls are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 596,
+   "q": "How much would you pay for perfect memory forever?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 597,
+   "q": "How many jellybeans fill a one-gallon jar?",
+   "tag": "estimate"
+  },
+  {
+   "id": 598,
+   "q": "How many ants are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 599,
+   "q": "How many pushups could you do right now before collapsing?",
+   "tag": "silly"
+  },
+  {
+   "id": 600,
+   "q": "How many steps would it take to walk across your whole town?",
+   "tag": "estimate"
+  },
+  {
+   "id": 601,
+   "q": "How many spiders are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 602,
+   "q": "How many tacos would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 603,
+   "q": "How many times does the average person yawn in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 604,
+   "q": "How many mosquitoes are within this building right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 605,
+   "q": "How many times does the average person check their phone in an average lifetime?",
+   "tag": "estimate"
+  },
+  {
+   "id": 606,
+   "q": "How many water fountains are there in Disney World?",
+   "tag": "estimate"
+  },
+  {
+   "id": 607,
+   "q": "How many fire hydrants are there in this city?",
+   "tag": "estimate"
+  },
+  {
+   "id": 608,
+   "q": "How many dogs are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 609,
+   "q": "How many dogs are within one city block of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 610,
+   "q": "How many total sunsets will you watch in your entire life?",
+   "tag": "hypothetical"
+  },
+  {
+   "id": 611,
+   "q": "How many bees are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 612,
+   "q": "How many pennies would fit inside a refrigerator?",
+   "tag": "estimate"
+  },
+  {
+   "id": 613,
+   "q": "How many chairs are there in a cruise ship?",
+   "tag": "estimate"
+  },
+  {
+   "id": 614,
+   "q": "How many houseflies are within ten miles of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 615,
+   "q": "How many dice would fit inside a two-car garage?",
+   "tag": "estimate"
+  },
+  {
+   "id": 616,
+   "q": "How many golf balls would fit inside a hotel room?",
+   "tag": "estimate"
+  },
+  {
+   "id": 617,
+   "q": "How many ants are within one mile of here right now?",
+   "tag": "estimate"
+  },
+  {
+   "id": 618,
+   "q": "How much money would it take for you to never use an umbrella again?",
+   "tag": "hypothetical"
+  }
+ ]
+}
