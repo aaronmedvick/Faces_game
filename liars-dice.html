@@ -78,7 +78,8 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 
 .bidBanner { text-align:center; background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:18px; padding:16px; margin-bottom:14px; }
 .bidBanner .who2 { font-size:13px; color:var(--dim); margin-bottom:6px; }
-.bidBanner .amt { font-family:'Fraunces',serif; font-size:30px; font-weight:600; color:var(--bone); display:flex; align-items:center; justify-content:center; gap:10px; }
+.bidBanner .amt { font-family:'Fraunces',serif; color:var(--bone); display:flex; align-items:center; justify-content:center; gap:14px; }
+.bidBanner .amtWord { font-size:38px; font-weight:600; text-transform:capitalize; }
 .bidBanner .amt .g { font-size:38px; line-height:1; }
 .openMsg { text-align:center; color:var(--dim); font-size:14px; padding:8px 0 16px; }
 
@@ -98,8 +99,8 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 .waitTurn .big { font-size:32px; margin-bottom:6px; }
 
 /* reveal */
-.overlay { position:fixed; inset:0; background:rgba(8,6,16,.86); display:grid; place-items:center; padding:18px; z-index:20; overflow:auto; }
-.revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:22px; padding:22px 18px calc(20px + env(safe-area-inset-bottom,0px)); max-width:460px; width:100%; box-shadow:0 30px 60px -20px #000; margin:auto; }
+.overlay { position:fixed; inset:0; background:rgba(8,6,16,.86); display:grid; place-items:start center; padding:calc(16px + env(safe-area-inset-top,0px)) 16px 24px; z-index:20; overflow:auto; }
+.revealCard { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:22px; padding:22px 18px calc(20px + env(safe-area-inset-bottom,0px)); max-width:460px; width:100%; box-shadow:0 30px 60px -20px #000; margin:0 auto; }
 .verdict { font-family:'Fraunces',serif; font-size:30px; font-weight:600; text-align:center; margin:0 0 4px; }
 .verdict.win { color:var(--win); } .verdict.lose { color:var(--lose); }
 .vsub { text-align:center; color:var(--dim); font-size:13px; margin-bottom:16px; }
@@ -144,11 +145,12 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 .verdict.win { text-shadow:0 0 22px color-mix(in srgb, var(--win) 45%, transparent); }
 .verdict.lose { text-shadow:0 0 22px color-mix(in srgb, var(--lose) 45%, transparent); }
 .tallyWrap { text-align:center; margin:10px 0 18px; }
-.tallyBig { font-family:'Fraunces',serif; font-size:52px; font-weight:600; color:var(--bone); line-height:1; display:inline-flex; align-items:center; gap:8px; }
-.tallyGlyph { font-size:44px; color:var(--candle); filter:drop-shadow(0 0 10px rgba(245,177,76,.6)); }
+.tallyBig { display:flex; align-items:center; justify-content:center; gap:14px; }
+.tallyCount { font-family:'Fraunces',serif; font-size:48px; font-weight:600; color:var(--bone); line-height:1; text-transform:capitalize; }
+.tallyGlyph { font-size:44px; color:var(--candle); }
+.revList { border-top:1px solid var(--haze); margin-top:18px; padding-top:4px; }
 .tallySub { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); margin-top:8px; }
 .c-win { color:var(--win); } .c-lose { color:var(--lose); }
-.revList { border-top:1px solid var(--haze); }
 .outcome { text-align:center; font-family:'Fraunces',serif; font-size:16px; margin-top:14px; }
 .outcome.lose { color:var(--lose); } .outcome.win { color:var(--win); }
 .winScene { position:relative; text-align:center; padding:18px 0 6px; margin-bottom:6px; }
@@ -162,6 +164,33 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 @keyframes cardPop { 0%{ transform:scale(.94); opacity:0; } 60%{ transform:scale(1.01); } 100%{ transform:scale(1); opacity:1; } }
 .revealCard { animation:cardPop .26s ease-out; }
 .saybubble { font-family:'Fraunces',serif; font-style:italic; font-size:14px; color:var(--psychic); margin-top:8px; }
+.skip { color:var(--candle); cursor:pointer; font-weight:700; margin-left:8px; }
+.heckleLabel { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:20px 0 0; }
+.heckleBar { display:flex; gap:8px; overflow-x:auto; padding:10px 2px 2px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.heckleBar::-webkit-scrollbar { display:none; }
+.heckleBar.heckleRev { margin-top:14px; padding-top:12px; border-top:1px solid var(--haze); justify-content:flex-start; }
+.heckleBtn { flex:0 0 auto; background:var(--velvet); border:1px solid var(--haze); border-radius:12px; padding:8px 12px; font-size:22px; line-height:1; cursor:pointer; }
+.heckleBtn:active { transform:scale(.88); background:var(--haze); }
+.heckleToasts { position:fixed; left:0; right:0; top:calc(56px + env(safe-area-inset-top,0px)); display:flex; flex-direction:column; align-items:center; gap:6px; z-index:40; pointer-events:none; padding:0 12px; }
+.heckleToast { background:rgba(30,23,53,.96); border:1px solid var(--haze); border-radius:999px; padding:7px 14px; font-size:14px; color:var(--mist); box-shadow:0 10px 24px -10px #000; animation:heckPop .25s ease-out; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.heckleToast .he { font-size:16px; }
+.heckleToast b { color:var(--candle); }
+@keyframes heckPop { from{ transform:translateY(-10px) scale(.9); opacity:0; } to{ transform:none; opacity:1; } }
+/* poker digit tiles + cup + custom heckle */
+.digitTile { position:relative; background:var(--bone); color:var(--ink); display:inline-flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-weight:800; box-shadow:0 6px 10px rgba(0,0,0,.35); }
+.digitTile.glow { box-shadow:0 0 10px var(--candle), 0 4px 8px rgba(0,0,0,.4); }
+.digitTile.bill { background:linear-gradient(160deg,#3f7d5a,#2c5941); color:#eafff2; border:1px solid #57a97e; }
+.digitTile.bill.glow { box-shadow:0 0 10px var(--candle), 0 4px 8px rgba(0,0,0,.4); }
+.digitTile .billmark { position:absolute; top:6%; left:9%; opacity:.6; font-weight:700; }
+.digitTile .digit { line-height:1; }
+.faces10 { flex-wrap:wrap; }
+.cupWrap { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.cup { filter:drop-shadow(0 8px 14px rgba(0,0,0,.4)); }
+.cupHint { font-size:12px; color:var(--dim); }
+.peekBtn { margin-top:12px; display:inline-block; font-family:inherit; font-weight:700; font-size:15px; padding:11px 24px; border-radius:13px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.peekBtn.open { border-color:var(--candle); color:var(--candle); background:rgba(245,177,76,.08); }
+.cupToggle { margin-top:10px; font-size:11px; color:var(--dim); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+.heckleSay { display:flex; gap:8px; margin-top:8px; align-items:center; }
 </style>
 </head>
 <body>
@@ -188,8 +217,33 @@ const ls = { get:(k)=>{ try{ return localStorage.getItem(k); }catch(e){ return n
 const persistId = ()=>{ let v=ls.get("ld_id"); if(!v){ v=randId(); ls.set("ld_id",v); } return v; };
 const isBot = (id)=> typeof id==="string" && id.indexOf("bot_")===0;
 const rollN = (n)=> Array.from({length:Math.max(0,n)},()=>1+Math.floor(Math.random()*6));
+const rollHand = (n, mode)=> Array.from({length:Math.max(0,n)},()=> mode==="poker" ? Math.floor(Math.random()*10) : 1+Math.floor(Math.random()*6));
+const faceList = (mode)=> mode==="poker" ? [0,1,2,3,4,5,6,7,8,9] : [1,2,3,4,5,6];
 const DIE_GLYPH = ["","⚀","⚁","⚂","⚃","⚄","⚅"];
+function numWord(n){
+  n=Math.round(n);
+  const ones=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const tens=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  if(n<0||isNaN(n)) return String(n);
+  if(n<20) return ones[n];
+  if(n<100){ const t=Math.floor(n/10), o=n%10; return tens[t]+(o?"-"+ones[o]:""); }
+  return String(n);
+}
 const BOT_NAMES = ["Ada","Bishop","Cyd","Dot","Echo","Fen","Gus","Iris"];
+const HECKLES = [
+  {emoji:"🐔", text:"Bawk bawk!"},
+  {emoji:"🤥", text:"Liar!"},
+  {emoji:"🧢", text:"Cap."},
+  {emoji:"😂", text:"Nice try"},
+  {emoji:"👀", text:"I see you"},
+  {emoji:"💸", text:"All bluff"},
+  {emoji:"🎣", text:"You're fishing"},
+  {emoji:"🥶", text:"Ice cold"},
+  {emoji:"🔥", text:"Big talk"},
+  {emoji:"🫵", text:"That's a lie"},
+  {emoji:"😱", text:"No way"},
+  {emoji:"🍿", text:"Popcorn ready"},
+];
 const PALETTES = { gr:{ win:"#7DF0A6", lose:"#F26D8B", label:"Green / Red" }, bo:{ win:"#5AA9FF", lose:"#F5A03D", label:"Blue / Orange" } };
 function applyPalette(p){ const c=PALETTES[p]||PALETTES.gr; try{ document.documentElement.style.setProperty("--win",c.win); document.documentElement.style.setProperty("--lose",c.lose); }catch(e){} }
 
@@ -279,7 +333,40 @@ function DiceRow({ dice, size=44, glowVal=null, wild=false, spotlight=false }){
     return (<span key={i} className="rollin" style={{animationDelay:(i*60)+"ms", ...(spotlight&&!match?{opacity:.3,filter:"grayscale(.5)"}:{})}}><Die v={d} size={size} glow={match} /></span>);
   })}</div>);
 }
+function DigitTile({ v, size=44, glow=false, dollars=false }){
+  return (
+    <div className={"digitTile"+(glow?" glow":"")+(dollars?" bill":"")} style={{width:size, height:size, fontSize:Math.round(size*0.5), borderRadius:Math.round(size*0.18)}}>
+      {dollars && <span className="billmark" style={{fontSize:Math.round(size*0.22)}}>$</span>}
+      <span className="digit">{v}</span>
+    </div>
+  );
+}
+function FaceTile({ mode, dollars, v, size=44, glow=false }){
+  return mode==="poker" ? <DigitTile v={v} size={size} glow={glow} dollars={dollars} /> : <Die v={v} size={size} glow={glow} />;
+}
+function FaceRow({ dice, size=44, glowVal=null, wild=false, spotlight=false, mode="dice", dollars=false }){
+  return (<div className="hand">{dice.map((d,i)=>{
+    const match = glowVal!=null && (d===glowVal || (wild && glowVal!==1 && d===1));
+    return (<span key={i} className="rollin" style={{animationDelay:(i*60)+"ms", ...(spotlight&&!match?{opacity:.3,filter:"grayscale(.5)"}:{})}}><FaceTile mode={mode} dollars={dollars} v={d} size={size} glow={match} /></span>);
+  })}</div>);
+}
 function Backs({ n, sm=false }){ return (<React.Fragment>{Array.from({length:n}).map((_,i)=>(<span key={i} className={"dback"+(sm?" sm":"")}>?</span>))}</React.Fragment>); }
+function Cup({ n, mode }){
+  return (
+    <div className="cupWrap">
+      <svg viewBox="0 0 120 100" width="150" height="125" className="cup">
+        <defs>
+          <linearGradient id="cupg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#453868" /><stop offset="100%" stopColor="#241b3d" /></linearGradient>
+        </defs>
+        <ellipse cx="60" cy="90" rx="46" ry="9" fill="rgba(0,0,0,.4)" />
+        <path d="M20 22 L100 22 L89 86 Q60 95 31 86 Z" fill="url(#cupg)" stroke="var(--haze)" strokeWidth="2" />
+        <ellipse cx="60" cy="22" rx="40" ry="10" fill="#2b2247" stroke="var(--haze)" strokeWidth="2" />
+        <ellipse cx="60" cy="22" rx="30" ry="6.5" fill="#1a1430" />
+      </svg>
+      <div className="cupHint">{n} {mode==="poker"?"digits":"dice"} hidden</div>
+    </div>
+  );
+}
 
 /* ============ QR ============ */
 function QR({ text, size }){
@@ -422,11 +509,23 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   const advTimerRef = useRef(null);
   const busyRef = useRef(false);
   const joinRef = useRef(false);
+  const chanRef = useRef(null);
+  const heckleAtRef = useRef(0);
+  const [heckles,setHeckles] = useState([]);
+  const showHeckle = (h)=>{
+    const key = (h.id||randId())+"-"+Math.random().toString(36).slice(2,6);
+    const item = { ...h, key };
+    setHeckles(hs=>[...hs.slice(-4), item]);
+    setTimeout(()=> setHeckles(hs=>hs.filter(x=>x.key!==key)), 3600);
+  };
 
   // sound + roll animation
   const [muted,setMutedState] = useState(()=>SFX.isMuted());
   const [rolling,setRolling] = useState(false);
   const [rollFaces,setRollFaces] = useState([]);
+  const [cupOn,setCupOn] = useState(()=> ls.get("ld_cup")!=="0");
+  const [peek,setPeek] = useState(false);
+  const [heckleText,setHeckleText] = useState("");
   const roundRef = useRef(0);
   const phaseRef = useRef(null);
   const pendingRollRef = useRef(false);
@@ -470,13 +569,24 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   // realtime + poll
   useEffect(()=>{
     if(!sb || !joined) return;
-    const ch = sb.channel("ld:"+code)
+    const ch = sb.channel("ld:"+code, { config:{ broadcast:{ self:false } } })
       .on("postgres_changes",{event:"*",schema:"public",table:"ld_games",filter:"code=eq."+code},()=>refetch())
       .on("postgres_changes",{event:"*",schema:"public",table:"ld_players",filter:"code=eq."+code},()=>refetch())
+      .on("broadcast",{ event:"heckle" },({payload})=> showHeckle(payload))
       .subscribe();
+    chanRef.current = ch;
     const poll = setInterval(refetch, 2500);
-    return ()=>{ sb.removeChannel(ch); clearInterval(poll); };
+    return ()=>{ sb.removeChannel(ch); chanRef.current=null; clearInterval(poll); };
   },[joined]);
+
+  const sendHeckle = (h)=>{
+    const now = Date.now();
+    if(now - heckleAtRef.current < 1000) return;   // gentle anti-spam
+    heckleAtRef.current = now;
+    const payload = { id:randId(), from:(me&&me.name)||"Someone", emoji:h.emoji, text:h.text };
+    try{ chanRef.current && chanRef.current.send({ type:"broadcast", event:"heckle", payload }); }catch(e){}
+    showHeckle(payload);   // show to myself immediately (self:false on the channel)
+  };
 
   const me = players.find(p=>p.id===myId);
   const amHost = game && game.host_id===myId;
@@ -487,7 +597,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     if(!game || game.phase!=="playing") return;
     if(game.round!==roundRef.current){
       roundRef.current = game.round;
-      if(game.round>0){ pendingRollRef.current = true; SFX.roll(); }
+      if(game.round>0){ pendingRollRef.current = true; SFX.roll(); setPeek(false); }
     }
   },[game]);
   // my dice arrived while a roll is armed -> shake + tumble to values
@@ -531,7 +641,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   const resolveChallenge = async (pending)=>{
     const g = gameRef.current, ps = playersRef.current;
     const bid = g.bid; if(!bid) return;
-    const wild = g.wild;
+    const wild = g.wild && (g.mode!=="poker");
     let actual = 0;
     ps.forEach(p=>{ if(p.alive && p.dice) p.dice.forEach(d=>{ if(d===bid.face || (wild && bid.face!==1 && d===1)) actual++; }); });
     const caller = ps.find(p=>p.num===pending.by);
@@ -546,9 +656,13 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     }
     const snapshot = ps.filter(p=>p.alive).map(p=>({ num:p.num, name:p.name, dice:p.dice, bot:isBot(p.id) }));
     const sig = g.round+":"+pending.type+":"+pending.by;
+    const hostP = ps.find(p=>p.id===g.host_id);
+    const hostAlive = !!(hostP && hostP.alive && hostP.dice && hostP.dice.length>0);
+    const auto = (g.autonext!==false) || !hostAlive;    // auto if toggle on, or the host is eliminated
+    const advanceAt = Date.now() + (auto ? 5000 : 25000);
     await sb.from("ld_games").update({
       phase:"reveal", pending:null,
-      last_action:{ type:pending.type, by:pending.by, target:bid.by, bid, actual, loserNum, gainNum, correct, wild, say:pending.say||null, snapshot, sig }
+      last_action:{ type:pending.type, by:pending.by, target:bid.by, bid, actual, loserNum, gainNum, correct, wild, say:pending.say||null, auto, advanceAt, snapshot, sig }
     }).eq("code",code);
   };
 
@@ -576,7 +690,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
       return;
     }
     // reroll everyone still alive
-    for(const p of next){ if(p.alive){ p.dice = rollN(p.dice.length); } }
+    for(const p of next){ if(p.alive){ p.dice = rollHand(p.dice.length, g.mode||"dice"); } }
     for(const p of next){ await sb.from("ld_players").update({ dice:p.dice, alive:p.alive }).eq("id",p.id); }
     const aliveNums = next.filter(p=>p.alive && p.dice.length>0).map(p=>p.num).sort((a,b)=>a-b);
     let startNum;
@@ -618,11 +732,10 @@ function Room({ myId, name, code, createIfMissing, onExit }){
           try{ await resolveChallenge(g.pending); } finally { busyRef.current=false; } }
         return;
       }
-      // 2) auto-advance the reveal after a beat
+      // 2) auto-advance the reveal at the shared advanceAt time
       if(g.phase==="reveal" && g.last_action){
-        const sig = g.last_action.sig;
-        if(E.revealSig!==sig){ E.revealSig=sig; E.revealAt=Date.now()+8000; return; }
-        if(Date.now()>=E.revealAt) doAdvance();
+        const at = g.last_action.advanceAt || 0;
+        if(Date.now() >= at) doAdvance();
         return;
       }
       // 3) play a bot's turn
@@ -644,33 +757,36 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   const botMove = (bot)=>{
     const g = gameRef.current, ps = playersRef.current;
     if(!g || g.phase!=="playing" || g.pending) return;
+    const mode = g.mode||"dice";
+    const fmin = mode==="poker"?0:1, fmax = mode==="poker"?9:6;
     const alive = ps.filter(p=>p.alive && p.dice.length>0);
     const T = alive.reduce((s,p)=>s+p.dice.length,0);
-    const wild = g.wild;
+    const wild = g.wild && mode!=="poker";
+    const baseP = mode==="poker" ? 0.1 : (1/6);
     const my = bot.dice||[];
     const mine = (f)=> my.filter(d=> d===f || (wild && f!==1 && d===1)).length;
     const unknown = T - my.length;
-    const pf = (f)=> wild ? (f===1?1/6:1/3) : 1/6;   // odds an unknown die shows this face
+    const pf = (f)=> wild ? (f===1?1/6:1/3) : baseP;   // odds an unknown die/digit shows this face
     const per = personaFor(bot.id);
+    const lo = wild ? 2 : fmin;   // in dice-wild, avoid bidding 1s (they're wild)
 
     // OPENING BID
     if(!g.bid){
       let face;
-      if(Math.random() < per.bluff*0.6){ face = 2 + Math.floor(Math.random()*5); }   // bluff: pick a face on a whim
-      else { let best=6, bc=-1; for(let f=2; f<=6; f++){ const c=mine(f); if(c>bc){ bc=c; best=f; } } face=best; }
+      if(Math.random() < per.bluff*0.6){ face = fmin + Math.floor(Math.random()*(fmax-fmin+1)); }
+      else { let best=fmax, bc=-1; for(let f=lo; f<=fmax; f++){ const c=mine(f); if(c>bc){ bc=c; best=f; } } face=best; }
       let qty = Math.max(1, mine(face) + Math.round(unknown*pf(face)) + (Math.random()<per.bluff ? Math.round(per.aggr) : 0));
       return placeBid(bot.num, Math.min(qty, Math.max(1,T)), face, pickSay("open",0.3));
     }
 
     // FACING A BID: how likely is it actually true?
     const bid = g.bid;
-    const need = bid.qty - mine(bid.face);                 // more successes needed from unknown dice
+    const need = bid.qty - mine(bid.face);
     const pTrue = binomAtLeast(need, unknown, pf(bid.face));
     const callCut = clamp(0.18 + per.sus*0.30 + (Math.random()-0.5)*0.14, 0.05, 0.62);
     if(bid.qty > T || pTrue < 0.06 || pTrue < callCut){
       return challenge(bot.num, pickSay("call", 0.5));
     }
-    // spot-on: only the calculating personas, only when an exact hit is plausible
     if(g.spoton && per.spot && unknown<=6 && need>=0 && binomExact(need,unknown,pf(bid.face))>0.24 && Math.random()<0.45){
       return spoton(bot.num, pickSay("spot", 0.7));
     }
@@ -679,13 +795,13 @@ function Room({ myId, name, code, createIfMissing, onExit }){
     const bluffing = Math.random() < per.bluff;
     let nf, nq;
     if(!bluffing){
-      let sf=0, sc=-1; for(let f=bid.face+1; f<=6; f++){ const c=mine(f); if(c>sc){ sc=c; sf=f; } }
-      if(sf>bid.face && sc>=1){ nf=sf; nq=bid.qty; }                 // same count, higher face we hold
-      else { let s=1,c=-1; for(let f=1;f<=6;f++){ const cc=mine(f); if(cc>c){ c=cc; s=f; } } nf=s; nq=bid.qty+1; }
+      let sf=-1, sc=-1; for(let f=bid.face+1; f<=fmax; f++){ const c=mine(f); if(c>sc){ sc=c; sf=f; } }
+      if(sf>bid.face && sc>=1){ nf=sf; nq=bid.qty; }
+      else { let s=fmin,c=-1; for(let f=fmin;f<=fmax;f++){ const cc=mine(f); if(cc>c){ c=cc; s=f; } } nf=s; nq=bid.qty+1; }
     } else {
       const jump = 1 + Math.floor(Math.random()*Math.max(1, Math.round(per.aggr)));
-      if(Math.random()<0.45 && bid.face<6){ nf=bid.face+1; nq=bid.qty; }   // sneaky small lie
-      else { nf = 1+Math.floor(Math.random()*6); nq = bid.qty + jump; }    // brazen overbid
+      if(Math.random()<0.45 && bid.face<fmax){ nf=bid.face+1; nq=bid.qty; }
+      else { nf = fmin+Math.floor(Math.random()*(fmax-fmin+1)); nq = bid.qty + jump; }
     }
     if(!higher(nq,nf,bid)){ nq=bid.qty+1; nf=bid.face; }
     if(nq>T){ return challenge(bot.num, pickSay("call",0.5)); }
@@ -703,11 +819,14 @@ function Room({ myId, name, code, createIfMissing, onExit }){
   };
   const setWild = async (v)=>{ await sb.from("ld_games").update({ wild:v }).eq("code",code); };
   const setSpot = async (v)=>{ await sb.from("ld_games").update({ spoton:v }).eq("code",code); };
+  const setAutonext = async (v)=>{ try{ await sb.from("ld_games").update({ autonext:v }).eq("code",code); }catch(e){} };
+  const setMode = async (v)=>{ try{ await sb.from("ld_games").update({ mode:v }).eq("code",code); }catch(e){} };
+  const setDollars = async (v)=>{ try{ await sb.from("ld_games").update({ dollars:v }).eq("code",code); }catch(e){} };
   const startGame = async ()=>{
     SFX.unlock();
     const roster = playersRef.current.filter(p=>p.alive!==false);
     if(roster.length<2) return;
-    for(const p of roster){ await sb.from("ld_players").update({ dice:rollN(5), alive:true, ready:false }).eq("id",p.id); }
+    for(const p of roster){ await sb.from("ld_players").update({ dice:rollHand(5, gameRef.current.mode||"dice"), alive:true, ready:false }).eq("id",p.id); }
     const first = roster.map(p=>p.num).sort((a,b)=>a-b)[0];
     resolveRef.current=null; advanceRef.current=null; botRef.current=null;
     await sb.from("ld_games").update({ phase:"playing", round:1, bid:null, pending:null, turn:first, starter:first, last_action:null, winner:null }).eq("code",code);
@@ -726,29 +845,38 @@ function Room({ myId, name, code, createIfMissing, onExit }){
 
   if(game.phase==="lobby") return (
     <Lobby game={game} players={players} me={me} amHost={amHost} code={code} muted={muted} onMute={toggleMute}
-      onReady={toggleReady} onKick={kick} onAddBot={addBot} onWild={setWild} onSpot={setSpot} onStart={startGame} onLeave={leave} />
+      onReady={toggleReady} onKick={kick} onAddBot={addBot} onWild={setWild} onSpot={setSpot} onAutonext={setAutonext} onMode={setMode} onDollars={setDollars} onStart={startGame} onLeave={leave} />
   );
 
   const alive = players.filter(p=>p.alive);
   const iAmAlive = me.alive && me.dice && me.dice.length>0;
   const myTurn = game.phase==="playing" && !game.pending && game.turn===myNum && iAmAlive;
+  const mode = game.mode||"dice";
+  const dollars = mode==="poker" && !!game.dollars;
+  const handWord = mode==="poker" ? "Your bill" : "Your dice";
+  const totalWord = mode==="poker" ? "digits in play" : "dice on the table";
 
   return (
     <div className="wrap">
+      {heckles.length>0 && (
+        <div className="heckleToasts">
+          {heckles.map(h=>(<div key={h.key} className="heckleToast"><span className="he">{h.emoji}</span> <b>{h.from}</b> {h.text}</div>))}
+        </div>
+      )}
       <div className="top">
         <div className="brand">⚄ LIAR'S&nbsp;DICE</div>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button className="chip" onClick={toggleMute} aria-label="mute">{muted?"🔇":"🔊"}</button>
+          <button className={"chip"+(muted?"":" on")} onClick={toggleMute}>{muted?"🔇 Off":"🔊 On"}</button>
           <span className="who mono">{code}</span>
         </div>
       </div>
       <div className="status">
         <span className="rnd">Round {game.round}</span>
-        <span className="tot"><b>{totalDice}</b> dice on the table</span>
+        <span className="tot"><b>{totalDice}</b> {totalWord}</span>
       </div>
 
       {game.phase==="over" ? (
-        <GameOver game={game} players={players} amHost={amHost} onAgain={playAgain} onLeave={leave} />
+        <GameOver game={game} players={players} amHost={amHost} mode={mode} dollars={dollars} onAgain={playAgain} onLeave={leave} />
       ) : (
       <React.Fragment>
         {/* seats */}
@@ -764,7 +892,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
                   <span className="seatName">{p.name}{p.id===myId?" (you)":""}</span>
                 </div>
                 <div className="seatR">
-                  {bidHere && <span className="bidTag">{game.bid.qty} <span style={{fontSize:15}}>{DIE_GLYPH[game.bid.face]}</span></span>}
+                  {bidHere && <span className="bidTag">{game.bid.qty} <FaceTile mode={mode} dollars={dollars} v={game.bid.face} size={17} /></span>}
                   {out ? <span className="tot">out</span> : <Backs n={p.dice.length} sm />}
                 </div>
               </div>
@@ -776,7 +904,7 @@ function Room({ myId, name, code, createIfMissing, onExit }){
         {game.bid ? (
           <div className="bidBanner">
             <div className="who2">{(players.find(p=>p.num===game.bid.by)||{}).name} bids</div>
-            <div className="amt">{game.bid.qty} <span className="g">{DIE_GLYPH[game.bid.face]}</span></div>
+            <div className="amt"><span className="amtWord">{numWord(game.bid.qty)}</span><FaceTile mode={mode} dollars={dollars} v={game.bid.face} size={64} /></div>
             {game.bid.say && <div className="saybubble">“{game.bid.say}”</div>}
           </div>
         ) : (
@@ -786,41 +914,64 @@ function Room({ myId, name, code, createIfMissing, onExit }){
         {/* my hand */}
         {iAmAlive && (
           <div className="myhand">
-            <div className="lbl">{rolling?"Rolling…":"Your dice"}</div>
+            <div className="lbl">{rolling?"Rolling…":handWord}</div>
             {rolling
-              ? <div className="hand">{(rollFaces.length?rollFaces:me.dice).map((d,i)=>(<span key={i} className="shaking"><Die v={d} size={46} /></span>))}</div>
-              : <DiceRow dice={me.dice} size={46} glowVal={game.bid?game.bid.face:null} wild={game.wild} />}
+              ? <div className="hand">{(rollFaces.length?rollFaces:me.dice).map((d,i)=>(<span key={i} className="shaking"><FaceTile mode={mode} dollars={dollars} v={d} size={46} /></span>))}</div>
+              : (cupOn && !peek
+                  ? <Cup n={me.dice.length} mode={mode} />
+                  : <FaceRow dice={me.dice} size={46} glowVal={game.bid?game.bid.face:null} wild={mode!=="poker"&&game.wild} mode={mode} dollars={dollars} />)}
+            {!rolling && cupOn && (
+              <button className={"peekBtn"+(peek?" open":"")} onClick={()=>setPeek(v=>!v)}>{peek ? "🙈 Hide" : "👀 Peek"}</button>
+            )}
+            <div className="cupToggle" onClick={()=>{ const v=!cupOn; setCupOn(v); ls.set("ld_cup", v?"1":"0"); if(!v) setPeek(false); }}>
+              {cupOn ? "cup on — tap to keep them shown" : "cup off — tap to hide under a cup"}
+            </div>
           </div>
         )}
         {!iAmAlive && <div className="waitTurn" style={{padding:"8px 0 16px"}}>You're out — spectating till the winner.</div>}
 
         {/* controls */}
         {myTurn ? (
-          <BidControls bid={game.bid} totalDice={totalDice} wild={game.wild} spoton={game.spoton}
+          <BidControls bid={game.bid} totalDice={totalDice} wild={mode!=="poker"&&game.wild} spoton={game.spoton} mode={mode} dollars={dollars}
             onBid={(q,f)=>{ SFX.unlock(); SFX.tick(); placeBid(myNum,q,f); }} onCall={()=>{ SFX.unlock(); SFX.call(); challenge(myNum); }} onSpot={()=>{ SFX.unlock(); SFX.call(); spoton(myNum); }} />
         ) : game.phase==="playing" ? (
           <div className="waitTurn"><div className="big">⏳</div>Waiting for <b style={{color:"var(--bone)"}}>{(players.find(p=>p.num===game.turn)||{}).name||"…"}</b></div>
         ) : null}
 
-        {game.wild && <div className="hint" style={{marginTop:14}}>⚀ Wild ones — 1s count as every face except when the bid is on 1s.</div>}
+        {mode!=="poker" && game.wild && <div className="hint" style={{marginTop:14}}>⚀ Wild ones — 1s count as every face except when the bid is on 1s.</div>}
+        {mode==="poker" && <div className="hint" style={{marginTop:14}}>💵 Liar's Poker — bid how many of a digit (0–9) are across everyone's bills.</div>}
+
+        <div className="heckleLabel">Heckle 📣</div>
+        <div className="heckleBar">
+          {HECKLES.map((h,i)=>(
+            <button key={i} className="heckleBtn" title={h.text} onClick={()=>{ SFX.unlock(); sendHeckle(h); }}>{h.emoji}</button>
+          ))}
+        </div>
+        <div className="heckleSay">
+          <input className="inp" style={{margin:0}} value={heckleText} maxLength={40} placeholder="say your own…"
+            onChange={e=>setHeckleText(e.target.value)}
+            onKeyDown={e=>{ if(e.key==="Enter" && heckleText.trim()){ SFX.unlock(); sendHeckle({emoji:"💬", text:heckleText.trim()}); setHeckleText(""); } }} />
+          <button className="primary" style={{flex:"0 0 auto",padding:"12px 16px"}} disabled={!heckleText.trim()} onClick={()=>{ if(heckleText.trim()){ SFX.unlock(); sendHeckle({emoji:"💬", text:heckleText.trim()}); setHeckleText(""); } }}>Say</button>
+        </div>
       </React.Fragment>
       )}
 
       {game.phase==="reveal" && game.last_action && (
-        <Reveal la={game.last_action} amHost={amHost} onNext={doAdvance} />
+        <Reveal la={game.last_action} amHost={amHost} iAmAlive={iAmAlive} mode={mode} dollars={dollars} onNext={doAdvance} onHeckle={sendHeckle} />
       )}
     </div>
   );
 }
 
 /* ============ Lobby ============ */
-function Lobby({ game, players, me, amHost, code, muted, onMute, onReady, onKick, onAddBot, onWild, onSpot, onStart, onLeave }){
+function Lobby({ game, players, me, amHost, code, muted, onMute, onReady, onKick, onAddBot, onWild, onSpot, onAutonext, onMode, onDollars, onStart, onLeave }){
   const joinUrl = location.origin + location.pathname + "?join=" + code;
   const humans = players.filter(p=>!isBot(p.id));
   const allReady = humans.every(p=>p.ready) && players.length>=2;
+  const mode = game.mode||"dice";
   return (
     <div className="wrap">
-      <div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div><div style={{display:"flex",gap:8}}><button className="chip" onClick={onMute} aria-label="mute">{muted?"🔇":"🔊"}</button><button className="chip" onClick={onLeave}>Leave</button></div></div>
+      <div className="top"><div className="brand">⚄ LIAR'S&nbsp;DICE</div><div style={{display:"flex",gap:8}}><button className={"chip"+(muted?"":" on")} onClick={onMute}>{muted?"🔇 Sound off":"🔊 Sound on"}</button><button className="chip" onClick={onLeave}>Leave</button></div></div>
       <div className="label" style={{marginTop:6}}>Room code</div>
       <div className="codeBig">{code}</div>
       <div className="qrbox"><QR text={joinUrl} size={148} /></div>
@@ -844,14 +995,25 @@ function Lobby({ game, players, me, amHost, code, muted, onMute, onReady, onKick
 
       {amHost && (
         <React.Fragment>
+          <div className="label">Game</div>
+          <div className="sel">
+            <button className={"chip"+(mode!=="poker"?" on":"")} onClick={()=>onMode("dice")}>🎲 Liar's Dice</button>
+            <button className={"chip"+(mode==="poker"?" on":"")} onClick={()=>onMode("poker")}>💵 Liar's Poker</button>
+          </div>
+          <div className="hint" style={{textAlign:"left",marginTop:6}}>{mode==="poker" ? "Everyone gets a dollar-bill serial. Bid how many of a digit (0–9) are across all bills." : "Everyone rolls five hidden dice. Bid how many of a face (1–6) are on the table."}</div>
+
           <div className="label">House rules</div>
           <div className="card">
-            <Rule title="Wild ones" desc="1s count as any face. Classic Perudo, harder to read." on={game.wild} onToggle={()=>onWild(!game.wild)} />
+            {mode==="poker"
+              ? <Rule title="Show as dollar bills" desc="Render hands as green bill serials instead of plain number tiles." on={!!game.dollars} onToggle={()=>onDollars(!game.dollars)} />
+              : <Rule title="Wild ones" desc="1s count as any face. Classic Perudo, harder to read." on={game.wild} onToggle={()=>onWild(!game.wild)} />}
             <div style={{height:1,background:"var(--haze)",margin:"12px 0"}} />
-            <Rule title="Spot-on calls" desc="Claim a bid is exactly right — nail it, win a die back." on={game.spoton} onToggle={()=>onSpot(!game.spoton)} />
+            <Rule title="Spot-on calls" desc="Claim a bid is exactly right — nail it, win one back." on={game.spoton} onToggle={()=>onSpot(!game.spoton)} />
+            <div style={{height:1,background:"var(--haze)",margin:"12px 0"}} />
+            <Rule title="Auto-advance rounds" desc="Rounds move on by themselves after a short countdown — no clicking." on={game.autonext!==false} onToggle={()=>onAutonext(!(game.autonext!==false))} />
           </div>
           <button className="ghost" style={{width:"100%",marginTop:12}} onClick={onAddBot}>+ Add a bot</button>
-          <button className="go" disabled={!allReady} onClick={onStart}>Deal the dice ›</button>
+          <button className="go" disabled={!allReady} onClick={onStart}>{mode==="poker"?"Deal the bills ›":"Deal the dice ›"}</button>
           {!allReady && <div className="hint">Need 2+ players and everyone ready.</div>}
         </React.Fragment>
       )}
@@ -872,14 +1034,17 @@ function Rule({ title, desc, on, onToggle }){
 }
 
 /* ============ Bid controls ============ */
-function BidControls({ bid, totalDice, wild, spoton, onBid, onCall, onSpot }){
-  const initFace = bid ? (bid.face<6 ? bid.face+1 : 1) : 3;
-  const initQty  = bid ? (bid.face<6 ? bid.qty : bid.qty+1) : 1;
+function BidControls({ bid, totalDice, wild, spoton, mode="dice", dollars=false, onBid, onCall, onSpot }){
+  const faces = faceList(mode);
+  const fmax = faces[faces.length-1], fmin = faces[0];
+  const initFace = bid ? (bid.face<fmax ? bid.face+1 : fmin) : (mode==="poker"?5:3);
+  const initQty  = bid ? (bid.face<fmax ? bid.qty : bid.qty+1) : 1;
   const [qty,setQty] = useState(initQty);
   const [face,setFace] = useState(initFace);
   useEffect(()=>{ setQty(initQty); setFace(initFace); },[bid?bid.qty+"-"+bid.face:"open"]);
   const legal = higher(qty, face, bid);
   const maxQ = Math.max(1, totalDice);
+  const tileSize = mode==="poker" ? 30 : 34;
   return (
     <div className="controls">
       <div className="ctitle">Your move</div>
@@ -888,13 +1053,13 @@ function BidControls({ bid, totalDice, wild, spoton, onBid, onCall, onSpot }){
         <span className="qtyNum">{qty}</span>
         <button className="stepBtn" disabled={qty>=maxQ} onClick={()=>setQty(q=>Math.min(maxQ,q+1))}>+</button>
       </div>
-      <div className="faces">
-        {[1,2,3,4,5,6].map(f=>(
-          <button key={f} className={"faceBtn"+(face===f?" on":"")} onClick={()=>setFace(f)}><Die v={f} size={34} /></button>
+      <div className={"faces"+(mode==="poker"?" faces10":"")}>
+        {faces.map(f=>(
+          <button key={f} className={"faceBtn"+(face===f?" on":"")} onClick={()=>setFace(f)}><FaceTile mode={mode} dollars={dollars} v={f} size={tileSize} /></button>
         ))}
       </div>
-      <button className="primary full" style={{marginBottom:10}} disabled={!legal} onClick={()=>onBid(qty,face)}>
-        Bid {qty} {DIE_GLYPH[face]}{!legal && bid ? " — too low" : ""}
+      <button className="primary full" style={{marginBottom:10, display:"inline-flex", alignItems:"center", justifyContent:"center", gap:8}} disabled={!legal} onClick={()=>onBid(qty,face)}>
+        Bid {numWord(qty)} <FaceTile mode={mode} dollars={dollars} v={face} size={22} />{!legal && bid ? " — too low" : ""}
       </button>
       <div className="btnrow">
         {bid && <button className="ghost danger" style={{flex:1}} onClick={onCall}>Call liar!</button>}
@@ -905,49 +1070,68 @@ function BidControls({ bid, totalDice, wild, spoton, onBid, onCall, onSpot }){
 }
 
 /* ============ Reveal ============ */
-function Reveal({ la, amHost, onNext }){
+function Reveal({ la, amHost, iAmAlive, mode="dice", dollars=false, onNext, onHeckle }){
   const bid = la.bid;
   const nameOf = (n)=> (la.snapshot.find(p=>p.num===n)||{}).name || "—";
+  const [left,setLeft] = useState(()=> Math.max(0, Math.ceil(((la.advanceAt||0)-Date.now())/1000)) );
+  useEffect(()=>{
+    const id=setInterval(()=> setLeft(Math.max(0, Math.ceil(((la.advanceAt||0)-Date.now())/1000))), 400);
+    return ()=>clearInterval(id);
+  },[la.advanceAt]);
   let title, cls;
   if(la.type==="spoton"){ title = la.correct ? "Spot on." : "Not quite."; cls = la.correct ? "win" : "lose"; }
   else { title = la.correct ? "Bluff called." : "The bid held."; cls = la.correct ? "win" : "lose"; }
   const loser = la.snapshot.find(p=>p.num===la.loserNum);
   const gainer = la.snapshot.find(p=>p.num===la.gainNum);
   const met = la.actual >= bid.qty;
+  // will this reveal end the game? (loser drops to 0 dice, leaving one player)
+  const remaining = la.snapshot.filter(p=> (p.num===la.loserNum ? (p.dice.length-1)>0 : p.dice.length>0));
+  const willEnd = la.loserNum!=null && remaining.length<=1;
+  const manualHost = !la.auto && amHost && iAmAlive;   // only an alive host clicks; everyone else just waits/watches
+  const waitText = willEnd ? (left>0 ? `Winner in ${left}…` : "Crowning the winner…") : (left>0 ? `Next round in ${left}…` : "Next round…");
   return (
     <div className="overlay">
       <div className="revealCard">
         <div className="revSpot" />
         <div className={"verdict "+cls}>{title}</div>
-        <div className="vsub">{nameOf(la.target)} bid {bid.qty} {DIE_GLYPH[bid.face]} · {nameOf(la.by)} {la.type==="spoton"?"called spot-on":"called liar"}</div>
+        <div className="vsub">{nameOf(la.target)} bid {numWord(bid.qty)} · {nameOf(la.by)} {la.type==="spoton"?"called spot-on":"called liar"}</div>
         {la.say && <div className="saybubble" style={{textAlign:"center",marginBottom:6}}>“{la.say}”</div>}
 
         <div className="tallyWrap">
-          <div className="tallyBig">{la.actual} <span className="tallyGlyph">{DIE_GLYPH[bid.face]}</span></div>
-          <div className="tallySub">on the table · bid was <b className={met?"c-win":"c-lose"}>{bid.qty}</b></div>
+          <div className="tallyBig"><FaceTile mode={mode} dollars={dollars} v={bid.face} size={56} /> <span className="tallyCount">{numWord(la.actual)}</span></div>
+          <div className="tallySub">on the table · bid was <b className={met?"c-win":"c-lose"}>{numWord(bid.qty)}</b></div>
         </div>
+
+        {loser && <div className="outcome lose">{loser.name} loses a die.</div>}
+        {gainer && <div className="outcome win">{gainer.name} wins a die back.</div>}
+
+        {manualHost
+          ? <button className="revBtn" onClick={onNext}>{willEnd ? "See who won ›" : "Next round ›"}</button>
+          : <div className="revWait">{waitText}{amHost && iAmAlive && la.auto && <span className="skip" onClick={onNext}> Skip ›</span>}</div>}
+
+        {onHeckle && (
+          <div className="heckleBar heckleRev">
+            {HECKLES.map((h,i)=>(<button key={i} className="heckleBtn" title={h.text} onClick={()=>{ SFX.unlock(); onHeckle(h); }}>{h.emoji}</button>))}
+          </div>
+        )}
 
         <div className="revList">
           {la.snapshot.slice().sort((a,b)=>a.num-b.num).map(p=>(
             <div key={p.num} className="rrow">
               <span className="rname">{p.name}</span>
-              <div className="rdice"><DiceRow dice={p.dice} size={27} glowVal={bid.face} wild={la.wild} spotlight={true} /></div>
+              <div className="rdice"><FaceRow dice={p.dice} size={27} glowVal={bid.face} wild={la.wild} spotlight={true} mode={mode} dollars={dollars} /></div>
               {la.loserNum===p.num && <span className="loserTag">−1</span>}
               {la.gainNum===p.num && <span className="gainTag">+1</span>}
             </div>
           ))}
         </div>
-
-        {loser && <div className="outcome lose">{loser.name} loses a die.</div>}
-        {gainer && <div className="outcome win">{gainer.name} wins a die back.</div>}
-        {amHost ? <button className="revBtn" onClick={onNext}>Next round ›</button> : <div className="revWait">Next round starting…</div>}
       </div>
     </div>
   );
 }
 
 /* ============ Game over ============ */
-function GameOver({ game, players, amHost, onAgain, onLeave }){
+function GameOver({ game, players, amHost, mode="dice", dollars=false, onAgain, onLeave }){
   const winner = players.find(p=>p.id===game.winner);
   const board = players.slice().sort((a,b)=>(b.wins||0)-(a.wins||0));
   return (
@@ -956,9 +1140,9 @@ function GameOver({ game, players, amHost, onAgain, onLeave }){
         <div className="winSpot" />
         <div className="crownBig">♛</div>
         <div className="winName">{winner?winner.name:"—"}</div>
-        <div className="tagline" style={{marginBottom:14}}>last one holding dice</div>
+        <div className="tagline" style={{marginBottom:14}}>{mode==="poker"?"last bill standing":"last one holding dice"}</div>
         {winner && winner.dice && winner.dice.length>0 &&
-          <div style={{marginBottom:6}}><DiceRow dice={winner.dice} size={40} /></div>}
+          <div style={{marginBottom:6}}><FaceRow dice={winner.dice} size={40} mode={mode} dollars={dollars} /></div>}
       </div>
       <div className="label">Wins</div>
       <div className="card">
