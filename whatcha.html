@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Whatcha Thinking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+    --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6;
+    --dim:#8B82A6; --mint:#7DF0A6; --yes:#7DF0A6; --no:#F26D8B;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:env(safe-area-inset-bottom,0);
+  }
+  *{ box-sizing:inherit; }
+  html,body{ margin:0; min-height:100%; background:var(--ink); }
+  body{ font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:520px; margin:0 auto; padding:16px 16px 34px; min-height:100vh; display:flex; flex-direction:column; }
+  .brandBig{ font-family:'Fraunces',serif; font-weight:600; font-size:34px; letter-spacing:.02em; color:var(--candle); margin:14px 0 2px; }
+  .fr{ font-family:'Fraunces',serif; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .dim{ color:var(--dim); }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .who{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+  .card{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:16px; }
+  .panel{ background:var(--panel); border:1px solid var(--haze); border-radius:14px; padding:14px; }
+  .go{ width:100%; font-family:'Fraunces',serif; font-weight:600; font-size:21px; letter-spacing:.02em; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+  .go:disabled{ opacity:.45; }
+  .go2{ width:100%; font-weight:700; font-size:16px; padding:14px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  .call{ background:var(--rose); color:#2a0009; border:none; }
+  .safe{ background:var(--mint); color:#04241a; border:none; }
+  .row{ display:flex; gap:10px; }
+  .grow{ flex:1 1 auto; }
+  .foot{ margin-top:auto; }
+  input.txt{ width:100%; font-family:'Space Grotesk'; font-weight:600; font-size:17px; padding:14px; border-radius:13px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input.num{ width:100%; text-align:center; font-family:'JetBrains Mono'; font-weight:700; font-size:44px; padding:12px; border-radius:14px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input:focus{ outline:2px solid var(--candle); }
+  .code{ font-family:'JetBrains Mono'; font-weight:700; font-size:40px; letter-spacing:.22em; color:var(--candle); text-align:center; }
+  .q{ font-family:'Fraunces',serif; font-weight:500; font-size:24px; line-height:1.25; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:var(--dim); letter-spacing:.08em; text-transform:uppercase; }
+  .big{ font-family:'JetBrains Mono'; font-weight:700; font-size:clamp(56px,20vw,104px); line-height:.95; color:var(--candle); text-align:center; }
+  .avatar{ border-radius:9px; display:grid; place-items:center; font-weight:700; color:#0E0B1A; flex:0 0 auto; }
+  .prow{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); }
+  .prow+.prow{ margin-top:8px; }
+  .pill{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; background:var(--haze); color:var(--mist); }
+  .clock{ font-family:'JetBrains Mono'; font-weight:700; font-size:15px; color:var(--psychic); }
+  .heckbar{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+  .heck{ font-size:22px; background:var(--panel); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .floaty{ position:fixed; bottom:80px; pointer-events:none; font-size:34px; animation:fly 2.2s ease-out forwards; z-index:50; }
+  @keyframes fly{ 0%{ transform:translateY(0) scale(.6); opacity:0 } 15%{ opacity:1; transform:translateY(-20px) scale(1.1) } 100%{ transform:translateY(-260px) scale(1); opacity:0 } }
+  .bump{ animation:bump .5s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes bump{ 0%{ transform:scale(.4); opacity:0 } 60%{ transform:scale(1.12) } 100%{ transform:scale(1); opacity:1 } }
+  .rvrow{ display:flex; align-items:center; justify-content:space-between; padding:11px 13px; border-radius:12px; margin-top:8px; }
+  .under{ background:rgba(125,240,166,.12); border:1px solid rgba(125,240,166,.4); }
+  .over{ background:rgba(242,109,139,.12); border:1px solid rgba(242,109,139,.4); }
+  .rv{ font-family:'JetBrains Mono'; font-weight:700; font-size:21px; }
+  .badge{ font-family:'JetBrains Mono'; font-weight:700; }
+  .verNum{ font-family:'JetBrains Mono'; font-size:10px; color:var(--dim); }
+  #qr{ display:flex; justify-content:center; }
+  #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
+  .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const VERSION = "v3";
+
+/* ---- Supabase (same project as your other games) ---- */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+/* ---- helpers (match Cold Read) ---- */
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const myId = (()=>{ let v = ls.get("hub_uid") || ls.get("wt_id"); if(!v){ v=randId(); ls.set("wt_id",v); } return v; })();
+const fmt = (n)=> (n===null||n===undefined||isNaN(n)) ? "—" : Number(n).toLocaleString();
+const COLORS = ["#F5B14C","#7DF0A6","#F26D8B","#A78BFA","#4DB8FF","#FF9F45","#59D0C0","#F272C8"];
+const HECKLES = ["🔥","😂","😱","🐔","💸","🧢","👀","💀"];
+
+/* ---- timers ---- */
+const OPEN_SECS=25, TICK_SECS=18, STATUS_SECS=4;
+
+/* ---- fallback questions (deployed file also fetches whatcha_questions.json) ---- */
+const FALLBACK_Q = [
+  "How many sticky notes would fit inside a cargo van?",
+  "How many text messages are sent worldwide every second?",
+  "How many grains of rice would fit inside a hot air balloon?",
+  "How many squirrels are within one mile of here right now?",
+  "How many bones are in the human body?",
+  "How many total cups of water will you drink in your entire life?",
+  "How many miles of road are there in the United States?",
+  "How many times does the average person lose their train of thought in a week?",
+  "How much would you pay for a personal robot butler for life?",
+  "How many pigeons on the ground are there in this neighborhood?",
+  "How many spiders are in the average house?",
+  "How many tacos would fit inside a school bus?",
+  "How much money would it take for you to never eat pizza again?",
+  "How many stop signs are there in this city?",
+  "How many total naps will you take in your entire life?",
+  "How much money would it take for you to never use social media again?",
+  "How many tennis balls would fit inside a walk-in closet?",
+  "How many times have you checked your phone in the last hour?",
+  "How many dice would fit inside a football stadium?",
+  "How many bubbles are in a can of soda?",
+  "How many trees are there in this city?",
+  "How much money would it take for you to never use emojis again?",
+  "How many slices of pizza could you eat in one sitting?",
+  "How many staircases are there in a big hospital?",
+  "How many crows are within one city block of here right now?",
+  "How many rubber ducks would fit inside an elevator?",
+  "How much money would it take for you to never drink coffee again?",
+  "How many jellybeans would fit inside a football stadium?",
+  "How much money would it take for you to wear the same hat every single day for a year?",
+  "How many pillows are on your bed right now?",
+  "How much money would it take for you to jump into a freezing lake in winter?",
+  "How many total times will you say sorry in your entire life?",
+  "How many trees are there in New York City?",
+  "How many golf balls would fit inside a movie theater?",
+  "How many escalators are there in a major train station?",
+  "How many chairs are there in a typical shopping mall?",
+  "How much money would it take for you to never listen to music again?",
+  "How many potholes are there in this neighborhood?",
+  "How many benches are there in a small town?",
+  "How many total times will you re-watch your favorite movie in your entire life?",
+  "How many seagulls are within this building right now?",
+  "How many vending machines are there in Disney World?",
+  "How many pigeons are within this building right now?",
+  "How many toilets are there in a typical shopping mall?",
+  "How many earthworms are within one mile of here right now?",
+  "How many soda cans would fit inside a walk-in closet?",
+  "How many bouncy balls would fit inside a dumpster?",
+  "How many cups of coffee are drunk worldwide each day?"
+];
+
+function App(){
+  const [pack,setPack] = useState(FALLBACK_Q);
+  const [name,setName] = useState(ls.get("hub_name")||ls.get("wt_name")||"");
+  const [code,setCode] = useState("");
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState("");
+  const [mode,setMode] = useState("player");
+  const [bidInput,setBidInput] = useState("");
+  const [secretInput,setSecretInput] = useState("");
+  const [answerInput,setAnswerInput] = useState("");
+  const [floaties,setFloaties] = useState([]);
+  const [now,setNow] = useState(Date.now());
+  const chRef = useRef(null);
+  const busy = useRef(false);
+
+  const me = players.find(p=>p.id===myId);
+  const isHost = room && room.host_id===myId;
+  const cfg = { hasThinker: room?.mode!=="stranger", upfront: room?.mode!=="stranger" };
+  const thinker = players.find(p=>p.id===room?.thinker_id);
+  const bidders = players.filter(p=> room?.mode==="stranger" ? true : p.id!==room?.thinker_id);
+  const amThinker = room?.thinker_id===myId;
+  const secsLeft = room?.deadline ? Math.max(0, Math.ceil((room.deadline-now)/1000)) : null;
+
+  /* load full question pack if deployed alongside it */
+  useEffect(()=>{ fetch("./whatcha_questions.json").then(r=>r.json()).then(d=>{ if(d&&d.questions&&d.questions.length) setPack(d.questions.map(x=>x.q)); }).catch(()=>{}); },[]);
+  /* clock */
+  useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),300); return ()=>clearInterval(t); },[]);
+  /* auto-fill code from ?code= */
+  useEffect(()=>{ const u=new URLSearchParams(location.search); const c=u.get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+
+  /* ---- realtime subscribe ---- */
+  async function refetch(c){
+    if(!sb) return;
+    const r = await sb.from("wt_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data) setRoom(r.data);
+    const ps = await sb.from("wt_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data) setPlayers(ps.data);
+  }
+  useEffect(()=>{
+    if(!code||!sb) return;
+    refetch(code);
+    const ch = sb.channel("wt:"+code, { config:{ broadcast:{ self:true } } })
+      .on("postgres_changes",{event:"*",schema:"public",table:"wt_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"wt_players",filter:"code=eq."+code},()=>refetch(code))
+      .on("broadcast",{event:"heckle"},(m)=>popHeckle(m.payload))
+      .subscribe();
+    chRef.current = ch;
+    const poll = setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); chRef.current=null; };
+  },[code]);
+
+  /* ---- heckles ---- */
+  function sendHeckle(emoji){ if(chRef.current) chRef.current.send({type:"broadcast",event:"heckle",payload:{emoji,by:(name||"?")}}); }
+  function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
+
+  /* ---- create / join ---- */
+  async function host(){
+    if(!sb||!name.trim()) return;
+    ls.set("wt_name",name.trim());
+    const c=randCode();
+    await sb.from("wt_rooms").insert({ code:c, host_id:myId, mode, phase:"lobby", round:0 });
+    await sb.from("wt_players").delete().eq("id",myId);
+    await sb.from("wt_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0 });
+    setCode(c);
+  }
+  async function join(){
+    if(!sb||!name.trim()||!codeInput.trim()) return;
+    const c=codeInput.trim().toUpperCase();
+    ls.set("wt_name",name.trim());
+    const r=await sb.from("wt_rooms").select("code").eq("code",c).maybeSingle();
+    if(!r.data){ alert("No room with that code."); return; }
+    const ps=await sb.from("wt_players").select("id").eq("code",c);
+    const color=COLORS[(ps.data?ps.data.length:0)%COLORS.length];
+    await sb.from("wt_players").delete().eq("id",myId);
+    await sb.from("wt_players").insert({ id:myId, code:c, name:name.trim(), color, score:0 });
+    setCode(c);
+  }
+  async function leave(){ if(sb){ await sb.from("wt_players").delete().eq("id",myId); } setCode(""); setRoom(null); setPlayers([]); }
+  async function kick(id){ if(sb) await sb.from("wt_players").delete().eq("id",id); }
+  async function addBot(){
+    if(players.length>=8) return;
+    const names=["Ava","Rex","Nova","Biscuit","Duke","Pixel","Coco","Zed","Milo","Juno","Tank","Wren"];
+    const used=players.map(p=>p.name);
+    const nm="🤖 "+(names.find(n=>!used.includes("🤖 "+n))||("Bot"+Math.floor(Math.random()*99)));
+    await sb.from("wt_players").insert({ id:"bot_"+randId(), code, name:nm, color:COLORS[players.length%COLORS.length], score:0 });
+  }
+
+  /* ---- host: round control ---- */
+  const drawQ = ()=> pack[Math.floor(Math.random()*pack.length)];
+  function pickThinker(prev){ const pool=players.filter(p=>p.id!==prev); const src=pool.length?pool:players; return src.length?src[Math.floor(Math.random()*src.length)].id:null; }
+
+  async function startGame(){
+    await sb.from("wt_players").update({ score:0 }).eq("code",code);
+    beginRound(1);
+  }
+  async function beginRound(n){
+    const lod = room.mode==="stranger" ? null : pickThinker(room.thinker_id);
+    await sb.from("wt_players").update({ bid:null, locked:false, acted:false }).eq("code",code);
+    await sb.from("wt_rooms").update({ phase:"intro", round:n, thinker_id:lod, question:null, secret:null, high_id:null, high_bid:null, tick_high:null, deadline:null, tick:0, last_event:null, outcome:null }).eq("code",code);
+  }
+  async function startRound(){ // host: intro -> draw question -> secret or opening
+    const q=drawQ();
+    if(room.mode==="stranger"){
+      await sb.from("wt_rooms").update({ question:q, phase:"opening", deadline:Date.now()+OPEN_SECS*1000 }).eq("code",code);
+    }else{
+      await sb.from("wt_rooms").update({ question:q, phase:"secret" }).eq("code",code);
+    }
+  }
+  async function submitSecret(){ // thinker
+    const v=parseInt(secretInput,10); if(isNaN(v)||v<0) return;
+    setSecretInput("");
+    await sb.from("wt_rooms").update({ secret:v, phase:"opening", deadline:Date.now()+OPEN_SECS*1000 }).eq("code",code);
+  }
+  async function submitBid(){ // opening
+    const v=parseInt(bidInput,10); if(isNaN(v)||v<0) return;
+    setBidInput("");
+    await sb.from("wt_players").update({ bid:v }).eq("id",myId);
+  }
+  async function doRaise(){ // tick
+    const v=parseInt(bidInput,10); if(isNaN(v)||v<=room.tick_high) return;
+    setBidInput("");
+    await sb.from("wt_players").update({ bid:v, acted:true }).eq("id",myId);
+  }
+  async function doLock(){ await sb.from("wt_players").update({ locked:true, acted:true }).eq("id",myId); }
+  async function submitAnswer(){ // stranger
+    const v=parseInt(answerInput,10); if(isNaN(v)||v<0) return;
+    setAnswerInput("");
+    await sb.from("wt_rooms").update({ secret:v }).eq("code",code);
+    finishRound(v);
+  }
+  async function thinkerStop(){ // player mode, thinker or host
+    if(room.mode==="stranger") return;
+    finishRound(room.secret);
+  }
+
+  /* ---- bots (host drives them) ---- */
+  const isBot=(id)=>String(id).startsWith("bot_");
+  function botAggr(id){ let h=0; for(const c of String(id)) h=(h*31+c.charCodeAt(0))>>>0; return 0.25+(h%70)/100; }
+  function randNum(){ const exp=1+Math.floor(Math.random()*6); return Math.round((1+Math.random()*8)*Math.pow(10,exp)); }
+  const botMem = useRef({});
+  async function runBots(){
+    if(!isHost||!room) return;
+    const sched=(k,a=700,b=2600)=>{ if(!botMem.current[k]) botMem.current[k]={at:Date.now()+a+Math.random()*(b-a),done:false}; return botMem.current[k]; };
+    const due=(s)=>!s.done && Date.now()>s.at;
+    if(room.mode!=="stranger" && room.phase==="secret" && thinker && isBot(thinker.id) && (room.secret===null||room.secret===undefined)){
+      const s=sched("sec:"+room.round); if(due(s)){ s.done=true; await sb.from("wt_rooms").update({ secret:randNum(), phase:"opening", deadline:Date.now()+OPEN_SECS*1000 }).eq("code",code); }
+    }
+    if(room.phase==="opening"){
+      for(const b of bidders){ if(!isBot(b.id)||b.bid!=null) continue; const s=sched("op:"+room.round+":"+b.id); if(due(s)){ s.done=true; await sb.from("wt_players").update({ bid:randNum() }).eq("id",b.id); } }
+    }
+    if(room.phase==="tick"){
+      for(const b of bidders){ if(!isBot(b.id)) continue; if(b.bid==null||b.id===room.high_id||b.locked) continue;
+        const s=sched("tk:"+room.round+":"+(room.tick||0)+":"+b.id, 500, 2200);
+        if(due(s)){ s.done=true;
+          const raiseP=botAggr(b.id)*Math.pow(0.72,(room.tick||1)-1);
+          if(Math.random()<raiseP){ const inc=Math.max(1,Math.round((room.tick_high||1)*(0.1+Math.random()*0.5))); await sb.from("wt_players").update({ bid:(room.tick_high||0)+inc, acted:true }).eq("id",b.id); }
+          else { await sb.from("wt_players").update({ locked:true, acted:true }).eq("id",b.id); }
+        }
+      }
+    }
+  }
+
+  /* ---- host resolution loop ---- */
+  useEffect(()=>{
+    if(!isHost||!room||busy.current) return;
+    runBots();
+    run();
+    async function run(){
+      if(room.phase==="opening"){
+        const bs=bidders;
+        const allIn = bs.length>0 && bs.every(p=>p.bid!==null && p.bid!==undefined);
+        if(allIn || (room.deadline && now>room.deadline)){ await resolveOpening(); }
+      } else if(room.phase==="tick"){
+        const active=bidders.filter(p=>p.bid!=null && p.id!==room.high_id && !p.locked);
+        const allActed = active.length>0 && active.every(p=>p.acted);
+        if(active.length===0 || allActed || (room.deadline && now>room.deadline)){ await resolveTick(); }
+      } else if(room.phase==="status"){
+        if(room.deadline && now>room.deadline){ await openTick(); }
+      }
+    }
+  },[isHost,room,players,now]);
+
+  async function resolveOpening(){
+    busy.current=true;
+    try{
+      const bs=bidders.filter(p=>p.bid!=null);
+      if(bs.length===0){ // nobody bid; restart opening window
+        await sb.from("wt_rooms").update({ deadline:Date.now()+OPEN_SECS*1000 }).eq("code",code); return;
+      }
+      let hi=bs[0]; bs.forEach(p=>{ if(p.bid>hi.bid) hi=p; });
+      await sb.from("wt_players").update({ acted:false }).eq("code",code);
+      await sb.from("wt_rooms").update({ high_id:hi.id, high_bid:hi.bid, tick_high:hi.bid, last_event:"Bids are in — "+hi.name+" leads at "+fmt(hi.bid)+".", phase:"status", deadline:Date.now()+STATUS_SECS*1000 }).eq("code",code);
+    } finally { busy.current=false; }
+  }
+  async function openTick(){
+    busy.current=true;
+    try{
+      const active=bidders.filter(p=>p.bid!=null && p.id!==room.high_id && !p.locked);
+      if(active.length===0){ await finishRound(room.secret); return; }
+      await sb.from("wt_players").update({ acted:false }).eq("code",code);
+      await sb.from("wt_rooms").update({ phase:"tick", tick_high:room.high_bid, deadline:Date.now()+TICK_SECS*1000, tick:(room.tick||0)+1 }).eq("code",code);
+    } finally { busy.current=false; }
+  }
+  async function resolveTick(){
+    busy.current=true;
+    try{
+      const bs=bidders.filter(p=>p.bid!=null);
+      let hi=bs[0]; bs.forEach(p=>{ if(p.bid>hi.bid) hi=p; });
+      if(hi.bid>room.tick_high){ // someone raised
+        const prev=players.find(p=>p.id===room.high_id);
+        const ev=hi.name+" jumps to "+fmt(hi.bid)+(prev?" — "+prev.name+"'s been outbid.":".");
+        await sb.from("wt_rooms").update({ high_id:hi.id, high_bid:hi.bid, last_event:ev, phase:"status", deadline:Date.now()+STATUS_SECS*1000 }).eq("code",code);
+      } else { // nobody raised -> reveal
+        if(room.mode==="stranger"){ await sb.from("wt_rooms").update({ phase:"ask", deadline:null }).eq("code",code); }
+        else { await finishRound(room.secret); }
+      }
+    } finally { busy.current=false; }
+  }
+
+  async function finishRound(secretVal){
+    busy.current=true;
+    try{
+      const bs=bidders.filter(p=>p.bid!=null);
+      let winId=null,winVal=-1,underCount=0;
+      bs.forEach(p=>{ if(p.bid<=secretVal){ underCount++; if(p.bid>winVal){winVal=p.bid;winId=p.id;} } });
+      const rows=[]; const scoreDelta={};
+      bs.forEach(p=>{
+        const over=p.bid>secretVal, exact=p.bid===secretVal, win=p.id===winId;
+        let pts=0;
+        if(win) pts+=3; else if(!over) pts+=1;
+        if(exact) pts+=2;
+        scoreDelta[p.id]=(scoreDelta[p.id]||0)+pts;
+        rows.push({ id:p.id, name:p.name, color:p.color, bid:p.bid, over, exact, win, pts });
+      });
+      let thinkerPts=0;
+      if(room.mode!=="stranger" && thinker){ thinkerPts=underCount+1; scoreDelta[thinker.id]=(scoreDelta[thinker.id]||0)+thinkerPts; }
+      rows.sort((a,b)=>b.bid-a.bid);
+      // apply scores
+      for(const p of players){ if(scoreDelta[p.id]){ await sb.from("wt_players").update({ score:(p.score||0)+scoreDelta[p.id] }).eq("id",p.id); } }
+      const outcome={ rows, secret:secretVal, thinkerId:thinker?thinker.id:null, thinkerName:thinker?thinker.name:null, thinkerPts, underCount };
+      await sb.from("wt_rooms").update({ secret:secretVal, phase:"reveal", deadline:null, outcome }).eq("code",code);
+    } finally { busy.current=false; }
+  }
+  async function nextRound(){ beginRound(room.round+1); }
+  async function endGame(){ await sb.from("wt_rooms").update({ phase:"gameover" }).eq("code",code); }
+  async function toScores(){ await sb.from("wt_rooms").update({ phase:"scores" }).eq("code",code); }
+  async function backToLobby(){ await sb.from("wt_rooms").update({ phase:"lobby", round:0, thinker_id:null, question:null, secret:null, outcome:null }).eq("code",code); }
+  async function setModeH(m){ await sb.from("wt_rooms").update({ mode:m }).eq("code",code); }
+
+  /* ============ RENDER ============ */
+  const Avatar=({p,size=30})=> p ? <div className="avatar" style={{background:p.color,width:size,height:size,fontSize:size*0.44}}>{(p.name||"?").slice(0,1).toUpperCase()}</div> : null;
+  const Heckbar=()=> (
+    <div className="heckbar">{HECKLES.map(e=><button key={e} className="heck" onClick={()=>sendHeckle(e)}>{e}</button>)}</div>
+  );
+  const Floaties=()=> floaties.map(f=><div key={f.id} className="floaty" style={{left:f.left+"%"}}>{f.emoji}</div>);
+  const Header=({sub})=> (
+    <div className="top">
+      <div><div className="fr" style={{fontSize:20,color:"var(--candle)",fontWeight:600}}>Whatcha Thinking</div>{sub&&<div className="who">{sub}</div>}</div>
+      <div style={{textAlign:"right"}}>{secsLeft!=null && (room?.phase==="opening"||room?.phase==="tick") && <div className="clock">⏱ {secsLeft}s</div>}<div className="verNum">{VERSION}</div></div>
+    </div>
+  );
+
+  if(!sb) return <div className="wrap"><div className="brandBig">Whatcha Thinking</div><p className="dim">Supabase didn't load. Check your connection and refresh.</p></div>;
+
+  /* ---- HOME ---- */
+  if(!code){
+    return (
+      <div className="wrap">
+        <div className="brandBig">Whatcha Thinking</div>
+        <p className="dim" style={{marginTop:0}}>Everyone on their own phone. Bet on the number in someone's head.</p>
+        <div className="card" style={{marginTop:6}}>
+          <div className="eyebrow" style={{marginBottom:6}}>Your name</div>
+          <input className="txt" placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
+          <div className="eyebrow" style={{margin:"16px 0 6px"}}>Join a game</div>
+          <div className="row">
+            <input className="txt grow" style={{textTransform:"uppercase"}} placeholder="CODE" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
+            <button className="go2" style={{width:"auto",padding:"0 20px"}} disabled={!name.trim()||!codeInput.trim()} onClick={join}>Join</button>
+          </div>
+        </div>
+        <div className="card" style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Or host a new game</div>
+          <div className="row" style={{marginBottom:10}}>
+            <button className="go2" style={{background:mode==="player"?"var(--candle)":"var(--panel)",color:mode==="player"?"var(--ink)":"var(--mist)"}} onClick={()=>setMode("player")}>A player answers</button>
+            <button className="go2" style={{background:mode==="stranger"?"var(--candle)":"var(--panel)",color:mode==="stranger"?"var(--ink)":"var(--mist)"}} onClick={()=>setMode("stranger")}>Ask a stranger</button>
+          </div>
+          <button className="go" disabled={!name.trim()} onClick={host}>Host game</button>
+        </div>
+      </div>
+    );
+  }
+
+  if(!room) return <div className="wrap"><Header/><p className="dim">Connecting…</p></div>;
+
+  /* ---- LOBBY ---- */
+  if(room.phase==="lobby"){
+    return (
+      <div className="wrap"><Header sub={"you are "+(name||"?")}/>
+        <div className="card" style={{marginTop:10,textAlign:"center"}}>
+          <div className="eyebrow">Join code</div>
+          <div className="code">{code}</div>
+          <QR value={location.origin+location.pathname+"?code="+code} />
+          <div className="dim" style={{fontSize:12,marginTop:6}}>Scan to join, or enter the code on the home screen.</div>
+        </div>
+        <div style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Players ({players.length}) · joins anytime</div>
+          {players.map(p=><div className="prow" key={p.id}><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}{p.id===room.host_id&&<span className="pill" style={{marginLeft:8}}>host</span>}{p.id===myId&&<span className="dim" style={{marginLeft:6,fontSize:12}}>you</span>}</div>{isHost&&p.id!==myId&&<button className="link" onClick={()=>kick(p.id)}>✕</button>}</div>)}
+        </div>
+        <div className="foot">
+          {isHost ? (
+            <>
+              <div className="row" style={{marginBottom:8}}>
+                <button className="go2" style={{background:room.mode==="player"?"var(--candle)":"var(--panel)",color:room.mode==="player"?"var(--ink)":"var(--mist)"}} onClick={()=>setModeH("player")}>A player answers</button>
+                <button className="go2" style={{background:room.mode==="stranger"?"var(--candle)":"var(--panel)",color:room.mode==="stranger"?"var(--ink)":"var(--mist)"}} onClick={()=>setModeH("stranger")}>Ask a stranger</button>
+              </div>
+              <button className="go2" style={{marginBottom:10}} disabled={players.length>=8} onClick={addBot}>+ Add bot {players.length>=8?"(full)":""}</button>
+              <button className="go" disabled={players.length < (room.mode==="stranger"?2:3)} onClick={startGame}>
+                {players.length < (room.mode==="stranger"?2:3) ? "Need "+((room.mode==="stranger"?2:3)-players.length)+" more" : "Start playing"}
+              </button>
+              <div className="dim" style={{textAlign:"center",fontSize:12,marginTop:6}}>Rounds run endlessly — scores just keep tallying.</div>
+            </>
+          ) : <div className="dim" style={{textAlign:"center"}}>Waiting for the host to start…</div>}
+          <button className="link" style={{display:"block",margin:"10px auto 0"}} onClick={leave}>Leave</button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---- INTRO ---- */
+  if(room.phase==="intro"){
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:16,textAlign:"center"}}>
+          {room.mode!=="stranger" ? <>
+            <div className="eyebrow">this round's Thinker</div>
+            <Avatar p={thinker} size={78}/>
+            <div className="fr" style={{fontSize:34,color:"var(--candle)"}}>{thinker?.name}</div>
+            <div className="dim">Everyone else bets on the number in {thinker?.name}'s head.</div>
+          </> : <>
+            <div className="pill">🍸 stranger round</div>
+            <div className="fr" style={{fontSize:30,color:"var(--candle)"}}>Pick your target</div>
+            <div className="dim">Bet on someone not playing, then ask them at the end.</div>
+          </>}
+        </div>
+        <div className="foot">{isHost ? <button className="go" onClick={startRound}>Draw a question</button> : <div className="dim" style={{textAlign:"center"}}>Waiting for host…</div>}</div>
+      </div>
+    );
+  }
+
+  /* ---- SECRET (thinker answers) ---- */
+  if(room.phase==="secret"){
+    if(amThinker){
+      return (
+        <div className="wrap"><Header sub="your secret number"/>
+          <div className="card" style={{marginTop:10}}><div className="eyebrow">The question</div><div className="q" style={{marginTop:6}}>{room.question}</div></div>
+          <p className="dim" style={{textAlign:"center",marginTop:14}}>Type the whole number you'd honestly guess. It won't be shown to anyone until the reveal.</p>
+          <input className="num" inputMode="numeric" pattern="[0-9]*" placeholder="0" value={secretInput} onChange={e=>setSecretInput(e.target.value.replace(/[^0-9]/g,""))} autoFocus />
+          <div className="foot"><button className="go" disabled={secretInput===""} onClick={submitSecret}>Lock it in</button></div>
+        </div>
+      );
+    }
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        <div className="card" style={{marginTop:10}}><div className="eyebrow">The question</div><div className="q" style={{marginTop:6}}>{room.question}</div></div>
+        <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:12}}>
+          <Avatar p={thinker} size={56}/><div className="dim">{thinker?.name} is locking in their number…</div>
+        </div>
+        <Heckbar/>
+      </div>
+    );
+  }
+
+  /* ---- OPENING (everyone guesses) ---- */
+  if(room.phase==="opening"){
+    const iBid = me && me.bid!=null;
+    const amIn = room.mode==="stranger" ? true : !amThinker;
+    const inCount = bidders.filter(p=>p.bid!=null).length;
+    return (
+      <div className="wrap"><Header sub={"round "+room.round+" · opening bids"}/><Floaties/>
+        <div className="card" style={{marginTop:10}}><div className="eyebrow">{room.mode==="stranger"?"You're all guessing":thinker?.name+" is thinking about"}</div><div className="q" style={{marginTop:6}}>{room.question}</div></div>
+        {amIn ? (
+          iBid ? (
+            <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:10}}>
+              <div className="eyebrow">your secret bid is in</div>
+              <div className="big">{fmt(me.bid)}</div>
+              <div className="dim">{inCount} of {bidders.length} locked in</div>
+              <Heckbar/>
+            </div>
+          ) : (
+            <>
+              <p className="dim" style={{textAlign:"center",marginTop:12}}>Your secret guess at {room.mode==="stranger"?"their":thinker?.name+"'s"} number. Nobody sees it yet.</p>
+              <input className="num" inputMode="numeric" pattern="[0-9]*" placeholder="0" value={bidInput} onChange={e=>setBidInput(e.target.value.replace(/[^0-9]/g,""))} autoFocus />
+              <div className="foot"><button className="go" disabled={bidInput===""} onClick={submitBid}>Lock in secret bid</button></div>
+            </>
+          )
+        ) : (
+          <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:10}}>
+            <div className="dim">You're the Thinker — sit back. {inCount} of {bidders.length} have bid.</div>
+            <Heckbar/>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ---- STATUS (the gasp beat) ---- */
+  if(room.phase==="status"){
+    const leader=players.find(p=>p.id===room.high_id);
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:8,textAlign:"center"}}>
+          {room.last_event && <div className="fr" style={{fontSize:19}}>{room.last_event}</div>}
+          <div className="eyebrow" style={{marginTop:8}}>top bid</div>
+          <div className="big bump" key={room.high_bid}>{fmt(room.high_bid)}</div>
+          <div className="pill"><Avatar p={leader} size={18}/> &nbsp;{leader?.name} leads</div>
+        </div>
+        <Heckbar/>
+      </div>
+    );
+  }
+
+  /* ---- TICK (raise or lock) ---- */
+  if(room.phase==="tick"){
+    const leader=players.find(p=>p.id===room.high_id);
+    const amActive = me && me.bid!=null && me.id!==room.high_id && !me.locked && (room.mode==="stranger"||!amThinker);
+    const v=parseInt(bidInput,10); const ok=!isNaN(v)&&v>room.tick_high;
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        <div className="panel" style={{marginTop:10,textAlign:"center"}}>
+          <div className="eyebrow">top bid to beat · {leader?.name}</div>
+          <div className="big" style={{fontSize:"clamp(46px,16vw,84px)"}}>{fmt(room.high_bid)}</div>
+        </div>
+        {amActive ? (
+          <>
+            <p className="dim" style={{textAlign:"center",marginTop:12}}>Your bid is {fmt(me.bid)}. Raise above {fmt(room.tick_high)}, or lock in and bet {leader?.name}'s over.</p>
+            <input className="num" inputMode="numeric" pattern="[0-9]*" placeholder={"> "+fmt(room.tick_high)} value={bidInput} onChange={e=>setBidInput(e.target.value.replace(/[^0-9]/g,""))} />
+            <div className="foot row">
+              <button className="go2 safe" onClick={doLock}>Lock in {fmt(me.bid)}</button>
+              <button className="go" style={{flex:1}} disabled={!ok} onClick={doRaise}>Raise</button>
+            </div>
+          </>
+        ) : (
+          <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:10}}>
+            <div className="dim">{me&&me.id===room.high_id ? "You're on top — hold your breath." : (me&&me.locked ? "You're locked in." : "Watching…")}</div>
+            {(room.mode!=="stranger" && isHost) && <button className="go2 call" style={{maxWidth:220}} onClick={thinkerStop}>Thinker: stop &amp; reveal</button>}
+            <Heckbar/>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ---- ASK (stranger) ---- */
+  if(room.phase==="ask"){
+    if(!isHost) return <div className="wrap"><Header/><div className="grow" style={{display:"flex",alignItems:"center",justifyContent:"center"}}><div className="dim">Someone's asking them now…</div></div><Heckbar/></div>;
+    return (
+      <div className="wrap"><Header sub="moment of truth"/>
+        <div className="card" style={{marginTop:10}}><div className="eyebrow">The question was</div><div className="q" style={{marginTop:6}}>{room.question}</div></div>
+        <p className="dim" style={{textAlign:"center",marginTop:12}}>Go ask them. What number did they say?</p>
+        <input className="num" inputMode="numeric" pattern="[0-9]*" placeholder="0" value={answerInput} onChange={e=>setAnswerInput(e.target.value.replace(/[^0-9]/g,""))} autoFocus />
+        <div className="foot"><button className="go" disabled={answerInput===""} onClick={submitAnswer}>Reveal</button></div>
+      </div>
+    );
+  }
+
+  /* ---- REVEAL ---- */
+  if(room.phase==="reveal" && room.outcome){
+    const o=room.outcome;
+    return (
+      <div className="wrap"><Header sub={"round "+room.round+" · reveal"}/><Floaties/>
+        <div className="card" style={{marginTop:10,textAlign:"center"}}>
+          <div className="eyebrow">{room.mode==="stranger"?"they said":o.thinkerName+" was thinking"}</div>
+          <div className="big bump" key={o.secret} style={{margin:"6px 0"}}>{fmt(o.secret)}</div>
+        </div>
+        <div style={{marginTop:10}}>
+          {o.rows.map(r=>(
+            <div key={r.id} className={"rvrow "+(r.over?"over":"under")}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}><Avatar p={r} size={26}/>
+                <div><div style={{fontWeight:700}}>{r.name}</div><div className="dim" style={{fontSize:11}}>{r.over?"over — bust":(r.exact?"exact!":"under")}{r.win?" · winner 🏆":""}</div></div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>{r.pts>0&&<span className="badge" style={{color:"var(--mint)"}}>+{r.pts}</span>}<span className="rv" style={{color:r.over?"var(--rose)":"var(--mint)"}}>{fmt(r.bid)}</span></div>
+            </div>
+          ))}
+          {room.mode!=="stranger" && o.thinkerPts>0 && (
+            <div className="rvrow" style={{background:"rgba(245,177,76,.12)",border:"1px solid rgba(245,177,76,.4)"}}>
+              <div style={{fontWeight:700}}>🔮 {o.thinkerName} <span className="dim" style={{fontSize:11}}>· Thinker · {o.underCount} under</span></div>
+              <span className="badge" style={{color:"var(--candle)"}}>+{o.thinkerPts}</span>
+            </div>
+          )}
+        </div>
+        <Heckbar/>
+        <div className="foot">{isHost ? <button className="go" onClick={toScores}>See scores</button> : <div className="dim" style={{textAlign:"center"}}>Waiting for host…</div>}</div>
+      </div>
+    );
+  }
+
+  /* ---- SCORES ---- */
+  if(room.phase==="scores"){
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+    return (
+      <div className="wrap"><Header sub={"after round "+room.round}/>
+        <div className="fr" style={{fontSize:26,color:"var(--candle)",margin:"8px 0"}}>Scoreboard</div>
+        {ranked.map((p,i)=><div className="prow" key={p.id}><div className="mono dim" style={{width:18,fontWeight:700}}>{i+1}</div><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}{p.id===room.thinker_id&&<span className="pill" style={{marginLeft:6}}>Thinker</span>}</div><div className="mono" style={{fontWeight:700,fontSize:20,color:"var(--psychic)"}}>{p.score||0}</div></div>)}
+        <div className="foot">{isHost ? <><button className="go" onClick={nextRound}>Next round</button><button className="link" style={{display:"block",margin:"10px auto 0"}} onClick={endGame}>End game &amp; final standings</button></> : <div className="dim" style={{textAlign:"center"}}>Waiting for host…</div>}</div>
+      </div>
+    );
+  }
+
+  /* ---- GAME OVER ---- */
+  if(room.phase==="gameover"){
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0)); const w=ranked[0];
+    return (
+      <div className="wrap"><Header/><Floaties/>
+        <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:12,textAlign:"center"}}>
+          <div className="pill">🏆 winner</div><Avatar p={w} size={84}/>
+          <div className="fr" style={{fontSize:36,color:"var(--candle)"}}>{w?.name}</div>
+          <div className="mono" style={{fontWeight:700,fontSize:24,color:"var(--psychic)"}}>{w?.score||0} pts</div>
+          <div style={{width:"100%",marginTop:8}}>{ranked.map((p,i)=><div className="prow" key={p.id}><div className="mono dim" style={{width:18,fontWeight:700}}>{i+1}</div><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}</div><div className="mono" style={{fontWeight:700}}>{p.score||0}</div></div>)}</div>
+        </div>
+        <div className="foot">{isHost ? <div className="row"><button className="go2" onClick={backToLobby}>Back to lobby</button><button className="go" style={{flex:1}} onClick={startGame}>Play again</button></div> : <div className="dim" style={{textAlign:"center"}}>Thanks for playing!</div>}</div>
+      </div>
+    );
+  }
+
+  return <div className="wrap"><Header/><p className="dim">Loading…</p></div>;
+}
+
+/* ---- QR helper ---- */
+function QR({value,size=150}){
+  const ref=useRef(null);
+  useEffect(()=>{ if(!ref.current||!window.QRCode) return; ref.current.innerHTML=""; try{ new window.QRCode(ref.current,{ text:value, width:size, height:size, colorDark:"#0E0B1A", colorLight:"#ffffff", correctLevel:window.QRCode.CorrectLevel.M }); }catch(e){} },[value]);
+  return <div id="qr" ref={ref} style={{marginTop:10}}></div>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
