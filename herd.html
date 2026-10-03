@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Herd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+    --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6;
+    --dim:#8B82A6; --mint:#7DF0A6;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:env(safe-area-inset-bottom,0);
+  }
+  *{ box-sizing:inherit; }
+  html,body{ margin:0; min-height:100%; background:var(--ink); }
+  body{ font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:520px; margin:0 auto; padding:16px 16px 34px; min-height:100vh; display:flex; flex-direction:column; }
+  .brandBig{ font-family:'Fraunces',serif; font-weight:600; font-size:38px; color:var(--candle); margin:14px 0 2px; }
+  .fr{ font-family:'Fraunces',serif; } .dim{ color:var(--dim); }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+  .who{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+  .card{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:16px; }
+  .go{ width:100%; font-family:'Fraunces',serif; font-weight:600; font-size:21px; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+  .go:disabled{ opacity:.45; }
+  .go2{ width:100%; font-weight:700; font-size:16px; padding:14px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  .row{ display:flex; gap:10px; } .grow{ flex:1 1 auto; } .foot{ margin-top:auto; padding-top:14px; }
+  input.txt{ width:100%; font-family:'Space Grotesk'; font-weight:600; font-size:17px; padding:14px; border-radius:13px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input:focus{ outline:2px solid var(--candle); }
+  .code{ font-family:'JetBrains Mono'; font-weight:700; font-size:40px; letter-spacing:.22em; color:var(--candle); text-align:center; }
+  .q{ font-family:'Fraunces',serif; font-weight:500; font-size:28px; line-height:1.2; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:var(--dim); letter-spacing:.08em; }
+  .avatar{ border-radius:9px; display:grid; place-items:center; font-weight:700; color:#0E0B1A; flex:0 0 auto; }
+  .prow{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); }
+  .prow+.prow{ margin-top:8px; }
+  .pill{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; background:var(--haze); color:var(--mist); }
+  .clock{ font-family:'JetBrains Mono'; font-weight:700; font-size:15px; color:var(--psychic); }
+  .heckbar{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:12px; }
+  .heck{ font-size:22px; background:var(--panel); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .floaty{ position:fixed; bottom:80px; pointer-events:none; font-size:34px; animation:fly 2.2s ease-out forwards; z-index:50; }
+  @keyframes fly{ 0%{ transform:translateY(0) scale(.6); opacity:0 } 15%{ opacity:1; transform:translateY(-20px) scale(1.1) } 100%{ transform:translateY(-260px) scale(1); opacity:0 } }
+  .bump{ animation:bump .5s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes bump{ 0%{ transform:scale(.4); opacity:0 } 60%{ transform:scale(1.12) } 100%{ transform:scale(1); opacity:1 } }
+  .verNum{ font-family:'JetBrains Mono'; font-size:10px; color:var(--dim); }
+  #qr{ display:flex; justify-content:center; margin-top:8px; }
+  #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
+  .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; }
+  .opt{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; font-family:'Space Grotesk'; font-weight:600; font-size:19px; padding:16px; margin-top:10px; border-radius:14px; border:2px solid var(--haze); background:var(--panel); color:var(--mist); cursor:pointer; transition:transform .1s; }
+  .opt:active{ transform:scale(.98); }
+  .opt.sel{ border-color:var(--candle); background:rgba(245,177,76,.14); }
+  .opt .dot{ width:22px; height:22px; border-radius:50%; border:2px solid var(--haze); flex:0 0 auto; }
+  .opt.sel .dot{ background:var(--candle); border-color:var(--candle); }
+  .res{ position:relative; margin-top:10px; border-radius:14px; border:1px solid var(--haze); background:var(--panel); overflow:hidden; padding:12px 14px; }
+  .res .fill{ position:absolute; left:0; top:0; bottom:0; background:rgba(167,139,250,.22); transform-origin:left; animation:grow .9s cubic-bezier(.2,.9,.3,1) both; }
+  .res.top{ border-color:var(--candle); } .res.top .fill{ background:rgba(245,177,76,.32); }
+  .res > *:not(.fill){ position:relative; }
+  @keyframes grow{ from{ transform:scaleX(0) } to{ transform:scaleX(1) } }
+  .voters{ display:flex; gap:4px; flex-wrap:wrap; margin-top:8px; }
+  .mine{ font-family:'JetBrains Mono'; font-size:10px; font-weight:700; color:var(--ink); background:var(--candle); border-radius:999px; padding:2px 7px; margin-left:8px; }
+  .chipb{ font-family:inherit; font-weight:600; font-size:13px; padding:8px 12px; border-radius:999px; border:1px solid var(--haze); background:var(--panel); color:var(--dim); cursor:pointer; text-decoration:line-through; }
+  .chipb.on{ background:var(--candle); color:var(--ink); border-color:var(--candle); text-decoration:none; }
+  .fact{ margin-top:10px; font-size:16px; line-height:1.35; animation:bump .5s both; }
+  .gain{ font-family:'Fraunces',serif; font-weight:600; font-size:44px; color:var(--candle); text-align:center; line-height:1; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const VERSION = "v3";
+
+/* ---- Supabase (same project as the other games) ---- */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+/* ---- tuning ---- */
+const PICK_SECS = 15;     // time to choose
+const BONUS = 2;          // extra points for matching the top answer (ties all count)
+const MAX_PLAYERS = 12;
+
+/* ---- shared hub helpers ---- */
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const myId = (()=>{ let v = ls.get("hub_uid"); if(!v){ v="u"+randId(); ls.set("hub_uid",v); } return v; })();
+const COLORS = ["#F5B14C","#7DF0A6","#F26D8B","#A78BFA","#4DB8FF","#FF9F45","#59D0C0","#F272C8","#C5E063","#FF7A59","#8DA2FF","#E0C3FC"];
+const HECKLES = ["🐑","😂","😱","🐺","🔥","👀","💀","🙌"];
+const isBot = (id)=>String(id).startsWith("bot_");
+const shuffle = (a)=>{ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+/* bots herd realistically: they lean toward the option ranked most popular in the data file */
+const BOT_W = [.36,.27,.19,.11,.07];
+function botPick(opts){ const w=opts.map(o=>BOT_W[o.r]||.05); let t=w.reduce((a,b)=>a+b,0)*Math.random(); for(let i=0;i<w.length;i++){ t-=w[i]; if(t<=0) return i; } return 0; }
+
+
+const esc = (x)=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function pairStats(hist,a,b){ let both=0,same=0,tot=0,streak=0,alive=true;
+  for(let k=hist.length-1;k>=0;k--){ const h=hist[k]; const pa=h.picks[a],pb=h.picks[b];
+    if(pa!=null&&pb!=null){ both++; if(pa===pb){ same++; if(alive) streak++; } else alive=false; } else alive=false; }
+  return { both, same, streak, rate: both?same/both:0 }; }
+function herdStreak(hist,id){ let c=0; for(let k=hist.length-1;k>=0;k--){ const h=hist[k],p=h.picks[id]; if(p!=null&&h.top.includes(p)&&Object.keys(h.picks).length>1) c++; else break; } return c; }
+function makeFacts({ps,voted,counts,top,before,after,move,opts,hist}){
+  const F=[],H=hist.length,nm=(id)=>esc((ps.find(p=>p.id===id)||{}).name||"?");
+  const add=(w,t)=>F.push({w:w+Math.random()*2,t});
+  const cur=hist[H-1];
+  const timed=voted.filter(p=>p.pick_ms!=null).sort((a,b)=>a.pick_ms-b.pick_ms);
+  if(timed.length>2){ const f=timed[0],l=timed[timed.length-1];
+    add(2,"⚡ <b>"+nm(f.id)+"</b> was fastest — "+(f.pick_ms/1000).toFixed(1)+"s");
+    if(l.pick_ms>9000) add(1.5,"🐢 <b>"+nm(l.id)+"</b> took "+Math.round(l.pick_ms/1000)+"s to decide"); }
+  const seen=[];
+  for(let i=0;i<ps.length;i++) for(let j=i+1;j<ps.length;j++){ const a=ps[i].id,b=ps[j].id;
+    if(cur.picks[a]==null||cur.picks[a]!==cur.picks[b]) continue;
+    const st=pairStats(hist,a,b);
+    if(st.streak>=2) seen.push({w:4+st.streak,t:"🤝 <b>"+nm(a)+"</b> and <b>"+nm(b)+"</b> matched again — "+st.streak+" in a row"});
+    else if(st.same>=3) seen.push({w:3,t:"🤝 <b>"+nm(a)+"</b> and <b>"+nm(b)+"</b> have now matched "+st.same+" times"}); }
+  seen.sort((x,y)=>y.w-x.w).slice(0,2).forEach(x=>add(x.w,x.t));
+  if(H>=4) for(let i=0;i<ps.length;i++) for(let j=i+1;j<ps.length;j++){ const st=pairStats(hist,ps[i].id,ps[j].id);
+    if(st.both>=4&&st.same===0&&Math.random()<.5) add(2.5,"🌌 <b>"+nm(ps[i].id)+"</b> and <b>"+nm(ps[j].id)+"</b> have never agreed on anything"); }
+  voted.forEach(p=>{ if(counts[p.pick]===1&&voted.length>2) add(2.5,"🐺 <b>"+nm(p.id)+"</b> was the only one to pick "+esc(opts[p.pick].t)); });
+  const mx=Math.max(...counts), sorted=[...counts].sort((a,b)=>b-a);
+  if(voted.length>2&&mx===voted.length) add(5,"🐑 Unanimous! Everyone picked "+esc(opts[top[0]].t));
+  else if(voted.length>=4&&mx<=(voted.length>=6?2:1)) add(3.5,"🌀 Total chaos — nobody could agree");
+  if(top.length===1&&sorted[0]-sorted[1]===1&&sorted[1]>=2) add(3,"📸 Photo finish — "+esc(opts[top[0]].t)+" won by a single vote");
+  if(top.length>1&&voted.length>3) add(2.5,"⚖️ Tie at the top: "+top.map(i=>esc(opts[i].t)).join(" vs "));
+  const lead=(r)=>Object.keys(r).find(k=>r[k]===0);
+  if(H>1&&lead(before)!==lead(after)) add(6,"👑 <b>"+nm(lead(after))+"</b> takes the lead");
+  let best=0,bid=null; Object.keys(move).forEach(id=>{ if(move[id]>best){best=move[id];bid=id;} });
+  if(best>=2) add(3,"🚀 <b>"+nm(bid)+"</b> jumped "+best+" spots");
+  ps.forEach(p=>{ const c=herdStreak(hist,p.id); if(c>=3) add(3+c,"🔥 <b>"+nm(p.id)+"</b> has run with the herd "+c+" rounds straight"); });
+  F.sort((a,b)=>b.w-a.w);
+  return F.slice(0,3).map(f=>f.t);
+}
+function mindsPairs(hist,ps){ const pairs=[];
+  for(let i=0;i<ps.length;i++) for(let j=i+1;j<ps.length;j++){ const st=pairStats(hist,ps[i].id,ps[j].id); if(st.both) pairs.push({a:ps[i],b:ps[j],...st}); }
+  if(!pairs.length) return null;
+  return { close:[...pairs].sort((x,y)=>y.rate-x.rate||y.both-x.both)[0], far:[...pairs].sort((x,y)=>x.rate-y.rate||y.both-x.both)[0] }; }
+function awardRows(hist,ps){ const rows=[];
+  const stats=ps.map(p=>{ let t=0,n=0,herd=0,lone=0; hist.forEach(h=>{ const pk=h.picks[p.id]; if(pk==null) return; const v=Object.keys(h.picks).length;
+      if(h.times[p.id]!=null){ t+=h.times[p.id]; n++; } if(h.top.includes(pk)&&v>1) herd++; if(h.counts[pk]===1&&v>1) lone++; });
+    return { p, avg:n?t/n:1e9, herd, lone }; });
+  const f=[...stats].sort((a,b)=>a.avg-b.avg)[0]; if(f&&f.avg<1e9) rows.push("⚡ Fastest finger: <b>"+esc(f.p.name)+"</b> ("+(f.avg/1000).toFixed(1)+"s avg)");
+  const h=[...stats].sort((a,b)=>b.herd-a.herd)[0]; if(h&&h.herd>0) rows.push("🐑 Biggest sheep: <b>"+esc(h.p.name)+"</b> ("+h.herd+" herd rounds)");
+  const l=[...stats].sort((a,b)=>b.lone-a.lone)[0]; if(l&&l.lone>0) rows.push("🐺 Lone wolf king: <b>"+esc(l.p.name)+"</b> ("+l.lone+" solo picks)");
+  return rows; }
+
+/* ---- question packs: every data/07.herd.*.json file is auto-loaded ---- */
+const HERD_PREFIX="07.herd.", HERD_INDEX=HERD_PREFIX+"index.json";
+async function discoverFiles(){
+  const fresh=new URLSearchParams(location.search).has("fresh");
+  if(!fresh){ try{ const c=JSON.parse(ls.get("herd_files")||"null"); if(c&&Date.now()-c.t<600000&&c.f&&c.f.length) return c.f; }catch(e){} }
+  try{ // 1) ask GitHub what's in data/ (public repo, no key)
+    const gh=location.hostname.endsWith(".github.io"), parts=location.pathname.split("/").filter(Boolean);
+    const owner=gh?location.hostname.split(".")[0]:"aaronmedvick", repo=gh&&parts[0]?parts[0]:"Faces_game";
+    const r=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/data"); if(!r.ok) throw 0;
+    const j=await r.json();
+    const f=j.map(x=>x.name).filter(n=>n.startsWith(HERD_PREFIX)&&n.endsWith(".json")&&n!==HERD_INDEX).sort();
+    if(f.length){ ls.set("herd_files",JSON.stringify({t:Date.now(),f})); return f; }
+  }catch(e){}
+  try{ const r=await fetch("./data/"+HERD_INDEX); if(r.ok){ const j=await r.json(); if(j.files&&j.files.length) return j.files; } }catch(e){} // 2) manifest
+  return [];
+}
+function normalizePack(j,fname){
+  const out=[], base=String(j.pack||j.name||fname.replace(HERD_PREFIX,"").replace(/\.json$/,""));
+  const push=(q,cat)=>{ if(q&&typeof q.q==="string"&&Array.isArray(q.a)){ const a=q.a.map(String).filter(Boolean); if(a.length>=2&&a.length<=6) out.push({q:q.q.trim(),a,cat:String(q.cat||cat||base)}); } };
+  if(Array.isArray(j.categories)) j.categories.forEach(c=>(c.questions||[]).forEach(q=>push(q,c.name)));
+  if(Array.isArray(j.questions)) j.questions.forEach(q=>push(q,j.category));
+  return out;
+}
+async function loadAllPacks(){
+  const files=await discoverFiles();
+  const res=await Promise.all(files.map(async f=>{ try{ const r=await fetch("./data/"+f); if(!r.ok) return null; return normalizePack(await r.json(),f); }catch(e){ return null; } }));
+  const seen=new Set(), all=[]; let ok=0;
+  res.forEach(list=>{ if(!list) return; ok++; list.forEach(q=>{ const k=q.q.toLowerCase(); if(!seen.has(k)){ seen.add(k); all.push(q); } }); });
+  return { questions:all, files:ok };
+}
+
+const FALLBACK_Q = [
+  {q:"Favorite pizza topping?",a:["Pepperoni","Cheese","Sausage","Mushroom","Pineapple"]},
+  {q:"Best breakfast food?",a:["Bacon","Pancakes","Eggs","Waffles","Cereal"]},
+  {q:"Favorite ice cream flavor?",a:["Vanilla","Chocolate","Cookies & cream","Strawberry","Mint chip"]},
+  {q:"Pick a superpower",a:["Flying","Invisibility","Time travel","Mind reading","Super strength"]},
+  {q:"Best pet?",a:["Dog","Cat","Fish","Bird","Hamster"]},
+];
+
+function QR({value}){
+  const r = useRef(null);
+  useEffect(()=>{ if(!r.current||!window.QRCode) return; r.current.innerHTML=""; new QRCode(r.current,{text:value,width:130,height:130}); },[value]);
+  return <div id="qr" ref={r}/>;
+}
+
+function App(){
+  const [pack,setPack] = useState(FALLBACK_Q.map(q=>({...q,cat:"General"})));
+  const [packInfo,setPackInfo] = useState({files:0,loading:true});
+  const [off,setOff] = useState({});
+  const [name,setName] = useState(ls.get("hub_name")||"");
+  const [code,setCode] = useState("");
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState("");
+  const [floaties,setFloaties] = useState([]);
+  const [now,setNow] = useState(Date.now());
+  const chRef = useRef(null);
+  const busy = useRef(false);
+  const botMem = useRef({});
+  const stRef = useRef({});
+
+  const me = players.find(p=>p.id===myId);
+  const isHost = !!room && room.host_id===myId;
+  stRef.current = { room, players, pack, code, isHost, off };
+  const secsLeft = room?.deadline ? Math.max(0, Math.ceil((room.deadline-now)/1000)) : null;
+
+  useEffect(()=>{ loadAllPacks().then(d=>{ if(d.questions.length) setPack(d.questions); setPackInfo({files:d.files,loading:false}); }).catch(()=>setPackInfo({files:0,loading:false})); },[]);
+  useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),300); return ()=>clearInterval(t); },[]);
+  useEffect(()=>{ const c=new URLSearchParams(location.search).get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+
+  /* ---- realtime ---- */
+  async function refetch(c){
+    const r = await sb.from("hm_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data) setRoom(r.data);
+    const ps = await sb.from("hm_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data) setPlayers(ps.data);
+  }
+  useEffect(()=>{
+    if(!code||!sb) return;
+    refetch(code);
+    const ch = sb.channel("hm:"+code, { config:{ broadcast:{ self:true } } })
+      .on("postgres_changes",{event:"*",schema:"public",table:"hm_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"hm_players",filter:"code=eq."+code},()=>refetch(code))
+      .on("broadcast",{event:"heckle"},(m)=>popHeckle(m.payload))
+      .subscribe();
+    chRef.current = ch;
+    const poll = setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); chRef.current=null; };
+  },[code]);
+
+  function sendHeckle(emoji){ if(chRef.current) chRef.current.send({type:"broadcast",event:"heckle",payload:{emoji}}); }
+  function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
+
+  /* ---- create / join ---- */
+  async function host(){
+    if(!name.trim()) return;
+    ls.set("hub_name",name.trim());
+    const c=randCode();
+    const r=await sb.from("hm_rooms").insert({ code:c, host_id:myId, phase:"lobby", round:0 });
+    if(r.error){ alert("Couldn't create room: "+r.error.message); return; }
+    await sb.from("hm_players").delete().eq("id",myId);
+    await sb.from("hm_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0 });
+    setCode(c);
+  }
+  async function join(){
+    if(!name.trim()||!codeInput.trim()) return;
+    const c=codeInput.trim().toUpperCase();
+    ls.set("hub_name",name.trim());
+    const r=await sb.from("hm_rooms").select("code").eq("code",c).maybeSingle();
+    if(!r.data){ alert("No room with that code."); return; }
+    const ps=await sb.from("hm_players").select("id").eq("code",c);
+    await sb.from("hm_players").delete().eq("id",myId);
+    await sb.from("hm_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[(ps.data?ps.data.length:0)%COLORS.length], score:0 });
+    setCode(c);
+  }
+  async function leave(){ await sb.from("hm_players").delete().eq("id",myId); setCode(""); setRoom(null); setPlayers([]); }
+  async function kick(id){ await sb.from("hm_players").delete().eq("id",id); }
+  async function addBot(){
+    if(players.length>=MAX_PLAYERS) return;
+    const names=["Ava","Rex","Nova","Biscuit","Duke","Pixel","Coco","Zed","Milo","Juno","Tank","Wren"];
+    const used=players.map(p=>p.name);
+    const nm="🤖 "+(names.find(n=>!used.includes("🤖 "+n))||("Bot"+Math.floor(Math.random()*99)));
+    await sb.from("hm_players").insert({ id:"bot_"+randId(), code, name:nm, color:COLORS[players.length%COLORS.length], score:0 });
+  }
+
+  /* ---- player action ---- */
+  async function choose(i){ if(room?.phase!=="pick") return;
+    const first = me?.pick==null; const ms = Date.now()-(room.deadline-PICK_SECS*1000);
+    setPlayers(ps=>ps.map(p=>p.id===myId?{...p,pick:i}:p));
+    await sb.from("hm_players").update(first?{ pick:i, pick_ms:ms }:{ pick:i }).eq("id",myId); }
+
+  /* ---- host: rounds ---- */
+  async function startGame(){ await sb.from("hm_players").update({ score:0 }).eq("code",code); await sb.from("hm_rooms").update({ hist:[] }).eq("code",code); await beginRound(1,[]); }
+  async function beginRound(n,usedIn){
+    const { pack, code, off } = stRef.current;
+    let pool=pack.map((q,i)=>i).filter(i=>!off[pack[i].cat]); if(!pool.length) pool=pack.map((q,i)=>i);
+    let used=(usedIn||[]).filter(i=>i<pack.length); let avail=pool.filter(i=>!used.includes(i));
+    if(!avail.length){ used=[]; avail=pool; }
+    const idx=avail[Math.floor(Math.random()*avail.length)];
+    const item=pack[idx];
+    const opts=shuffle(item.a.map((t,r)=>({t,r})));
+    await sb.from("hm_players").update({ pick:null, pick_ms:null }).eq("code",code);
+    await sb.from("hm_rooms").update({ phase:"pick", round:n, question:item.q, options:opts, used:[...used,idx], outcome:null, deadline:Date.now()+PICK_SECS*1000 }).eq("code",code);
+  }
+  async function nextRound(){ await beginRound((room.round||0)+1, room.used||[]); }
+  async function endGame(){ await sb.from("hm_rooms").update({ phase:"gameover" }).eq("code",code); }
+  async function backToLobby(){ await sb.from("hm_rooms").update({ phase:"lobby", round:0, question:null, options:null, used:[], outcome:null, deadline:null, hist:[] }).eq("code",code); }
+
+  async function resolve(){
+    busy.current=true;
+    try{
+      const { code } = stRef.current;
+      const rr=(await sb.from("hm_rooms").select("*").eq("code",code).maybeSingle()).data;
+      if(!rr||rr.phase!=="pick") return;               // already resolved
+      const ps=(await sb.from("hm_players").select("*").eq("code",code).order("joined_at")).data||[];
+      const voted=ps.filter(p=>p.pick!=null);
+      if(!voted.length){ await sb.from("hm_rooms").update({ deadline:Date.now()+PICK_SECS*1000 }).eq("code",code); return; }
+      const counts=rr.options.map((_,i)=>voted.filter(p=>p.pick===i).length);
+      const mx=Math.max(...counts);
+      const top=counts.map((c,i)=>c===mx?i:-1).filter(i=>i>=0);
+      const rows=voted.map(p=>{
+        const c=counts[p.pick]; const withTop=voted.length>1 && top.includes(p.pick);
+        return { id:p.id, name:p.name, color:p.color, pick:p.pick, pts:c+(withTop?BONUS:0), withTop, alone:c===1 && voted.length>1 };
+      });
+      const rankOf=(arr)=>{ const o=[...arr].sort((x,y)=>y.s-x.s), r={}; o.forEach((x,k)=>r[x.id]=k); return r; };
+      const before=rankOf(ps.map(p=>({id:p.id,s:p.score||0})));
+      const newScore={}; ps.forEach(p=>{ const r=rows.find(x=>x.id===p.id); newScore[p.id]=(p.score||0)+(r?r.pts:0); });
+      const after=rankOf(ps.map(p=>({id:p.id,s:newScore[p.id]})));
+      const move={}; ps.forEach(p=>{ move[p.id]=before[p.id]-after[p.id]; });
+      const entry={ picks:{}, times:{}, names:{}, top, counts };
+      voted.forEach(p=>{ entry.picks[p.id]=p.pick; entry.times[p.id]=p.pick_ms; });
+      ps.forEach(p=>{ entry.names[p.id]=p.name; });
+      const hist=[...(rr.hist||[]),entry];
+      const facts=makeFacts({ps,voted,counts,top,before,after,move,opts:rr.options,hist});
+      for(const p of ps){ await sb.from("hm_players").update({ score:newScore[p.id] }).eq("id",p.id); }
+      await sb.from("hm_rooms").update({ phase:"reveal", deadline:null, hist, outcome:{ counts, top, rows, total:voted.length, facts, move } }).eq("code",code);
+    } finally { busy.current=false; }
+  }
+
+  /* ---- host loop: bots + auto-resolve (stable interval reading refs) ---- */
+  useEffect(()=>{
+    const t=setInterval(async ()=>{
+      const { room, players, isHost, code } = stRef.current;
+      if(!isHost||!room||room.phase!=="pick"||busy.current) return;
+      const humansDone=players.filter(p=>!isBot(p.id)).every(p=>p.pick!=null);
+      const t0=room.deadline-PICK_SECS*1000;
+      for(const p of players){
+        if(!isBot(p.id)||p.pick!=null) continue;
+        const k=room.deadline+":"+p.id;
+        if(!botMem.current[k]) botMem.current[k]=Date.now()+500+Math.random()*4500;
+        if(humansDone && !botMem.current[k+"h"]){ botMem.current[k+"h"]=1; botMem.current[k]=Math.min(botMem.current[k],Date.now()+300+Math.random()*1500); }
+        if(Date.now()>botMem.current[k]){ botMem.current[k]=Infinity; await sb.from("hm_players").update({ pick:botPick(room.options), pick_ms:Date.now()-t0 }).eq("id",p.id); }
+      }
+      const all=players.length>0 && players.every(p=>p.pick!=null);
+      if(all || (room.deadline && Date.now()>room.deadline)) await resolve();
+    },700);
+    return ()=>clearInterval(t);
+  },[]);
+
+  /* ============ RENDER ============ */
+  const Avatar=({p,size=30})=> p ? <div className="avatar" style={{background:p.color,width:size,height:size,fontSize:size*0.44}}>{(p.name||"?").replace("🤖 ","").slice(0,1).toUpperCase()}</div> : null;
+  const Heckbar=()=> <div className="heckbar">{HECKLES.map(e=><button key={e} className="heck" onClick={()=>sendHeckle(e)}>{e}</button>)}</div>;
+  const Floaties=()=> floaties.map(f=><div key={f.id} className="floaty" style={{left:f.left+"%"}}>{f.emoji}</div>);
+  const Header=({sub})=>(
+    <div className="top">
+      <div><div className="fr" style={{fontSize:20,color:"var(--candle)",fontWeight:600}}>The Herd</div>{sub&&<div className="who">{sub}</div>}</div>
+      <div style={{textAlign:"right"}}>{room?.phase==="pick"&&secsLeft!=null&&<div className="clock">⏱ {secsLeft}s</div>}<div className="verNum">{VERSION}</div></div>
+    </div>
+  );
+  const cats=[]; pack.forEach(q=>{ let c=cats.find(x=>x.name===q.cat); if(!c){ c={name:q.cat,n:0}; cats.push(c); } c.n++; });
+  const enabledCount=pack.filter(q=>!off[q.cat]).length;
+  const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+  const Board=({o})=>(
+    <div style={{marginTop:14}}>
+      {ranked.map((p,i)=>{ const m=o?.move?.[p.id]||0, g=o?.rows?.find(r=>r.id===p.id)?.pts||0; return (
+        <div className="prow" key={p.id}>
+          <span className="pill">{i+1}</span><Avatar p={p}/>
+          <div className="grow" style={{fontWeight:600}}>{p.name}{p.id===myId&&<span className="dim" style={{marginLeft:6,fontSize:12}}>you</span>}</div>
+          {o&&<span className="dim" style={{fontSize:13}}>+{g}</span>}
+          {o&&<span style={{width:34,fontSize:13,fontWeight:700,color:m>0?"#7DF0A6":m<0?"#F26D8B":"var(--dim)"}}>{m>0?"▲"+m:m<0?"▼"+(-m):"–"}</span>}
+          <div className="fr" style={{fontSize:20,fontWeight:600,color:"var(--candle)"}}>{p.score||0}</div>
+        </div>); })}
+    </div>
+  );
+
+  if(!sb) return <div className="wrap"><div className="brandBig">The Herd</div><p className="dim">Supabase didn't load. Check your connection and refresh.</p></div>;
+
+  /* ---- HOME ---- */
+  if(!code){
+    return (
+      <div className="wrap">
+        <div className="brandBig">The Herd</div>
+        <p className="dim" style={{marginTop:0}}>Don't pick your favorite. Pick what the room will pick.</p>
+        <div className="card" style={{marginTop:6}}>
+          <div className="eyebrow" style={{marginBottom:6}}>Your name</div>
+          <input className="txt" placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
+          <div className="eyebrow" style={{margin:"16px 0 6px"}}>Join a game</div>
+          <div className="row">
+            <input className="txt grow" style={{textTransform:"uppercase"}} placeholder="CODE" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
+            <button className="go2" style={{width:"auto",padding:"0 20px"}} disabled={!name.trim()||!codeInput.trim()} onClick={join}>Join</button>
+          </div>
+        </div>
+        <div className="card" style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Or start a new herd</div>
+          <button className="go" disabled={!name.trim()} onClick={host}>Host game</button>
+        </div>
+      </div>
+    );
+  }
+  if(!room) return <div className="wrap"><Header/><p className="dim">Connecting…</p></div>;
+
+  /* ---- LOBBY ---- */
+  if(room.phase==="lobby"){
+    const need=Math.max(0,3-players.length);
+    return (
+      <div className="wrap"><Header sub={"you are "+(name||"?")}/>
+        {isHost && <div style={{marginTop:6}}>
+          <button className="go" disabled={need>0} onClick={startGame}>{need>0?"Need "+need+" more":"Start playing"}</button>
+        </div>}
+        <div className="card" style={{marginTop:12,textAlign:"center"}}>
+          <div className="eyebrow">Join code</div>
+          <div className="code">{code}</div>
+          <QR value={location.origin+location.pathname+"?code="+code} />
+        </div>
+        <div style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Players ({players.length}) — joins anytime</div>
+          {players.map(p=><div className="prow" key={p.id}><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}{p.id===room.host_id&&<span className="pill" style={{marginLeft:8}}>host</span>}{p.id===myId&&<span className="dim" style={{marginLeft:6,fontSize:12}}>you</span>}</div>{isHost&&p.id!==myId&&<button className="link" onClick={()=>kick(p.id)}>✕</button>}</div>)}
+        </div>
+        {isHost && <div className="card" style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:10}}>QUESTION PACKS · {enabledCount} questions{packInfo.loading?" · loading…":" · "+packInfo.files+" file"+(packInfo.files===1?"":"s")}</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {cats.map(c=><button key={c.name} className={"chipb"+(off[c.name]?"":" on")} onClick={()=>setOff(o=>({...o,[c.name]:!o[c.name]}))}>{c.name} <span style={{opacity:.65}}>{c.n}</span></button>)}
+          </div>
+        </div>}
+        <div className="foot">
+          {isHost ? <button className="go2" disabled={players.length>=MAX_PLAYERS} onClick={addBot}>+ Add bot</button>
+                  : <div className="dim" style={{textAlign:"center"}}>Waiting for the host to start…</div>}
+          <button className="link" style={{display:"block",margin:"10px auto 0"}} onClick={leave}>Leave</button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---- PICK ---- */
+  if(room.phase==="pick"){
+    const inCount=players.filter(p=>p.pick!=null).length;
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        <div className="eyebrow" style={{marginTop:6}}>{inCount} of {players.length} locked in</div>
+        <div className="q" style={{margin:"8px 0 4px"}}>{room.question}</div>
+        <div className="dim" style={{fontSize:13}}>Pick what most of the room will pick. Tap again to change.</div>
+        {(room.options||[]).map((o,i)=>(
+          <button key={i} className={"opt"+(me?.pick===i?" sel":"")} onClick={()=>choose(i)}><span className="dot"/>{o.t}</button>
+        ))}
+        <Heckbar/>
+        <div className="foot"><button className="link" style={{display:"block",margin:"0 auto"}} onClick={leave}>Leave</button></div>
+      </div>
+    );
+  }
+
+  /* ---- REVEAL ---- */
+  if(room.phase==="reveal" && room.outcome){
+    const o=room.outcome, opts=room.options||[];
+    const order=opts.map((x,i)=>i).sort((a,b)=>o.counts[b]-o.counts[a]);
+    const mine=o.rows.find(r=>r.id===myId);
+    const mx=Math.max(1,...o.counts);
+    return (
+      <div className="wrap"><Header sub={"round "+room.round}/><Floaties/>
+        {isHost && <button className="go" style={{marginTop:6}} onClick={nextRound}>Next question</button>}
+        <div className="q bump" style={{margin:"14px 0 4px",fontSize:22}}>{room.question}</div>
+        {mine ? <div className="bump" style={{margin:"10px 0 4px",textAlign:"center"}}>
+          <div className="gain">+{mine.pts}</div>
+          <div className="dim" style={{fontSize:13,marginTop:4}}>{mine.withTop?"🐑 You ran with the herd (+"+BONUS+" bonus)":mine.alone?"🐺 Lone wolf — you get 1 for trying":"So close — not the top answer"}</div>
+        </div> : <div className="dim" style={{textAlign:"center",margin:"10px 0"}}>You sat this one out.</div>}
+        {order.map(i=>{
+          const voters=o.rows.filter(r=>r.pick===i);
+          const isTop=o.top.includes(i)&&o.total>1;
+          return (
+            <div key={i} className={"res"+(isTop?" top":"")}>
+              <div className="fill" style={{width:(o.counts[i]/mx*100)+"%"}}/>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+                <div style={{fontWeight:700,fontSize:17}}>{opts[i].t}{mine&&mine.pick===i&&<span className="mine">YOU</span>}</div>
+                <div className="fr" style={{fontSize:24,fontWeight:600,color:isTop?"var(--candle)":"var(--mist)"}}>{o.counts[i]}</div>
+              </div>
+              {voters.length>0 && <div className="voters">{voters.map(v=><Avatar key={v.id} p={v} size={22}/>)}</div>}
+            </div>
+          );
+        })}
+        {o.facts&&o.facts.length>0&&<div className="card" style={{marginTop:14}}><div className="eyebrow">HOT TAKES</div>{o.facts.map((f,k)=><div key={k} className="fact" style={{animationDelay:(.5+k*.45)+"s"}} dangerouslySetInnerHTML={{__html:f}}/>)}</div>}
+        <div className="eyebrow" style={{marginTop:18}}>SCOREBOARD · ROUND {room.round}</div>
+        <Board o={o}/>
+        <Heckbar/>
+        <div className="foot">
+          {isHost ? <button className="go2" onClick={endGame}>End game</button> : <div className="dim" style={{textAlign:"center"}}>Waiting for the host…</div>}
+        </div>
+      </div>
+    );
+  }
+
+  /* ---- GAME OVER ---- */
+  if(room.phase==="gameover"){
+    const w=ranked[0];
+    return (
+      <div className="wrap"><Header/><Floaties/>
+        <div style={{textAlign:"center",marginTop:18}}>
+          <div className="dim">Lead sheep</div>
+          <div style={{display:"flex",justifyContent:"center",margin:"10px 0"}}><Avatar p={w} size={72}/></div>
+          <div className="fr bump" style={{fontSize:38,color:"var(--candle)"}}>{w?.name}</div>
+          <div className="fr" style={{fontSize:22}}>{w?.score||0} pts</div>
+        </div>
+        <Board/>
+        {(()=>{ const hist=room.hist||[]; const aw=awardRows(hist,players); const mp=mindsPairs(hist,players);
+          const card=(label,emoji,p)=><div className="card" style={{textAlign:"center",marginTop:12}}><div className="dim">{emoji} {label}</div><div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:10,margin:"10px 0"}}><Avatar p={p.a} size={40}/><span className="fr" style={{fontSize:22,color:"var(--candle)"}}>&amp;</span><Avatar p={p.b} size={40}/></div><div className="fr" style={{fontSize:20}}>{p.a.name} &amp; {p.b.name}</div><div className="dim" style={{marginTop:4}}>Matched on {p.same} of {p.both} questions ({Math.round(p.rate*100)}%)</div></div>;
+          return <>
+            {aw.length>0&&<div className="card" style={{marginTop:12}}><div className="dim">Awards</div>{aw.map((r,k)=><div key={k} className="fact" style={{animationDelay:(k*.3)+"s"}} dangerouslySetInnerHTML={{__html:r}}/>)}</div>}
+            {mp&&card("Closest minds","🧠",mp.close)}
+            {mp&&card("Furthest apart","🌌",mp.far)}
+          </>; })()}
+        <Heckbar/>
+        <div className="foot">
+          {isHost ? <button className="go" onClick={backToLobby}>Back to lobby</button> : <div className="dim" style={{textAlign:"center"}}>Waiting for the host…</div>}
+          <button className="link" style={{display:"block",margin:"10px auto 0"}} onClick={leave}>Leave</button>
+        </div>
+      </div>
+    );
+  }
+
+  return <div className="wrap"><Header/><p className="dim">Loading…</p></div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

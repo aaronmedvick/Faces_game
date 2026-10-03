@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Wits &amp; Wagers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+    --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6;
+    --dim:#8B82A6; --mint:#7DF0A6;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:env(safe-area-inset-bottom,0);
+  }
+  *{ box-sizing:inherit; }
+  html,body{ margin:0; min-height:100%; background:var(--ink); }
+  body{ font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:520px; margin:0 auto; padding:16px 16px 34px; min-height:100vh; display:flex; flex-direction:column; }
+  .brandBig{ font-family:'Fraunces',serif; font-weight:600; font-size:34px; letter-spacing:.02em; color:var(--candle); margin:14px 0 2px; }
+  .fr{ font-family:'Fraunces',serif; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .dim{ color:var(--dim); }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .who{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+  .card{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:16px; }
+  .panel{ background:var(--panel); border:1px solid var(--haze); border-radius:14px; padding:14px; }
+  .go{ width:100%; font-family:'Fraunces',serif; font-weight:600; font-size:21px; letter-spacing:.02em; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+  .go:disabled{ opacity:.45; }
+  .go2{ width:100%; font-weight:700; font-size:16px; padding:14px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  .go2:disabled{ opacity:.45; }
+  .row{ display:flex; gap:10px; }
+  .grow{ flex:1 1 auto; }
+  .foot{ margin-top:auto; padding-top:14px; }
+  input.txt{ width:100%; font-family:'Space Grotesk'; font-weight:600; font-size:17px; padding:14px; border-radius:13px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input.num{ width:100%; text-align:center; font-family:'JetBrains Mono'; font-weight:700; font-size:40px; padding:12px; border-radius:14px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input:focus{ outline:2px solid var(--candle); }
+  .code{ font-family:'JetBrains Mono'; font-weight:700; font-size:40px; letter-spacing:.22em; color:var(--candle); text-align:center; }
+  .q{ font-family:'Fraunces',serif; font-weight:500; font-size:23px; line-height:1.25; }
+  .eyebrow{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:var(--dim); letter-spacing:.08em; text-transform:uppercase; }
+  .big{ font-family:'JetBrains Mono'; font-weight:700; font-size:clamp(48px,17vw,92px); line-height:.95; color:var(--candle); text-align:center; }
+  .avatar{ border-radius:9px; display:grid; place-items:center; font-weight:700; color:#0E0B1A; flex:0 0 auto; }
+  .prow{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); }
+  .prow+.prow{ margin-top:8px; }
+  .pill{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; background:var(--haze); color:var(--mist); display:inline-flex; align-items:center; gap:4px; }
+  .clock{ font-family:'JetBrains Mono'; font-weight:700; font-size:15px; color:var(--psychic); }
+  .heckbar{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+  .heck{ font-size:22px; background:var(--panel); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .floaty{ position:fixed; bottom:80px; pointer-events:none; font-size:34px; animation:fly 2.2s ease-out forwards; z-index:50; }
+  @keyframes fly{ 0%{ transform:translateY(0) scale(.6); opacity:0 } 15%{ opacity:1; transform:translateY(-20px) scale(1.1) } 100%{ transform:translateY(-260px) scale(1); opacity:0 } }
+  .bump{ animation:bump .5s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes bump{ 0%{ transform:scale(.4); opacity:0 } 60%{ transform:scale(1.12) } 100%{ transform:scale(1); opacity:1 } }
+  .drum{ animation:drum .9s ease-in-out infinite; }
+  @keyframes drum{ 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+  .badge{ font-family:'JetBrains Mono'; font-weight:700; }
+  .verNum{ font-family:'JetBrains Mono'; font-size:10px; color:var(--dim); }
+  #qr{ display:flex; justify-content:center; }
+  #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
+  .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; }
+  .chip{ font-weight:700; font-size:13px; padding:9px 13px; border-radius:999px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); cursor:pointer; }
+  .chip.on{ background:var(--candle); color:var(--ink); border-color:var(--candle); }
+  .slot{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:11px 13px; border-radius:14px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); cursor:pointer; font-family:inherit; }
+  .slot+.slot{ margin-top:8px; }
+  .slot.sel{ border-color:var(--candle); background:rgba(245,177,76,.14); box-shadow:0 0 0 2px var(--candle) inset; }
+  .slot.win{ border-color:var(--mint); background:rgba(125,240,166,.14); box-shadow:0 0 0 2px var(--mint) inset; }
+  .slot.lose{ opacity:.5; }
+  .mult{ font-family:'JetBrains Mono'; font-weight:700; font-size:18px; min-width:44px; text-align:center; padding:6px 0; border-radius:10px; background:var(--haze); color:var(--candle); }
+  .slotv{ font-family:'JetBrains Mono'; font-weight:700; font-size:21px; }
+  .lvl{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const VERSION = "v6";
+
+/* ---- Supabase (same project as the other games) ---- */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+/* ---- helpers ---- */
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const myId = (()=>{ let v = ls.get("hub_uid") || ls.get("wg_id"); if(!v){ v=randId(); ls.set("wg_id",v); } return v; })();
+const fmt = (n)=> (n===null||n===undefined||isNaN(n)) ? "—" : Number(n).toLocaleString();
+const fmtQ = (n,q)=> (q && q.y) ? String(n) : fmt(n)+(q && q.unit ? " "+q.unit : "");   // years: no commas; measures: show unit
+const COLORS = ["#F5B14C","#7DF0A6","#F26D8B","#A78BFA","#4DB8FF","#FF9F45","#59D0C0","#F272C8"];
+const HECKLES = ["🔥","😂","😱","🐔","💸","🧢","👀","💀"];
+const GUESS_SECS=30, BET_SECS=10;
+const LEVELS = {1:"Easy",2:"Medium",3:"Hard",4:"Archaic"};
+const LVL_COLOR = {1:"#7DF0A6",2:"#4DB8FF",3:"#F5B14C",4:"#F26D8B"};
+
+/* ================= QUESTION BANK (drop-in packs) =================
+   Every .json file in data/07.wagers.packs/ is a pack and gets loaded automatically.
+   See _README.md in that folder for the pack format. */
+const PACK_DIR = "data/07.wagers.packs/";
+let BANK = [];
+const FALLBACK = [   // last resort if no pack can be loaded (e.g. testing as a bare artifact)
+ {q:"How many bones are in the adult human body?",a:206,level:1,type:"count"},
+ {q:"How many squares are on a chessboard?",a:64,level:1,type:"count"},
+ {q:"In what year did the Titanic sink?",a:1912,level:1,type:"year"},
+ {q:"In what year was the Magna Carta sealed?",a:1215,level:2,type:"year"},
+ {q:"How tall is Mount Everest, in meters?",a:8849,level:2,type:"measure",unit:"m"},
+ {q:"In what year did Constantinople fall to the Ottomans?",a:1453,level:3,type:"year"},
+ {q:"How many rods are in a mile?",a:320,level:4,type:"count"},
+ {q:"In what year BC was Julius Caesar assassinated?",a:44,level:4,type:"year"},
+];
+const toBank=(x,id,cat,pack)=>({ id, lvl:x.level, q:x.q, a:x.a, y:x.type==="year", type:x.type||"count", unit:x.unit||"", cat, pack });
+function ghRepo(){
+  const h=location.hostname, parts=location.pathname.split("/").filter(Boolean);
+  if(h.endsWith(".github.io")) return { owner:h.split(".")[0], repo:parts[0]||h };
+  return { owner:"aaronmedvick", repo:"Faces_game" };
+}
+async function listPacks(){
+  try{   // 1) live folder listing: a newly dropped file works immediately
+    const {owner,repo}=ghRepo();
+    const r=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+PACK_DIR.replace(/\/$/,""));
+    if(r.ok){ const j=await r.json(); const names=j.filter(f=>f.type==="file"&&/\.json$/i.test(f.name)&&!f.name.startsWith("_")).map(f=>f.name); if(names.length) return names; }
+  }catch(e){}
+  try{   // 2) manifest written by _check.js / the GitHub Action
+    const m=await (await fetch(PACK_DIR+"_manifest.json",{cache:"no-cache"})).json();
+    if(m.files&&m.files.length) return m.files;
+  }catch(e){}
+  return [];
+}
+function packQuestions(pack){
+  const arr=[...(pack.questions||[]).map(x=>({...x}))];
+  if(pack.categories&&typeof pack.categories==="object")
+    for(const [c,qs] of Object.entries(pack.categories)) (qs||[]).forEach(x=>arr.push({...x,cat:x.cat||c}));
+  return arr.map(x=>({ ...x, level:x.level??pack.level, type:x.type??pack.type, cat:x.cat??pack.cat??"general" }));
+}
+async function loadBank(){
+  const out=[]; const seen=new Set(); const info={ packs:0, cats:0, fallback:false, bad:0 };
+  const names=await listPacks();
+  for(const f of names){
+    try{
+      const pack=await (await fetch(PACK_DIR+f,{cache:"no-cache"})).json();
+      packQuestions(pack).forEach((x,i)=>{
+        const k=String(x.q||"").trim().toLowerCase();
+        if(x && x.q && Number.isInteger(x.a) && x.a>=0 && x.level>=1 && x.level<=4){ if(!seen.has(k)){ seen.add(k); out.push(toBank(x,f+"#"+i,x.cat,pack.pack||f)); } }
+        else info.bad++;
+      });
+      info.packs++;
+    }catch(err){ console.warn("pack failed:",f,err); }
+  }
+  if(!out.length){ FALLBACK.forEach((x,i)=>out.push(toBank(x,"fb#"+i,"fallback","built-in"))); info.fallback=true; }
+  info.cats=new Set(out.map(x=>x.cat)).size;
+  return { list:out, info };
+}
+
+/* ---- round logic ---- */
+function levelFor(round,diff){
+  if(diff && diff!=="ramp") return ({easy:1,medium:2,hard:3,archaic:4})[diff]||2;
+  if(round<=2) return 1; if(round<=4) return 2; if(round<=7) return 3; return 4;
+}
+function pickQuestion(round,diff,used){
+  const L=levelFor(round,diff);
+  let pool=BANK.filter(x=>x.lvl===L && !(used||[]).includes(x.id));
+  let fresh=false;
+  if(!pool.length){ pool=BANK.filter(x=>x.lvl===L); fresh=true; }
+  if(!pool.length){ pool=BANK; fresh=true; }   // level has no questions: use anything
+  const q=pool[Math.floor(Math.random()*pool.length)];
+  return { q, used: fresh ? [q.id] : [...(used||[]), q.id] };
+}
+// sorted unique guesses; multiplier = distance from middle (+1); low slot = "everyone's over"
+function buildBoard(ps){
+  const map=new Map();
+  ps.filter(p=>p.guess!=null).forEach(p=>{ const k=Number(p.guess); if(!map.has(k)) map.set(k,[]); map.get(k).push(p.id); });
+  const vals=[...map.keys()].sort((a,b)=>a-b); const n=vals.length;
+  const slots=vals.map((v,i)=>({ v, ids:map.get(v), mult:Math.floor(Math.abs(i-(n-1)/2))+1 }));
+  const maxM=slots.reduce((m,s)=>Math.max(m,s.mult),0);
+  return [{ v:null, low:true, ids:[], mult:maxM+1 }, ...slots];
+}
+function resolveRound(ps,board,ans){
+  let win=0; board.forEach((s,i)=>{ if(!s.low && s.v<=ans) win=i; });
+  const ws=board[win];
+  const results=ps.map(p=>{
+    let g=0, tags=[];
+    if(win>0 && p.guess!=null && Number(p.guess)===ws.v){ g=1; tags.push("closest without going over +1"); if(ws.v===ans){ g=2; tags.push("exact +1"); } }
+    const hit = p.bet!=null && p.bet===win; const b = hit ? ws.mult : 0;
+    if(hit) tags.push("chip ×"+ws.mult+" +"+b);
+    return { id:p.id, name:p.name, color:p.color, guess:p.guess, bet:p.bet, g, b, total:g+b, tags };
+  });
+  return { win, results };
+}
+/* ---- bots ---- */
+const hashId=(s)=>{ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))>>>0; return h; };
+const gauss=()=>{ let u=0,v=0; while(!u)u=Math.random(); while(!v)v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); };
+function botGuess(q,id){
+  const s=0.12+(hashId(id)%40)/100; let v;
+  if(q.y) v=q.a+gauss()*(40+s*400); else v=q.a*Math.exp(gauss()*s*1.6);
+  return Math.max(0,Math.round(v));
+}
+function botBet(board,myGuess,id){
+  if(Math.random()<0.35 || myGuess==null) return Math.floor(Math.random()*board.length);
+  let best=0; board.forEach((s,i)=>{ if(!s.low && s.v<=myGuess) best=i; }); return best;
+}
+
+function App(){
+  const [name,setName] = useState(ls.get("hub_name")||ls.get("wg_name")||"");
+  const [code,setCode] = useState("");
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState("");
+  const [guessInput,setGuessInput] = useState("");
+  const [sel,setSel] = useState(null);
+  const [floaties,setFloaties] = useState([]);
+  const [now,setNow] = useState(Date.now());
+  const chRef = useRef(null);
+  const roomR = useRef(null), playersR = useRef([]);
+  const botMem = useRef({});
+  const tickBusy = useRef(false);
+  const [bankInfo,setBankInfo] = useState(null);
+  useEffect(()=>{ loadBank().then(r=>{ BANK=r.list; setBankInfo({ n:r.list.length, ...r.info }); }); },[]);
+
+  const me = players.find(p=>p.id===myId);
+  const isHost = room && room.host_id===myId;
+  const Q = room?.question;
+  const secsLeft = room?.deadline ? Math.max(0, Math.ceil((room.deadline-now)/1000)) : null;
+  const byId = (id)=> players.find(p=>p.id===id);
+
+  useEffect(()=>{ roomR.current=room; playersR.current=players; },[room,players]);
+  useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),300); return ()=>clearInterval(t); },[]);
+  useEffect(()=>{ const u=new URLSearchParams(location.search); const c=u.get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ setSel(null); setGuessInput(""); },[room?.phase, room?.round]);
+
+  /* ---- realtime ---- */
+  async function refetch(c){
+    if(!sb) return;
+    const r = await sb.from("wag_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data) setRoom(r.data);
+    const ps = await sb.from("wag_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data) setPlayers(ps.data);
+  }
+  useEffect(()=>{
+    if(!code||!sb) return;
+    refetch(code);
+    const ch = sb.channel("wag:"+code, { config:{ broadcast:{ self:true } } })
+      .on("postgres_changes",{event:"*",schema:"public",table:"wag_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"wag_players",filter:"code=eq."+code},()=>refetch(code))
+      .on("broadcast",{event:"heckle"},(m)=>popHeckle(m.payload))
+      .subscribe();
+    chRef.current = ch;
+    const poll = setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); chRef.current=null; };
+  },[code]);
+
+  function sendHeckle(emoji){ if(chRef.current) chRef.current.send({type:"broadcast",event:"heckle",payload:{emoji,by:(name||"?")}}); }
+  function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
+
+  /* ---- create / join ---- */
+  async function host(){
+    if(!sb||!name.trim()) return;
+    ls.set("wg_name",name.trim()); ls.set("hub_name",name.trim());
+    const c=randCode();
+    await sb.from("wag_rooms").insert({ code:c, host_id:myId, phase:"lobby", difficulty:"ramp", round:0, used:[] });
+    await sb.from("wag_players").delete().eq("id",myId);
+    await sb.from("wag_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0 });
+    setCode(c);
+  }
+  async function join(){
+    if(!sb||!name.trim()||!codeInput.trim()) return;
+    const c=codeInput.trim().toUpperCase();
+    ls.set("wg_name",name.trim()); ls.set("hub_name",name.trim());
+    const r=await sb.from("wag_rooms").select("code").eq("code",c).maybeSingle();
+    if(!r.data){ alert("No room with that code."); return; }
+    const ps=await sb.from("wag_players").select("id").eq("code",c);
+    const color=COLORS[(ps.data?ps.data.length:0)%COLORS.length];
+    await sb.from("wag_players").delete().eq("id",myId);
+    await sb.from("wag_players").insert({ id:myId, code:c, name:name.trim(), color, score:0 });
+    setCode(c);
+  }
+  async function leave(){ if(sb){ await sb.from("wag_players").delete().eq("id",myId); } setCode(""); setRoom(null); setPlayers([]); }
+  async function kick(id){ if(sb) await sb.from("wag_players").delete().eq("id",id); }
+  async function addBot(){
+    if(players.length>=8) return;
+    const names=["Ava","Rex","Nova","Biscuit","Duke","Pixel","Coco","Zed","Milo","Juno","Tank","Wren"];
+    const used=players.map(p=>p.name);
+    const nm="🤖 "+(names.find(n=>!used.includes("🤖 "+n))||("Bot"+Math.floor(Math.random()*99)));
+    await sb.from("wag_players").insert({ id:"bot_"+randId(), code, name:nm, color:COLORS[players.length%COLORS.length], score:0 });
+  }
+  async function setDiff(d){ await sb.from("wag_rooms").update({ difficulty:d }).eq("code",code); }
+  async function setOpt(o){ await sb.from("wag_rooms").update(o).eq("code",code); }
+
+  /* ---- host: round control ---- */
+  async function startGame(){
+    await sb.from("wag_players").update({ score:0 }).eq("code",code);
+    await sb.from("wag_rooms").update({ used:[] }).eq("code",code);
+    beginRound(1,[]);
+  }
+  async function beginRound(n,usedOverride){
+    const r=roomR.current||room;
+    const pick=pickQuestion(n, r.difficulty, usedOverride!==undefined?usedOverride:r.used);
+    await sb.from("wag_players").update({ guess:null, bet:null }).eq("code",code);
+    botMem.current={};
+    await sb.from("wag_rooms").update({ phase:"guessing", round:n, question:pick.q, used:pick.used, board:null, outcome:null, deadline:Date.now()+GUESS_SECS*1000 }).eq("code",code);
+  }
+  async function nextRound(){ beginRound((room.round||0)+1); }
+  async function endGame(){ await sb.from("wag_rooms").update({ phase:"gameover" }).eq("code",code); }
+  async function backToLobby(){ await sb.from("wag_rooms").update({ phase:"lobby", round:0, question:null, board:null, outcome:null }).eq("code",code); }
+
+  async function submitGuess(){
+    const v=parseInt(guessInput,10); if(isNaN(v)||v<0) return;
+    setGuessInput("");
+    await sb.from("wag_players").update({ guess:v }).eq("id",myId);
+  }
+  const inOrder = room?.vote_mode==="order";
+  const allowChange = room?.allow_change!==false;
+  const turnId = inOrder && room?.vote_order ? room.vote_order[room.turn||0] : null;
+  const myTurn = !inOrder || turnId===myId;
+  async function vote(i){
+    if(!room||room.phase!=="betting"||(room.deadline&&Date.now()>room.deadline)) return;
+    if(!myTurn) return;
+    if(me && me.bet===i) return;
+    if(me && me.bet!=null && !allowChange) return;
+    setPlayers(ps=>ps.map(p=>p.id===myId?{...p,bet:i}:p));   // instant feedback
+    await sb.from("wag_players").update({ bet:i }).eq("id",myId);
+  }
+  async function lockTurn(){ await sb.from("wag_rooms").update({ deadline:Date.now()-1 }).eq("code",code); }
+
+  /* ---- host loop: persistent interval reading refs (not a React effect timer) ---- */
+  useEffect(()=>{
+    if(!isHost||!code||!sb) return;
+    const isBotId=(id)=>String(id).startsWith("bot_");
+    const due=(k,a,b)=>{ const m=botMem.current; if(!m[k]) m[k]={ at:Date.now()+a+Math.random()*(b-a), done:false }; if(!m[k].done && Date.now()>m[k].at){ m[k].done=true; return true; } return false; };
+
+    async function toBetting(r){
+      const fresh=await sb.from("wag_players").select("*").eq("code",code);
+      const ps=fresh.data||[];
+      if(!ps.some(p=>p.guess!=null)){ // nobody guessed: give another window
+        await sb.from("wag_rooms").update({ deadline:Date.now()+GUESS_SECS*1000 }).eq("code",code); return;
+      }
+      const board=buildBoard(ps);
+      const sorted=[...ps].sort((x,y)=>String(x.joined_at).localeCompare(String(y.joined_at))).map(p=>p.id);
+      const k=sorted.length?((r.round||1)-1)%sorted.length:0;           // rotate who goes first each round
+      const order=[...sorted.slice(k),...sorted.slice(0,k)];
+      roomR.current={...r,phase:"betting"};
+      await sb.from("wag_rooms").update({ phase:"betting", board, vote_order:order, turn:0, deadline:Date.now()+BET_SECS*1000 }).eq("code",code).eq("phase","guessing");
+    }
+    async function toReveal(r){
+      const fresh=await sb.from("wag_players").select("*").eq("code",code);
+      const ps=fresh.data||[];
+      const out=resolveRound(ps,r.board,r.question.a);
+      const outcome={ answer:r.question.a, win:out.win, results:out.results, at:Date.now() };
+      roomR.current={...r,phase:"reveal"};
+      // phase guard: only the first transition applies scores
+      const u=await sb.from("wag_rooms").update({ phase:"reveal", outcome, deadline:null }).eq("code",code).eq("phase","betting").select();
+      if(!u.data||!u.data.length) return;
+      for(const x of out.results){
+        if(x.total>0){ const p=ps.find(q=>q.id===x.id); await sb.from("wag_players").update({ score:(p.score||0)+x.total }).eq("id",x.id); }
+      }
+    }
+
+    const t=setInterval(async()=>{
+      if(tickBusy.current) return;
+      const r=roomR.current, ps=playersR.current;
+      if(!r||!ps.length) return;
+      tickBusy.current=true;
+      try{
+        const nowT=Date.now();
+        if(r.phase==="guessing"){
+          for(const p of ps){
+            if(isBotId(p.id)&&p.guess==null&&due("g"+r.round+p.id,800,6000))
+              await sb.from("wag_players").update({ guess:botGuess(r.question,p.id) }).eq("id",p.id);
+          }
+          const all=ps.every(p=>p.guess!=null);
+          if(all||(r.deadline&&nowT>r.deadline)) await toBetting(r);
+        } else if(r.phase==="betting" && r.board){
+          const canChange=r.allow_change!==false;
+          if(r.vote_mode==="order"){
+            const ord=r.vote_order||[]; const t=r.turn||0; const cur=ord[t];
+            const cp=ps.find(p=>p.id===cur);
+            let advance = !cp || (r.deadline&&nowT>r.deadline);
+            if(cp && isBotId(cp.id)){
+              if(cp.bet==null && due("b"+r.round+cp.id,600,3500))
+                await sb.from("wag_players").update({ bet:botBet(r.board,cp.guess,cp.id) }).eq("id",cp.id);
+              else if(cp.bet!=null && due("a"+r.round+cp.id,700,1800)) advance=true;
+            }
+            if(cp && !canChange && cp.bet!=null) advance=true;      // locked votes: turn ends on first vote
+            if(advance){
+              if(t+1<ord.length){
+                roomR.current={...r,turn:t+1,deadline:Date.now()+BET_SECS*1000};
+                await sb.from("wag_rooms").update({ turn:t+1, deadline:Date.now()+BET_SECS*1000 }).eq("code",code).eq("turn",t);
+              } else await toReveal(r);
+            }
+          } else {
+            for(const p of ps){
+              if(!isBotId(p.id)) continue;
+              if(p.bet==null&&due("b"+r.round+p.id,500,3500))
+                await sb.from("wag_players").update({ bet:botBet(r.board,p.guess,p.id) }).eq("id",p.id);
+              else if(canChange&&p.bet!=null&&hashId(p.id+r.round)%3===0&&due("c"+r.round+p.id,4500,8000))
+                await sb.from("wag_players").update({ bet:Math.floor(Math.random()*r.board.length) }).eq("id",p.id);
+            }
+            const all=ps.every(p=>p.bet!=null);
+            if((r.deadline&&nowT>r.deadline)||(!canChange&&all)) await toReveal(r);
+          }
+        }
+      }catch(e){ console.error(e); }
+      finally{ tickBusy.current=false; }
+    },700);
+    return ()=>clearInterval(t);
+  },[isHost,code]);
+
+  /* ============ RENDER ============ */
+  const Avatar=({p,size=30})=> p ? <div className="avatar" style={{background:p.color,width:size,height:size,fontSize:size*0.44}}>{(p.name||"?").slice(0,1).toUpperCase()}</div> : null;
+  const Heckbar=()=> (<div className="heckbar">{HECKLES.map(e=><button key={e} className="heck" onClick={()=>sendHeckle(e)}>{e}</button>)}</div>);
+  const Floaties=()=> floaties.map(f=><div key={f.id} className="floaty" style={{left:f.left+"%"}}>{f.emoji}</div>);
+  const Header=({sub})=> (
+    <div className="top">
+      <div><div className="fr" style={{fontSize:20,color:"var(--candle)",fontWeight:600}}>Wits &amp; Wagers</div>{sub&&<div className="who">{sub}</div>}</div>
+      <div style={{textAlign:"right"}}>{secsLeft!=null && (room?.phase==="guessing"||room?.phase==="betting") && <div className="clock">⏱ {secsLeft}s</div>}<div className="verNum">{VERSION}</div></div>
+    </div>
+  );
+  const QCard=({label})=> Q && (
+    <div className="card" style={{marginTop:10}}>
+      <div className="row" style={{alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+        <div className="eyebrow">{label||"The question"}</div>
+        <span className="lvl" style={{background:LVL_COLOR[Q.lvl]+"26",color:LVL_COLOR[Q.lvl]}}>{LEVELS[Q.lvl]}</span>
+      </div>
+      <div className="q">{Q.q}</div>
+    </div>
+  );
+  const Center=({children})=> <div className="grow" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:10,textAlign:"center"}}>{children}</div>;
+  const slotLabel=(s)=> s.low ? "Everyone's too high" : fmtQ(s.v,Q);
+  const slotNames=(s)=> s.low ? "all guesses are over" : s.ids.map(id=>byId(id)?.name||"?").join(", ");
+
+  if(!sb) return <div className="wrap"><div className="brandBig">Wits &amp; Wagers</div><p className="dim">Supabase didn't load. Check your connection and refresh.</p></div>;
+
+  /* ---- HOME (same as Whatcha) ---- */
+  if(!code){
+    return (
+      <div className="wrap">
+        <div className="brandBig">Wits &amp; Wagers</div>
+        <p className="dim" style={{marginTop:0}}>Guess the number. Then bet on whoever you trust.</p>
+        <div className="card" style={{marginTop:6}}>
+          <div className="eyebrow" style={{marginBottom:6}}>Your name</div>
+          <input className="txt" placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
+          <div className="eyebrow" style={{margin:"16px 0 6px"}}>Join a game</div>
+          <div className="row">
+            <input className="txt grow" style={{textTransform:"uppercase"}} placeholder="CODE" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
+            <button className="go2" style={{width:"auto",padding:"0 20px"}} disabled={!name.trim()||!codeInput.trim()} onClick={join}>Join</button>
+          </div>
+        </div>
+        <div className="card" style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Or host a new game</div>
+          <button className="go" disabled={!name.trim()} onClick={host}>Host game</button>
+        </div>
+      </div>
+    );
+  }
+  if(!room) return <div className="wrap"><Header/><p className="dim">Connecting…</p></div>;
+
+  /* ---- LOBBY ---- */
+  if(room.phase==="lobby"){
+    const D=[["ramp","Ramp"],["easy","Easy"],["medium","Medium"],["hard","Hard"],["archaic","Archaic"]];
+    return (
+      <div className="wrap"><Header sub={"you are "+(name||"?")}/>
+        <div className="card" style={{marginTop:10,textAlign:"center"}}>
+          <div className="eyebrow">Join code</div>
+          <div className="code">{code}</div>
+          <QR value={location.origin+location.pathname+"?code="+code} />
+          <div className="dim" style={{fontSize:12,marginTop:6}}>Scan to join, or enter the code on the home screen.</div>
+        </div>
+        <div style={{marginTop:12}}>
+          <div className="eyebrow" style={{marginBottom:8}}>Players ({players.length}) · joins anytime</div>
+          {players.map(p=><div className="prow" key={p.id}><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}{p.id===room.host_id&&<span className="pill" style={{marginLeft:8}}>host</span>}{p.id===myId&&<span className="dim" style={{marginLeft:6,fontSize:12}}>you</span>}</div>{isHost&&p.id!==myId&&<button className="link" onClick={()=>kick(p.id)}>✕</button>}</div>)}
+        </div>
+        <div className="foot">
+          {isHost ? (
+            <>
+              <div className="eyebrow" style={{marginBottom:6}}>Difficulty</div>
+              <div className="row" style={{flexWrap:"wrap",marginBottom:10}}>
+                {D.map(([k,l])=><button key={k} className={"chip"+(room.difficulty===k?" on":"")} onClick={()=>setDiff(k)}>{l}</button>)}
+              </div>
+              <div className="eyebrow" style={{marginBottom:6}}>Voting</div>
+              <div className="row" style={{flexWrap:"wrap",marginBottom:10}}>
+                <button className={"chip"+(!inOrder?" on":"")} onClick={()=>setOpt({vote_mode:"together"})}>All at once</button>
+                <button className={"chip"+(inOrder?" on":"")} onClick={()=>setOpt({vote_mode:"order"})}>In order</button>
+                <button className={"chip"+(allowChange?" on":"")} onClick={()=>setOpt({allow_change:true})}>Can change</button>
+                <button className={"chip"+(!allowChange?" on":"")} onClick={()=>setOpt({allow_change:false})}>Locked</button>
+              </div>
+              <div className="dim" style={{fontSize:12,marginBottom:10}}>{room.difficulty==="ramp"?"Ramp starts easy and gets archaic by round 8.":"Every round pulls from "+LEVELS[levelFor(1,room.difficulty)]+"."}</div>
+              <button className="go2" style={{marginBottom:10}} disabled={players.length>=8} onClick={addBot}>+ Add bot {players.length>=8?"(full)":""}</button>
+              <button className="go" disabled={players.length<2||!bankInfo} onClick={startGame}>{!bankInfo?"Loading questions…":players.length<2?"Need 1 more":"Start playing"}</button>
+              {bankInfo && <div className="dim" style={{fontSize:11,textAlign:"center",marginTop:8}}>{bankInfo.fallback?"⚠️ couldn't read any question packs — using "+bankInfo.n+" built-in questions":"📚 "+bankInfo.n+" questions · "+bankInfo.packs+" pack"+(bankInfo.packs===1?"":"s")+" · "+bankInfo.cats+" categories"+(bankInfo.bad?" · "+bankInfo.bad+" skipped (bad format)":"")}</div>}
+            </>
+          ) : <div className="dim" style={{textAlign:"center"}}>Waiting for the host to start…<div style={{fontSize:12,marginTop:4}}>{LEVELS[levelFor(1,room.difficulty)]&&room.difficulty!=="ramp"?LEVELS[levelFor(1,room.difficulty)]:"Ramp"} · voting {inOrder?"in order":"all at once"} · {allowChange?"changes allowed":"votes locked"}</div></div>}
+          <button className="link" style={{display:"block",margin:"10px auto 0"}} onClick={leave}>Leave</button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---- GUESSING ---- */
+  if(room.phase==="guessing"){
+    const iIn = me && me.guess!=null;
+    const inCount = players.filter(p=>p.guess!=null).length;
+    return (
+      <div className="wrap"><Header sub={"round "+room.round+" · everyone guesses"}/><Floaties/>
+        <QCard/>
+        {iIn ? (
+          <Center>
+            <div className="eyebrow">your guess is in</div>
+            <div className="big bump">{fmtQ(me.guess,Q)}</div>
+            <div className="dim">{inCount} of {players.length} locked in</div>
+            <Heckbar/>
+          </Center>
+        ) : (
+          <>
+            <div className="foot" style={{order:5}}></div>
+            <p className="dim" style={{textAlign:"center",marginTop:12}}>Whole number{Q?.unit?" ("+Q.unit+")":""}. Nobody sees it until betting.</p>
+            <input className="num" inputMode="numeric" pattern="[0-9]*" maxLength={15} placeholder="0" value={guessInput} onChange={e=>setGuessInput(e.target.value.replace(/[^0-9]/g,""))} autoFocus />
+            <button className="go" style={{marginTop:12}} disabled={guessInput===""} onClick={submitGuess}>Lock in guess</button>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  /* ---- BETTING ---- */
+  if(room.phase==="betting" && room.board){
+    const board=room.board;
+    const voted = players.filter(p=>p.bet!=null).length;
+    const pct = Math.max(0,Math.min(100,((room.deadline||0)-now)/(BET_SECS*10)));
+    const turnP = byId(turnId);
+    const canTap = myTurn && !(me&&me.bet!=null&&!allowChange);
+    return (
+      <div className="wrap"><Header sub={"round "+room.round+" · "+(inOrder?(myTurn?"your turn to vote":(turnP?.name||"…")+" is voting"):"vote your chip")}/><Floaties/>
+        <div style={{height:6,borderRadius:3,background:"var(--haze)",marginTop:10,overflow:"hidden"}}><div style={{height:"100%",width:pct+"%",background:secsLeft<=3?"var(--rose)":"var(--candle)",transition:"width .3s linear"}}/></div>
+        {inOrder && myTurn && allowChange && <button className="go" style={{marginTop:10}} disabled={!me||me.bet==null} onClick={lockTurn}>{me&&me.bet!=null?"Lock it in":"Tap a guess to vote"}</button>}
+        <div className="panel" style={{marginTop:10}}><div className="q" style={{fontSize:18}}>{Q?.q}</div></div>
+        {inOrder && <div className="row" style={{flexWrap:"wrap",gap:6,marginTop:10}}>{(room.vote_order||[]).map((id,i)=>{ const p=byId(id); if(!p) return null; return <span key={id} className="pill" style={{background:i===(room.turn||0)?"var(--candle)":"var(--haze)",color:i===(room.turn||0)?"var(--ink)":"var(--mist)",opacity:i<(room.turn||0)?.6:1}}>{p.name}{p.bet!=null&&i<=(room.turn||0)?" ✓":""}</span>; })}</div>}
+        <div className="dim" style={{textAlign:"center",fontSize:12,margin:"10px 0 8px"}}>{!inOrder?"Tap a guess to put your chip on it."+(allowChange?" Tap another to move it.":" Votes are locked once placed."):(myTurn?(allowChange?"Pick, change if you like, then lock it in.":"Your first tap is final."):"Watch the board — you vote when it's your turn.")} {voted} of {players.length} voted.</div>
+        <div>
+          {board.map((s,i)=>{
+            const voters=players.filter(p=>p.bet===i);
+            return (
+              <button key={i} className={"slot"+(me&&me.bet===i?" sel":"")} style={{opacity:(!canTap&&!(me&&me.bet===i))?.85:1}} onClick={()=>vote(i)}>
+                <div className="mult">×{s.mult}</div>
+                <div className="grow">
+                  <div className="slotv" style={s.low?{fontSize:16}:null}>{slotLabel(s)}</div>
+                  <div className="dim" style={{fontSize:12}}>{slotNames(s)}{s.ids.includes(myId)?" · you":""}</div>
+                </div>
+                <div style={{display:"flex",gap:3,flexWrap:"wrap",justifyContent:"flex-end",maxWidth:110}}>{voters.map(v=><Avatar key={v.id} p={v} size={22}/>)}</div>
+              </button>
+            );
+          })}
+        </div>
+        <Heckbar/>
+      </div>
+    );
+  }
+
+  /* ---- REVEAL ---- */
+  if(room.phase==="reveal" && room.outcome){
+    const o=room.outcome, board=room.board||[];
+    const el=now-(o.at||now);
+    const showAns = el>1800, showWin = el>3400;
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+    return (
+      <div className="wrap"><Header sub={"round "+room.round+" · reveal"}/><Floaties/>
+        {showWin && isHost && (
+          <div className="row" style={{marginTop:10}}>
+            <button className="go" style={{flex:1}} onClick={nextRound}>Next round</button>
+            <button className="go2" style={{width:"auto",padding:"0 16px"}} onClick={endGame}>End</button>
+          </div>
+        )}
+        <div className="card" style={{marginTop:10,textAlign:"center"}}>
+          <div className="eyebrow">{Q?.q}</div>
+          {showAns
+            ? <div className="big bump" key="ans" style={{margin:"8px 0 2px"}}>{fmtQ(o.answer,Q)}</div>
+            : <div className="big drum" style={{margin:"8px 0 2px",fontSize:32}}>The answer is…</div>}
+        </div>
+        {showWin && (
+          <>
+            <div style={{marginTop:12}}>
+              {board.map((s,i)=>{
+                const bettors=(o.results||[]).filter(r=>r.bet===i);
+                return (
+                  <div key={i} className={"slot bump "+(i===o.win?"win":"lose")} style={{cursor:"default"}}>
+                    <div className="mult">×{s.mult}</div>
+                    <div className="grow">
+                      <div className="slotv" style={s.low?{fontSize:16}:null}>{slotLabel(s)}{i===o.win&&" 🏆"}</div>
+                      <div className="dim" style={{fontSize:12}}>{slotNames(s)}</div>
+                    </div>
+                    <div style={{display:"flex",gap:3}}>{bettors.map(b=><Avatar key={b.id} p={b} size={22}/>)}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{marginTop:14}}>
+              <div className="eyebrow" style={{marginBottom:8}}>This round</div>
+              {(o.results||[]).map(r=>(
+                <div className="prow" key={r.id} style={{opacity:r.total>0?1:.6}}>
+                  <Avatar p={r}/>
+                  <div className="grow"><div style={{fontWeight:600}}>{r.name}</div><div className="dim" style={{fontSize:11}}>{r.tags.length?r.tags.join(" · "):"no points"}</div></div>
+                  <div className="badge" style={{fontSize:18,color:r.total>0?"var(--mint)":"var(--dim)"}}>{r.total>0?"+"+r.total:"0"}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:14}}>
+              <div className="eyebrow" style={{marginBottom:8}}>Totals</div>
+              {ranked.map((p,i)=><div className="prow" key={p.id}><div className="mono dim" style={{width:18,fontWeight:700}}>{i+1}</div><Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}</div><div className="mono" style={{fontWeight:700,fontSize:20,color:"var(--psychic)"}}>{p.score||0}</div></div>)}
+            </div>
+            {!isHost && <div className="dim" style={{textAlign:"center",marginTop:14}}>Waiting for host…</div>}
+          </>
+        )}
+        <Heckbar/>
+      </div>
+    );
+  }
+
+  /* ---- GAME OVER ---- */
+  if(room.phase==="gameover"){
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0)); const w=ranked[0];
+    return (
+      <div className="wrap"><Header/><Floaties/>
+        {isHost && <div className="row" style={{marginTop:10}}><button className="go2" onClick={backToLobby}>Back to lobby</button><button className="go" style={{flex:1}} onClick={startGame}>Play again</button></div>}
+        <Center>
+          <div className="pill">🏆 winner</div><Avatar p={w} size={84}/>
+          <div className="fr" style={{fontSize:36,color:"var(--candle)"}}>{w?.name}</div>
+          <div className="mono" style={{fontWeight:700,fontSize:24,color:"var(--psychic)"}}>{w?.score||0} pts</div>
+          <div style={{width:"100%",marginTop:8}}>{ranked.map((p,i)=><div className="prow" key={p.id}><div className="mono dim" style={{width:18,fontWeight:700}}>{i+1}</div><Avatar p={p}/><div className="grow" style={{fontWeight:600,textAlign:"left"}}>{p.name}</div><div className="mono" style={{fontWeight:700}}>{p.score||0}</div></div>)}</div>
+        </Center>
+        {!isHost && <div className="dim" style={{textAlign:"center"}}>Thanks for playing!</div>}
+      </div>
+    );
+  }
+
+  return <div className="wrap"><Header/><p className="dim">Loading…</p></div>;
+}
+
+/* ---- QR helper ---- */
+function QR({value,size=150}){
+  const ref=useRef(null);
+  useEffect(()=>{ if(!ref.current||!window.QRCode) return; ref.current.innerHTML=""; try{ new window.QRCode(ref.current,{ text:value, width:size, height:size, colorDark:"#0E0B1A", colorLight:"#ffffff", correctLevel:window.QRCode.CorrectLevel.M }); }catch(e){} },[value]);
+  return <div id="qr" ref={ref} style={{marginTop:10}}></div>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

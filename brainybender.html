@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brainy Bender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+<style>
+:root{
+  --velvet:#1b0f15; --wine:#2e1520; --wine2:#43202f; --bone:#efe3cf; --dim:#b9a78f;
+  --candle:#f2a93b; --ember:#e0533a; --moss:#88b86a;
+  --serif:'Fraunces',Georgia,serif; --sans:'Space Grotesk',system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--velvet);color:var(--bone);font-family:var(--sans)}
+body{background:radial-gradient(120% 70% at 50% 0%,#3a1826 0%,var(--velvet) 65%) fixed;}
+#root{max-width:520px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px max(40px,env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation}
+
+.top{display:flex;justify-content:space-between;align-items:center;min-height:32px;font-size:14px;color:var(--dim)}
+.top a,.top button{color:var(--dim);background:none;border:0;font-size:14px;padding:6px 0;text-decoration:none}
+.score{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--bone)}
+.streak{color:var(--candle);font-size:14px;margin-left:8px;font-weight:600}
+
+/* candle timer */
+.candle{position:relative;margin:30px 4px 6px;height:20px;background:rgba(0,0,0,.4);border-radius:6px}
+.wax{position:relative;height:100%;background:linear-gradient(180deg,#f7ecd8,#d3bf9a);border-radius:6px;transition:none}
+.wax::after{content:"";position:absolute;right:-1px;top:-5px;width:2px;height:6px;background:#2a1a12}
+.candle,.flame{pointer-events:none}
+.flame{position:absolute;right:-8px;top:-26px;width:16px;height:24px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(ellipse at 50% 78%,#fff6cf 0,var(--candle) 42%,rgba(242,169,59,0) 76%);
+  transform-origin:50% 100%;animation:flick .17s infinite alternate;filter:drop-shadow(0 0 8px rgba(242,169,59,.7))}
+.flame.hot{background:radial-gradient(ellipse at 50% 78%,#ffe0cc 0,var(--ember) 42%,rgba(224,83,58,0) 76%);filter:drop-shadow(0 0 10px rgba(224,83,58,.85));animation-duration:.09s}
+@keyframes flick{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.9,1.14) rotate(3deg)}}
+
+/* strip: live worth / result */
+.strip{min-height:104px;margin:12px 0 4px;display:flex;flex-direction:column;justify-content:center}
+.worth{font-family:var(--serif);font-weight:900;font-size:44px;line-height:1;letter-spacing:-.5px;color:var(--candle);font-variant-numeric:tabular-nums}
+.worth small{display:block;font-family:var(--sans);font-weight:500;font-size:13px;color:var(--dim);letter-spacing:0;margin-top:4px}
+.resrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.res{font-family:var(--serif);font-weight:900;font-size:36px;line-height:1}
+.res.ok{color:var(--moss)} .res.no{color:var(--ember)}
+.why{margin:8px 0 0;font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.3;color:var(--bone);opacity:.85}
+.next{flex:none;background:var(--candle);color:#2a1608;border:0;border-radius:12px;padding:13px 24px;font-weight:700;font-size:17px}
+.next:active{transform:scale(.97)}
+
+.q{font-family:var(--serif);font-weight:700;font-size:25px;line-height:1.2;min-height:98px;margin:8px 0 14px}
+
+.ans{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:15px 14px;margin:0 0 10px;
+  background:var(--wine);border:1.5px solid var(--wine2);color:var(--bone);border-radius:14px;font-size:18px;font-weight:600;line-height:1.2}
+.ans .k{flex:none;width:28px;height:28px;border-radius:50%;background:var(--wine2);display:grid;place-items:center;font-size:13px;color:var(--candle);font-weight:700}
+.ans:not(:disabled):active{transform:scale(.98);background:var(--wine2)}
+.ans.right{border-color:var(--moss);background:#22331d}
+.ans.right .k{background:var(--moss);color:#14210f}
+.ans.wrong{border-color:var(--ember);background:#3c1712;animation:shake .3s}
+.ans.wrong .k{background:var(--ember);color:#2b0c07}
+.ans.dim{opacity:.38}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* start / end */
+.hero{padding-top:28px}
+.title{font-family:var(--serif);font-weight:900;font-size:68px;line-height:.95;letter-spacing:-2px;margin:0 0 12px}
+.sub{font-size:18px;line-height:1.4;color:var(--dim);margin:0 0 22px}
+.big{display:block;width:100%;background:var(--candle);color:#2a1608;border:0;border-radius:16px;padding:19px;font-size:21px;font-weight:700;margin-bottom:22px}
+.big:active{transform:scale(.98)}
+.rules{list-style:none;padding:0;margin:0 0 20px;font-size:16px;line-height:1.45;color:var(--bone)}
+.rules li{padding:10px 0;border-top:1px solid var(--wine2)}
+.best{color:var(--dim);font-size:15px}
+.best b{color:var(--candle);font-family:var(--serif);font-size:20px}
+.final{font-family:var(--serif);font-weight:900;font-size:84px;line-height:1;color:var(--candle);margin:0;font-variant-numeric:tabular-nums}
+.rank{font-family:var(--serif);font-style:italic;font-size:26px;margin:6px 0 20px}
+.dots{display:flex;gap:7px;margin:0 0 20px}
+.dot{flex:1;height:10px;border-radius:5px;background:var(--wine2)}
+.dot.ok{background:var(--moss)} .dot.no{background:var(--ember)}
+.stats{display:flex;gap:10px;margin-bottom:20px}
+.stat{flex:1;background:var(--wine);border-radius:12px;padding:12px}
+.stat b{display:block;font-family:var(--serif);font-size:24px}
+.stat span{font-size:13px;color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 22px}
+.chip{background:var(--wine);color:var(--bone);border:1.5px solid var(--wine2);border-radius:999px;padding:9px 14px;font-size:15px;font-weight:600}
+.chip span{color:var(--dim);font-weight:500;margin-left:4px}
+.chip.on{background:var(--candle);border-color:var(--candle);color:#2a1608}
+.chip.on span{color:#5a3a14}
+.ver{text-align:center;color:#6d5a52;font-size:12px;margin-top:26px}
+@media (prefers-reduced-motion:reduce){.flame{animation:none}.ans.wrong{animation:none}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const VERSION = "v5";
+const SECONDS = 12;
+
+const MAX_ROUNDS = 10;
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function buildGame(bank,cat){
+  const pool = cat==="All" ? bank : bank.filter(x=>x.cat===cat);
+  return shuffle(pool).slice(0,MAX_ROUNDS).map(x=>{
+    const opts = shuffle([{t:x.a,c:true}, ...x.wrong.map(t=>({t,c:false}))]);
+    return { q:x.q, why:x.why, cat:x.cat, opts: opts.map(o=>o.t), a: opts.findIndex(o=>o.c) };
+  });
+}
+
+// Reads data/08.brainybender.manifest.json, then every pack file it lists.
+// (Manifest is auto-generated: node data/08.brainybender.pack-gen.js)
+async function loadPacks(){
+  const bust="?t="+Date.now();
+  const mres=await fetch("data/08.brainybender.manifest.json"+bust,{cache:"no-store"});
+  if(!mres.ok) throw new Error("manifest "+mres.status);
+  const manifest=await mres.json();
+  const packs=await Promise.all((manifest.packs||[]).map(p=>
+    fetch("data/"+p.file+bust,{cache:"no-store"}).then(r=>r.json()).catch(()=>null)));
+  const bank=[];
+  packs.forEach(pk=>{
+    if(!pk) return;
+    (pk.cards||[]).forEach(x=>{
+      if(x && x.q && x.a && Array.isArray(x.wrong) && x.wrong.length>=1){
+        bank.push({q:x.q,a:x.a,wrong:x.wrong,why:x.why||"",cat:x.cat||pk.category||pk.title||"Mixed"});
+      }
+    });
+  });
+  return bank;
+}
+
+// ---------- sound (Web Audio, no assets) ----------
+let actx=null, muted=false;
+function ac(){
+  if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(actx && actx.state==="suspended") actx.resume();
+  return actx;
+}
+function tone(f,d=0.12,type="sine",v=0.08,delay=0){
+  if(muted) return; const c=ac(); if(!c) return;
+  const t=c.currentTime+delay, o=c.createOscillator(), g=c.createGain();
+  o.type=type; o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(v,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+d+0.03);
+}
+const sfx = {
+  good(){ tone(660,.1,"triangle"); tone(880,.14,"triangle",.08,.09); tone(1175,.22,"triangle",.08,.18); },
+  bad(){ tone(150,.3,"sawtooth",.06); tone(105,.38,"sawtooth",.05,.12); },
+  tick(){ tone(1000,.04,"square",.025); },
+  pick(){ tone(520,.05,"triangle",.05); }
+};
+
+const RANKS = [
+  [3000,"Sleepwalker"],[5000,"Still booting"],[7000,"Decent reflexes"],
+  [9000,"Sharp as a tack"],[10500,"Razor brain"],[99999,"Unhinged genius"]
+];
+const rankFor = s => RANKS.find(r=>s<r[0])[1];
+const fmt = n => n.toLocaleString();
+
+function Top({children,mute,onMute}){
+  return (
+    <div className="top">
+      <a href="./index.html">All games</a>
+      {children}
+      <button onClick={onMute}>{mute?"Sound off":"Sound on"}</button>
+    </div>
+  );
+}
+
+// Owns the 60fps countdown so the answer buttons never re-render while it runs
+function Live({qi,active,startRef,onTimeout,children}){
+  const [left,setLeft]=useState(SECONDS);
+  const cb=useRef(onTimeout); cb.current=onTimeout;
+  useEffect(()=>{
+    if(!active) return;
+    setLeft(SECONDS);
+    const t0=performance.now(); startRef.current=t0;
+    let raf, lastTick=-1;
+    const loop=()=>{
+      const rem=Math.max(0,SECONDS-(performance.now()-t0)/1000);
+      setLeft(rem);
+      const sec=Math.ceil(rem);
+      if(rem<=3 && rem>0 && sec!==lastTick){ lastTick=sec; sfx.tick(); }
+      if(rem<=0){ cb.current(); return; }
+      raf=requestAnimationFrame(loop);
+    };
+    raf=requestAnimationFrame(loop);
+    return ()=>cancelAnimationFrame(raf);
+  },[qi,active]);
+  const worth=Math.round(100+900*(left/SECONDS));
+  return (
+    <React.Fragment>
+      <div className="candle">
+        <div className="wax" style={{width:(left/SECONDS*100)+"%"}}>
+          <span className={"flame"+(left<=3?" hot":"")}/>
+        </div>
+      </div>
+      <div className="strip">
+        {active ? <div className="worth">{fmt(worth)}<small>Worth right now</small></div> : children}
+      </div>
+    </React.Fragment>
+  );
+}
+
+function App(){
+  const [screen,setScreen]=useState("start");
+  const [game,setGame]=useState([]);
+  const [qi,setQi]=useState(0);
+  const [phase,setPhase]=useState("ask");
+  const [picked,setPicked]=useState(null);
+  const [gain,setGain]=useState(0);
+  const [score,setScore]=useState(0);
+  const [streak,setStreak]=useState(0);
+  const [results,setResults]=useState([]);
+  const [bank,setBank]=useState(null);
+  const [cat,setCat]=useState("All");
+  useEffect(()=>{ loadPacks().then(setBank).catch(()=>setBank([])); },[]);
+  const [best,setBest]=useState(()=>{ try{ return +localStorage.getItem("brainybender.best")||0; }catch(e){ return 0; } });
+  const [mute,setMute]=useState(false);
+  const startRef=useRef(0);
+  const lockRef=useRef(false);
+
+  function settle(idx,remaining){
+    if(lockRef.current) return; lockRef.current=true;
+    const q=game[qi];
+    const ok = idx!==null && idx===q.a;
+    let pts=0;
+    if(ok){ pts = Math.round(100+900*(remaining/SECONDS)) + Math.min(200,streak*50); }
+    setPicked(idx); setGain(pts); setPhase("reveal");
+    setScore(s=>s+pts); setStreak(s=>ok?s+1:0);
+    setResults(r=>[...r,{ok,pts,ms: ok?Math.round((SECONDS-remaining)*1000):null}]);
+    ok ? sfx.good() : sfx.bad();
+  }
+
+  function pick(i){
+    if(phase!=="ask"||lockRef.current) return;
+    const rem=Math.max(0,SECONDS-(performance.now()-startRef.current)/1000);
+    sfx.pick();
+    settle(i,rem);
+  }
+
+  function start(){
+    ac();
+    setGame(buildGame(bank,cat)); setQi(0); setPhase("ask"); setPicked(null);
+    setScore(0); setStreak(0); setResults([]); lockRef.current=false; setScreen("play");
+  }
+
+  function next(){
+    if(qi+1>=game.length){
+      if(score>best){ setBest(score); try{ localStorage.setItem("brainybender.best",String(score)); }catch(e){} }
+      setScreen("end"); return;
+    }
+    lockRef.current=false; setQi(qi+1); setPicked(null); setGain(0); setPhase("ask");
+  }
+
+  function toggleMute(){ muted=!muted; setMute(muted); }
+
+  if(screen==="start"){
+    return (
+      <div>
+        <Top mute={mute} onMute={toggleMute}/>
+        <div className="hero">
+          <h1 className="title">Brainy Bender</h1>
+          <p className="sub">Silly questions and trick questions. Four answers each. Faster answers score more.</p>
+          {bank===null
+            ? <p className="sub">Loading questions...</p>
+            : bank.length===0
+              ? <p className="sub">No question packs found. Check that data/08.brainybender.manifest.json and your pack files are uploaded, or run: node data/08.brainybender.pack-gen.js</p>
+              : <React.Fragment>
+                  <button className="big" onClick={start}>Start</button>
+                  <div className="chips">
+                    {["All",...Array.from(new Set(bank.map(x=>x.cat)))].map(c=>(
+                      <button key={c} className={"chip"+(cat===c?" on":"")} onClick={()=>setCat(c)}>
+                        {c} <span>{c==="All"?bank.length:bank.filter(x=>x.cat===c).length}</span>
+                      </button>
+                    ))}
+                  </div>
+                </React.Fragment>}
+          <ul className="rules">
+            <li>A candle burns down as you think. Your points burn with it.</li>
+            <li>A right answer is worth up to 1,000. A wrong one is worth nothing.</li>
+            <li>Back-to-back right answers add a streak bonus.</li>
+          </ul>
+          {best>0 && <div className="best">Best score <b>{fmt(best)}</b></div>}
+        </div>
+        <div className="ver">Brainy Bender {VERSION}</div>
+      </div>
+    );
+  }
+
+  if(screen==="end"){
+    const right=results.filter(r=>r.ok).length;
+    const fastest=results.filter(r=>r.ms!==null).reduce((m,r)=>Math.min(m,r.ms),Infinity);
+    const isBest = score>0 && score>=best;
+    return (
+      <div>
+        <Top mute={mute} onMute={toggleMute}/>
+        <div className="hero">
+          <button className="big" onClick={start}>Play again</button>
+          <p className="final">{fmt(score)}</p>
+          <p className="rank">{rankFor(score)}{isBest?" (new best)":""}</p>
+          <div className="dots">{results.map((r,i)=><div key={i} className={"dot "+(r.ok?"ok":"no")}/>)}</div>
+          <div className="stats">
+            <div className="stat"><b>{right}/{results.length}</b><span>Right</span></div>
+            <div className="stat"><b>{fastest===Infinity?"-":(fastest/1000).toFixed(2)+"s"}</b><span>Fastest</span></div>
+            <div className="stat"><b>{fmt(best)}</b><span>Best</span></div>
+          </div>
+        </div>
+        <div className="ver">Brainy Bender {VERSION}</div>
+      </div>
+    );
+  }
+
+  const q=game[qi];
+  const last=results[results.length-1];
+  return (
+    <div>
+      <Top mute={mute} onMute={toggleMute}>
+        <span><span className="score">{fmt(score)}</span>{streak>1 && <span className="streak">x{streak}</span>}</span>
+      </Top>
+      <div className="top" style={{minHeight:0,paddingTop:0}}><span>Question {qi+1} of {game.length}  ·  {q.cat}</span></div>
+
+      <Live qi={qi} active={phase==="ask"} startRef={startRef} onTimeout={()=>settle(null,0)}>
+        <div>
+          <div className="resrow">
+            <div className={"res "+(last&&last.ok?"ok":"no")}>
+              {last&&last.ok ? "+"+fmt(gain) : (picked===null?"Time's up":"Wrong")}
+            </div>
+            <button className="next" onClick={next}>{qi+1>=game.length?"Finish":"Next"}</button>
+          </div>
+          <p className="why">{q.why}</p>
+        </div>
+      </Live>
+
+      <div className="q">{q.q}</div>
+
+      {q.opts.map((t,i)=>{
+        let cls="ans";
+        if(phase==="reveal"){
+          if(i===q.a) cls+=" right";
+          else if(i===picked) cls+=" wrong";
+          else cls+=" dim";
+        }
+        return (
+          <button key={qi+"-"+i} className={cls} disabled={phase!=="ask"} onPointerDown={()=>pick(i)}>
+            <span className="k">{"ABCD"[i]}</span><span>{t}</span>
+          </button>
+        );
+      })}
+      <div className="ver">Brainy Bender {VERSION}</div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

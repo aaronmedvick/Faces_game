@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0E0B1A" />
+<title>Kindred</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{ --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853; --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--ink); }
+  body{ font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; background:radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%) fixed; }
+  button{ font-family:inherit; color:inherit; }
+  .wrap{ max-width:520px; margin:0 auto; padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(30px + env(safe-area-inset-bottom,0px)); min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; gap:12px; }
+  .brandBig{ font-family:'Fraunces',serif; font-weight:600; font-size:52px; letter-spacing:.01em; color:var(--candle); text-align:center; margin:18px 0 0; line-height:1; }
+  .brandBig.sm{ font-size:34px; margin:4px 0 0; }
+  .lede{ text-align:center; color:var(--dim); font-size:15px; line-height:1.45; max-width:300px; margin:0 auto; }
+  .heroThread{ padding:4px 30px 8px; }
+  .top{ display:flex; align-items:center; gap:10px; }
+  .brand{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; color:var(--candle); }
+  .mid{ text-align:center; }
+  .grow{ flex:1 1 auto; min-width:0; }
+  .icon{ background:none; border:none; font-size:18px; padding:4px 6px; cursor:pointer; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .dim{ color:var(--dim); } .small{ font-size:13px; } .tiny{ font-size:11px; } .center{ text-align:center; }
+  .gap{ margin-top:8px; }
+  .row{ display:flex; align-items:center; gap:10px; } .between{ justify-content:space-between; }
+  .card{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:14px 16px; }
+  .qcard{ text-align:center; padding:18px 16px; }
+  .q{ font-family:'Fraunces',serif; font-weight:500; font-size:24px; line-height:1.25; }
+  .lab{ font-size:13px; color:var(--dim); margin-bottom:8px; font-weight:500; }
+  .go{ width:100%; font-family:'Fraunces',serif; font-weight:600; font-size:21px; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); transition:opacity .15s, transform .1s; }
+  .go:active:not(:disabled){ transform:scale(.98); }
+  .go:disabled{ opacity:.4; cursor:default; }
+  .go2{ width:100%; font-weight:700; font-size:16px; padding:14px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--panel); }
+  .go2:disabled{ opacity:.4; }
+  .joinBtn{ width:auto; padding:14px 26px; }
+  .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; padding:4px; align-self:center; }
+  input.txt{ width:100%; font-family:inherit; font-weight:600; font-size:17px; padding:14px; border-radius:13px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input.code4{ text-align:center; letter-spacing:.3em; font-family:'JetBrains Mono',monospace; text-transform:uppercase; }
+  input:focus{ outline:2px solid var(--candle); }
+  .check{ display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--dim); line-height:1.4; }
+  .check input{ margin-top:2px; accent-color:var(--candle); }
+  .foot{ margin-top:auto; text-align:center; } .verNum{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); }
+  .catTag{ font-size:12px; color:var(--candle); font-weight:600; margin-bottom:6px; letter-spacing:.02em; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ padding:9px 12px; border-radius:999px; border:1px solid var(--haze); background:var(--panel); font-size:14px; font-weight:600; cursor:pointer; color:var(--dim); }
+  .chip span{ margin-left:7px; font-family:'JetBrains Mono',monospace; font-size:11px; opacity:.7; }
+  .chip.on{ border-color:var(--candle); background:rgba(245,177,76,.14); color:var(--candle); }
+  .warnLink{ color:var(--candle); }
+  .pill{ font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--haze); }
+  .seg{ display:flex; gap:8px; } .seg button{ flex:1; padding:12px 6px; border-radius:12px; border:1px solid var(--haze); background:var(--panel); font-weight:600; font-size:14px; cursor:pointer; }
+  .seg button.on{ border-color:var(--candle); background:rgba(245,177,76,.14); color:var(--candle); }
+  .code{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:44px; letter-spacing:.22em; color:var(--candle); margin:4px 0 8px; padding-left:.22em; }
+  #qr{ display:flex; justify-content:center; } #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
+  .avatar{ border-radius:10px; display:grid; place-items:center; font-weight:700; color:#0E0B1A; flex:0 0 auto; }
+  .prow{ display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); } .prow+.prow{ margin-top:8px; }
+  .pips{ display:flex; gap:10px; justify-content:center; } .pip{ position:relative; opacity:.45; transition:opacity .2s; } .pip.done{ opacity:1; }
+  .pip i{ position:absolute; right:-5px; bottom:-5px; font-style:normal; font-size:10px; font-weight:800; background:var(--mint); color:#04241a; border-radius:50%; width:15px; height:15px; display:grid; place-items:center; }
+  /* choices */
+  .halves{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .half{ min-height:140px; border-radius:18px; border:1.5px solid var(--haze); background:var(--panel); font-family:'Fraunces',serif; font-size:24px; font-weight:600; padding:12px; cursor:pointer; transition:transform .1s, border-color .15s, background .15s; }
+  .half.on{ border-color:var(--candle); background:rgba(245,177,76,.14); color:var(--candle); transform:scale(1.02); }
+  .orChip{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:var(--ink); border:1px solid var(--haze); border-radius:999px; padding:3px 10px; font-size:12px; color:var(--dim); pointer-events:none; }
+  .opts{ display:flex; flex-direction:column; gap:8px; }
+  .opt{ text-align:left; padding:15px 16px; border-radius:14px; border:1.5px solid var(--haze); background:var(--panel); font-size:17px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:12px; transition:border-color .15s, background .15s; }
+  .opt.on{ border-color:var(--candle); background:rgba(245,177,76,.14); }
+  .rbadge{ width:26px; height:26px; border-radius:8px; border:1.5px dashed var(--haze); display:grid; place-items:center; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; flex:0 0 auto; }
+  .opt.on .rbadge{ border:none; background:var(--candle); color:var(--ink); }
+  .track{ position:relative; height:64px; margin:8px 19px 0; touch-action:none; cursor:pointer; }
+  .trackLine{ position:absolute; left:0; right:0; top:31px; height:3px; background:var(--haze); border-radius:2px; }
+  .notch{ position:absolute; top:19px; width:28px; height:28px; margin-left:-14px; border-radius:50%; background:var(--panel); border:2px solid var(--haze); display:grid; place-items:center; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--ink); transition:transform .12s, background .12s; }
+  .notch.on{ background:var(--candle); border-color:var(--candle); transform:scale(1.35); box-shadow:0 0 18px rgba(245,177,76,.5); }
+  .trackLabels{ display:flex; justify-content:space-between; gap:12px; font-size:13px; color:var(--dim); margin-top:10px; } .trackLabels span{ max-width:46%; }
+  .trackLabels span:last-child{ text-align:right; }
+  /* reveal */
+  .duoCards{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .rcard{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:12px; min-height:150px; display:flex; flex-direction:column; gap:10px; }
+  .rtop{ display:flex; align-items:center; gap:8px; } .rname{ font-weight:600; font-size:14px; }
+  .rans{ flex:1; display:flex; align-items:center; } .ansText{ font-family:'Fraunces',serif; font-size:22px; font-weight:600; line-height:1.15; }
+  .sealed{ flex:1; display:grid; place-items:center; font-size:34px; color:var(--candle); animation:pulse 1s ease-in-out infinite; }
+  .slideNum{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:40px; color:var(--candle); line-height:1; margin-bottom:6px; }
+  .mini{ display:flex; gap:4px; margin-bottom:6px; } .mdot{ width:9px; height:9px; border-radius:50%; background:var(--haze); } .mdot.on{ background:var(--candle); }
+  .rankList{ margin:0; padding-left:20px; font-size:14px; line-height:1.5; font-weight:500; }
+  .tp{ display:flex; align-items:center; gap:0; } .tpSvg{ flex:1; height:56px; min-width:0; overflow:visible; }
+  .verdict{ font-family:'Fraunces',serif; font-weight:600; font-size:30px; margin-top:2px; } .verdict.good{ color:var(--candle); } .verdict.bad{ color:var(--dim); }
+  .gline{ font-size:12px; font-weight:600; padding-top:8px; border-top:1px solid var(--haze); } .gline.hit{ color:var(--mint); } .gline.miss{ color:var(--dim); }
+  .rare{ margin-top:6px; font-size:13px; color:var(--mint); }
+  .bump{ animation:bump .5s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes bump{ 0%{ transform:scale(.6); opacity:0 } 60%{ transform:scale(1.06) } 100%{ transform:scale(1); opacity:1 } }
+  @keyframes pulse{ 0%,100%{ opacity:.35; transform:scale(.9) } 50%{ opacity:1; transform:scale(1.08) } }
+  .snap{ animation:snap .45s cubic-bezier(.2,1.4,.4,1) backwards; }
+  @keyframes snap{ 0%{ transform:translateY(-46px) scale(.3); opacity:0 } 100%{ transform:none; opacity:1 } }
+  .clrow{ display:flex; align-items:center; gap:10px; min-height:54px; padding:10px 14px; border-radius:14px; border:1px solid var(--haze); background:var(--velvet); opacity:.55; transition:all .3s; }
+  .clrow.has{ opacity:1; border-color:rgba(245,177,76,.5); background:var(--panel); }
+  .cllab{ flex:0 1 44%; font-weight:600; font-size:15px; line-height:1.2; } .clbeads{ display:flex; flex-wrap:wrap; gap:6px; flex:1; justify-content:flex-end; }
+  .slideCols{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; align-items:end; }
+  .scol{ display:flex; flex-direction:column; align-items:center; gap:6px; } .stack{ display:flex; flex-direction:column-reverse; align-items:center; gap:3px; min-height:120px; justify-content:flex-start; }
+  .snum{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); }
+  .heckbar{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:auto; padding-top:8px; }
+  .heck{ font-size:22px; background:var(--panel); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .floaty{ position:fixed; bottom:90px; pointer-events:none; font-size:34px; animation:fly 2.2s ease-out forwards; z-index:50; }
+  @keyframes fly{ 0%{ transform:translateY(0) scale(.6); opacity:0 } 15%{ opacity:1; transform:translateY(-20px) scale(1.1) } 100%{ transform:translateY(-260px) scale(1); opacity:0 } }
+  /* finale */
+  .bigPct{ font-family:'Fraunces',serif; font-weight:600; font-size:96px; line-height:1; color:var(--candle); margin-top:10px; } .bigPct span{ font-size:40px; }
+  .tier{ font-family:'Fraunces',serif; font-size:24px; margin:6px 0 4px; }
+  .listItem{ padding:9px 0; border-top:1px solid var(--haze); font-size:14px; line-height:1.4; } .listItem:first-of-type{ border-top:none; }
+  .lrow{ padding:5px 0; font-size:14px; }
+  .map{ width:100%; height:auto; display:block; }
+  .banner{ position:fixed; top:calc(8px + env(safe-area-inset-top,0px)); left:12px; right:12px; max-width:496px; margin:0 auto; z-index:100; background:var(--rose); color:#2a0009; padding:11px 14px; border-radius:12px; font-size:14px; font-weight:600; box-shadow:0 10px 30px -10px #000; }
+  .banner .dim{ color:#5a1b2a; } .banner.warn{ top:auto; bottom:calc(10px + env(safe-area-inset-bottom,0px)); background:var(--candle); color:var(--ink); }
+  @media (prefers-reduced-motion:reduce){ .bump,.snap,.sealed{ animation:none; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+/* ================= QUESTION BANK (loaded at startup) =================
+   Questions live in data/kindred/*.json (see the README there). BANK/QMAP are filled by setBank(). */
+let BANK = [];
+let QMAP = {};
+let BANK_INFO = { source:"", packs:0, warnings:[] };
+function setBank(list){ BANK=list; QMAP=Object.fromEntries(list.map(q=>[q.id,q])); }
+/* built-in copy of data/kindred/*.json (used offline and in the demo) */
+const FALLBACK_PACKS = [{"pack":"Pack 1","on":true,"categories":[{"name":"Food & Drink","questions":[{"id":"k01","d":1,"q":"Tea or coffee?","o":["Tea","Coffee"]},{"id":"k06","d":1,"q":"Sweet or salty?","o":["Sweet","Salty"]},{"id":"k09","d":1,"q":"Pineapple on pizza?","o":["Yes, always","Never"]},{"id":"k14","d":1,"q":"Which snack goes first?","o":["Chips","Chocolate","Fruit","Cheese and crackers"]},{"id":"k17","d":1,"q":"How spicy do you take your food?","lo":"Mild, please","hi":"Burn it down"},{"id":"k22","d":1,"q":"How good a cook are you?","lo":"Cereal chef","hi":"Michelin in my head"}]},{"name":"Daily Life","questions":[{"id":"k03","d":1,"q":"Text or call?","o":["Text","Call"]},{"id":"k05","d":1,"q":"Early bird or night owl?","o":["Early bird","Night owl"]},{"id":"k07","d":1,"q":"Plan everything or wing it?","o":["Plan it all","Wing it"]},{"id":"k11","d":1,"q":"Your ideal Saturday morning?","o":["Sleep till noon","Workout or long walk","Big brunch out","Errands and chores","Tinkering on a project"]},{"id":"k18","d":1,"q":"How many unread notifications do you have?","lo":"Zero, always","hi":"Thousands"},{"id":"k19","d":1,"q":"How early do you show up to things?","lo":"Fashionably late","hi":"An hour early"}]},{"name":"Fun & Games","questions":[{"id":"k08","d":1,"q":"Movie theater or your own couch?","o":["Theater","Couch"]},{"id":"k10","d":1,"q":"Dogs or cats?","o":["Dogs","Cats"]},{"id":"k12","d":1,"q":"Pick a superpower.","o":["Fly","Read minds","Stop time","Turn invisible"]},{"id":"k16","d":1,"q":"Your karaoke move?","o":["Power ballad","Rap verse","90s throwback","I'm not singing"]},{"id":"k23","t":"rank","d":1,"q":"Rank your perfect night, best first.","o":["Live music","Board games with friends","A movie alone"]},{"id":"k24","t":"rank","d":1,"q":"Rank what you'd miss most, most first.","o":["Music","Coffee","Sunshine"]}]},{"name":"Places & Adventure","questions":[{"id":"k02","d":1,"q":"Window seat or aisle?","o":["Window","Aisle"]},{"id":"k04","d":1,"q":"Mountains or beach?","o":["Mountains","Beach"]},{"id":"k13","d":1,"q":"A free weekend trip. Where to?","o":["Big city","Cabin in the woods","Tropical beach","Road trip, no plan"]},{"id":"k28","d":2,"q":"City or countryside?","o":["City","Countryside"]},{"id":"k43","d":2,"q":"How do you feel about skydiving?","lo":"Never","hi":"Already booked"}]},{"name":"Social Life","questions":[{"id":"k15","d":1,"q":"Your role in the group chat?","o":["The instigator","The lurker","The meme dealer","The planner"]},{"id":"k20","d":1,"q":"How much do you talk at a dinner party?","lo":"Mostly listen","hi":"Main character"},{"id":"k21","d":1,"q":"How do you feel about a surprise party for you?","lo":"Dreadful","hi":"Bring it on"},{"id":"k31","d":2,"q":"After a fight: apologize first or wait it out?","o":["Apologize first","Wait it out"]},{"id":"k33","d":2,"q":"A friend pitches a business idea you think is bad. You…","o":["Tell them straight","Soften it","Ask questions until they see it","Cheer them on anyway"]},{"id":"k35","d":2,"q":"In a disagreement, you want…","o":["To win","To be understood","To end it","To find the middle"]},{"id":"k36","d":2,"q":"How do you recharge?","o":["Alone time","One close friend","A lively crowd","Time in nature","Screens and snacks"]},{"id":"k39","d":2,"q":"How much do you trust strangers?","lo":"Not at all","hi":"Instantly"},{"id":"k41","d":2,"q":"How much do you care what people think of you?","lo":"Not a bit","hi":"A lot"},{"id":"k42","d":2,"q":"How comfortable are you with silence?","lo":"Unbearable","hi":"Peaceful"},{"id":"k44","d":2,"q":"How much do you like being the center of attention?","lo":"Hate it","hi":"Love it"}]},{"name":"Money & Work","questions":[{"id":"k26","d":2,"q":"Save your money or spend it on experiences?","o":["Save it","Spend it"]},{"id":"k34","d":2,"q":"A surprise $5,000 lands in your account.","o":["Save it","Travel","Upgrade my home","Help someone","Something gloriously impractical"]},{"id":"k38","d":2,"q":"What matters most in a job?","o":["Pay","Purpose","People","Freedom"]},{"id":"k57","d":3,"q":"Money is mostly…","o":["Security","Freedom","Fun","Stress","Not something I think about"]}]},{"name":"Love & Family","questions":[{"id":"k27","d":2,"q":"Big wedding or elope?","o":["Big wedding","Elope"]},{"id":"k46","t":"rank","d":2,"q":"Rank what you want most in a partner, most first.","o":["Humor","Loyalty","Ambition"]},{"id":"k52","d":3,"q":"Would you read your partner's messages if you'd never get caught?","o":["Yes","No"]},{"id":"k58","d":3,"q":"When someone you love is struggling, you…","o":["Try to fix it","Listen","Distract them","Give them space"]}]},{"name":"Mind & Self","questions":[{"id":"k25","d":2,"q":"Honest truth or kind lie?","o":["Honest truth","Kind lie"]},{"id":"k30","d":2,"q":"Rules exist for a reason, or rules are suggestions?","o":["For a reason","Suggestions"]},{"id":"k32","d":2,"q":"When you're stressed, you usually…","o":["Go quiet","Talk it out","Stay busy","Sleep it off"]},{"id":"k40","d":2,"q":"How often do you change your mind?","lo":"Almost never","hi":"Constantly"},{"id":"k45","d":2,"q":"How sentimental are you?","lo":"Nothing saved","hi":"Every ticket stub"},{"id":"k48","t":"rank","d":2,"q":"Rank these fears, scariest first.","o":["Public speaking","Being forgotten","Heights"]},{"id":"k59","d":3,"q":"How much of your life feels yours to steer?","lo":"Mostly luck","hi":"All me"},{"id":"k62","d":3,"q":"How honest are you about how you really feel?","lo":"I hide it","hi":"Open book"}]},{"name":"Big Questions","questions":[{"id":"k29","d":2,"q":"Would you rather know when you die, or how?","o":["When","How"]},{"id":"k37","d":2,"q":"The best decade of life?","o":["Childhood","Twenties","Midlife","Later years"]},{"id":"k47","t":"rank","d":2,"q":"Rank what you'd fix in the world first.","o":["Loneliness","Illness","Injustice"]},{"id":"k49","d":3,"q":"Admired or understood?","o":["Admired","Understood"]},{"id":"k50","d":3,"q":"If you could erase your worst memory, would you?","o":["Erase it","Keep it"]},{"id":"k51","d":3,"q":"Success or happiness, only one?","o":["Success","Happiness"]},{"id":"k53","d":3,"q":"A hard truth or a happy illusion?","o":["Hard truth","Happy illusion"]},{"id":"k54","d":3,"q":"Which kind of regret weighs most?","o":["Something I did","Something I didn't do","Someone I lost touch with","None, really"]},{"id":"k55","d":3,"q":"You'd most want to be remembered as…","o":["Kind","Brilliant","Brave","Fun","Loyal"]},{"id":"k56","d":3,"q":"What do you need more of right now?","o":["Time","Money","Courage","Rest","Love"]},{"id":"k60","d":3,"q":"How often do you think about death?","lo":"Never","hi":"Often"},{"id":"k61","d":3,"q":"How easily do you forgive?","lo":"Grudge keeper","hi":"Already forgot"},{"id":"k63","d":3,"q":"How much do you believe in fate?","lo":"It's all random","hi":"Everything happens for a reason"},{"id":"k64","t":"rank","d":3,"q":"Rank what makes a good life, most first.","o":["Love","Adventure","Peace"]},{"id":"k65","t":"rank","d":3,"q":"Rank what you'd never compromise on, most first.","o":["Honesty","Freedom","Loyalty"]}]}],"_file":"07.kindred.pack-01.json"}];
+/* ================= LOGIC (pure, no React) ================= */
+const MIN_OVERLAP = 8;       // shared questions before a score is trusted
+const CLUSTER_CUT = 0.60;    // average-linkage cut for clusters (match %, 0-1)
+
+function hashStr(s){ let h=1779033703^s.length; for(let i=0;i<s.length;i++){ h=Math.imul(h^s.charCodeAt(i),3432918353); h=(h<<13)|(h>>>19); } h=Math.imul(h^(h>>>16),2246822507); h=Math.imul(h^(h>>>13),3266489909); return (h^(h>>>16))>>>0; }
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const seeded = s => mulberry32(hashStr(s));
+
+/* ---- reading question packs (data/kindred/*.json) ---- */
+function normQuestion(r,ctx){
+  ctx=ctx||{};
+  if(!r||typeof r!=="object") return {err:"not a question object"};
+  const q=typeof r.q==="string"?r.q.trim():""; if(!q) return {err:"missing q"};
+  const label=q.length>28?q.slice(0,28)+"…":q;
+  const o=Array.isArray(r.o)?r.o.map(String).filter(x=>x.trim()):[];
+  const t=r.t||(r.lo&&r.hi?"slide":o.length===2?"this":"pick");
+  const d=[1,2,3].includes(r.d)?r.d:[1,2,3].includes(ctx.d)?ctx.d:2;
+  let id=typeof r.id==="string"?r.id.trim():"";
+  if(r.id!==undefined&&(!id||/\s/.test(id))) return {err:'"'+label+'": id can\'t be empty or have spaces'};
+  if(!id) id="q-"+hashStr(t+"|"+q.toLowerCase()).toString(36);
+  const cat=String(r.cat||ctx.cat||"Misc").trim()||"Misc";
+  if(t==="slide"){ if(!r.lo||!r.hi) return {err:'"'+label+'": slider needs lo and hi'}; return {q:{id,t,d,q,cat,lo:String(r.lo),hi:String(r.hi)}}; }
+  if(t==="this"){ if(o.length!==2) return {err:'"'+label+'": this-or-that needs exactly 2 options'}; }
+  else if(t==="pick"){ if(o.length<3||o.length>6) return {err:'"'+label+'": pick-one needs 3 to 6 options (or lo and hi for a slider)'}; }
+  else if(t==="rank"){ if(o.length!==3) return {err:'"'+label+'": rank needs exactly 3 options'}; }
+  else return {err:'"'+label+'": t must be this, pick, slide or rank'};
+  return {q:{id,t,d,q,cat,o}};
+}
+function parsePacks(packs){
+  const seen=new Set(), out=[], warnings=[];
+  packs.forEach(p=>{
+    const name=(p&&(p._file||p.pack))||"pack";
+    if(!p||typeof p!=="object"||Array.isArray(p)){ warnings.push(name+": not a valid pack"); return; }
+    if(p.on===false) return;
+    const groups=(Array.isArray(p.categories)?p.categories:[]).map(c=>({cat:c&&c.name,d:c&&c.d,list:c&&c.questions}));
+    if(Array.isArray(p.questions)) groups.push({cat:null,d:null,list:p.questions});
+    if(!groups.length){ warnings.push(name+": needs a categories list"); return; }
+    groups.forEach(g=>{
+      const where=name+" · "+(g.cat||"questions");
+      if(!Array.isArray(g.list)){ warnings.push(where+": no questions list"); return; }
+      g.list.forEach((r,i)=>{
+        const res=normQuestion(r,{cat:g.cat||p.pack||"Misc",d:g.d||p.d});
+        if(res.err){ warnings.push(where+" #"+(i+1)+" "+res.err); return; }
+        if(seen.has(res.q.id)){ warnings.push(where+" #"+(i+1)+": duplicate of an earlier question ("+res.q.id+")"); return; }
+        seen.add(res.q.id); res.q.pack=p.pack||name; out.push(res.q);
+      });
+    });
+  });
+  return {questions:out,warnings};
+}
+function categoryList(){
+  const m=new Map(); BANK.forEach(q=>{ const k=q.cat.toLowerCase(); if(!m.has(k)) m.set(k,{name:q.cat,count:0}); m.get(k).count++; });
+  return [...m.values()];
+}
+
+/* ---- answer shapes ----
+   this/pick: option index. slide: 1..7. rank: array of option indexes, best first.
+   guess (duo): same as answer, except rank -> the partner's first choice (single index). */
+const nOpts = q => q.t==="slide" ? 7 : q.o.length;
+const bucketOf = (q,v) => q.t==="slide" ? v-1 : q.t==="rank" ? v[0] : v;
+function validVal(q,v){
+  if(!q) return false;
+  if(q.t==="slide") return Number.isInteger(v) && v>=1 && v<=7;
+  if(q.t==="rank") return Array.isArray(v) && v.length===q.o.length && v.every(x=>Number.isInteger(x)&&x>=0&&x<q.o.length) && new Set(v).size===v.length;
+  return Number.isInteger(v) && v>=0 && v<q.o.length;
+}
+function randAns(q,r){
+  if(q.t==="slide") return 1+Math.floor(r()*7);
+  if(q.t==="rank"){ const a=q.o.map((_,i)=>i); for(let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  return Math.floor(r()*q.o.length);
+}
+const guessFromAnswer = (q,a) => q.t==="rank" ? a[0] : a;
+function guessHit(q,g,partnerAns){
+  if(g===undefined||g===null||partnerAns===undefined) return false;
+  if(q.t==="rank") return g===partnerAns[0];
+  if(q.t==="slide") return Math.abs(g-partnerAns)<=1;
+  return g===partnerAns;
+}
+
+/* ---- similarity 0..1 ---- */
+function simOf(q,a,b){
+  if(q.t==="slide") return 1-Math.abs(a-b)/6;
+  if(q.t==="rank"){ const n=q.o.length; let s=0; for(let i=0;i<n;i++) s+=Math.abs(a.indexOf(i)-b.indexOf(i)); return 1-s/Math.floor(n*n/2); }
+  return a===b?1:0;
+}
+
+/* ---- population (everyone's saved answers) ---- */
+const emptyPop = () => ({counts:{},answers:{},people:{},n:0});
+function buildPop(answers,people){
+  const counts={}; let n=0;
+  for(const uid in answers){ n++; for(const qid in answers[uid]){ const q=QMAP[qid]; const v=answers[uid][qid]; if(!validVal(q,v)){ delete answers[uid][qid]; continue; } const c=counts[qid]||(counts[qid]=Array(nOpts(q)).fill(0)); c[bucketOf(q,v)]++; } }
+  return {counts,answers,people:people||{},n};
+}
+function popTotal(pop,q){ const c=pop.counts[q.id]; return c? c.reduce((a,b)=>a+b,0) : 0; }
+function share(pop,q,b){ const c=pop.counts[q.id]; const k=nOpts(q); if(!c) return 1/k; return (c[b]+1)/(popTotal(pop,q)+k); }
+
+/* one question between two people. Agreement is worth more when the answer is rare;
+   disagreement always weighs 1. match% = sum(w*sim)/sum(w) stays in 0..100. */
+function pairItem(q,a,b,pop){
+  const s=simOf(q,a,b), k=nOpts(q);
+  const pa=share(pop,q,bucketOf(q,a)), pb=share(pop,q,bucketOf(q,b));
+  const rare=-Math.log2(Math.sqrt(pa*pb))/Math.log2(k);
+  const bonus=Math.max(0,Math.min(1,rare-1));
+  return {q,a,b,s,w:1+bonus*s,bonus,pct:Math.round(Math.sqrt(pa*pb)*100),tot:popTotal(pop,q)};
+}
+function pairScore(qs,A,B,pop){
+  const items=[]; let num=0,den=0;
+  for(const q of qs){ const a=A[q.id], b=B[q.id]; if(!validVal(q,a)||!validVal(q,b)) continue; const it=pairItem(q,a,b,pop); items.push(it); num+=it.w*it.s; den+=it.w; }
+  return {pct: den? Math.round(100*num/den) : null, n:items.length, items};
+}
+const tierOf = p => p>=85?"Kindred spirits" : p>=70?"Same wavelength" : p>=55?"Friendly neighbors" : p>=40?"An interesting mix" : "Opposite orbits";
+
+/* ---- graph: layout + clusters (shared by the session map and the constellation) ---- */
+function buildGraph(ids,simGet,opts={}){
+  const W=opts.W||340,H=opts.H||320,n=ids.length;
+  const S=ids.map(()=>Array(n).fill(null));
+  for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){ const r=simGet(ids[i],ids[j]); if(r&&r.pct!=null){ S[i][j]=S[j][i]=r.pct/100; } }
+  // average-linkage clusters
+  let cl=ids.map((_,i)=>[i]);
+  const link=(A,B)=>{ let s=0,c=0; for(const i of A) for(const j of B){ if(S[i][j]!=null){ s+=S[i][j]; c++; } } return c? s/c : -1; };
+  while(cl.length>1){ let best=-1,bi=-1,bj=-1; for(let i=0;i<cl.length;i++) for(let j=i+1;j<cl.length;j++){ const l=link(cl[i],cl[j]); if(l>best){best=l;bi=i;bj=j;} } if(best<(opts.cut||CLUSTER_CUT)) break; cl[bi]=cl[bi].concat(cl[bj]); cl.splice(bj,1); }
+  const clusters=cl.map(c=>c.map(i=>ids[i])).sort((a,b)=>b.length-a.length);
+  const clusterOf={}; clusters.forEach((c,k)=>c.forEach(id=>clusterOf[id]=k));
+  // force layout in unit space
+  const rnd=seeded("layout"+n), P=ids.map((_,i)=>{ const a=2*Math.PI*i/Math.max(n,1); return {x:Math.cos(a)*.4+(rnd()-.5)*.03,y:Math.sin(a)*.4+(rnd()-.5)*.03}; });
+  const iters=n>60?260:500;
+  for(let it=0;it<iters;it++){
+    const lr=.12*(1-it/iters)+.01;
+    for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){
+      let dx=P[j].x-P[i].x, dy=P[j].y-P[i].y, d=Math.hypot(dx,dy)||1e-4;
+      const known=S[i][j]!=null; const want=known? .10+.90*(1-S[i][j]) : .85; const wt=known?1:.15;
+      let f=(d-want)*wt*lr*.5; if(d<.09) f=Math.min(f,-(0.09-d)*.5);
+      dx/=d; dy/=d; P[i].x+=dx*f; P[i].y+=dy*f; P[j].x-=dx*f; P[j].y-=dy*f;
+    }
+  }
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9; P.forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);});
+  const pad=34, sw=Math.max(x1-x0,.2), sh=Math.max(y1-y0,.2), sc=Math.min((W-2*pad)/sw,(H-2*pad)/sh);
+  const ox=(W-sw*sc)/2-x0*sc, oy=(H-sh*sc)/2-y0*sc;
+  const pos={}; ids.forEach((id,i)=>pos[id]={x:P[i].x*sc+ox,y:P[i].y*sc+oy});
+  // edges: each node keeps its strongest few links above a floor
+  const edgeMin=(opts.edgeMin||55)/100, k=opts.topK||3, keep=new Set();
+  for(let i=0;i<n;i++){ const nb=[]; for(let j=0;j<n;j++) if(i!==j&&S[i][j]!=null&&S[i][j]>=edgeMin) nb.push([j,S[i][j]]); nb.sort((a,b)=>b[1]-a[1]).slice(0,k).forEach(([j])=>keep.add(Math.min(i,j)+"-"+Math.max(i,j))); }
+  const edges=[...keep].map(key=>{ const [i,j]=key.split("-").map(Number); return {a:ids[i],b:ids[j],pct:Math.round(S[i][j]*100)}; });
+  return {pos,clusters,clusterOf,edges,S};
+}
+
+/* ---- dealing a game: ramp from light to deep, mix the types, skip dead questions ---- */
+function interleave(list,rnd,count){
+  const pool=list.slice(), out=[];
+  while(out.length<count && pool.length){
+    const t1=out.length?out[out.length-1].t:null, t2=out.length>1?out[out.length-2].t:null;
+    let cands=pool.filter(q=>!(q.t===t1&&q.t===t2)); if(!cands.length) cands=pool;
+    const q=cands[Math.floor(rnd()*cands.length)]; out.push(q); pool.splice(pool.indexOf(q),1);
+  }
+  return out;
+}
+function dealQuestions(total,pop,mineDone,rnd=Math.random,cats=null){
+  const allowed=cats&&cats.length?new Set(cats.map(c=>c.toLowerCase())):null, inCat=q=>!allowed||allowed.has(q.cat.toLowerCase());
+  const share3=[.4,.35,.25]; const c=share3.map(s=>Math.round(total*s)); c[1]+=total-c.reduce((a,b)=>a+b,0);
+  const out=[];
+  for(let d=1;d<=3;d++){
+    let pool=BANK.filter(q=>q.d===d&&inCat(q));
+    pool=pool.filter(q=>{ const cc=pop.counts[q.id]; if(!cc) return true; const tot=cc.reduce((a,b)=>a+b,0); return !(tot>=20 && Math.max(...cc)/tot>=.9); });
+    const fresh=pool.filter(q=>!mineDone||!mineDone[q.id]), old=pool.filter(q=>mineDone&&mineDone[q.id]);
+    const pick=interleave(fresh,rnd,c[d-1]); if(pick.length<c[d-1]) pick.push(...interleave(old,rnd,c[d-1]-pick.length));
+    out.push(...pick);
+  }
+  if(out.length<total){ const have=new Set(out.map(q=>q.id)); const rest=BANK.filter(q=>inCat(q)&&!have.has(q.id)).sort((a,b)=>a.d-b.d); out.push(...interleave(rest,rnd,total-out.length)); }
+  return out.map(q=>q.id);
+}
+
+/* ---- bots ---- */
+const BOTS=[{name:"Mina",arch:0},{name:"Dex",arch:1},{name:"Juno",arch:0},{name:"Rafa",arch:2},{name:"Pim",arch:1},{name:"Otis",arch:3},{name:"Wren",arch:2},{name:"Sol",arch:3}];
+function botAns(q,arch,name){
+  if(seeded("N"+name+q.id)()<.25) return randAns(q,seeded("R"+name+q.id));
+  return randAns(q,seeded("A"+arch+q.id));
+}
+function botGuess(q,a,name){ return seeded("G"+name+q.id)()<.5 ? guessFromAnswer(q,a) : guessFromAnswer(q,randAns(q,seeded("H"+name+q.id))); }
+const SEED_NAMES=["Ada","Bex","Cy","Dot","Eli","Fay","Gus","Hana","Ivo","Jo","Kit","Lou","Max","Noa","Ona","Pax","Quin","Ren"];
+function seedPopulation(colors){
+  const answers={},people={};
+  SEED_NAMES.forEach((nm,i)=>{ const uid="seed-"+nm.toLowerCase(), arch=i%4, r=seeded("S"+nm); answers[uid]={}; BANK.forEach(q=>{ if(r()<.8) answers[uid][q.id]=botAns(q,arch,nm); }); people[uid]={name:nm,color:colors[(i+2)%colors.length],seed:true}; });
+  return {answers,people};
+}
+
+/* ---- room helpers ---- */
+function isLocked(p,q,room){ const h=p&&p.hist&&p.hist[q.id]; if(!h||h.a===undefined) return false; return (room.mode==="duo"&&room.guess)? h.g!==undefined : true; }
+function fmtAns(q,v){
+  if(v===undefined||v===null) return "—";
+  if(q.t==="slide") return v+" of 7 · "+(v<=2?q.lo:v>=6?q.hi:"somewhere between");
+  if(q.t==="rank") return v.map(i=>q.o[i]).join(" › ");
+  return q.o[v];
+}
+function fmtGuess(q,g){ if(g===undefined||g===null) return "—"; if(q.t==="slide") return String(g); return q.o[g]; }
+function clusterMates(q,mineV,players,hists,meId){
+  if(!validVal(q,mineV)) return [];
+  return players.filter(p=>p.id!==meId && validVal(q,hists[p.id]&&hists[p.id][q.id]) && (q.t==="slide"? Math.abs(hists[p.id][q.id]-mineV)<=1 : bucketOf(q,hists[p.id][q.id])===bucketOf(q,mineV)));
+}
+/* ================= DATA LAYER =================
+   Two backends with the same interface: Supabase (real rooms) and memory (practice, this phone only). */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const must = r => { if(r && r.error) throw new Error(r.error.message||String(r.error)); return r; };
+const clone = o => JSON.parse(JSON.stringify(o));
+
+function makeSB(){
+  let ch=null;
+  return {
+    kind:"sb",
+    async getRoom(code){ return must(await sb.from("kd_rooms").select("*").eq("code",code).maybeSingle()).data; },
+    async createRoom(row){ must(await sb.from("kd_rooms").insert(row)); },
+    async patchRoom(code,p){ must(await sb.from("kd_rooms").update(p).eq("code",code)); },
+    async deleteRoom(code){ must(await sb.from("kd_rooms").delete().eq("code",code)); },
+    async players(code){ return must(await sb.from("kd_players").select("*").eq("code",code).order("joined_at")).data||[]; },
+    async addPlayer(row){ must(await sb.from("kd_players").upsert(row,{onConflict:"id"})); },
+    async patchPlayer(id,p){ must(await sb.from("kd_players").update(p).eq("id",id)); },
+    async removePlayer(id){ must(await sb.from("kd_players").delete().eq("id",id)); },
+    async saveAnswer(uid,name,color,qid,val){
+      const ts=new Date().toISOString();
+      must(await sb.from("kd_people").upsert({uid,name,color,updated_at:ts},{onConflict:"uid"}));
+      must(await sb.from("kd_answers").upsert({uid,qid,val,updated_at:ts},{onConflict:"uid,qid"}));
+    },
+    async loadAll(){
+      const answers={},people={};
+      for(let from=0,page=0;page<30;page++,from+=1000){
+        const r=must(await sb.from("kd_answers").select("uid,qid,val").range(from,from+999)).data||[];
+        r.forEach(x=>{ (answers[x.uid]||(answers[x.uid]={}))[x.qid]=x.val; });
+        if(r.length<1000) break;
+      }
+      const pp=must(await sb.from("kd_people").select("uid,name,color").limit(5000)).data||[];
+      pp.forEach(x=>people[x.uid]={name:x.name,color:x.color});
+      return {answers,people};
+    },
+    async forget(uid){ must(await sb.from("kd_answers").delete().eq("uid",uid)); must(await sb.from("kd_people").delete().eq("uid",uid)); },
+    subscribe(code,onChange,onHeckle){
+      ch=sb.channel("kd:"+code,{config:{broadcast:{self:true}}})
+        .on("postgres_changes",{event:"*",schema:"public",table:"kd_rooms",filter:"code=eq."+code},onChange)
+        .on("postgres_changes",{event:"*",schema:"public",table:"kd_players",filter:"code=eq."+code},onChange)
+        .on("broadcast",{event:"heckle"},m=>onHeckle&&onHeckle(m.payload))
+        .subscribe();
+      return ()=>{ try{ sb.removeChannel(ch); }catch(e){} ch=null; };
+    },
+    heckle(emoji,by){ if(ch) ch.send({type:"broadcast",event:"heckle",payload:{emoji,by}}); },
+  };
+}
+
+function makeMem(colors){
+  const rooms={}, players={}; const subs=new Set(); let onHeck=null;
+  const seed=seedPopulation(colors); const answers=seed.answers, people=seed.people;
+  const fire=()=>subs.forEach(f=>{ try{ f(); }catch(e){} });
+  return {
+    kind:"mem",
+    async getRoom(code){ return rooms[code]?clone(rooms[code]):null; },
+    async createRoom(row){ if(rooms[row.code]) throw new Error("duplicate"); rooms[row.code]=clone(row); fire(); },
+    async patchRoom(code,p){ if(rooms[code]) Object.assign(rooms[code],clone(p)); fire(); },
+    async deleteRoom(code){ delete rooms[code]; Object.keys(players).forEach(id=>{ if(players[id].code===code) delete players[id]; }); fire(); },
+    async players(code){ return Object.values(players).filter(p=>p.code===code).sort((a,b)=>a.joined_at-b.joined_at).map(clone); },
+    async addPlayer(row){ players[row.id]=Object.assign({joined_at:Date.now()+Object.keys(players).length},clone(row)); fire(); },
+    async patchPlayer(id,p){ if(players[id]) Object.assign(players[id],clone(p)); fire(); },
+    async removePlayer(id){ delete players[id]; fire(); },
+    async saveAnswer(uid,name,color,qid,val){ (answers[uid]||(answers[uid]={}))[qid]=clone(val); people[uid]={name,color}; },
+    async loadAll(){ return {answers:clone(answers),people:clone(people)}; },
+    async forget(uid){ delete answers[uid]; delete people[uid]; },
+    subscribe(code,onChange,onHeckle){ subs.add(onChange); onHeck=onHeckle; return ()=>{ subs.delete(onChange); }; },
+    heckle(emoji,by){ if(onHeck) onHeck({emoji,by}); },
+  };
+}
+
+/* ================= LOADING QUESTIONS =================
+   1) list data/kindred through the GitHub API (new files appear instantly)
+   2) else data/kindred/manifest.json (kept fresh by the GitHub Action)
+   3) else the copy baked into this page. The demo skips straight to 3. */
+const GH_REPO = "aaronmedvick/Faces_game", PACK_DIR = "data/kindred";
+async function loadBank(){
+  const qs=new URLSearchParams(location.search), bust=qs.get("fresh")?("?t="+qs.get("fresh")):"";
+  const warn=[]; let packs=null, source="built-in";
+  const getJ=async u=>{ const r=await fetch(u,{cache:"no-cache"}); if(!r.ok) throw new Error(String(r.status)); return r.json(); };
+  const keep=n=>/\.json$/.test(n)&&n!=="manifest.json"&&!n.startsWith("_");
+  if(!window.KD_DEMO){
+    let list=null; // [{name,url}]
+    try{ const c=JSON.parse(sessionStorage.getItem("kd_files")||"null"); if(c&&Date.now()-c.t<600000&&!bust) list=c.list; }catch(e){}
+    if(!list){ try{ const r=await getJ("https://api.github.com/repos/"+GH_REPO+"/contents/"+PACK_DIR); list=r.filter(x=>x.type==="file"&&keep(x.name)).sort((a,b)=>a.name<b.name?-1:1).map(x=>({name:x.name,url:x.download_url})); try{ sessionStorage.setItem("kd_files",JSON.stringify({t:Date.now(),list})); }catch(e){} source="folder"; }catch(e){ list=null; } }
+    if(!list){ try{ const m=await getJ(PACK_DIR+"/manifest.json"+bust); list=m.files.filter(keep).map(n=>({name:n,url:PACK_DIR+"/"+n+bust})); source="manifest"; }catch(e){ list=null; } }
+    if(list&&list.length){
+      const got=await Promise.all(list.map(f=>getJ(f.url).then(j=>({...j,_file:f.name})).catch(()=>{ warn.push(f.name+": couldn't load or isn't valid JSON"); return null; })));
+      packs=got.filter(Boolean);
+    }
+  }
+  let res=packs&&packs.length?parsePacks(packs):null;
+  if(!res||res.questions.length<12){ if(res) warn.push("Too few valid questions loaded, using the built-in set."); packs=FALLBACK_PACKS; source="built-in"; res=parsePacks(packs); }
+  setBank(res.questions);
+  BANK_INFO={source,packs:packs.filter(p=>p.on!==false).length,warnings:warn.concat(res.warnings)};
+}
+/* ================= UI ================= */
+const { useState, useEffect, useRef, useMemo } = React;
+const VERSION = "v1";
+const COLORS = ["#F5B14C","#7DF0A6","#F26D8B","#A78BFA","#4DB8FF","#FF9F45","#59D0C0","#F272C8","#C5E063","#FF7A59","#9AA7FF","#E8C7A0"];
+const HECKLES = ["🔥","😂","😱","👀","💀","🫶"];
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:k=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const urlQS = new URLSearchParams(location.search);
+const myId = (()=>{ const o=urlQS.get("uid"); if(o) return "t-"+o; let v=ls.get("hub_uid")||ls.get("kd_id"); if(!v){ v=randId(); ls.set("kd_id",v); } return v; })();
+const explain = e => { const m=(e&&e.message)||String(e); if(/kd_|schema cache|does not exist|relation/i.test(m)) return "Kindred's tables aren't set up yet. Run kindred_setup.sql in the Supabase SQL editor, then reload."; return m; };
+const initial = n => ((n||"?").trim()[0]||"?").toUpperCase();
+
+/* ---- sound (synthesized, no assets) ---- */
+const sfx=(()=>{ let ctx=null, muted=ls.get("kd_mute")==="1";
+  const c=()=>{ if(!ctx){ try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(ctx&&ctx.state==="suspended") ctx.resume(); return ctx; };
+  const tone=(f,d,type="sine",v=.08,when=0)=>{ if(muted) return; const a=c(); if(!a) return; const t=a.currentTime+when, o=a.createOscillator(), g=a.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+d+.05); };
+  return { lock:()=>tone(520,.12,"triangle"), thud:()=>tone(90,.4,"sine",.22), chime:()=>{ tone(660,.25,"triangle"); tone(990,.45,"triangle",.07,.09); }, split:()=>tone(180,.35,"sawtooth",.04), snap:()=>tone(780,.08,"square",.03),
+    isMuted:()=>muted, setMuted:m=>{ muted=m; ls.set("kd_mute",m?"1":"0"); }, unlock:c };
+})();
+
+/* ---- hooks ---- */
+function useTick(on,ms=100){ const [n,setN]=useState(Date.now()); useEffect(()=>{ if(!on) return; const t=setInterval(()=>setN(Date.now()),ms); return ()=>clearInterval(t); },[on,ms]); return n; }
+function useCountUp(target,ms=1300){ const [v,setV]=useState(0); useEffect(()=>{ let raf,t0=null; const step=t=>{ if(t0===null) t0=t; const k=Math.min(1,(t-t0)/ms); setV(target*(1-Math.pow(1-k,3))); if(k<1) raf=requestAnimationFrame(step); }; raf=requestAnimationFrame(step); return ()=>cancelAnimationFrame(raf); },[target]); return v; }
+
+/* ---- small pieces ---- */
+function Av({p,size=40}){ return <div className="avatar" style={{width:size,height:size,background:p.color||"#888",fontSize:Math.round(size*.44)}}>{initial(p.name)}</div>; }
+
+function ThreadPair({a,b,pct,size=52}){
+  const tight=Math.max(0,Math.min(1,(pct==null?50:pct)/100)), sag=(1-tight)*52, gold=tight>=.6;
+  return <div className="tp">
+    <Av p={a} size={size}/>
+    <svg viewBox="0 0 100 70" preserveAspectRatio="none" className="tpSvg" aria-hidden="true">
+      <path d={`M0 28 Q50 ${28+sag} 100 28`} fill="none" stroke={gold?"var(--candle)":"var(--dim)"} strokeWidth={gold?3:2} strokeDasharray={gold?undefined:"3 6"} strokeLinecap="round" vectorEffect="non-scaling-stroke" style={gold?{filter:"drop-shadow(0 0 5px rgba(245,177,76,.6))"}:undefined}/>
+    </svg>
+    <Av p={b} size={size}/>
+  </div>;
+}
+
+function MiniTrack({v}){ return <div className="mini">{[1,2,3,4,5,6,7].map(i=><span key={i} className={"mdot"+(i===v?" on":"")}/>)}</div>; }
+
+function AnsView({q,v}){
+  if(v===undefined||v===null) return <div className="dim">No answer</div>;
+  if(q.t==="slide") return <div><div className="slideNum">{v}</div><MiniTrack v={v}/><div className="dim tiny">{v<=2?q.lo:v>=6?q.hi:"in between"}</div></div>;
+  if(q.t==="rank") return <ol className="rankList">{v.map((i,k)=><li key={k}>{q.o[i]}</li>)}</ol>;
+  return <div className="ansText">{q.o[v]}</div>;
+}
+
+function TopBar({left,right,onMute}){
+  const [m,setM]=useState(sfx.isMuted());
+  return <div className="top"><div className="brand">Kindred</div><div className="grow mid">{left}</div>{right}
+    <button className="icon" aria-label={m?"Unmute":"Mute"} onClick={()=>{ sfx.setMuted(!m); setM(!m); sfx.unlock(); }}>{m?"🔇":"🔊"}</button></div>;
+}
+
+function Heckles({onSend}){ return <div className="heckbar">{HECKLES.map(e=><button key={e} className="heck" onClick={()=>onSend(e)}>{e}</button>)}</div>; }
+function Floaties({items}){ return <>{items.map(f=><div key={f.id} className="floaty" style={{left:f.left+"%"}}>{f.emoji}</div>)}</>; }
+
+/* ---- answer widgets ---- */
+function Choice({q,val,setVal,labelOf}){
+  const opts=q.o;
+  if(q.t==="this") return <div className="halves">{opts.map((o,i)=><button key={i} className={"half"+(val===i?" on":"")} onClick={()=>{ setVal(i); sfx.snap(); }}>{o}</button>)}<div className="orChip">or</div></div>;
+  return <div className="opts">{opts.map((o,i)=><button key={i} className={"opt"+(val===i?" on":"")} onClick={()=>{ setVal(i); sfx.snap(); }}>{o}</button>)}</div>;
+}
+function Slider({q,val,setVal}){
+  const ref=useRef(null);
+  const pick=e=>{ const r=ref.current.getBoundingClientRect(); const x=Math.min(Math.max(e.clientX-r.left,0),r.width); const v=1+Math.round(x/r.width*6); if(v!==val){ setVal(v); sfx.snap(); } };
+  return <div>
+    <div className="track" ref={ref} onPointerDown={e=>{ e.currentTarget.setPointerCapture(e.pointerId); pick(e); }} onPointerMove={e=>{ if(e.buttons) pick(e); }}>
+      <div className="trackLine"/>
+      {[1,2,3,4,5,6,7].map(i=><div key={i} className={"notch"+(val===i?" on":"")} style={{left:((i-1)/6*100)+"%"}}>{val===i?i:""}</div>)}
+    </div>
+    <div className="trackLabels"><span>{q.lo}</span><span>{q.hi}</span></div>
+  </div>;
+}
+function RankPick({q,val,setVal}){
+  const order=val||[];
+  return <div className="opts">
+    {q.o.map((o,i)=>{ const pos=order.indexOf(i); return <button key={i} className={"opt rank"+(pos>=0?" on":"")} onClick={()=>{ if(pos>=0) return; setVal([...order,i]); sfx.snap(); }}><span className="rbadge">{pos>=0?pos+1:""}</span>{o}</button>; })}
+    <button className="link" onClick={()=>setVal([])}>Start over</button>
+  </div>;
+}
+
+function AnswerPanel({q,mode,partner,onLock}){
+  const [val,setVal]=useState(null);
+  const guess=mode==="guess";
+  // rank guesses ask only for the partner's first pick
+  const qq = guess&&q.t==="rank" ? {...q,t:"pick"} : q;
+  const ready = qq.t==="rank" ? (val&&val.length===q.o.length) : val!==null;
+  const idle = guess ? "Make your guess" : qq.t==="rank" ? "Tap all in order" : qq.t==="slide" ? "Set your answer" : "Choose an answer";
+  return <>
+    <button className="go" disabled={!ready} onClick={()=>{ sfx.lock(); onLock(val); }}>{ready?(guess?"Lock guess":"Lock in"):idle}</button>
+    <div className="card qcard">
+      <div className="catTag">{q.cat}</div>
+      {guess && <div className="dim small">Guess <b>{partner}</b>'s answer</div>}
+      <div className="q">{q.q}</div>
+      {guess&&q.t==="rank" && <div className="dim small">Which one did they put first?</div>}
+    </div>
+    {qq.t==="slide" ? <Slider q={qq} val={val} setVal={setVal}/> : qq.t==="rank" ? <RankPick q={qq} val={val} setVal={setVal}/> : <Choice q={qq} val={val} setVal={setVal}/>}
+  </>;
+}
+/* ---- screens ---- */
+function Home({name,setName,codeInput,setCodeInput,saveOn,setSaveOn,onNew,onPractice,onJoin,onMap,onForget,banner}){
+  return <div className="wrap">
+    <div className="brandBig">Kindred</div>
+    <div className="lede">Everyone answers the same questions. See who answers like you.</div>
+    <div className="heroThread"><ThreadPair a={{name:"A",color:"#F5B14C"}} b={{name:"B",color:"#A78BFA"}} pct={88} size={38}/></div>
+    <input className="txt" placeholder="Your name" maxLength={14} value={name} onChange={e=>setName(e.target.value)} />
+    <button className="go" disabled={!name.trim()} onClick={onNew}>Start a room</button>
+    <div className="row">
+      <input className="txt grow code4" placeholder="Code" maxLength={4} value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
+      <button className="go2 joinBtn" disabled={!name.trim()||codeInput.length<4} onClick={onJoin}>Join</button>
+    </div>
+    <button className="go2" disabled={!name.trim()} onClick={onPractice}>Practice with bots</button>
+    <label className="check"><input type="checkbox" checked={saveOn} onChange={e=>{ setSaveOn(e.target.checked); ls.set("kd_save",e.target.checked?"1":"0"); }}/> <span>Remember my answers so the constellation grows over time</span></label>
+    <button className="link" onClick={onForget}>Forget my saved answers</button>
+    <div className="foot verNum">{VERSION} · {BANK.length} questions · {BANK_INFO.packs} packs · {BANK_INFO.source}</div>
+    {BANK_INFO.warnings.length>0 && <button className="link warnLink" onClick={()=>alert(BANK_INFO.warnings.join("\n"))}>⚠ {BANK_INFO.warnings.length} question issue{BANK_INFO.warnings.length>1?"s":""} — tap to see</button>}
+  </div>;
+}
+
+function Create({cfg,setCfg,practice,onOpen,onBack}){
+  const cats=categoryList(), sel=cfg.cats?new Set(cfg.cats.map(c=>c.toLowerCase())):null;
+  const isOn=c=>!sel||sel.has(c.name.toLowerCase());
+  const avail=cats.filter(isOn).reduce((s,c)=>s+c.count,0);
+  const toggle=c=>{ const cur=new Set((cfg.cats||cats.map(x=>x.name)).map(x=>x.toLowerCase())); const k=c.name.toLowerCase(); cur.has(k)?cur.delete(k):cur.add(k); const next=cats.filter(x=>cur.has(x.name.toLowerCase())).map(x=>x.name); setCfg({...cfg,cats:next.length===cats.length?null:next}); };
+  const seg=(key,opts)=><div className="seg">{opts.map(([v,l])=><button key={String(v)} className={cfg[key]===v?"on":""} onClick={()=>setCfg({...cfg,[key]:v})}>{l}</button>)}</div>;
+  return <div className="wrap">
+    <TopBar left={practice?<span className="pill">practice</span>:null} right={<button className="link" onClick={onBack}>Back</button>}/>
+    <button className="go" disabled={avail<4} onClick={onOpen}>{avail<4?"Pick more categories":practice?"Start practice":"Open room"}</button>
+    <div className="card"><div className="lab">Who's playing</div>{seg("mode",[["duo","Duo · 2 people"],["group","Group · up to 12"]])}<div className="dim small gap">{cfg.mode==="duo"?"Lock your answer, then guess theirs. They guess yours.":"Everyone answers, then you see who matches."}</div></div>
+    <div className="card"><div className="lab">Questions</div>{seg("total",[[8,"8"],[10,"10"],[15,"15"]])}<div className="dim small">Games start light and get deeper.{avail<cfg.total?" Only "+avail+" questions match, so this one will be shorter.":""}</div></div>
+    <div className="card"><div className="row between"><div className="lab">Categories</div><button className="link" onClick={()=>setCfg({...cfg,cats:null})}>All</button></div><div className="chips">{cats.map(c=><button key={c.name} className={"chip"+(isOn(c)?" on":"")} onClick={()=>toggle(c)}>{c.name}<span>{c.count}</span></button>)}</div></div>
+  </div>;
+}
+
+function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKick}){
+  const qr=useRef(null);
+  useEffect(()=>{ if(practice||!qr.current||!window.QRCode) return; qr.current.innerHTML=""; try{ new QRCode(qr.current,{text:location.origin+location.pathname+"?code="+code,width:128,height:128,colorDark:"#0E0B1A",colorLight:"#ffffff"}); }catch(e){} },[code,practice]);
+  const max=room.mode==="duo"?2:12, need=room.mode==="duo"?players.length===2:players.length>=2;
+  const host=players.find(p=>p.id===room.host_id);
+  return <div className="wrap">
+    <TopBar left={practice?<span className="pill">practice</span>:null} right={<button className="link" onClick={onLeave}>Leave</button>}/>
+    {isHost
+      ? <button className="go" disabled={!need} onClick={onStart}>{need?"Deal the first question":(room.mode==="duo"?"Duo needs two players":"Need at least two players")}</button>
+      : <div className="card center dim">Waiting for {host?host.name:"the host"} to start…</div>}
+    <div className="card center">
+      <div className="lab">{room.mode==="duo"?"Duo":"Group"} · {room.total} questions</div>
+      {!practice && <><div className="code">{code}</div><div id="qr" ref={qr}/></>}
+    </div>
+    <div>{players.map(p=><div className="prow" key={p.id}><Av p={p} size={34}/><div className="grow"><b>{p.name}</b>{p.id===room.host_id&&<span className="dim small"> · host</span>}{p.bot&&<span className="dim small"> · bot</span>}</div>{isHost&&p.bot&&<button className="link" onClick={()=>onKick(p.id)}>Remove</button>}</div>)}</div>
+    {isHost && players.length<max && <button className="go2" onClick={onAddBot}>Add a bot</button>}
+  </div>;
+}
+
+function Asking({room,players,q,meHist,partner,onAnswer,onGuess,isHost,onForce,onLeave,practice,heckle}){
+  const h=meHist[q.id];
+  const stage = !h||h.a===undefined ? "answer" : (room.guess&&h.g===undefined ? "guess" : "wait");
+  const locked=players.filter(p=>isLocked(p.id===myId?{...p,hist:meHist}:p,q,room)).length;
+  return <div className="wrap">
+    <TopBar left={<span className="mono dim small">{room.idx+1} / {room.total}</span>} right={<button className="link" onClick={onLeave}>Leave</button>}/>
+    <div className="pips">{players.map(p=>{ const done=isLocked(p.id===myId?{...p,hist:meHist}:p,q,room); return <div key={p.id} className={"pip"+(done?" done":"")}><Av p={p} size={26}/>{done&&<i>✓</i>}</div>; })}</div>
+    {stage==="answer" && <AnswerPanel key={q.id+"a"} q={q} mode="answer" onLock={onAnswer}/>}
+    {stage==="guess" && <AnswerPanel key={q.id+"g"} q={q} mode="guess" partner={partner} onLock={onGuess}/>}
+    {stage==="wait" && <>
+      <div className="card center"><div className="q">{q.q}</div><div className="dim">Locked in. Waiting for {locked<players.length?(players.length-locked)+" more":"the reveal"}…</div></div>
+      {isHost && <button className="go2" onClick={onForce}>Reveal now</button>}
+      <Heckles onSend={heckle}/>
+    </>}
+  </div>;
+}
+
+function Reveal({room,players,hists,answers,q,pop,isHost,onNext,onLeave,heckle}){
+  const [t0]=useState(Date.now());
+  const last=room.idx+1>=room.total;
+  const now=useTick(true,100), t=now-t0;
+  const S1=1100,S2=2000,S3=2800;
+  const flipped=t>=S1, resulted=t>=S2, extras=t>=S3;
+  const fired=useRef({});
+  useEffect(()=>{ if(!fired.current.a){ fired.current.a=1; sfx.thud(); } },[]);
+  const others=players.filter(p=>p.id!==myId);
+  const me=players.find(p=>p.id===myId)||players[0];
+  const qsSoFar=room.qids.slice(0,room.idx+1).map(id=>QMAP[id]);
+  const duo=room.mode==="duo";
+  const you=me, them=others[0]||null;
+  const a=answers[you.id]&&answers[you.id][q.id], b=them&&answers[them.id]&&answers[them.id][q.id];
+  const item=(duo&&validVal(q,a)&&validVal(q,b))?pairItem(q,a,b,pop):null;
+  useEffect(()=>{ if(!resulted||!duo) return; if(item){ item.s>=.5?sfx.chime():sfx.split(); } },[resulted]);
+  useEffect(()=>{ if(flipped&&!duo) sfx.chime(); },[flipped]);
+  let body;
+  if(duo){
+    const total=them?pairScore(qsSoFar,answers[you.id]||{},answers[them.id]||{},pop):{pct:null,n:0};
+    const word=!item?"No comparison":item.s>=.99?"Match":item.s>=.5?"Close":"Split";
+    const rare=item&&item.s>=.83&&item.bonus>=.5&&item.tot>=10;
+    const ga=room.guess&&them?guessHit(q,hists[you.id]&&hists[you.id][q.id]&&hists[you.id][q.id].g,b):null;
+    body=<>
+      <div className="duoCards">
+        {[you,them].filter(Boolean).map((p,i)=><div className="rcard" key={p.id}>
+          <div className="rtop"><Av p={p} size={30}/><span className="rname">{p.id===myId?"You":p.name}</span></div>
+          {flipped ? <div className="bump rans"><AnsView q={q} v={answers[p.id]&&answers[p.id][q.id]}/></div> : <div className="sealed">✦</div>}
+          {resulted && room.guess && (()=>{ const o=p.id===you.id?them:you; const g=hists[o.id]&&hists[o.id][q.id]&&hists[o.id][q.id].g; const hit=guessHit(q,g,answers[p.id]&&answers[p.id][q.id]); return <div className={"gline "+(hit?"hit":"miss")}>{o.id===myId?"You":o.name} guessed: {fmtGuess(q,g)} {hit?"✓":"✗"}</div>; })()}
+        </div>)}
+      </div>
+      {resulted && them && <div className="bump center">
+        <ThreadPair a={you} b={them} pct={item?item.s*100:0} size={34}/>
+        <div className={"verdict "+(item&&item.s>=.5?"good":"bad")}>{word}</div>
+        {rare && <div className="rare">Rare match · only ~{item.pct}% answer like this</div>}
+      </div>}
+      {extras && them && <div className="card small">
+        <div className="row between"><span className="dim">Match so far</span><b className="mono">{total.pct==null?"—":total.pct+"%"}</b></div>
+      </div>}
+    </>;
+  } else {
+    const myA=answers[me.id]&&answers[me.id][q.id];
+    const mates=clusterMates(q,myA,players,answers,me.id);
+    const groups={}; players.forEach(p=>{ const v=answers[p.id]&&answers[p.id][q.id]; if(!validVal(q,v)) return; const b=bucketOf(q,v); (groups[b]=groups[b]||[]).push(p); });
+    const loners=Object.values(groups).filter(g=>g.length===1&&players.length>=4).map(g=>g[0]);
+    const dist=Object.keys(groups).length;
+    const cols = q.t==="slide" ? [1,2,3,4,5,6,7].map(i=>({key:i-1,label:String(i),members:groups[i-1]||[]})) : q.o.map((o,i)=>({key:i,label:o,members:groups[i]||[]}));
+    body=<>
+      {q.t==="slide"
+        ? <div className="card"><div className="slideCols">{cols.map(c=><div className="scol" key={c.key}><div className="stack">{flipped&&c.members.map((p,k)=><div key={p.id} className="snap" style={{animationDelay:(k*90+c.key*40)+"ms"}}><Av p={p} size={26}/></div>)}</div><div className="snum">{c.label}</div></div>)}</div><div className="trackLabels"><span>{q.lo}</span><span>{q.hi}</span></div></div>
+        : <div className="opts">{cols.map(c=><div key={c.key} className={"clrow"+(flipped&&c.members.length?" has":"")}><div className="cllab">{c.label}</div><div className="clbeads">{flipped&&c.members.map((p,k)=><div key={p.id} className="snap" style={{animationDelay:(k*90+c.key*60)+"ms"}}><Av p={p} size={30}/></div>)}</div></div>)}</div>}
+      {resulted && <div className="bump card small center">
+        {mates.length? <>You're with <b>{mates.map(p=>p.name).join(", ")}</b></> : (validVal(q,myA)?<>You're on your own on this one</>:<>No answer from you</>)}
+        {loners.length>0 && <div className="dim gap">Lone wolf: {loners.map(p=>p.name).join(", ")}</div>}
+      </div>}
+      {extras && <div className="dim small center">{dist===1?"Unanimous.":dist+" different answers."}</div>}
+    </>;
+  }
+  return <div className="wrap">
+    <TopBar left={<span className="mono dim small">{room.idx+1} / {room.total}</span>} right={<button className="link" onClick={onLeave}>Leave</button>}/>
+    {isHost ? <button className="go" disabled={!resulted} onClick={onNext}>{last?"See the results":"Next question"}</button>
+            : <div className="card center dim small">{resulted?"Waiting for the host to continue…":"Reading the room…"}</div>}
+    <div className="card qcard"><div className="catTag">{q.cat}</div><div className="q">{q.q}</div></div>
+    {body}
+    <Heckles onSend={heckle}/>
+  </div>;
+}
+function GraphMap({nodes,g,meId,sel,onSel,W=340,H=320,labels=true}){
+  const pal=["#F5B14C","#A78BFA","#7DF0A6","#F26D8B","#4DB8FF","#FF9F45","#59D0C0","#F272C8"];
+  const cc=id=>{ const k=g.clusterOf[id]; return g.clusters[k].length>1 ? pal[k%pal.length] : null; };
+  return <svg viewBox={`0 0 ${W} ${H}`} className="map" role="img" aria-label="Similarity map">
+    {g.clusters.map((c,k)=>{ if(c.length<2) return null; const pts=c.map(id=>g.pos[id]); const cx=pts.reduce((s,p)=>s+p.x,0)/pts.length, cy=pts.reduce((s,p)=>s+p.y,0)/pts.length; const r=Math.max(...pts.map(p=>Math.hypot(p.x-cx,p.y-cy)))+24; return <circle key={"h"+k} cx={cx} cy={cy} r={r} fill={pal[k%pal.length]} fillOpacity=".08" stroke={pal[k%pal.length]} strokeOpacity=".35" strokeDasharray="3 5"/>; })}
+    {g.edges.map((e,i)=>{ const a=g.pos[e.a],b=g.pos[e.b],k=Math.max(0,Math.min(1,(e.pct-50)/50)); return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#F5B14C" strokeOpacity={.18+.6*k} strokeWidth={.8+2.2*k} strokeLinecap="round"/>; })}
+    {nodes.map(n=>{ const p=g.pos[n.id], me=n.id===meId, on=sel===n.id; return <g key={n.id} transform={`translate(${p.x},${p.y})`} onClick={()=>onSel&&onSel(on?null:n.id)} style={{cursor:onSel?"pointer":"default"}}>
+      <circle r={me?15:12} fill={n.color||"#888"} stroke={me?"#fff":on?"#F5B14C":"#0E0B1A"} strokeWidth={me||on?2.5:1.5}/>
+      <text y="4" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0E0B1A">{initial(n.name)}</text>
+      {labels && <text y={me?28:25} textAnchor="middle" fontSize="9.5" style={{fill:"var(--mist)"}}>{(n.name||"").slice(0,9)}</text>}
+    </g>; })}
+  </svg>;
+}
+
+function Finale({room,players,hists,answers,pop,isHost,onAgain,onLeave,onMap,practice}){
+  const qs=room.qids.map(id=>QMAP[id]);
+  const me=players.find(p=>p.id===myId)||players[0];
+  const minOv=Math.min(MIN_OVERLAP,room.total);
+  const hKey=JSON.stringify(answers);
+  const simGet=useMemo(()=>{ const cache={}; return (a,b)=>{ const k=a+"|"+b; if(!cache[k]){ const r=pairScore(qs,answers[a]||{},answers[b]||{},pop); cache[k]=r.n>=minOv?r:{pct:null,n:r.n,items:r.items}; } return cache[k]; }; },[room.qids.join(),players.map(p=>p.id).join(),pop,hKey]);
+  const ids=players.map(p=>p.id);
+  const g=useMemo(()=>buildGraph(ids,simGet,{edgeMin:55,topK:3,cut:CLUSTER_CUT}),[simGet]);
+  const top=<>
+    <TopBar left={<span className="mono dim small">results</span>} right={<button className="link" onClick={onLeave}>Leave</button>}/>
+    {isHost ? <button className="go" onClick={onAgain}>Play again</button> : <div className="card center dim small">The host can start another round.</div>}
+  </>;
+  const useDuo=room.mode==="duo"&&players.length===2;
+  const them=players.find(p=>p.id!==me.id);
+  const res=useDuo?simGet(me.id,them.id):null;
+  const shown=useCountUp(res&&res.pct!=null?res.pct:0,1500);
+  useEffect(()=>{ if(res&&res.pct!=null){ const t=setTimeout(()=>res.pct>=55?sfx.chime():sfx.split(),1500); return ()=>clearTimeout(t); } },[]);
+  if(useDuo){
+    const items=res.items, agree=items.filter(i=>i.s>=.83).sort((x,y)=>y.bonus*y.s-x.bonus*x.s||y.s-x.s).slice(0,2), split=items.filter(i=>i.s<.5).sort((x,y)=>x.s-y.s).slice(0,2);
+    const reads=(p,o)=>room.guess? qs.filter(q=>guessHit(q,hists[p.id]&&hists[p.id][q.id]&&hists[p.id][q.id].g,answers[o.id]&&answers[o.id][q.id])).length : null;
+    const r1=reads(me,them), r2=reads(them,me);
+    return <div className="wrap">{top}
+      <div className="card center">
+        <ThreadPair a={me} b={them} pct={shown} size={56}/>
+        <div className="bigPct">{Math.round(shown)}<span>%</span></div>
+        <div className="tier">{res.pct==null?"Not enough answers to compare":tierOf(res.pct)}</div>
+        <div className="dim small">{me.name} and {them.name} · {res.n} questions</div>
+      </div>
+      {room.guess && <div className="card small"><div className="lab">Guesses that landed</div><div className="row between"><span>You guessed {them.name}</span><b className="mono">{r1}/{qs.length}</b></div><div className="row between gap"><span>{them.name} guessed you</span><b className="mono">{r2}/{qs.length}</b></div></div>}
+      {agree.length>0 && <div className="card small"><div className="lab">Where you clicked</div>{agree.map(i=><div className="listItem" key={i.q.id}><div>{i.q.q}</div><div className="dim">{i.s>=.99?fmtAns(i.q,i.a):"You: "+fmtAns(i.q,i.a)+" · "+them.name+": "+fmtAns(i.q,i.b)}{i.bonus>=.5&&i.tot>=10?" · only ~"+i.pct+"% agree":""}</div></div>)}</div>}
+      {split.length>0 && <div className="card small"><div className="lab">Where you split</div>{split.map(i=><div className="listItem" key={i.q.id}><div>{i.q.q}</div><div className="dim">You: {fmtAns(i.q,i.a)} · {them.name}: {fmtAns(i.q,i.b)}</div></div>)}</div>}
+      <button className="go2" onClick={onMap}>See the constellation</button>
+    </div>;
+  }
+  // group
+  const ranked=players.filter(p=>p.id!==me.id).map(p=>({p,r:simGet(me.id,p.id)})).filter(x=>x.r.pct!=null).sort((a,b)=>b.r.pct-a.r.pct);
+  const twin=ranked[0], opp=ranked[ranked.length-1];
+  const myClu=g.clusters[g.clusterOf[me.id]];
+  return <div className="wrap">{top}
+    <div className="card"><div className="lab">Who answers like who</div><GraphMap nodes={players} g={g} meId={me.id}/></div>
+    {twin && <div className="card small"><div className="row between"><span className="row"><Av p={twin.p} size={30}/>&nbsp;Your twin: <b>&nbsp;{twin.p.name}</b></span><b className="mono">{twin.r.pct}%</b></div>
+      {opp&&opp.p.id!==twin.p.id&&<div className="row between gap"><span className="row"><Av p={opp.p} size={30}/>&nbsp;Your opposite: <b>&nbsp;{opp.p.name}</b></span><b className="mono">{opp.r.pct}%</b></div>}
+      {myClu.length>1 && <div className="dim small gap">Your cluster: {myClu.filter(id=>id!==me.id).map(id=>players.find(p=>p.id===id).name).join(", ")}</div>}</div>}
+    <div className="card small"><div className="lab">Everyone vs. you</div>{ranked.map(x=><div className="row between lrow" key={x.p.id}><span className="row"><Av p={x.p} size={26}/>&nbsp;{x.p.name}</span><span className="mono">{x.r.pct}%</span></div>)}</div>
+    <button className="go2" onClick={onMap}>See the constellation</button>
+  </div>;
+}
+
+function Constellation({db,practice,onBack,setPop}){
+  const [st,setSt]=useState({loading:true});
+  const [sel,setSel]=useState(null);
+  useEffect(()=>{ let dead=false; (async()=>{ try{ const {answers,people}=await db.loadAll(); const P=buildPop(answers,people); if(dead) return; setPop(P); setSt({loading:false,P}); }catch(e){ if(!dead) setSt({loading:false,err:explain(e)}); } })(); return ()=>{dead=true}; },[]);
+  const data=useMemo(()=>{
+    if(!st.P) return null;
+    const P=st.P, all=Object.keys(P.answers).filter(u=>P.people[u]).sort((a,b)=>Object.keys(P.answers[b]).length-Object.keys(P.answers[a]).length).slice(0,120);
+    const cache={}; const simGet=(a,b)=>{ const k=a<b?a+"|"+b:b+"|"+a; if(!(k in cache)){ const qs=Object.keys(P.answers[a]).filter(id=>P.answers[b][id]!==undefined).map(id=>QMAP[id]); const r=pairScore(qs,P.answers[a],P.answers[b],P); cache[k]=r.n>=MIN_OVERLAP?r:null; } return cache[k]; };
+    const linked=all.filter(u=>all.some(v=>v!==u&&simGet(u,v)));
+    if(linked.length<2) return {empty:true,total:all.length};
+    const g=buildGraph(linked,simGet,{edgeMin:62,topK:3,W:340,H:380});
+    const nodes=linked.map(u=>({id:u,name:P.people[u].name,color:P.people[u].color}));
+    return {g,nodes,simGet,linked,total:all.length};
+  },[st.P]);
+  const meIn=data&&data.linked&&data.linked.includes(myId);
+  const pick=sel&&data&&data.nodes&&data.nodes.find(n=>n.id===sel);
+  const vsMe=pick&&meIn&&pick.id!==myId?data.simGet(myId,pick.id):null;
+  const mates=pick?data.g.clusters[data.g.clusterOf[pick.id]].filter(id=>id!==pick.id).map(id=>data.nodes.find(n=>n.id===id).name):[];
+  const mine=meIn?data.linked.filter(u=>u!==myId).map(u=>({u,r:data.simGet(myId,u)})).filter(x=>x.r).sort((a,b)=>b.r.pct-a.r.pct):[];
+  return <div className="wrap">
+    <TopBar left={practice?<span className="pill">practice · sample people</span>:null} right={<button className="link" onClick={onBack}>Back</button>}/>
+    <div className="brandBig sm">Constellation</div>
+    {st.loading && <div className="card center dim">Loading…</div>}
+    {st.err && <div className="card center">{st.err}</div>}
+    {data&&data.empty && <div className="card center dim">Not enough overlap yet. People need {MIN_OVERLAP} shared questions before they can be compared. Play a few more rounds.{data.total?" ("+data.total+" people so far.)":""}</div>}
+    {data&&data.g && <>
+      <div className="card"><GraphMap nodes={data.nodes} g={data.g} meId={myId} sel={sel} onSel={setSel} H={380} labels={data.nodes.length<=40}/></div>
+      {pick && <div className="card small"><div className="row"><Av p={pick} size={34}/>&nbsp;<b>{pick.name}</b></div>
+        {vsMe && <div className="gap">You and {pick.name}: <b className="mono">{vsMe.pct}%</b> <span className="dim">across {vsMe.n} questions</span></div>}
+        {mates.length>0 ? <div className="dim small gap">Clusters with {mates.slice(0,8).join(", ")}{mates.length>8?" +"+(mates.length-8):""}</div> : <div className="dim small gap">Not in a cluster yet</div>}</div>}
+      {meIn && mine.length>0 && <div className="card small"><div className="lab">Closest to you</div>{mine.slice(0,4).map(x=>{ const n=data.nodes.find(z=>z.id===x.u); return <div className="row between lrow" key={x.u}><span className="row"><Av p={n} size={26}/>&nbsp;{n.name}</span><span className="mono">{x.r.pct}% <span className="dim">· {x.r.n}</span></span></div>; })}</div>}
+      {!meIn && <div className="dim small center">You're not on the map yet. Play with "Remember my answers" on.</div>}
+      <div className="dim small center">{data.g.clusters.filter(c=>c.length>1).length} clusters · {data.nodes.length} people · tap a dot</div>
+    </>}
+  </div>;
+}
+/* ================= APP ================= */
+function App(){
+  const [screen,setScreen]=useState("home");          // home | create | room | map
+  const [name,setName]=useState(ls.get("hub_name")||ls.get("kd_name")||"");
+  const [codeInput,setCodeInput]=useState((urlQS.get("code")||"").toUpperCase().slice(0,4));
+  const [saveOn,setSaveOn]=useState(ls.get("kd_save")!=="0");
+  const [cfg,setCfg]=useState(()=>{ const base={mode:"duo",total:10,guess:true,cats:null}; try{ const s=JSON.parse(ls.get("kd_cfg")||"null"); if(s){ base.mode=s.mode==="group"?"group":"duo"; base.total=[8,10,15].includes(s.total)?s.total:10; const known=new Set(categoryList().map(c=>c.name.toLowerCase())); const keep=Array.isArray(s.cats)?s.cats.filter(c=>known.has(String(c).toLowerCase())):null; base.cats=keep&&keep.length&&keep.length<known.size?keep:null; } }catch(e){} return base; });
+  useEffect(()=>{ ls.set("kd_cfg",JSON.stringify(cfg)); },[cfg]);
+  const [practice,setPractice]=useState(false);
+  const [db,setDb]=useState(null);
+  const [code,setCode]=useState("");
+  const [room,setRoom]=useState(null);
+  const [players,setPlayers]=useState([]);
+  const [pop,setPop]=useState(emptyPop());
+  const [banner,setBanner]=useState("");
+  const [saveErr,setSaveErr]=useState(false);
+  const [floaties,setFloaties]=useState([]);
+  const [,bump]=useState(0);
+  const memRef=useRef(null), sbRef=useRef(null), myHist=useRef(null), genRef=useRef(-1), botDue=useRef({}), tickBusy=useRef(false), busy=useRef(false), seenRoom=useRef(false);
+  const live=useRef({}); live.current={room,players,db,code,pop};
+
+  const isHost=!!room&&room.host_id===myId;
+  const me=players.find(p=>p.id===myId);
+  const fail=e=>{ console.error(e); setBanner(explain(e)); };
+  const getDb=p=>{ if(p) return memRef.current||(memRef.current=makeMem(COLORS)); if(!sb) throw new Error("Couldn't reach Supabase. Check your connection or try practice mode."); return sbRef.current||(sbRef.current=makeSB()); };
+  const freshPop=async d=>{ const {answers,people}=await d.loadAll(); const P=buildPop(answers,people); setPop(P); return P; };
+  const colorFor=ps=>COLORS.find(c=>!ps.some(p=>p.color===c))||COLORS[ps.length%COLORS.length];
+
+  /* ---- subscribe + poll ---- */
+  useEffect(()=>{
+    if(!db||!code) return; let dead=false; seenRoom.current=false;
+    const refetch=async()=>{
+      try{
+        const r=await db.getRoom(code); if(dead) return;
+        if(!r){ if(seenRoom.current){ dead=true; hardLeave("The host closed the room."); } return; }
+        const ps=await db.players(code); if(dead) return;
+        seenRoom.current=true;
+        if(genRef.current===-1){ genRef.current=r.gen||0; const mine=ps.find(p=>p.id===myId); myHist.current=mine&&mine.hist?JSON.parse(JSON.stringify(mine.hist)):{}; }
+        else if(genRef.current!==(r.gen||0)){ genRef.current=r.gen||0; myHist.current={}; botDue.current={}; }
+        setRoom(r); setPlayers(ps);
+      }catch(e){}
+    };
+    refetch();
+    const un=db.subscribe(code,refetch,popHeckle);
+    const poll=setInterval(refetch,db.kind==="mem"?500:2500);
+    return ()=>{ dead=true; un(); clearInterval(poll); };
+  },[db,code]);
+
+  /* rejoin after a Safari reload */
+  useEffect(()=>{ const c=ls.get("kd_code"); if(!c||urlQS.get("code")||!sb) return; (async()=>{ try{ const d=getDb(false); const r=await d.getRoom(c); const ps=r?await d.players(c):[]; if(r&&ps.some(p=>p.id===myId)){ enter(d,c,false); } else ls.set("kd_code",""); }catch(e){} })(); },[]);
+
+  /* ---- host loop: bots answer, all-locked -> reveal. Lives in a stable interval reading refs. ---- */
+  useEffect(()=>{
+    const t=setInterval(async()=>{
+      const L=live.current; if(!L.room||!L.db||L.room.host_id!==myId||L.room.phase!=="asking"||tickBusy.current) return;
+      tickBusy.current=true;
+      try{
+        const {room,db:d}=L, q=QMAP[room.qids[room.idx]]; if(!q) return;
+        const now=Date.now(); const ps=L.players.map(p=>p.id===myId?{...p,hist:myHist.current||p.hist}:p);
+        for(const p of ps.filter(p=>p.bot)){
+          if(isLocked(p,q,room)) continue;
+          const key=room.gen+":"+room.idx+":"+p.id;
+          if(!botDue.current[key]) botDue.current[key]=now+1200+Math.random()*3200;
+          if(now<botDue.current[key]) continue;
+          const arch=parseInt(p.persona||"0",10)||0, a=botAns(q,arch,p.name), entry={a};
+          if(room.guess) entry.g=botGuess(q,a,p.name);
+          const hist={...(p.hist||{}),[q.id]:entry}; await d.patchPlayer(p.id,{hist}); p.hist=hist;
+        }
+        if(ps.length>0 && ps.every(p=>isLocked(p,q,room))){
+          const fr=await d.getRoom(room.code); const fps=await d.players(room.code);
+          const fm=fps.map(p=>p.id===myId?{...p,hist:myHist.current||p.hist}:p);
+          if(fr&&fr.phase==="asking"&&fr.idx===room.idx&&fm.every(p=>isLocked(p,q,fr))) await d.patchRoom(room.code,{phase:"reveal"});
+        }
+      }catch(e){ console.error(e); } finally{ tickBusy.current=false; }
+    },700);
+    return ()=>clearInterval(t);
+  },[]);
+
+  /* ---- heckles ---- */
+  function popHeckle(p){ const id=Math.random(); setFloaties(f=>[...f,{id,emoji:p.emoji,left:8+Math.random()*80}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
+  const heckle=e=>{ if(db) db.heckle(e,name); };
+
+  /* ---- enter / leave ---- */
+  function enter(d,c,p){ genRef.current=-1; myHist.current=null; botDue.current={}; setRoom(null); setPlayers([]); setPractice(p); setDb(d); setCode(c); setScreen("room"); if(!p) ls.set("kd_code",c); freshPop(d).catch(()=>{}); }
+  function hardLeave(msg){ ls.set("kd_code",""); setCode(""); setRoom(null); setPlayers([]); setDb(null); genRef.current=-1; myHist.current=null; setScreen("home"); if(msg) setBanner(msg); }
+  async function leave(){ const d=db,c=code,host=isHost; try{ if(host) await d.deleteRoom(c); else await d.removePlayer(myId); }catch(e){} hardLeave(""); }
+
+  async function openRoom(){
+    if(busy.current) return; busy.current=true; sfx.unlock();
+    try{
+      const nm=name.trim(); ls.set("hub_name",nm); const d=getDb(practice); let c=null;
+      for(let i=0;i<4;i++){ c=randCode(); try{ await d.createRoom({code:c,host_id:myId,mode:cfg.mode,total:cfg.total,guess:cfg.mode==="duo",phase:"lobby",idx:0,qids:[],gen:0}); break; }catch(e){ if(i===3) throw e; } }
+      await d.addPlayer({id:myId,code:c,name:nm,color:COLORS[0],bot:false,hist:{}});
+      if(practice){ const bots=cfg.mode==="duo"?[BOTS[0]]:[BOTS[0],BOTS[2],BOTS[1],BOTS[3]]; let i=1; for(const b of bots){ await d.addPlayer({id:"bot-"+b.name.toLowerCase()+"-"+c,code:c,name:b.name,color:COLORS[i++%COLORS.length],bot:true,persona:String(b.arch),hist:{}}); } }
+      enter(d,c,practice);
+    }catch(e){ fail(e); } finally{ busy.current=false; }
+  }
+  async function joinRoom(){
+    if(busy.current) return; busy.current=true; sfx.unlock();
+    try{
+      const nm=name.trim(), c=codeInput.trim().toUpperCase(); ls.set("hub_name",nm); const d=getDb(false);
+      const r=await d.getRoom(c); if(!r){ setBanner("No room with that code."); return; }
+      const ps=await d.players(c);
+      if(!ps.some(p=>p.id===myId)){
+        if(r.phase!=="lobby"){ setBanner("That game already started."); return; }
+        if(ps.length>=(r.mode==="duo"?2:12)){ setBanner("That room is full."); return; }
+        await d.addPlayer({id:myId,code:c,name:nm,color:colorFor(ps),bot:false,hist:{}});
+      }
+      enter(d,c,false);
+    }catch(e){ fail(e); } finally{ busy.current=false; }
+  }
+  async function forget(){ if(!confirm("Delete all your saved answers from the constellation?")) return; try{ await getDb(false).forget(myId); if(memRef.current) await memRef.current.forget(myId); setBanner("Your saved answers are gone."); }catch(e){ fail(e); } }
+
+  /* ---- host actions ---- */
+  async function addBot(){ try{ const used=new Set(players.filter(p=>p.bot).map(p=>p.name)); const b=BOTS.find(x=>!used.has(x.name)); if(!b) return; await db.addPlayer({id:"bot-"+b.name.toLowerCase()+"-"+code,code,name:b.name,color:colorFor(players),bot:true,persona:String(b.arch),hist:{}}); }catch(e){ fail(e); } }
+  async function kick(id){ try{ await db.removePlayer(id); }catch(e){ fail(e); } }
+  async function start(){
+    if(busy.current) return; busy.current=true; sfx.unlock();
+    try{ const P=await freshPop(db); const qids=dealQuestions(cfg.total,P,P.answers[myId]||{},Math.random,cfg.cats); if(qids.length<2){ setBanner("Not enough questions loaded to start."); return; } await db.patchRoom(code,{phase:"asking",idx:0,qids,total:qids.length,gen:room.gen||0}); }catch(e){ fail(e); } finally{ busy.current=false; }
+  }
+  async function forceReveal(){ try{ await db.patchRoom(code,{phase:"reveal"}); }catch(e){ fail(e); } }
+  async function next(){
+    if(busy.current) return; busy.current=true;
+    try{ const i=room.idx+1; await db.patchRoom(code,i>=room.qids.length?{phase:"finale"}:{phase:"asking",idx:i}); }catch(e){ fail(e); } finally{ setTimeout(()=>{busy.current=false;},400); }
+  }
+  async function again(){
+    try{ for(const p of players) await db.patchPlayer(p.id,{hist:{}}); await db.patchRoom(code,{phase:"lobby",idx:0,qids:[],gen:(room.gen||0)+1}); }catch(e){ fail(e); }
+  }
+
+  /* ---- my answers ---- */
+  function writeMine(q,entry,save){
+    const hist={...(myHist.current||{}),[q.id]:entry}; myHist.current=hist; bump(n=>n+1);
+    db.patchPlayer(myId,{hist}).catch(fail);
+    if(save&&saveOn){ const v=entry.a; db.saveAnswer(myId,name.trim()||"Player",(me&&me.color)||COLORS[0],q.id,v).then(()=>setSaveErr(false)).catch(e=>{ console.error(e); setSaveErr(true); }); }
+  }
+  const onAnswer=(q,a)=>{ const cur=(myHist.current||{})[q.id]||{}; writeMine(q,{...cur,a},true); };
+  const onGuess=(q,g)=>{ const cur=(myHist.current||{})[q.id]||{}; writeMine(q,{...cur,g},false); };
+
+  /* ---- derive histories for display ---- */
+  const hists={}, answers={};   // hists: qid -> {a,g}. answers: qid -> a (what scoring wants)
+  players.forEach(p=>{ const h=p.id===myId?(myHist.current||p.hist||{}):(p.hist||{}); hists[p.id]=h; answers[p.id]={}; Object.keys(h).forEach(k=>{ if(h[k]&&h[k].a!==undefined) answers[p.id][k]=h[k].a; }); });
+  const q=room&&room.qids&&room.qids.length?QMAP[room.qids[Math.min(room.idx,room.qids.length-1)]]:null;
+  const partner=room&&room.mode==="duo"?(players.find(p=>p.id!==myId)||{}).name:"";
+
+  let body;
+  if(screen==="home") body=<Home name={name} setName={setName} codeInput={codeInput} setCodeInput={setCodeInput} saveOn={saveOn} setSaveOn={setSaveOn} onNew={()=>{ setPractice(false); setScreen("create"); }} onPractice={()=>{ setPractice(true); setScreen("create"); }} onJoin={joinRoom} onMap={()=>{ try{ setDb(getDb(false)); setPractice(false); setScreen("map"); }catch(e){ fail(e); } }} onForget={forget}/>;
+  else if(screen==="create") body=<Create cfg={cfg} setCfg={setCfg} practice={practice} onOpen={openRoom} onBack={()=>setScreen("home")}/>;
+  else if(screen==="map") body=<Constellation db={db||getDb(practice)} practice={practice} setPop={setPop} onBack={()=>{ if(room&&code) setScreen("room"); else { setDb(null); setScreen("home"); } }}/>;
+  else if(!room) body=<div className="wrap"><div className="card center dim">Joining…</div></div>;
+  else if(room.qids&&room.qids.length&&room.qids.some(id=>!QMAP[id])) body=<div className="wrap"><div className="card center">Your question list is out of date.<div className="dim small gap">The host is using questions this phone hasn't loaded yet.</div></div><button className="go" onClick={()=>{ try{ sessionStorage.removeItem("kd_files"); }catch(e){} location.reload(); }}>Reload</button></div>;
+  else if(room.phase==="lobby") body=<Lobby room={room} players={players} isHost={isHost} code={code} practice={practice} onStart={start} onAddBot={addBot} onLeave={leave} onKick={kick}/>;
+  else if(room.phase==="asking"&&q) body=<Asking key={room.gen+":"+room.idx} room={room} players={players} q={q} meHist={myHist.current||{}} partner={partner} onAnswer={a=>onAnswer(q,a)} onGuess={g=>onGuess(q,g)} isHost={isHost} onForce={forceReveal} onLeave={leave} practice={practice} heckle={heckle}/>;
+  else if(room.phase==="reveal"&&q) body=<Reveal key={room.gen+":"+room.idx} room={room} players={players} hists={hists} answers={answers} q={q} pop={pop} isHost={isHost} onNext={next} onLeave={leave} heckle={heckle}/>;
+  else if(room.phase==="finale") body=<Finale room={room} players={players} hists={hists} answers={answers} pop={pop} isHost={isHost} onAgain={again} onLeave={leave} practice={practice} onMap={()=>setScreen("map")}/>;
+  else body=<div className="wrap"><div className="card center dim">Loading…</div></div>;
+
+  return <>
+    {banner && <div className="banner" onClick={()=>setBanner("")}>{banner}<span className="dim small"> · tap to dismiss</span></div>}
+    {saveErr && <div className="banner warn" onClick={()=>setSaveErr(false)}>Couldn't save your answers. Check kindred_setup.sql has been run.</div>}
+    {body}
+    <Floaties items={floaties}/>
+  </>;
+}
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<div className="wrap"><div className="card center dim">Loading questions…</div></div>);
+loadBank().catch(e=>{ console.error(e); setBank(parsePacks(FALLBACK_PACKS).questions); }).then(()=>root.render(<App/>));
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Gut Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+    --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6;
+    --dim:#8B82A6; --mint:#7DF0A6;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:env(safe-area-inset-bottom,0);
+  }
+  *{ box-sizing:inherit; }
+  html,body{ margin:0; min-height:100%; background:var(--ink); }
+  body{ font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent; }
+  .wrap{ max-width:520px; margin:0 auto; padding:14px 16px 34px; min-height:100vh; display:flex; flex-direction:column; gap:12px; }
+  .brandBig{ font-family:'Fraunces',serif; font-weight:600; font-size:40px; letter-spacing:.01em; color:var(--candle); margin:18px 0 0; line-height:1; }
+  .fr{ font-family:'Fraunces',serif; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .dim{ color:var(--dim); }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .who{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+  .card{ background:var(--velvet); border:1px solid var(--haze); border-radius:16px; padding:16px; }
+  .panel{ background:var(--panel); border:1px solid var(--haze); border-radius:14px; padding:14px; }
+  .go{ width:100%; font-family:'Fraunces',serif; font-weight:600; font-size:21px; letter-spacing:.01em; padding:15px; border-radius:15px; cursor:pointer; border:none; background:var(--candle); color:var(--ink); }
+  .go:disabled{ opacity:.45; }
+  .go2{ width:100%; font-weight:700; font-size:16px; padding:14px; border-radius:14px; cursor:pointer; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  .go2:disabled{ opacity:.45; }
+  .row{ display:flex; gap:10px; }
+  .grow{ flex:1 1 auto; }
+  input.txt{ width:100%; font-family:'Space Grotesk'; font-weight:600; font-size:17px; padding:14px; border-radius:13px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); }
+  input:focus{ outline:2px solid var(--candle); }
+  .code{ font-family:'JetBrains Mono'; font-weight:700; font-size:40px; letter-spacing:.22em; color:var(--candle); text-align:center; }
+  .avatar{ border-radius:9px; display:grid; place-items:center; font-weight:700; color:#0E0B1A; flex:0 0 auto; }
+  .prow{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); }
+  .prow+.prow{ margin-top:8px; }
+  .pill{ font-family:'JetBrains Mono'; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; background:var(--haze); color:var(--mist); }
+  .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; padding:4px; }
+  .verNum{ font-family:'JetBrains Mono'; font-size:10px; color:var(--dim); text-align:center; margin-top:auto; padding-top:8px; }
+  #qr{ display:flex; justify-content:center; }
+  #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
+  .heckbar{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+  .heck{ font-size:22px; background:var(--panel); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; cursor:pointer; }
+  .floaty{ position:fixed; bottom:80px; pointer-events:none; font-size:34px; animation:fly 2.2s ease-out forwards; z-index:50; }
+  @keyframes fly{ 0%{ transform:translateY(0) scale(.6); opacity:0 } 15%{ opacity:1; transform:translateY(-20px) scale(1.1) } 100%{ transform:translateY(-260px) scale(1); opacity:0 } }
+  @keyframes pop{ 0%{ transform:scale(0); opacity:0 } 65%{ transform:scale(1.25); opacity:1 } 100%{ transform:scale(1); opacity:1 } }
+  @keyframes rise{ 0%{ transform:translateY(10px); opacity:0 } 100%{ transform:translateY(0); opacity:1 } }
+  @media (prefers-reduced-motion:reduce){ *{ animation-duration:.01s !important; animation-delay:0s !important; } }
+
+  /* the prompt */
+  .prompt{ text-align:center; padding:6px 4px 0; }
+  .prompt .how{ font-family:'Fraunces',serif; font-size:20px; color:var(--dim); }
+  .prompt .adj{ font-family:'Fraunces',serif; font-style:italic; font-weight:600; font-size:clamp(52px,17vw,80px); line-height:1; color:var(--candle); text-shadow:0 0 28px rgba(245,177,76,.35); margin:2px 0 4px; }
+  .prompt .subj{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(24px,7.5vw,32px); line-height:1.15; }
+
+  /* the dial */
+  .dialbox{ touch-action:none; user-select:none; -webkit-user-select:none; }
+  .readout{ font-family:'JetBrains Mono'; font-weight:700; font-size:64px; line-height:1; text-align:center; color:var(--mist); margin-top:-6px; }
+  .readout small{ font-size:26px; color:var(--dim); margin-left:2px; }
+  .nudge{ flex:1; font-family:'JetBrains Mono'; font-weight:700; font-size:16px; padding:13px 0; border-radius:12px; border:1px solid var(--haze); background:var(--panel); color:var(--mist); cursor:pointer; }
+  .nudge:active{ background:var(--haze); }
+
+  .resrow{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--haze); border-radius:12px; background:var(--panel); animation:rise .4s both; }
+  .resrow+.resrow{ margin-top:8px; }
+  .resrow.me{ border-color:var(--candle); }
+  .gain{ font-family:'JetBrains Mono'; font-weight:700; font-size:20px; color:var(--mint); }
+  .vnum{ font-family:'JetBrains Mono'; font-weight:700; font-size:15px; color:var(--mist); min-width:48px; text-align:right; }
+  .note{ font-size:13px; color:var(--dim); line-height:1.4; }
+  .packhead{ width:100%; display:flex; justify-content:space-between; align-items:baseline; background:none; border:none; color:var(--mist); padding:0; cursor:pointer; text-align:left; }
+  .chip{ font-family:'Space Grotesk'; font-weight:600; font-size:13px; padding:7px 11px; border-radius:999px; border:1px solid var(--haze); background:transparent; color:var(--dim); cursor:pointer; }
+  .chip.on{ background:var(--candle); color:var(--ink); border-color:var(--candle); }
+  .seg{ display:flex; gap:8px; }
+  .seg button{ flex:1; font-family:'JetBrains Mono'; font-weight:700; font-size:15px; padding:11px 0; border-radius:11px; border:1px solid var(--haze); background:var(--panel); color:var(--dim); cursor:pointer; }
+  .seg button.on{ background:var(--candle); color:var(--ink); border-color:var(--candle); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+const VERSION = "v4";
+
+/* ---- Supabase (same project as the other games) ---- */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+/* ---- helpers ---- */
+const randId = () => Math.random().toString(36).slice(2,10);
+const randCode = () => Array.from({length:4},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*31)]).join("");
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const myId = (()=>{ let v = ls.get("hub_uid") || ls.get("gc_id"); if(!v){ v=randId(); ls.set("gc_id",v); } return v; })();
+const COLORS = ["#F5B14C","#7DF0A6","#F26D8B","#A78BFA","#4DB8FF","#FF9F45","#59D0C0","#F272C8"];
+const HECKLES = ["🔥","😂","😱","🐔","🧢","👀","💀","🎯"];
+const BOT_NAMES = ["Gus","Priya","Dot","Mo","Lena","Bash","Wren","Ozzy"];
+const clamp = (v,a=0,b=100)=>Math.max(a,Math.min(b,v));
+const gauss = ()=>{ let s=0; for(let i=0;i<4;i++) s+=Math.random(); return (s-2)*1.7; };
+const initial = (n)=> (n||"?").trim().charAt(0).toUpperCase();
+
+/* ---- scoring ----
+   Each round every player is assigned ONE target player to match. Only that match scores:
+   1.05^(100-gap) scaled so a perfect match is 100.
+   gap 0→100  5→78  10→61  20→38  35→18  50→9  100→1
+   Matching the wider room is a separate, no-points view (tribes). */
+const BASE = 1.05;
+const matchPts = (gap)=> 100*Math.pow(BASE,-gap);
+
+/* ---- prompts (deployed file also fetches 06.gutcheck.prompts.json) ---- */
+const FALLBACK_PROMPTS = [{"adj":"scary","verb":"are","subject":"cats","c":8},{"adj":"scary","verb":"are","subject":"clowns","c":55},{"adj":"scary","verb":"is","subject":"the dark","c":35},{"adj":"scary","verb":"are","subject":"spiders","c":60},{"adj":"scary","verb":"is","subject":"public speaking","c":70},{"adj":"scary","verb":"is","subject":"an empty parking garage at night","c":75},{"adj":"scary","verb":"are","subject":"geese","c":50},{"adj":"scary","verb":"is","subject":"a group chat going silent","c":40},{"adj":"cozy","verb":"are","subject":"socks","c":78},{"adj":"cozy","verb":"is","subject":"a thunderstorm from inside","c":88},{"adj":"cozy","verb":"is","subject":"a hospital waiting room","c":5},{"adj":"cozy","verb":"are","subject":"airports","c":8},{"adj":"cozy","verb":"is","subject":"soup","c":85},{"adj":"cozy","verb":"is","subject":"a library","c":80},{"adj":"cozy","verb":"are","subject":"Crocs","c":55},{"adj":"cozy","verb":"is","subject":"a camping tent","c":55},{"adj":"healthy","verb":"is","subject":"pizza","c":15},{"adj":"healthy","verb":"is","subject":"coffee","c":45},{"adj":"healthy","verb":"are","subject":"bananas","c":85},{"adj":"healthy","verb":"is","subject":"cereal","c":25},{"adj":"healthy","verb":"is","subject":"peanut butter","c":55},{"adj":"healthy","verb":"is","subject":"a salad from a fast food place","c":50},{"adj":"healthy","verb":"is","subject":"sleeping in","c":55},{"adj":"healthy","verb":"is","subject":"cold showers","c":60},{"adj":"romantic","verb":"is","subject":"a drive-in movie","c":75},{"adj":"romantic","verb":"is","subject":"a long flight together","c":30},{"adj":"romantic","verb":"is","subject":"cooking dinner together","c":85},{"adj":"romantic","verb":"are","subject":"cruise ships","c":45},{"adj":"romantic","verb":"is","subject":"Paris","c":80},{"adj":"romantic","verb":"is","subject":"a shared Netflix password","c":50},{"adj":"romantic","verb":"is","subject":"IKEA","c":25},{"adj":"weird","verb":"is","subject":"cilantro","c":50},{"adj":"weird","verb":"is","subject":"pineapple on pizza","c":30},{"adj":"weird","verb":"are","subject":"mimes","c":75},{"adj":"weird","verb":"is","subject":"wearing socks with sandals","c":50},{"adj":"weird","verb":"is","subject":"eating alone at a restaurant","c":20},{"adj":"weird","verb":"is","subject":"talking to yourself","c":35},{"adj":"weird","verb":"is","subject":"a hot dog","c":40},{"adj":"weird","verb":"are","subject":"fax machines","c":70},{"adj":"weird","verb":"is","subject":"putting ketchup on eggs","c":45},{"adj":"hard","verb":"is","subject":"parallel parking","c":55},{"adj":"hard","verb":"is","subject":"juggling","c":60},{"adj":"hard","verb":"is","subject":"learning the violin","c":80},{"adj":"hard","verb":"is","subject":"quitting sugar","c":70},{"adj":"hard","verb":"is","subject":"folding a fitted sheet","c":75},{"adj":"hard","verb":"is","subject":"being a parent","c":90},{"adj":"hard","verb":"is","subject":"making a good omelette","c":50},{"adj":"hard","verb":"is","subject":"whistling","c":30},{"adj":"hard","verb":"is","subject":"riding a unicycle","c":75},{"adj":"overrated","verb":"is","subject":"brunch","c":65},{"adj":"overrated","verb":"is","subject":"Paris","c":50},{"adj":"overrated","verb":"are","subject":"fireworks","c":30},{"adj":"overrated","verb":"is","subject":"New Year's Eve","c":70},{"adj":"overrated","verb":"is","subject":"the Mona Lisa","c":70},{"adj":"overrated","verb":"is","subject":"avocado toast","c":60},{"adj":"overrated","verb":"are","subject":"weddings","c":50},{"adj":"overrated","verb":"is","subject":"Christmas","c":30},{"adj":"overrated","verb":"is","subject":"Disneyland","c":45},{"adj":"overrated","verb":"are","subject":"sunsets","c":10},{"adj":"embarrassing","verb":"is","subject":"crying at a commercial","c":35},{"adj":"embarrassing","verb":"is","subject":"getting your name wrong on a call","c":55},{"adj":"embarrassing","verb":"is","subject":"singing in the car with the windows down","c":30},{"adj":"embarrassing","verb":"is","subject":"tripping in public","c":60},{"adj":"embarrassing","verb":"is","subject":"waving back at someone who wasn't waving at you","c":75},{"adj":"embarrassing","verb":"is","subject":"a dad joke","c":50},{"adj":"embarrassing","verb":"is","subject":"liking a very old post by accident","c":80},{"adj":"expensive","verb":"is","subject":"a wedding","c":85},{"adj":"expensive","verb":"is","subject":"a good mattress","c":65},{"adj":"expensive","verb":"is","subject":"owning a dog","c":60},{"adj":"expensive","verb":"is","subject":"a college education","c":90},{"adj":"expensive","verb":"is","subject":"a movie night out","c":55},{"adj":"expensive","verb":"is","subject":"a Disney vacation","c":90},{"adj":"expensive","verb":"is","subject":"a pair of AirPods","c":40},{"adj":"expensive","verb":"is","subject":"a haircut","c":35},{"adj":"annoying","verb":"are","subject":"pop-up ads","c":90},{"adj":"annoying","verb":"is","subject":"someone chewing loudly","c":85},{"adj":"annoying","verb":"are","subject":"mosquitoes","c":85},{"adj":"annoying","verb":"is","subject":"a slow walker in front of you","c":75},{"adj":"annoying","verb":"is","subject":"reply-all","c":80},{"adj":"annoying","verb":"is","subject":"a loud group at the next table","c":70},{"adj":"annoying","verb":"is","subject":"Monday","c":55},{"adj":"annoying","verb":"is","subject":"a wobbly table","c":75},{"adj":"dangerous","verb":"is","subject":"skydiving","c":45},{"adj":"dangerous","verb":"is","subject":"texting while walking","c":40},{"adj":"dangerous","verb":"are","subject":"sharks","c":10},{"adj":"dangerous","verb":"are","subject":"hot dogs to toddlers","c":30},{"adj":"dangerous","verb":"is","subject":"driving at night","c":45},{"adj":"dangerous","verb":"is","subject":"a trampoline","c":55},{"adj":"dangerous","verb":"are","subject":"shopping carts","c":15},{"adj":"dangerous","verb":"are","subject":"vending machines","c":8},{"adj":"fancy","verb":"is","subject":"a cheese board","c":65},{"adj":"fancy","verb":"is","subject":"sparkling water","c":50},{"adj":"fancy","verb":"is","subject":"a tuxedo","c":90},{"adj":"fancy","verb":"are","subject":"cloth napkins","c":60},{"adj":"fancy","verb":"is","subject":"caviar","c":95},{"adj":"fancy","verb":"is","subject":"a rooftop bar","c":75},{"adj":"fancy","verb":"is","subject":"a Costco rotisserie chicken","c":5},{"adj":"fancy","verb":"is","subject":"a cruise","c":50},{"adj":"funny","verb":"are","subject":"puns","c":50},{"adj":"funny","verb":"is","subject":"slapstick","c":65},{"adj":"funny","verb":"are","subject":"dad jokes","c":60},{"adj":"funny","verb":"are","subject":"cats falling off things","c":85},{"adj":"funny","verb":"is","subject":"a pie in the face","c":65},{"adj":"funny","verb":"is","subject":"airline food","c":40},{"adj":"funny","verb":"are","subject":"toddlers","c":75},{"adj":"funny","verb":"is","subject":"the word moist","c":30},{"adj":"lucky","verb":"are","subject":"rabbits' feet","c":10},{"adj":"lucky","verb":"is","subject":"the number seven","c":40},{"adj":"lucky","verb":"is","subject":"Friday the 13th","c":10},{"adj":"lucky","verb":"are","subject":"four-leaf clovers","c":25},{"adj":"lucky","verb":"is","subject":"finding a penny","c":35},{"adj":"lucky","verb":"is","subject":"a green light on every street","c":50},{"adj":"boring","verb":"is","subject":"golf","c":60},{"adj":"boring","verb":"are","subject":"meetings","c":75},{"adj":"boring","verb":"is","subject":"chess","c":40},{"adj":"boring","verb":"is","subject":"airport security","c":80},{"adj":"boring","verb":"is","subject":"a long drive through Nebraska","c":80},{"adj":"boring","verb":"are","subject":"tax forms","c":95},{"adj":"boring","verb":"are","subject":"museums","c":35},{"adj":"boring","verb":"is","subject":"watching paint dry","c":100},{"adj":"athletic","verb":"is","subject":"bowling","c":25},{"adj":"athletic","verb":"is","subject":"darts","c":15},{"adj":"athletic","verb":"is","subject":"cheerleading","c":85},{"adj":"athletic","verb":"is","subject":"competitive eating","c":20},{"adj":"athletic","verb":"is","subject":"chess boxing","c":70},{"adj":"athletic","verb":"is","subject":"fishing","c":15},{"adj":"athletic","verb":"is","subject":"dancing","c":70},{"adj":"classy","verb":"is","subject":"wine in a box","c":20},{"adj":"classy","verb":"are","subject":"monocles","c":75},{"adj":"classy","verb":"is","subject":"white after Labor Day","c":40},{"adj":"classy","verb":"is","subject":"a bowtie","c":75},{"adj":"classy","verb":"is","subject":"eating chicken wings with a fork","c":60},{"adj":"classy","verb":"is","subject":"the opera","c":85},{"adj":"classy","verb":"is","subject":"a fanny pack","c":30},{"adj":"relaxing","verb":"is","subject":"a hot tub","c":90},{"adj":"relaxing","verb":"is","subject":"a sauna","c":75},{"adj":"relaxing","verb":"is","subject":"a long flight","c":10},{"adj":"relaxing","verb":"is","subject":"gardening","c":80},{"adj":"relaxing","verb":"are","subject":"beach vacations","c":75},{"adj":"relaxing","verb":"is","subject":"cleaning","c":35},{"adj":"relaxing","verb":"is","subject":"a spa day","c":95},{"adj":"relaxing","verb":"are","subject":"rainy days","c":75},{"adj":"smart","verb":"are","subject":"octopuses","c":80},{"adj":"smart","verb":"are","subject":"pigeons","c":40},{"adj":"smart","verb":"are","subject":"goldfish","c":15},{"adj":"smart","verb":"is","subject":"your phone","c":55},{"adj":"smart","verb":"are","subject":"crows","c":85},{"adj":"smart","verb":"are","subject":"cats","c":35},{"adj":"smart","verb":"are","subject":"dogs","c":50},{"adj":"nostalgic","verb":"are","subject":"VHS tapes","c":85},{"adj":"nostalgic","verb":"is","subject":"the smell of a new crayon box","c":85},{"adj":"nostalgic","verb":"is","subject":"dial-up internet","c":75},{"adj":"nostalgic","verb":"is","subject":"a school cafeteria","c":60},{"adj":"nostalgic","verb":"are","subject":"Saturday morning cartoons","c":90},{"adj":"nostalgic","verb":"is","subject":"a Blockbuster","c":90},{"adj":"nostalgic","verb":"is","subject":"a floppy disk","c":75},{"adj":"nostalgic","verb":"are","subject":"flip phones","c":70},{"adj":"dramatic","verb":"are","subject":"soap operas","c":95},{"adj":"dramatic","verb":"are","subject":"cats","c":70},{"adj":"dramatic","verb":"are","subject":"toddlers","c":85},{"adj":"dramatic","verb":"are","subject":"reality TV reunions","c":90},{"adj":"dramatic","verb":"is","subject":"a group project","c":70},{"adj":"dramatic","verb":"are","subject":"theater kids","c":95},{"adj":"dramatic","verb":"are","subject":"seagulls","c":50}];
+
+/* each round, everyone gets a different target (a rotating cycle, so you meet everyone) */
+function assignTargets(ps,round){
+  const n=ps.length; const k=1+((round-1)%(n-1));
+  const m={}; ps.forEach((p,i)=>{ m[p.id]=ps[(i+k)%n].id; }); return m;
+}
+/* tribes: split the sorted votes wherever there's a gap bigger than thr */
+function clusterize(pegs,thr=12){
+  const sorted=[...pegs].sort((a,b)=>a.vote-b.vote); const out=[];
+  sorted.forEach(p=>{ const last=out[out.length-1];
+    if(last && p.vote-last.members[last.members.length-1].vote<=thr) last.members.push(p); else out.push({members:[p]}); });
+  out.forEach(c=>{ c.lo=c.members[0].vote; c.hi=c.members[c.members.length-1].vote; c.mid=Math.round(c.members.reduce((s,p)=>s+p.vote,0)/c.members.length); });
+  return out;
+}
+const tribeLabel = (m)=> m<25?"Not really": m<45?"A little": m<65?"Right in the middle": m<85?"Pretty much":"Absolutely";
+function verdict(clusters){
+  if(clusters.length<=1) return "Hive mind. The room agrees.";
+  const spread=clusters[clusters.length-1].hi-clusters[0].lo;
+  const lone=clusters.find(c=>c.members.length===1);
+  if(clusters.length===2 && spread>=40) return "Split room. Two camps.";
+  if(lone && clusters.length>=3) return lone.members[0].name+" is off on their own.";
+  if(lone) return lone.members[0].name+" is a lone wolf.";
+  return clusters.length+" camps.";
+}
+function awardsFrom(history,players){
+  const H=history||[]; const nm=id=>players.find(p=>p.id===id)?.name; if(H.length<2) return null;
+  let best=null;
+  for(let i=0;i<players.length;i++) for(let j=i+1;j<players.length;j++){
+    const a=players[i].id,b=players[j].id; const g=H.filter(h=>h.votes[a]!=null&&h.votes[b]!=null).map(h=>Math.abs(h.votes[a]-h.votes[b]));
+    if(g.length>=2){ const avg=g.reduce((x,y)=>x+y,0)/g.length; if(!best||avg<best.avg) best={a,b,avg}; }
+  }
+  let wolf=null;
+  players.forEach(p=>{ const d=H.filter(h=>h.votes[p.id]!=null).map(h=>Math.abs(h.votes[p.id]-h.median)); if(d.length>=2){ const avg=d.reduce((x,y)=>x+y,0)/d.length; if(!wolf||avg>wolf.avg) wolf={id:p.id,avg}; } });
+  return { pair:best&&{a:nm(best.a),b:nm(best.b),avg:Math.round(best.avg)}, wolf:wolf&&{name:nm(wolf.id),avg:Math.round(wolf.avg)} };
+}
+
+/* ---- question packs: every .txt/.json in data/06.gutcheck/ ---- */
+const DATA_DIR = "data/06.gutcheck";
+const keyOf = (p)=> (p.adj+"|"+p.subject).toLowerCase();
+function parseLine(l){
+  l=(l||"").trim(); if(!l||l[0]==="#") return null;
+  const a=l.split("|").map(x=>x.trim()); if(a.length<3||!a[0]||!a[2]) return null;
+  const c=(a[3]!==undefined&&a[3]!==""&&!isNaN(+a[3])) ? clamp(Math.round(+a[3])) : 50;
+  return { adj:a[0], verb:a[1]||"is", subject:a[2], c };
+}
+function parsePack(file,text){
+  const base=file.replace(/\.(txt|json)$/i,"");
+  let title=base.split(".").pop().replace(/[-_]+/g," "); title=title.charAt(0).toUpperCase()+title.slice(1);
+  const cats=[]; const cat=(name)=>{ let c=cats.find(x=>x.title===name); if(!c){ c={title:name,prompts:[]}; cats.push(c);} return c; };
+  if(/\.json$/i.test(file)){
+    const d=JSON.parse(text); if(d.pack||d.title) title=d.pack||d.title;
+    const toP=(x)=> typeof x==="string" ? parseLine(x) : (x&&x.adj&&x.subject ? { adj:x.adj, verb:x.verb||"is", subject:x.subject, c:x.c!=null?clamp(+x.c):50 } : null);
+    if(Array.isArray(d)||d.prompts){ (Array.isArray(d)?d:d.prompts).forEach(x=>{ const r=toP(x); if(r) cat("General").prompts.push(r); }); }
+    const cs=d.categories;
+    if(Array.isArray(cs)) cs.forEach(c=>(c.prompts||c.questions||[]).forEach(x=>{ const r=toP(x); if(r) cat(c.name||c.title||"General").prompts.push(r); }));
+    else if(cs&&typeof cs==="object") Object.keys(cs).forEach(n=>(cs[n]||[]).forEach(x=>{ const r=toP(x); if(r) cat(n).prompts.push(r); }));
+  } else {
+    let cur="General";
+    text.split(/\r?\n/).forEach(l=>{
+      const t=l.trim();
+      const h=t.match(/^##\s*(.+)$/); if(h){ cur=h[1].trim(); return; }
+      const m=t.match(/^#\s*(?:pack|title):\s*(.+)$/i); if(m){ title=m[1].trim(); return; }
+      const r=parseLine(l); if(r) cat(cur).prompts.push(r);
+    });
+  }
+  return { id:base, title, cats:cats.filter(c=>c.prompts.length) };
+}
+async function loadPacks(){
+  let names=[];
+  try{ const r=await fetch("./"+DATA_DIR+"/index.json",{cache:"no-cache"}); const d=await r.json(); names=names.concat(d.files||d); }catch(e){}
+  try{ /* also ask GitHub directly, so a brand-new file shows up before the index catches up */
+    const host=location.hostname;
+    if(host.endsWith(".github.io")){
+      const owner=host.split(".")[0], repo=location.pathname.split("/")[1];
+      const r=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+DATA_DIR);
+      if(r.ok){ const d=await r.json(); if(Array.isArray(d)) names=names.concat(d.map(f=>f.name)); }
+    }
+  }catch(e){}
+  names=[...new Set(names)].filter(n=>/\.(txt|json)$/i.test(n)&&n!=="index.json"&&!n.startsWith("_")&&!/^readme/i.test(n)).sort();
+  const seen=new Set(); const packs=[];
+  for(const n of names){
+    try{
+      const r=await fetch("./"+DATA_DIR+"/"+encodeURIComponent(n),{cache:"no-cache"}); if(!r.ok) continue;
+      const pk=parsePack(n,await r.text());
+      pk.cats.forEach(c=>{ c.prompts=c.prompts.filter(x=>{ const k=keyOf(x); if(seen.has(k)) return false; seen.add(k); return true; }); });
+      pk.cats=pk.cats.filter(c=>c.prompts.length);
+      if(pk.cats.length) packs.push(pk);
+    }catch(e){ console.warn("pack failed:",n,e); }
+  }
+  return packs;
+}
+
+/* ---- the dial ---- */
+const DW=340, DH=196, CX=170, CY=172, R=128;
+const polar = (v,r=R)=>{ const t=Math.PI*(1-v/100); return [CX+r*Math.cos(t), CY-r*Math.sin(t)]; };
+const arcPath = (a,b,r=R)=>{ const [x1,y1]=polar(a,r),[x2,y2]=polar(b,r); return `M${x1.toFixed(2)} ${y1.toFixed(2)} A${r} ${r} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`; };
+
+function DialFrame({children}){
+  const ticks=[];
+  for(let v=0; v<=100; v+=5){
+    const big = v%10===0;
+    const [x1,y1]=polar(v,R+8), [x2,y2]=polar(v,R+(big?18:13));
+    ticks.push(<line key={v} x1={x1} y1={y1} x2={x2} y2={y2} stroke={big?"#8B82A6":"#4a3f6e"} strokeWidth={big?2:1.4} strokeLinecap="round"/>);
+  }
+  const lab = (v,dx=0)=>{ const [x,y]=polar(v,R+34); return <text key={v} x={x+dx} y={y+4} textAnchor="middle" fontFamily="JetBrains Mono" fontWeight="700" fontSize="12" fill="#8B82A6">{v}</text>; };
+  return (
+    <>
+      <path d={arcPath(0,100)} fill="none" stroke="#2a2147" strokeWidth="22" strokeLinecap="round"/>
+      {ticks}
+      {lab(0,-2)}{lab(25)}{lab(50)}{lab(75)}{lab(100,2)}
+      {children}
+    </>
+  );
+}
+
+function Dial({value,onChange,disabled}){
+  const ref=useRef(null); const drag=useRef(false);
+  function move(e){
+    const r=ref.current.getBoundingClientRect(); const k=DW/r.width;
+    const x=(e.clientX-r.left)*k, y=(e.clientY-r.top)*k;
+    const dx=x-CX, dy=CY-y; let v;
+    if(dy<=0){ v = dx<0?0:100; } else { v = Math.round(100*(1-Math.atan2(dy,dx)/Math.PI)); }
+    onChange(clamp(v));
+  }
+  const [kx,ky]=polar(value); const [nx,ny]=polar(value,R-16);
+  return (
+    <div className="dialbox">
+      <svg ref={ref} viewBox={`0 0 ${DW} ${DH}`} style={{width:"100%",display:"block",opacity:disabled?.55:1}}
+        onPointerDown={e=>{ if(disabled) return; drag.current=true; e.currentTarget.setPointerCapture(e.pointerId); move(e); }}
+        onPointerMove={e=>{ if(drag.current) move(e); }}
+        onPointerUp={()=>{ drag.current=false; }} onPointerCancel={()=>{ drag.current=false; }}>
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <DialFrame>
+          {value>0 && <path d={arcPath(0,value)} fill="none" stroke="#F5B14C" strokeWidth="22" strokeLinecap="round" opacity=".28"/>}
+          <line x1={CX} y1={CY} x2={nx} y2={ny} stroke="#F5B14C" strokeWidth="4" strokeLinecap="round" filter="url(#glow)"/>
+          <circle cx={CX} cy={CY} r="9" fill="#F5B14C"/>
+          <circle cx={kx} cy={ky} r="13" fill="#F5B14C" stroke="#0E0B1A" strokeWidth="3" filter="url(#glow)"/>
+        </DialFrame>
+      </svg>
+    </div>
+  );
+}
+
+/* reveal gauge: every player's peg, popping in turn */
+function RevealDial({pegs,median,link}){
+  const sorted=[...pegs].sort((a,b)=>a.vote-b.vote);
+  const layer={}; const placed=[];
+  sorted.forEach(p=>{ let L=0; while(placed.some(q=>q.L===L && Math.abs(q.vote-p.vote)<6)) L++; layer[p.id]=L; placed.push({vote:p.vote,L}); });
+  const [mx,my]=polar(median,R+2);
+  return (
+    <svg viewBox={`0 0 ${DW} ${DH}`} style={{width:"100%",display:"block"}}>
+      <DialFrame>
+        <line x1={CX} y1={CY} x2={polar(median,R-46)[0]} y2={polar(median,R-46)[1]} stroke="#8B82A6" strokeWidth="1.5" strokeDasharray="3 4" opacity=".6"/>
+        {link && <path d={arcPath(Math.min(link.a,link.b),Math.max(link.a,link.b))} fill="none" stroke="#F5B14C" strokeWidth="5" strokeLinecap="round" opacity=".85" style={{animation:"rise .4s 1.2s both"}}/>}
+        {pegs.map((p,i)=>{
+          const [x,y]=polar(p.vote, R - layer[p.id]*27);
+          return (
+            <g key={p.id} style={{transformBox:"fill-box",transformOrigin:"center",animation:`pop .45s ${0.25+i*0.4}s cubic-bezier(.2,1.4,.4,1) both`}}>
+              <circle cx={x} cy={y} r="13" fill={p.color} stroke="#0E0B1A" strokeWidth="3"/>
+              <text x={x} y={y+4.5} textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="13" fill="#0E0B1A">{initial(p.name)}</text>
+            </g>
+          );
+        })}
+        <text x={mx} y={my-8} textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#8B82A6" style={{display:"none"}}>mid</text>
+      </DialFrame>
+    </svg>
+  );
+}
+
+function PromptCard({prompt,reader}){
+  if(!prompt) return null;
+  return (
+    <div className="prompt">
+      <div className="how">How</div>
+      <div className="adj">{prompt.adj}</div>
+      <div className="subj">{prompt.verb} {prompt.subject}?</div>
+      {reader && <div className="note" style={{marginTop:8}}>{reader} reads it out loud</div>}
+    </div>
+  );
+}
+
+function Avatar({p,s=34}){ return <div className="avatar" style={{width:s,height:s,background:p.color,fontSize:s*0.48}}>{initial(p.name)}</div>; }
+
+/* ---- app ---- */
+function App(){
+  const [packs,setPacks] = useState([{ id:"builtin", title:"Built-in", cats:[{ title:"Everything", prompts:FALLBACK_PROMPTS }] }]);
+  const [name,setName] = useState(ls.get("hub_name")||ls.get("gc_name")||"");
+  const [code,setCode] = useState("");
+  const [local,setLocal] = useState(false);
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState("");
+  const [dial,setDial] = useState(50);
+  const [floaties,setFloaties] = useState([]);
+  const [err,setErr] = useState("");
+  const chRef = useRef(null);
+  const roomRef = useRef(null), playersRef = useRef([]);
+  const latest = useRef({});
+  const plans = useRef({});
+  const revealedRound = useRef(-1);
+  const [tab,setTab] = useState("match");
+
+  roomRef.current = room; playersRef.current = players;
+  const me = players.find(p=>p.id===myId);
+  const isHost = !!room && room.host_id===myId;
+  const reader = players.find(p=>p.id===room?.reader_id);
+  const target = players.find(p=>p.id===me?.target_id);
+  const off = (room&&Array.isArray(room.off)) ? room.off : [];
+  const ckey = (pk,c)=> pk.id+"::"+c.title;
+  const allCats = packs.flatMap(pk=>pk.cats.map(c=>ckey(pk,c)));
+  const pool = packs.flatMap(pk=>pk.cats.filter(c=>!off.includes(ckey(pk,c))).flatMap(c=>c.prompts));
+  const catsOn = allCats.filter(k=>!off.includes(k)).length;
+  function toggleCat(k){ const on=!off.includes(k); if(on&&catsOn<=1) return; patchRoom({ off: on?[...off,k]:off.filter(x=>x!==k) }); }
+  function togglePack(pk){
+    const keys=pk.cats.map(c=>ckey(pk,c)); const allOn=keys.every(k=>!off.includes(k));
+    if(allOn){ if(catsOn-keys.length<1) return; patchRoom({ off:[...off,...keys] }); }
+    else patchRoom({ off: off.filter(k=>!keys.includes(k)) });
+  }
+
+  useEffect(()=>{ loadPacks().then(pk=>{ if(pk.length) setPacks(pk); }); },[]);
+  useEffect(()=>{ const c=new URLSearchParams(location.search).get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ setDial(50); setTab("match"); },[room?.round]);
+
+  /* ---- data layer: same calls whether online or practice ---- */
+  async function patchRoom(patch){
+    if(local){ roomRef.current={...roomRef.current,...patch}; setRoom(roomRef.current); return; }
+    const r=await sb.from("gc_rooms").update(patch).eq("code",code); if(r.error) setErr(r.error.message);
+  }
+  async function patchPlayer(id,patch){
+    if(local){ playersRef.current=playersRef.current.map(p=>p.id===id?{...p,...patch}:p); setPlayers(playersRef.current); return; }
+    const r=await sb.from("gc_players").update(patch).eq("id",id); if(r.error) setErr(r.error.message);
+  }
+  async function patchAll(patch){
+    if(local){ playersRef.current=playersRef.current.map(p=>({...p,...patch})); setPlayers(playersRef.current); return; }
+    const r=await sb.from("gc_players").update(patch).eq("code",code); if(r.error) setErr(r.error.message);
+  }
+  async function addBot(){
+    const used=playersRef.current.map(p=>p.name);
+    const nm=BOT_NAMES.find(n=>!used.includes(n)) || ("Bot"+randId().slice(0,2));
+    const row={ id:"bot_"+randId(), code, name:nm, color:COLORS[playersRef.current.length%COLORS.length], score:0, vote:null, locked:false, bot:true, gain:0, joined_at:new Date(Date.now()+playersRef.current.length).toISOString() };
+    if(local){ playersRef.current=[...playersRef.current,row]; setPlayers(playersRef.current); return; }
+    const r=await sb.from("gc_players").insert(row); if(r.error) setErr(r.error.message);
+  }
+
+  /* ---- realtime ---- */
+  async function refetch(c){
+    if(!sb) return;
+    const r = await sb.from("gc_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data) setRoom(r.data);
+    const ps = await sb.from("gc_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data) setPlayers(ps.data);
+  }
+  useEffect(()=>{
+    if(!code||local||!sb) return;
+    refetch(code);
+    const ch = sb.channel("gc:"+code, { config:{ broadcast:{ self:true } } })
+      .on("postgres_changes",{event:"*",schema:"public",table:"gc_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"gc_players",filter:"code=eq."+code},()=>refetch(code))
+      .on("broadcast",{event:"heckle"},(m)=>popHeckle(m.payload))
+      .subscribe();
+    chRef.current = ch;
+    const poll = setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); chRef.current=null; };
+  },[code,local]);
+
+  function sendHeckle(emoji){ if(local){ popHeckle({emoji}); return; } if(chRef.current) chRef.current.send({type:"broadcast",event:"heckle",payload:{emoji}}); }
+  function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
+
+  /* ---- lobby actions ---- */
+  function saveName(){ ls.set("gc_name",name.trim()); ls.set("hub_name",name.trim()); }
+  async function createRoom(){
+    if(!name.trim()||!sb) return; saveName(); setErr("");
+    const c=randCode();
+    const a=await sb.from("gc_rooms").insert({ code:c, host_id:myId, phase:"lobby", round:0, rounds:8, used:[] });
+    if(a.error){ setErr(a.error.message); return; }
+    await sb.from("gc_players").delete().eq("id",myId);
+    const b=await sb.from("gc_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0, vote:null, locked:false, bot:false, gain:0, target_id:null });
+    if(b.error){ setErr(b.error.message); return; }
+    setLocal(false); setCode(c);
+  }
+  async function joinRoom(){
+    if(!name.trim()||!sb) return; saveName(); setErr("");
+    const c=codeInput.trim().toUpperCase();
+    const r=await sb.from("gc_rooms").select("code").eq("code",c).maybeSingle();
+    if(!r.data){ setErr("No room with that code."); return; }
+    const ps=await sb.from("gc_players").select("id").eq("code",c);
+    const color=COLORS[(ps.data||[]).length%COLORS.length];
+    await sb.from("gc_players").delete().eq("id",myId);
+    const b=await sb.from("gc_players").insert({ id:myId, code:c, name:name.trim(), color, score:0, vote:null, locked:false, bot:false, gain:0, target_id:null });
+    if(b.error){ setErr(b.error.message); return; }
+    setLocal(false); setCode(c);
+  }
+  function practice(){
+    saveName();
+    const c="PLAY";
+    const now=Date.now();
+    const you={ id:myId, code:c, name:name.trim()||"You", color:COLORS[0], score:0, vote:null, locked:false, bot:false, gain:0, joined_at:new Date(now).toISOString() };
+    const bots=["Gus","Priya","Dot"].map((n,i)=>({ id:"bot_"+randId(), code:c, name:n, color:COLORS[i+1], score:0, vote:null, locked:false, bot:true, gain:0, joined_at:new Date(now+i+1).toISOString() }));
+    roomRef.current={ code:c, host_id:myId, phase:"lobby", round:0, rounds:6, used:[], prompt:null, reader_id:null, results:null, history:[], off:[] };
+    playersRef.current=[you,...bots];
+    setRoom(roomRef.current); setPlayers(playersRef.current); setLocal(true); setCode(c);
+  }
+  async function leave(){
+    if(!local && sb) await sb.from("gc_players").delete().eq("id",myId);
+    setCode(""); setRoom(null); setPlayers([]); setLocal(false); plans.current={}; revealedRound.current=-1;
+  }
+  async function kick(id){ if(local){ playersRef.current=playersRef.current.filter(p=>p.id!==id); setPlayers(playersRef.current); } else await sb.from("gc_players").delete().eq("id",id); }
+
+  /* ---- game flow (host drives) ---- */
+  async function startRound(n){
+    const r=roomRef.current, ps=playersRef.current;
+    const all=pool.length?pool:packs.flatMap(k=>k.cats.flatMap(c=>c.prompts));
+    let used=(r.used||[]).filter(x=>typeof x==="string"); let avail=all.filter(x=>!used.includes(keyOf(x)));
+    if(!avail.length){ used=[]; avail=all; }
+    const chosen=avail[Math.floor(Math.random()*avail.length)];
+    plans.current={}; revealedRound.current=-1;
+    await patchAll({ vote:null, locked:false, gain:0 });
+    const tg=assignTargets(ps,n);
+    for(const p of ps){ await patchPlayer(p.id,{ target_id:tg[p.id] }); }
+    await patchRoom({ phase:"vote", round:n, prompt:chosen, used:[...used,keyOf(chosen)], reader_id:ps[(n-1)%ps.length].id, results:null });
+  }
+  async function startGame(){ await patchAll({ score:0 }); await patchRoom({ history:[] }); await startRound(1); }
+  async function nextRound(){ const r=roomRef.current; if(r.round>=r.rounds){ await patchRoom({phase:"gameover"}); } else await startRound(r.round+1); }
+  async function backToLobby(){ plans.current={}; await patchAll({ vote:null, locked:false, gain:0 }); await patchRoom({ phase:"lobby", round:0, prompt:null, results:null, used:[], history:[] }); }
+
+  async function lockIn(){ await patchPlayer(myId,{ vote:dial, locked:true }); }
+  async function unlock(){ await patchPlayer(myId,{ locked:false }); }
+
+  async function doReveal(){
+    const r=roomRef.current; if(!r||r.phase!=="vote"||revealedRound.current===r.round) return;
+    revealedRound.current=r.round;
+    const ps=playersRef.current.filter(p=>p.vote!=null);
+    const gains={};
+    ps.forEach(p=>{
+      const t=ps.find(q=>q.id===p.target_id);
+      gains[p.id]= t ? Math.round(matchPts(Math.abs(p.vote-t.vote))) : 0;
+    });
+    const vs=ps.map(p=>p.vote).sort((a,b)=>a-b);
+    const median = vs.length ? (vs.length%2 ? vs[(vs.length-1)/2] : (vs[vs.length/2-1]+vs[vs.length/2])/2) : 50;
+    for(const p of ps){ await patchPlayer(p.id,{ gain:gains[p.id], score:(p.score||0)+gains[p.id] }); }
+    const votes={}; ps.forEach(p=>{ votes[p.id]=p.vote; });
+    const hist=[...(r.history||[]), { adj:r.prompt?.adj, subject:r.prompt?.subject, votes, median }];
+    await patchRoom({ phase:"reveal", results:{ median, lo:vs[0], hi:vs[vs.length-1] }, history:hist });
+    /* quietly collect human votes: this is the future "population" dataset */
+    if(!local && r.prompt){ try{ await sb.from("gc_votes").insert(ps.filter(p=>!p.bot).map(p=>({ prompt_key:r.prompt.adj+"|"+r.prompt.subject, adj:r.prompt.adj, subject:r.prompt.subject, vote:p.vote, players:ps.length }))); }catch(e){} }
+  }
+
+  /* host tick: bots vote, auto-reveal when everyone's locked. A stable interval reading refs. */
+  latest.current.tick = async function(){
+    const r=roomRef.current, ps=playersRef.current;
+    if(!r||r.host_id!==myId||r.phase!=="vote") return;
+    const now=Date.now();
+    for(const b of ps.filter(p=>p.bot&&!p.locked)){
+      const k=r.round+":"+b.id;
+      if(!plans.current[k]){
+        const c=(r.prompt&&r.prompt.c!=null)?r.prompt.c:50;
+        const bias=(b.name.charCodeAt(0)%9)-4;
+        plans.current[k]={ at:now+1500+Math.random()*7000, vote:clamp(Math.round(c+bias+gauss()*11)) };
+      } else if(now>=plans.current[k].at){
+        plans.current[k].at=Infinity;
+        await patchPlayer(b.id,{ vote:plans.current[k].vote, locked:true });
+      }
+    }
+    const fresh=playersRef.current;
+    if(fresh.length>=2 && fresh.every(p=>p.locked&&p.vote!=null)) await doReveal();
+  };
+  useEffect(()=>{ const t=setInterval(()=>{ latest.current.tick && latest.current.tick(); },600); return ()=>clearInterval(t); },[]);
+
+  /* qr */
+  useEffect(()=>{
+    if(room?.phase!=="lobby"||local) return;
+    const el=document.getElementById("qr"); if(!el||!window.QRCode) return; el.innerHTML="";
+    new QRCode(el,{ text: location.origin+location.pathname+"?code="+code, width:132, height:132 });
+  },[room?.phase,code,local]);
+
+  /* ---------- screens ---------- */
+  const heck = <div className="heckbar">{HECKLES.map(e=><button key={e} className="heck" onClick={()=>sendHeckle(e)}>{e}</button>)}</div>;
+  const floats = floaties.map(f=><div key={f.id} className="floaty" style={{left:f.left+"%"}}>{f.emoji}</div>);
+
+  if(!code || !room){
+    return (
+      <div className="wrap">
+        <div className="brandBig">Gut Check</div>
+        <div className="fr" style={{fontSize:20,lineHeight:1.3}}>How scary are cats? Pick a number from 0 to 100, and try to land on the same number as the player you're assigned.</div>
+        <div className="card" style={{display:"flex",flexDirection:"column",gap:10}}>
+          <input className="txt" placeholder="Your name" value={name} maxLength={14} onChange={e=>setName(e.target.value)} />
+          <button className="go" disabled={!name.trim()||!sb} onClick={createRoom}>Create a room</button>
+          <div className="row">
+            <input className="txt grow" placeholder="Code" value={codeInput} maxLength={4} onChange={e=>setCodeInput(e.target.value.toUpperCase())} style={{letterSpacing:".2em",fontFamily:"JetBrains Mono",textAlign:"center"}} />
+            <button className="go2" style={{width:"auto",padding:"14px 22px"}} disabled={!name.trim()||codeInput.length<4||!sb} onClick={joinRoom}>Join</button>
+          </div>
+          {err && <div className="note" style={{color:"var(--rose)"}}>{err}</div>}
+        </div>
+        <button className="go2" onClick={practice}>Practice with bots</button>
+        <div className="verNum">gut check {VERSION}</div>
+      </div>
+    );
+  }
+
+  const header = (
+    <div className="top">
+      <div className="who">GUT CHECK · {local?"practice":code}{room.phase!=="lobby"&&room.phase!=="gameover"?` · round ${room.round}/${room.rounds}`:""}</div>
+      <button className="link" onClick={leave}>leave</button>
+    </div>
+  );
+  const foot = <div className="verNum">gut check {VERSION}</div>;
+
+  /* lobby */
+  if(room.phase==="lobby"){
+    return (
+      <div className="wrap">
+        {header}
+        {isHost
+          ? <button className="go" disabled={players.length<2} onClick={startGame}>{players.length<2?"Need at least 2 players":"Start game"}</button>
+          : <div className="panel note" style={{textAlign:"center"}}>Waiting for the host to start…</div>}
+        {!local && <div className="card"><div className="code">{code}</div><div id="qr" style={{marginTop:10}}/></div>}
+        <div className="card">
+          <div style={{fontWeight:700,marginBottom:10}}>Players · {players.length}</div>
+          {players.map(p=>(
+            <div className="prow" key={p.id}>
+              <Avatar p={p}/><div className="grow" style={{fontWeight:600}}>{p.name}{p.id===room.host_id?" 👑":""}{p.bot?" 🤖":""}</div>
+              {isHost && p.id!==myId && <button className="link" onClick={()=>kick(p.id)}>remove</button>}
+            </div>
+          ))}
+          {isHost && players.length<8 && <button className="go2" style={{marginTop:10}} onClick={addBot}>+ Add a bot</button>}
+        </div>
+        <div className="card">
+          <div style={{fontWeight:700,marginBottom:4}}>Questions</div>
+          <div className="note" style={{marginBottom:isHost?10:0}}>{pool.length} questions in play · {catsOn} of {allCats.length} categories{isHost?"":" · the host picks what's on"}</div>
+          {isHost && packs.map(pk=>{
+            const keys=pk.cats.map(c=>ckey(pk,c)); const n=pk.cats.reduce((t,c)=>t+c.prompts.length,0);
+            const anyOn=keys.some(k=>!off.includes(k));
+            return (
+              <div key={pk.id} className="panel" style={{marginTop:8,padding:12}}>
+                <button className="packhead" onClick={()=>togglePack(pk)} style={{opacity:anyOn?1:.5}}>
+                  <span className="fr" style={{fontSize:19,fontWeight:600}}>{pk.title}</span>
+                  <span className="mono dim" style={{fontSize:12}}>{n}</span>
+                </button>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:8}}>
+                  {pk.cats.map(c=>{ const k=ckey(pk,c); const on=!off.includes(k); return (
+                    <button key={k} className={"chip"+(on?" on":"")} onClick={()=>toggleCat(k)}>{c.title} <span className="mono" style={{opacity:.7,fontSize:11}}>{c.prompts.length}</span></button>
+                  );})}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {isHost && (
+          <div className="card">
+            <div style={{fontWeight:700,marginBottom:10}}>Rounds</div>
+            <div className="seg">{[4,6,8,12].map(n=><button key={n} className={room.rounds===n?"on":""} onClick={()=>patchRoom({rounds:n})}>{n}</button>)}</div>
+          </div>
+        )}
+        <div className="card note">
+          Each round you're given one player to match. Everyone dials 0 to 100 in secret, then all dials flip at once. You score how close you landed to your player: 100 for a perfect match, 61 if you're 10 apart, 38 if 20 apart. Who you're matching changes every round. After each reveal there's a no-points look at how the whole room clustered.
+        </div>
+        {err && <div className="note" style={{color:"var(--rose)"}}>{err}</div>}
+        {foot}
+      </div>
+    );
+  }
+
+  /* vote */
+  if(room.phase==="vote"){
+    const locked=!!me?.locked;
+    const lockedCount=players.filter(p=>p.locked).length;
+    return (
+      <div className="wrap">
+        {header}
+        {target && (
+          <div className="panel" style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px"}}>
+            <Avatar p={target} s={40}/>
+            <div><div className="note">Land on the same number as</div><div className="fr" style={{fontSize:26,fontWeight:600,lineHeight:1.1}}>{target.name}</div></div>
+          </div>
+        )}
+        {locked
+          ? <div className="row"><div className="panel grow" style={{textAlign:"center",fontWeight:700}}>Locked in at {me.vote}% ✓</div><button className="go2" style={{width:"auto",padding:"0 18px"}} onClick={unlock}>Change</button></div>
+          : <button className="go" onClick={lockIn}>Lock in {dial}%</button>}
+        <PromptCard prompt={room.prompt} reader={reader?.name}/>
+        <Dial value={locked?(me.vote??dial):dial} onChange={setDial} disabled={locked}/>
+        <div className="readout">{locked?me.vote:dial}<small>%</small></div>
+        <div style={{display:"flex",justifyContent:"space-between"}} className="note"><span>not at all</span><span>completely</span></div>
+        {!locked && (
+          <div className="row">
+            {[-5,-1,1,5].map(d=><button key={d} className="nudge" onClick={()=>setDial(v=>clamp(v+d))}>{d>0?"+"+d:d}</button>)}
+          </div>
+        )}
+        <div className="panel" style={{display:"flex",flexWrap:"wrap",gap:8,alignItems:"center"}}>
+          {players.map(p=>(
+            <div key={p.id} style={{display:"flex",alignItems:"center",gap:6,opacity:p.locked?1:.45}}>
+              <Avatar p={p} s={26}/><span style={{fontSize:13,fontWeight:600}}>{p.locked?"✓":"…"}</span>
+            </div>
+          ))}
+          <span className="note" style={{marginLeft:"auto"}}>{lockedCount}/{players.length}</span>
+        </div>
+        {isHost && lockedCount>=2 && lockedCount<players.length && <button className="link" onClick={doReveal}>reveal now without the rest</button>}
+        {foot}
+      </div>
+    );
+  }
+
+  /* reveal */
+  if(room.phase==="reveal"){
+    const res=room.results||{};
+    const pegs=players.filter(p=>p.vote!=null);
+    const byGain=[...pegs].sort((a,b)=>b.gain-a.gain);
+    const myT=pegs.find(p=>p.id===me?.target_id);
+    const link = (me&&me.vote!=null&&myT) ? {a:me.vote,b:myT.vote} : null;
+    const t0=0.25+pegs.length*0.4+0.2;
+    const last=room.round>=room.rounds;
+    const clusters=clusterize(pegs);
+    return (
+      <div className="wrap">
+        {header}
+        {isHost
+          ? <button className="go" onClick={nextRound}>{last?"Final scores":"Next round"}</button>
+          : <div className="panel note" style={{textAlign:"center"}}>Waiting for the host…</div>}
+        <PromptCard prompt={room.prompt}/>
+        <RevealDial pegs={pegs} median={res.median??50} link={tab==="match"?link:null}/>
+        <div className="seg" style={{animation:`rise .4s ${t0}s both`}}>
+          <button className={tab==="match"?"on":""} onClick={()=>setTab("match")}>Your match</button>
+          <button className={tab==="room"?"on":""} onClick={()=>setTab("room")}>The room</button>
+        </div>
+        {tab==="match" ? (
+          <div>
+            {me && myT && (
+              <div className="note" style={{textAlign:"center",marginBottom:10,animation:`rise .4s ${t0}s both`}}>
+                You said <b style={{color:"var(--mist)"}}>{me.vote}</b>, {myT.name} said <b style={{color:"var(--mist)"}}>{myT.vote}</b>. {Math.abs(me.vote-myT.vote)===0?"Perfect match.":Math.abs(me.vote-myT.vote)+" apart."}
+              </div>
+            )}
+            {byGain.map((p,i)=>{
+              const t=pegs.find(q=>q.id===p.target_id);
+              return (
+                <div key={p.id} className={"resrow"+(p.id===myId?" me":"")} style={{animationDelay:(t0+0.1+i*0.12)+"s"}}>
+                  <Avatar p={p}/>
+                  <div className="grow">
+                    <div style={{fontWeight:600}}>{p.name} <span className="dim">→</span> {t?t.name:"?"}</div>
+                    <div className="note">{p.vote} vs {t?t.vote:"—"}{t?`, ${Math.abs(p.vote-t.vote)} apart`:""} · {p.score} total</div>
+                  </div>
+                  <div className="gain">+{p.gain}</div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{animation:"rise .4s both"}}>
+            <div className="fr" style={{fontSize:24,fontWeight:600,textAlign:"center",marginBottom:4}}>{verdict(clusters)}</div>
+            <div className="note" style={{textAlign:"center",marginBottom:12}}>No points here. Just who thinks alike.</div>
+            {clusters.map((c,i)=>(
+              <div key={i} className="card" style={{padding:12,marginTop:i?8:0}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+                  <div className="fr" style={{fontSize:19,fontWeight:600}}>{c.members.length===1?"Lone wolf":tribeLabel(c.mid)}</div>
+                  <div className="mono dim" style={{fontSize:13}}>{c.lo===c.hi?c.lo:c.lo+" to "+c.hi}</div>
+                </div>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:8}}>
+                  {c.members.map(p=>(
+                    <div key={p.id} style={{display:"flex",alignItems:"center",gap:6}}>
+                      <Avatar p={p} s={26}/><span style={{fontSize:14,fontWeight:600}}>{p.name}</span><span className="mono dim" style={{fontSize:12}}>{p.vote}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {heck}
+        {floats}
+        {foot}
+      </div>
+    );
+  }
+
+  /* game over */
+  const board=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+  const aw=awardsFrom(room.history,players);
+  return (
+    <div className="wrap">
+      {header}
+      {isHost && <button className="go" onClick={backToLobby}>Play again</button>}
+      <div className="card" style={{textAlign:"center"}}>
+        <div className="fr" style={{fontSize:16,color:"var(--dim)"}}>Most in tune</div>
+        <div className="fr" style={{fontSize:44,fontWeight:600,color:"var(--candle)",lineHeight:1.1}}>{board[0]?.name} 👑</div>
+      </div>
+      <div>
+        {board.map((p,i)=>(
+          <div key={p.id} className={"resrow"+(p.id===myId?" me":"")} style={{animationDelay:i*0.12+"s"}}>
+            <div className="mono dim" style={{width:18}}>{i+1}</div>
+            <Avatar p={p}/>
+            <div className="grow" style={{fontWeight:600}}>{p.name}</div>
+            <div className="vnum" style={{fontSize:20}}>{p.score||0}</div>
+          </div>
+        ))}
+      </div>
+      {aw && (aw.pair||aw.wolf) && (
+        <div className="card">
+          <div style={{fontWeight:700,marginBottom:8}}>Room awards <span className="note">(no points)</span></div>
+          {aw.pair && <div style={{marginBottom:6}}><span className="fr" style={{fontSize:18,fontWeight:600}}>Mind meld: {aw.pair.a} and {aw.pair.b}</span><div className="note">averaged just {aw.pair.avg} apart all game</div></div>}
+          {aw.wolf && <div><span className="fr" style={{fontSize:18,fontWeight:600}}>Lone wolf: {aw.wolf.name}</span><div className="note">averaged {aw.wolf.avg} from the room's middle</div></div>}
+        </div>
+      )}
+      {heck}
+      {floats}
+      {foot}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
