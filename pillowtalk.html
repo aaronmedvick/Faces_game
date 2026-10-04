@@ -147,8 +147,8 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 /*PURE_START*/
 /* ============ CARD BANK ============
-   Cards live in data/07.pillowtalk.pack.*.json and are listed in
-   data/07.pillowtalk.manifest.json. Nothing to edit in this file to add questions. */
+   Cards live in Data/07.pillowtalk.pack.*.json and are listed in
+   Data/07.pillowtalk.manifest.json. Nothing to edit in this file to add questions. */
 let C=[];
 
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
@@ -187,7 +187,7 @@ function verdictFor(pct){
 /*PURE_END*/
 
 /* ============ question loader ============ */
-const DATA_DIR="data/";
+const DATA_DIR="Data/";
 const MANIFEST="07.pillowtalk.manifest.json";
 const validCard=c=>c&&typeof c.id==="string"&&c.id&&[1,2,3].includes(c.h)&&["scale","self","who","pick"].includes(c.t)&&typeof c.q==="string"&&c.q.trim()&&(c.t!=="pick"||(Array.isArray(c.o)&&c.o.length>=2&&c.o.length<=6));
 async function loadBank(){
