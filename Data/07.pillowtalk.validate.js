@@ -1,5 +1,5 @@
 // Checks every Pillow Talk pack listed in the manifest.
-// Run from the repo root:  node data/07.pillowtalk.validate.js
+// Run from the repo root:  node Data/07.pillowtalk.validate.js
 const fs = require("fs"), path = require("path");
 const dir = __dirname;
 const manifest = JSON.parse(fs.readFileSync(path.join(dir, "07.pillowtalk.manifest.json"), "utf8"));

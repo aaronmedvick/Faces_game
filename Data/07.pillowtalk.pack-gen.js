@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generates 07.pillowtalk.manifest.json by scanning for all 07.pillowtalk.pack.*.json files.
-// Run from the repo root: node data/07.pillowtalk.pack-gen.js
+// Run from the repo root: node Data/07.pillowtalk.pack-gen.js
 // This auto-discovers packs, so you never edit the manifest manually.
 const fs = require("fs"), path = require("path");
 const dir = __dirname;
