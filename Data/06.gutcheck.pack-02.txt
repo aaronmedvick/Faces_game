@@ -1,0 +1,63 @@
+# pack: Pack 2
+
+## Animals
+cute | are | penguins | 88
+lazy | are | sloths | 85
+loyal | are | cats | 30
+loyal | are | dogs | 92
+sneaky | are | raccoons | 80
+gross | are | pigeons | 55
+majestic | are | horses | 78
+creepy | are | crows | 45
+weird | are | octopuses | 70
+needy | are | cats | 55
+annoying | are | squirrels | 40
+
+## Food & drink
+spicy | is | ketchup | 5
+spicy | is | wasabi | 80
+greasy | is | pizza | 65
+bitter | is | black coffee | 65
+comforting | is | mac and cheese | 90
+messy | are | tacos | 70
+gross | are | olives | 45
+filling | is | a salad | 25
+addictive | are | potato chips | 90
+fresh | is | gas station sushi | 10
+refreshing | is | cucumber water | 60
+
+## Work & school
+stressful | is | moving house | 85
+stressful | are | job interviews | 75
+fun | are | team-building exercises | 20
+useful | is | algebra | 45
+pointless | are | business cards | 50
+productive | are | open-plan offices | 35
+productive | is | working from home | 65
+cringey | are | icebreakers | 85
+fair | is | grading on a curve | 50
+exhausting | is | a long meeting | 85
+
+## Tech & internet
+addictive | is | your phone | 85
+trustworthy | are | online reviews | 30
+creepy | are | smart speakers | 55
+annoying | are | cookie banners | 90
+safe | is | public wifi | 20
+necessary | is | a smartwatch | 20
+toxic | is | social media | 65
+accurate | are | weather apps | 60
+reliable | is | autocorrect | 35
+intrusive | are | ads that follow you around | 85
+
+## Travel & places
+crowded | is | Times Square | 92
+overpriced | are | airport restaurants | 90
+safe | is | flying | 90
+peaceful | is | a mountain cabin | 90
+romantic | is | Venice | 85
+boring | is | a layover | 75
+stressful | is | renting a car abroad | 60
+magical | is | a snowfall | 85
+clean | are | public restrooms | 20
+comfortable | are | airplane seats | 10

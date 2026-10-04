@@ -1,0 +1,116 @@
+{
+  "pack": "Pack 1",
+  "on": true,
+  "categories": [
+    {
+      "name": "Food & Drink",
+      "questions": [
+        {"id":"k01","d":1,"q":"Tea or coffee?","o":["Tea","Coffee"]},
+        {"id":"k06","d":1,"q":"Sweet or salty?","o":["Sweet","Salty"]},
+        {"id":"k09","d":1,"q":"Pineapple on pizza?","o":["Yes, always","Never"]},
+        {"id":"k14","d":1,"q":"Which snack goes first?","o":["Chips","Chocolate","Fruit","Cheese and crackers"]},
+        {"id":"k17","d":1,"q":"How spicy do you take your food?","lo":"Mild, please","hi":"Burn it down"},
+        {"id":"k22","d":1,"q":"How good a cook are you?","lo":"Cereal chef","hi":"Michelin in my head"}
+      ]
+    },
+    {
+      "name": "Daily Life",
+      "questions": [
+        {"id":"k03","d":1,"q":"Text or call?","o":["Text","Call"]},
+        {"id":"k05","d":1,"q":"Early bird or night owl?","o":["Early bird","Night owl"]},
+        {"id":"k07","d":1,"q":"Plan everything or wing it?","o":["Plan it all","Wing it"]},
+        {"id":"k11","d":1,"q":"Your ideal Saturday morning?","o":["Sleep till noon","Workout or long walk","Big brunch out","Errands and chores","Tinkering on a project"]},
+        {"id":"k18","d":1,"q":"How many unread notifications do you have?","lo":"Zero, always","hi":"Thousands"},
+        {"id":"k19","d":1,"q":"How early do you show up to things?","lo":"Fashionably late","hi":"An hour early"}
+      ]
+    },
+    {
+      "name": "Fun & Games",
+      "questions": [
+        {"id":"k08","d":1,"q":"Movie theater or your own couch?","o":["Theater","Couch"]},
+        {"id":"k10","d":1,"q":"Dogs or cats?","o":["Dogs","Cats"]},
+        {"id":"k12","d":1,"q":"Pick a superpower.","o":["Fly","Read minds","Stop time","Turn invisible"]},
+        {"id":"k16","d":1,"q":"Your karaoke move?","o":["Power ballad","Rap verse","90s throwback","I'm not singing"]},
+        {"id":"k23","t":"rank","d":1,"q":"Rank your perfect night, best first.","o":["Live music","Board games with friends","A movie alone"]},
+        {"id":"k24","t":"rank","d":1,"q":"Rank what you'd miss most, most first.","o":["Music","Coffee","Sunshine"]}
+      ]
+    },
+    {
+      "name": "Places & Adventure",
+      "questions": [
+        {"id":"k02","d":1,"q":"Window seat or aisle?","o":["Window","Aisle"]},
+        {"id":"k04","d":1,"q":"Mountains or beach?","o":["Mountains","Beach"]},
+        {"id":"k13","d":1,"q":"A free weekend trip. Where to?","o":["Big city","Cabin in the woods","Tropical beach","Road trip, no plan"]},
+        {"id":"k28","d":2,"q":"City or countryside?","o":["City","Countryside"]},
+        {"id":"k43","d":2,"q":"How do you feel about skydiving?","lo":"Never","hi":"Already booked"}
+      ]
+    },
+    {
+      "name": "Social Life",
+      "questions": [
+        {"id":"k15","d":1,"q":"Your role in the group chat?","o":["The instigator","The lurker","The meme dealer","The planner"]},
+        {"id":"k20","d":1,"q":"How much do you talk at a dinner party?","lo":"Mostly listen","hi":"Main character"},
+        {"id":"k21","d":1,"q":"How do you feel about a surprise party for you?","lo":"Dreadful","hi":"Bring it on"},
+        {"id":"k31","d":2,"q":"After a fight: apologize first or wait it out?","o":["Apologize first","Wait it out"]},
+        {"id":"k33","d":2,"q":"A friend pitches a business idea you think is bad. You…","o":["Tell them straight","Soften it","Ask questions until they see it","Cheer them on anyway"]},
+        {"id":"k35","d":2,"q":"In a disagreement, you want…","o":["To win","To be understood","To end it","To find the middle"]},
+        {"id":"k36","d":2,"q":"How do you recharge?","o":["Alone time","One close friend","A lively crowd","Time in nature","Screens and snacks"]},
+        {"id":"k39","d":2,"q":"How much do you trust strangers?","lo":"Not at all","hi":"Instantly"},
+        {"id":"k41","d":2,"q":"How much do you care what people think of you?","lo":"Not a bit","hi":"A lot"},
+        {"id":"k42","d":2,"q":"How comfortable are you with silence?","lo":"Unbearable","hi":"Peaceful"},
+        {"id":"k44","d":2,"q":"How much do you like being the center of attention?","lo":"Hate it","hi":"Love it"}
+      ]
+    },
+    {
+      "name": "Money & Work",
+      "questions": [
+        {"id":"k26","d":2,"q":"Save your money or spend it on experiences?","o":["Save it","Spend it"]},
+        {"id":"k34","d":2,"q":"A surprise $5,000 lands in your account.","o":["Save it","Travel","Upgrade my home","Help someone","Something gloriously impractical"]},
+        {"id":"k38","d":2,"q":"What matters most in a job?","o":["Pay","Purpose","People","Freedom"]},
+        {"id":"k57","d":3,"q":"Money is mostly…","o":["Security","Freedom","Fun","Stress","Not something I think about"]}
+      ]
+    },
+    {
+      "name": "Love & Family",
+      "questions": [
+        {"id":"k27","d":2,"q":"Big wedding or elope?","o":["Big wedding","Elope"]},
+        {"id":"k46","t":"rank","d":2,"q":"Rank what you want most in a partner, most first.","o":["Humor","Loyalty","Ambition"]},
+        {"id":"k52","d":3,"q":"Would you read your partner's messages if you'd never get caught?","o":["Yes","No"]},
+        {"id":"k58","d":3,"q":"When someone you love is struggling, you…","o":["Try to fix it","Listen","Distract them","Give them space"]}
+      ]
+    },
+    {
+      "name": "Mind & Self",
+      "questions": [
+        {"id":"k25","d":2,"q":"Honest truth or kind lie?","o":["Honest truth","Kind lie"]},
+        {"id":"k30","d":2,"q":"Rules exist for a reason, or rules are suggestions?","o":["For a reason","Suggestions"]},
+        {"id":"k32","d":2,"q":"When you're stressed, you usually…","o":["Go quiet","Talk it out","Stay busy","Sleep it off"]},
+        {"id":"k40","d":2,"q":"How often do you change your mind?","lo":"Almost never","hi":"Constantly"},
+        {"id":"k45","d":2,"q":"How sentimental are you?","lo":"Nothing saved","hi":"Every ticket stub"},
+        {"id":"k48","t":"rank","d":2,"q":"Rank these fears, scariest first.","o":["Public speaking","Being forgotten","Heights"]},
+        {"id":"k59","d":3,"q":"How much of your life feels yours to steer?","lo":"Mostly luck","hi":"All me"},
+        {"id":"k62","d":3,"q":"How honest are you about how you really feel?","lo":"I hide it","hi":"Open book"}
+      ]
+    },
+    {
+      "name": "Big Questions",
+      "questions": [
+        {"id":"k29","d":2,"q":"Would you rather know when you die, or how?","o":["When","How"]},
+        {"id":"k37","d":2,"q":"The best decade of life?","o":["Childhood","Twenties","Midlife","Later years"]},
+        {"id":"k47","t":"rank","d":2,"q":"Rank what you'd fix in the world first.","o":["Loneliness","Illness","Injustice"]},
+        {"id":"k49","d":3,"q":"Admired or understood?","o":["Admired","Understood"]},
+        {"id":"k50","d":3,"q":"If you could erase your worst memory, would you?","o":["Erase it","Keep it"]},
+        {"id":"k51","d":3,"q":"Success or happiness, only one?","o":["Success","Happiness"]},
+        {"id":"k53","d":3,"q":"A hard truth or a happy illusion?","o":["Hard truth","Happy illusion"]},
+        {"id":"k54","d":3,"q":"Which kind of regret weighs most?","o":["Something I did","Something I didn't do","Someone I lost touch with","None, really"]},
+        {"id":"k55","d":3,"q":"You'd most want to be remembered as…","o":["Kind","Brilliant","Brave","Fun","Loyal"]},
+        {"id":"k56","d":3,"q":"What do you need more of right now?","o":["Time","Money","Courage","Rest","Love"]},
+        {"id":"k60","d":3,"q":"How often do you think about death?","lo":"Never","hi":"Often"},
+        {"id":"k61","d":3,"q":"How easily do you forgive?","lo":"Grudge keeper","hi":"Already forgot"},
+        {"id":"k63","d":3,"q":"How much do you believe in fate?","lo":"It's all random","hi":"Everything happens for a reason"},
+        {"id":"k64","t":"rank","d":3,"q":"Rank what makes a good life, most first.","o":["Love","Adventure","Peace"]},
+        {"id":"k65","t":"rank","d":3,"q":"Rank what you'd never compromise on, most first.","o":["Honesty","Freedom","Loyalty"]}
+      ]
+    }
+  ]
+}

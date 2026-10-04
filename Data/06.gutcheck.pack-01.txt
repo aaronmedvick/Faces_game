@@ -1,0 +1,177 @@
+# pack: Pack 1
+# Categories start with ##. Questions go under them, one per line:
+#   adjective | is or are | the thing | typical answer 0-100 (optional)
+
+## Everyday vibes
+scary|are|cats|8
+scary|are|clowns|55
+scary|is|the dark|35
+scary|are|spiders|60
+scary|is|public speaking|70
+scary|is|an empty parking garage at night|75
+scary|are|geese|50
+scary|is|a group chat going silent|40
+cozy|are|socks|78
+cozy|is|a thunderstorm from inside|88
+cozy|is|a hospital waiting room|5
+cozy|are|airports|8
+cozy|is|soup|85
+cozy|is|a library|80
+cozy|are|Crocs|55
+cozy|is|a camping tent|55
+weird|is|cilantro|50
+weird|is|pineapple on pizza|30
+weird|are|mimes|75
+weird|is|wearing socks with sandals|50
+weird|is|eating alone at a restaurant|20
+weird|is|talking to yourself|35
+weird|is|a hot dog|40
+weird|are|fax machines|70
+weird|is|putting ketchup on eggs|45
+boring|is|golf|60
+boring|are|meetings|75
+boring|is|chess|40
+boring|is|airport security|80
+boring|is|a long drive through Nebraska|80
+boring|are|tax forms|95
+boring|are|museums|35
+boring|is|watching paint dry|100
+relaxing|is|a hot tub|90
+relaxing|is|a sauna|75
+relaxing|is|a long flight|10
+relaxing|is|gardening|80
+relaxing|are|beach vacations|75
+relaxing|is|cleaning|35
+relaxing|is|a spa day|95
+relaxing|are|rainy days|75
+nostalgic|are|VHS tapes|85
+nostalgic|is|the smell of a new crayon box|85
+nostalgic|is|dial-up internet|75
+nostalgic|is|a school cafeteria|60
+nostalgic|are|Saturday morning cartoons|90
+nostalgic|is|a Blockbuster|90
+nostalgic|is|a floppy disk|75
+nostalgic|are|flip phones|70
+
+## Food, body & danger
+healthy|is|pizza|15
+healthy|is|coffee|45
+healthy|are|bananas|85
+healthy|is|cereal|25
+healthy|is|peanut butter|55
+healthy|is|a salad from a fast food place|50
+healthy|is|sleeping in|55
+healthy|is|cold showers|60
+dangerous|is|skydiving|45
+dangerous|is|texting while walking|40
+dangerous|are|sharks|10
+dangerous|are|hot dogs to toddlers|30
+dangerous|is|driving at night|45
+dangerous|is|a trampoline|55
+dangerous|are|shopping carts|15
+dangerous|are|vending machines|8
+athletic|is|bowling|25
+athletic|is|darts|15
+athletic|is|cheerleading|85
+athletic|is|competitive eating|20
+athletic|is|chess boxing|70
+athletic|is|fishing|15
+athletic|is|dancing|70
+
+## Money & class
+overrated|is|brunch|65
+overrated|is|Paris|50
+overrated|are|fireworks|30
+overrated|is|New Year's Eve|70
+overrated|is|the Mona Lisa|70
+overrated|is|avocado toast|60
+overrated|are|weddings|50
+overrated|is|Christmas|30
+overrated|is|Disneyland|45
+overrated|are|sunsets|10
+expensive|is|a wedding|85
+expensive|is|a good mattress|65
+expensive|is|owning a dog|60
+expensive|is|a college education|90
+expensive|is|a movie night out|55
+expensive|is|a Disney vacation|90
+expensive|is|a pair of AirPods|40
+expensive|is|a haircut|35
+fancy|is|a cheese board|65
+fancy|is|sparkling water|50
+fancy|is|a tuxedo|90
+fancy|are|cloth napkins|60
+fancy|is|caviar|95
+fancy|is|a rooftop bar|75
+fancy|is|a Costco rotisserie chicken|5
+fancy|is|a cruise|50
+classy|is|wine in a box|20
+classy|are|monocles|75
+classy|is|white after Labor Day|40
+classy|is|a bowtie|75
+classy|is|eating chicken wings with a fork|60
+classy|is|the opera|85
+classy|is|a fanny pack|30
+
+## Social & drama
+romantic|is|a drive-in movie|75
+romantic|is|a long flight together|30
+romantic|is|cooking dinner together|85
+romantic|are|cruise ships|45
+romantic|is|Paris|80
+romantic|is|a shared Netflix password|50
+romantic|is|IKEA|25
+embarrassing|is|crying at a commercial|35
+embarrassing|is|getting your name wrong on a call|55
+embarrassing|is|singing in the car with the windows down|30
+embarrassing|is|tripping in public|60
+embarrassing|is|waving back at someone who wasn't waving at you|75
+embarrassing|is|a dad joke|50
+embarrassing|is|liking a very old post by accident|80
+annoying|are|pop-up ads|90
+annoying|is|someone chewing loudly|85
+annoying|are|mosquitoes|85
+annoying|is|a slow walker in front of you|75
+annoying|is|reply-all|80
+annoying|is|a loud group at the next table|70
+annoying|is|Monday|55
+annoying|is|a wobbly table|75
+funny|are|puns|50
+funny|is|slapstick|65
+funny|are|dad jokes|60
+funny|are|cats falling off things|85
+funny|is|a pie in the face|65
+funny|is|airline food|40
+funny|are|toddlers|75
+funny|is|the word moist|30
+dramatic|are|soap operas|95
+dramatic|are|cats|70
+dramatic|are|toddlers|85
+dramatic|are|reality TV reunions|90
+dramatic|is|a group project|70
+dramatic|are|theater kids|95
+dramatic|are|seagulls|50
+
+## Brains, luck & effort
+hard|is|parallel parking|55
+hard|is|juggling|60
+hard|is|learning the violin|80
+hard|is|quitting sugar|70
+hard|is|folding a fitted sheet|75
+hard|is|being a parent|90
+hard|is|making a good omelette|50
+hard|is|whistling|30
+hard|is|riding a unicycle|75
+lucky|are|rabbits' feet|10
+lucky|is|the number seven|40
+lucky|is|Friday the 13th|10
+lucky|are|four-leaf clovers|25
+lucky|is|finding a penny|35
+lucky|is|a green light on every street|50
+smart|are|octopuses|80
+smart|are|pigeons|40
+smart|are|goldfish|15
+smart|is|your phone|55
+smart|are|crows|85
+smart|are|cats|35
+smart|are|dogs|50

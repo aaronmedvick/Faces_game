@@ -1,0 +1,315 @@
+{
+ "pack": "Pack 2 — Movies & Road Trips",
+ "categories": [
+  {
+   "name": "Movie Night",
+   "questions": [
+    {
+     "q": "Where do you sit in a theater?",
+     "a": [
+      "Middle",
+      "Back row",
+      "Aisle",
+      "Front",
+      "Side"
+     ]
+    },
+    {
+     "q": "How early do you get to a movie?",
+     "a": [
+      "Right at start",
+      "10 minutes early",
+      "During trailers",
+      "30 minutes early",
+      "Late"
+     ]
+    },
+    {
+     "q": "Worst movie theater behavior?",
+     "a": [
+      "Talking",
+      "Phone light",
+      "Kicking the seat",
+      "Loud eating",
+      "Showing up late"
+     ]
+    },
+    {
+     "q": "Best genre for date night?",
+     "a": [
+      "Romcom",
+      "Comedy",
+      "Thriller",
+      "Action",
+      "Drama"
+     ]
+    },
+    {
+     "q": "How do you pick a movie?",
+     "a": [
+      "Scroll forever",
+      "Majority vote",
+      "Rewatch a favorite",
+      "Ask a friend",
+      "Read reviews"
+     ]
+    },
+    {
+     "q": "What do you do when the credits roll?",
+     "a": [
+      "Stop watching",
+      "Wait for the post-credit scene",
+      "Read them all",
+      "Check my phone",
+      "Start the next movie"
+     ]
+    },
+    {
+     "q": "Where do you watch movies at home?",
+     "a": [
+      "Couch",
+      "Bed",
+      "Floor",
+      "Recliner",
+      "Kitchen table"
+     ]
+    },
+    {
+     "q": "When do you use subtitles?",
+     "a": [
+      "Always",
+      "Never",
+      "Mumbly dialogue",
+      "Foreign films",
+      "When the kids are asleep"
+     ]
+    },
+    {
+     "q": "How do you feel about spoilers?",
+     "a": [
+      "Hate them",
+      "Don't care",
+      "Read the ending first",
+      "Depends on the movie",
+      "Spoil horror for me"
+     ]
+    },
+    {
+     "q": "Scariest horror setting?",
+     "a": [
+      "Haunted house",
+      "Cabin in the woods",
+      "Abandoned hospital",
+      "Summer camp",
+      "Space station"
+     ]
+    },
+    {
+     "q": "Best kind of movie villain?",
+     "a": [
+      "Evil genius",
+      "Mob boss",
+      "Monster",
+      "Alien",
+      "Corrupt official"
+     ]
+    },
+    {
+     "q": "Best Pixar movie?",
+     "a": [
+      "Toy Story",
+      "Finding Nemo",
+      "The Incredibles",
+      "Up",
+      "Inside Out"
+     ]
+    },
+    {
+     "q": "How do you react to a sad movie?",
+     "a": [
+      "Cry openly",
+      "Cry quietly",
+      "Hold it in",
+      "Blame allergies",
+      "Never cry"
+     ]
+    },
+    {
+     "q": "Movie trailers are...?",
+     "a": [
+      "Love them",
+      "Skip them",
+      "Only the funny ones",
+      "Only for movies I know",
+      "Bathroom break"
+     ]
+    },
+    {
+     "q": "Longest movie you'd sit through?",
+     "a": [
+      "2 hours",
+      "2.5 hours",
+      "90 minutes",
+      "3 hours",
+      "Whatever it takes"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Road Trip",
+   "questions": [
+    {
+     "q": "Ideal road trip length?",
+     "a": [
+      "Weekend",
+      "One week",
+      "Day trip",
+      "Two weeks",
+      "A month"
+     ]
+    },
+    {
+     "q": "Favorite road trip seat?",
+     "a": [
+      "Passenger",
+      "Driver",
+      "Back window",
+      "Back middle",
+      "Wherever I can nap"
+     ]
+    },
+    {
+     "q": "Best road trip stop?",
+     "a": [
+      "Scenic overlook",
+      "Diner",
+      "Gas station snacks",
+      "Roadside attraction",
+      "Drive-thru"
+     ]
+    },
+    {
+     "q": "How often should you stop?",
+     "a": [
+      "Every 2 hours",
+      "Every hour",
+      "Only when needed",
+      "Every 3 hours",
+      "Never"
+     ]
+    },
+    {
+     "q": "Best road trip game?",
+     "a": [
+      "License plate game",
+      "20 Questions",
+      "I Spy",
+      "Singalong",
+      "Trivia"
+     ]
+    },
+    {
+     "q": "Worst road trip habit?",
+     "a": [
+      "Backseat driving",
+      "Messy snacks",
+      "Complaining",
+      "Bad music",
+      "Napping while I drive"
+     ]
+    },
+    {
+     "q": "How do you navigate?",
+     "a": [
+      "Google Maps",
+      "Phone GPS",
+      "Apple Maps",
+      "Waze",
+      "Wing it"
+     ]
+    },
+    {
+     "q": "Best road trip candy?",
+     "a": [
+      "Twizzlers",
+      "Sour Patch Kids",
+      "Peanut M&Ms",
+      "Gummy bears",
+      "Skittles"
+     ]
+    },
+    {
+     "q": "Best drive-thru road food?",
+     "a": [
+      "Fries",
+      "Burger",
+      "Nuggets",
+      "Milkshake",
+      "Coffee"
+     ]
+    },
+    {
+     "q": "What are you listening to?",
+     "a": [
+      "Playlist",
+      "Radio",
+      "Podcast",
+      "Audiobook",
+      "Silence"
+     ]
+    },
+    {
+     "q": "Rest stop bathrooms are...?",
+     "a": [
+      "Gross",
+      "Fine",
+      "Terrifying",
+      "Surprisingly clean",
+      "Avoided at all costs"
+     ]
+    },
+    {
+     "q": "Road trip destination type?",
+     "a": [
+      "Beach",
+      "National park",
+      "Big city",
+      "Small town",
+      "Mountains"
+     ]
+    },
+    {
+     "q": "How do you pack?",
+     "a": [
+      "Night before",
+      "Last minute",
+      "Weeks ahead",
+      "Make a list",
+      "Overpack everything"
+     ]
+    },
+    {
+     "q": "Where do you stay?",
+     "a": [
+      "Hotel",
+      "Camping",
+      "Airbnb",
+      "Friend's couch",
+      "Sleep in the car"
+     ]
+    },
+    {
+     "q": "Best time to leave?",
+     "a": [
+      "Early morning",
+      "Whenever ready",
+      "After work",
+      "Noon",
+      "Midnight"
+     ]
+    }
+   ]
+  }
+ ]
+}

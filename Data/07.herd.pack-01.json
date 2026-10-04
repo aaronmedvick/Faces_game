@@ -1,0 +1,1831 @@
+{
+ "pack": "Starter Pack",
+ "note": "List each question's answers roughly most-popular first. The game shuffles them; bots use the order to herd realistically.",
+ "categories": [
+  {
+   "name": "Food & Drink",
+   "questions": [
+    {
+     "q": "Favorite pizza topping?",
+     "a": [
+      "Pepperoni",
+      "Cheese",
+      "Sausage",
+      "Mushroom",
+      "Pineapple"
+     ]
+    },
+    {
+     "q": "Best breakfast food?",
+     "a": [
+      "Bacon",
+      "Pancakes",
+      "Eggs",
+      "Waffles",
+      "Cereal"
+     ]
+    },
+    {
+     "q": "Favorite ice cream flavor?",
+     "a": [
+      "Vanilla",
+      "Chocolate",
+      "Cookies & cream",
+      "Strawberry",
+      "Mint chip"
+     ]
+    },
+    {
+     "q": "Best sandwich?",
+     "a": [
+      "Turkey club",
+      "Grilled cheese",
+      "BLT",
+      "Italian sub",
+      "PB&J"
+     ]
+    },
+    {
+     "q": "Favorite fast food chain?",
+     "a": [
+      "McDonald's",
+      "Chick-fil-A",
+      "Wendy's",
+      "Taco Bell",
+      "Burger King"
+     ]
+    },
+    {
+     "q": "Go-to movie theater snack?",
+     "a": [
+      "Popcorn",
+      "Candy",
+      "Nachos",
+      "Soda",
+      "Pretzel"
+     ]
+    },
+    {
+     "q": "Best french fry style?",
+     "a": [
+      "Shoestring",
+      "Waffle",
+      "Curly",
+      "Steak fries",
+      "Crinkle cut"
+     ]
+    },
+    {
+     "q": "Favorite pasta shape?",
+     "a": [
+      "Spaghetti",
+      "Penne",
+      "Fettuccine",
+      "Rigatoni",
+      "Macaroni"
+     ]
+    },
+    {
+     "q": "Best taco filling?",
+     "a": [
+      "Carne asada",
+      "Chicken",
+      "Carnitas",
+      "Fish",
+      "Al pastor"
+     ]
+    },
+    {
+     "q": "Favorite pie?",
+     "a": [
+      "Apple",
+      "Pumpkin",
+      "Pecan",
+      "Cherry",
+      "Key lime"
+     ]
+    },
+    {
+     "q": "Best burger topping?",
+     "a": [
+      "Cheese",
+      "Bacon",
+      "Pickles",
+      "Onions",
+      "Avocado"
+     ]
+    },
+    {
+     "q": "Favorite Thanksgiving side?",
+     "a": [
+      "Stuffing",
+      "Mashed potatoes",
+      "Mac and cheese",
+      "Green bean casserole",
+      "Cranberry sauce"
+     ]
+    },
+    {
+     "q": "Favorite candy?",
+     "a": [
+      "Reese's",
+      "Snickers",
+      "M&Ms",
+      "Skittles",
+      "Twix"
+     ]
+    },
+    {
+     "q": "Best hot drink?",
+     "a": [
+      "Coffee",
+      "Hot chocolate",
+      "Tea",
+      "Chai",
+      "Apple cider"
+     ]
+    },
+    {
+     "q": "Favorite soda?",
+     "a": [
+      "Coke",
+      "Dr Pepper",
+      "Sprite",
+      "Pepsi",
+      "Mountain Dew"
+     ]
+    },
+    {
+     "q": "Best cookie?",
+     "a": [
+      "Chocolate chip",
+      "Oatmeal raisin",
+      "Sugar",
+      "Snickerdoodle",
+      "Peanut butter"
+     ]
+    },
+    {
+     "q": "Favorite cuisine?",
+     "a": [
+      "Italian",
+      "Mexican",
+      "Chinese",
+      "Japanese",
+      "Indian"
+     ]
+    },
+    {
+     "q": "Favorite salad dressing?",
+     "a": [
+      "Ranch",
+      "Caesar",
+      "Italian",
+      "Balsamic",
+      "Honey mustard"
+     ]
+    },
+    {
+     "q": "Best chip flavor?",
+     "a": [
+      "Plain",
+      "BBQ",
+      "Sour cream & onion",
+      "Salt & vinegar",
+      "Cheddar"
+     ]
+    },
+    {
+     "q": "Best way to cook an egg?",
+     "a": [
+      "Scrambled",
+      "Over easy",
+      "Sunny side up",
+      "Hard-boiled",
+      "Omelet"
+     ]
+    },
+    {
+     "q": "Favorite sushi order?",
+     "a": [
+      "California roll",
+      "Salmon nigiri",
+      "Spicy tuna roll",
+      "Shrimp tempura roll",
+      "Eel roll"
+     ]
+    },
+    {
+     "q": "Best pizza crust?",
+     "a": [
+      "Thin",
+      "Hand-tossed",
+      "Deep dish",
+      "Stuffed",
+      "Cracker"
+     ]
+    },
+    {
+     "q": "Best dipping sauce for nuggets?",
+     "a": [
+      "BBQ",
+      "Ranch",
+      "Honey mustard",
+      "Ketchup",
+      "Sweet & sour"
+     ]
+    },
+    {
+     "q": "Best fruit?",
+     "a": [
+      "Strawberry",
+      "Watermelon",
+      "Mango",
+      "Apple",
+      "Pineapple"
+     ]
+    },
+    {
+     "q": "What goes on a hot dog?",
+     "a": [
+      "Ketchup",
+      "Mustard",
+      "Onions",
+      "Relish",
+      "Chili"
+     ]
+    },
+    {
+     "q": "Favorite breakfast cereal?",
+     "a": [
+      "Frosted Flakes",
+      "Cheerios",
+      "Froot Loops",
+      "Lucky Charms",
+      "Cinnamon Toast Crunch"
+     ]
+    },
+    {
+     "q": "Best steak doneness?",
+     "a": [
+      "Medium rare",
+      "Medium",
+      "Medium well",
+      "Well done",
+      "Rare"
+     ]
+    },
+    {
+     "q": "Best late-night snack?",
+     "a": [
+      "Cereal",
+      "Pizza",
+      "Ice cream",
+      "Chips",
+      "Leftovers"
+     ]
+    },
+    {
+     "q": "Favorite type of nut?",
+     "a": [
+      "Cashew",
+      "Almond",
+      "Peanut",
+      "Pistachio",
+      "Pecan"
+     ]
+    },
+    {
+     "q": "Best toast topping?",
+     "a": [
+      "Butter",
+      "Peanut butter",
+      "Avocado",
+      "Jam",
+      "Cinnamon sugar"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Everyday Life",
+   "questions": [
+    {
+     "q": "Favorite holiday?",
+     "a": [
+      "Christmas",
+      "Thanksgiving",
+      "Halloween",
+      "Fourth of July",
+      "Easter"
+     ]
+    },
+    {
+     "q": "Favorite day of the week?",
+     "a": [
+      "Saturday",
+      "Friday",
+      "Sunday",
+      "Thursday",
+      "Monday"
+     ]
+    },
+    {
+     "q": "Ideal bedtime?",
+     "a": [
+      "10 PM",
+      "11 PM",
+      "Midnight",
+      "9 PM",
+      "After midnight"
+     ]
+    },
+    {
+     "q": "Where does your phone sleep?",
+     "a": [
+      "Nightstand",
+      "Under my pillow",
+      "Across the room",
+      "Next to me in bed",
+      "On the floor"
+     ]
+    },
+    {
+     "q": "Most annoying habit?",
+     "a": [
+      "Chewing loudly",
+      "Being late",
+      "Interrupting",
+      "Texting while talking",
+      "Leaving dishes out"
+     ]
+    },
+    {
+     "q": "Biggest pet peeve?",
+     "a": [
+      "Slow walkers",
+      "Loud chewing",
+      "Tailgating",
+      "Spoilers",
+      "Cutting in line"
+     ]
+    },
+    {
+     "q": "How do you take your coffee?",
+     "a": [
+      "Black",
+      "Cream and sugar",
+      "Latte",
+      "Iced",
+      "Flavored"
+     ]
+    },
+    {
+     "q": "Favorite way to spend a Sunday?",
+     "a": [
+      "Sleeping in",
+      "Watching TV",
+      "Brunch",
+      "Errands",
+      "Watching sports"
+     ]
+    },
+    {
+     "q": "Most used app?",
+     "a": [
+      "Instagram",
+      "TikTok",
+      "YouTube",
+      "Facebook",
+      "Snapchat"
+     ]
+    },
+    {
+     "q": "Favorite streaming service?",
+     "a": [
+      "Netflix",
+      "YouTube",
+      "Hulu",
+      "Disney+",
+      "Max"
+     ]
+    },
+    {
+     "q": "Favorite social media?",
+     "a": [
+      "Instagram",
+      "YouTube",
+      "TikTok",
+      "Facebook",
+      "Reddit"
+     ]
+    },
+    {
+     "q": "How do you listen to music?",
+     "a": [
+      "Spotify",
+      "Radio",
+      "YouTube",
+      "Apple Music",
+      "Vinyl"
+     ]
+    },
+    {
+     "q": "Favorite way to exercise?",
+     "a": [
+      "Walking",
+      "Running",
+      "Weights",
+      "Swimming",
+      "Yoga"
+     ]
+    },
+    {
+     "q": "Where do you get your news?",
+     "a": [
+      "Phone",
+      "TV",
+      "Social media",
+      "Newspaper",
+      "Podcasts"
+     ]
+    },
+    {
+     "q": "Least hated chore?",
+     "a": [
+      "Laundry",
+      "Vacuuming",
+      "Cooking",
+      "Dishes",
+      "Mowing"
+     ]
+    },
+    {
+     "q": "Most hated chore?",
+     "a": [
+      "Cleaning the bathroom",
+      "Dishes",
+      "Folding laundry",
+      "Dusting",
+      "Taking out the trash"
+     ]
+    },
+    {
+     "q": "Worst thing to forget at home?",
+     "a": [
+      "Phone",
+      "Wallet",
+      "Keys",
+      "Charger",
+      "Glasses"
+     ]
+    },
+    {
+     "q": "First thing you do after waking?",
+     "a": [
+      "Check phone",
+      "Use the bathroom",
+      "Make coffee",
+      "Hit snooze",
+      "Stretch"
+     ]
+    },
+    {
+     "q": "Favorite room in the house?",
+     "a": [
+      "Bedroom",
+      "Living room",
+      "Kitchen",
+      "Backyard",
+      "Bathroom"
+     ]
+    },
+    {
+     "q": "Best pet?",
+     "a": [
+      "Dog",
+      "Cat",
+      "Fish",
+      "Bird",
+      "Hamster"
+     ]
+    },
+    {
+     "q": "Best time to eat dinner?",
+     "a": [
+      "6 PM",
+      "7 PM",
+      "5 PM",
+      "8 PM",
+      "9 PM"
+     ]
+    },
+    {
+     "q": "Favorite type of weather?",
+     "a": [
+      "Sunny and warm",
+      "Cool and cloudy",
+      "Rainy",
+      "Snowy",
+      "Breezy"
+     ]
+    },
+    {
+     "q": "How do you wake up?",
+     "a": [
+      "Phone alarm",
+      "Alarm clock",
+      "Naturally",
+      "A pet",
+      "Someone else"
+     ]
+    },
+    {
+     "q": "Favorite type of music?",
+     "a": [
+      "Pop",
+      "Rock",
+      "Country",
+      "Hip-hop",
+      "R&B"
+     ]
+    },
+    {
+     "q": "Favorite movie genre?",
+     "a": [
+      "Comedy",
+      "Action",
+      "Horror",
+      "Romance",
+      "Sci-fi"
+     ]
+    },
+    {
+     "q": "Favorite board game?",
+     "a": [
+      "Monopoly",
+      "Clue",
+      "Scrabble",
+      "Risk",
+      "Sorry!"
+     ]
+    },
+    {
+     "q": "Favorite card game?",
+     "a": [
+      "Poker",
+      "Uno",
+      "Go Fish",
+      "Blackjack",
+      "Rummy"
+     ]
+    },
+    {
+     "q": "Favorite sport to watch?",
+     "a": [
+      "Football",
+      "Basketball",
+      "Baseball",
+      "Soccer",
+      "Hockey"
+     ]
+    },
+    {
+     "q": "Favorite color?",
+     "a": [
+      "Blue",
+      "Green",
+      "Red",
+      "Purple",
+      "Black"
+     ]
+    },
+    {
+     "q": "Favorite number between 1 and 10?",
+     "a": [
+      "7",
+      "3",
+      "5",
+      "8",
+      "2"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "What If",
+   "questions": [
+    {
+     "q": "Pick a superpower",
+     "a": [
+      "Flying",
+      "Invisibility",
+      "Time travel",
+      "Mind reading",
+      "Super strength"
+     ]
+    },
+    {
+     "q": "Where would you travel?",
+     "a": [
+      "Hawaii",
+      "Italy",
+      "Paris",
+      "Japan",
+      "Greece"
+     ]
+    },
+    {
+     "q": "Dream vacation type?",
+     "a": [
+      "Beach",
+      "Mountain cabin",
+      "City",
+      "Cruise",
+      "Theme parks"
+     ]
+    },
+    {
+     "q": "Lottery win: first purchase?",
+     "a": [
+      "House",
+      "Pay off debts",
+      "Car",
+      "Vacation",
+      "Invest it"
+     ]
+    },
+    {
+     "q": "Biggest fear?",
+     "a": [
+      "Spiders",
+      "Heights",
+      "Snakes",
+      "Public speaking",
+      "Small spaces"
+     ]
+    },
+    {
+     "q": "Most embarrassing moment?",
+     "a": [
+      "Tripping in public",
+      "Forgetting someone's name",
+      "Texting the wrong person",
+      "Stomach growling loudly",
+      "Calling the teacher \"mom\""
+     ]
+    },
+    {
+     "q": "Where would you live?",
+     "a": [
+      "Beach town",
+      "Small town",
+      "Suburbs",
+      "Big city",
+      "Mountains"
+     ]
+    },
+    {
+     "q": "Give up for a year?",
+     "a": [
+      "Social media",
+      "TV",
+      "Dessert",
+      "Coffee",
+      "Fast food"
+     ]
+    },
+    {
+     "q": "Best decade?",
+     "a": [
+      "90s",
+      "80s",
+      "2000s",
+      "70s",
+      "2010s"
+     ]
+    },
+    {
+     "q": "Zombie apocalypse: first weapon?",
+     "a": [
+      "Baseball bat",
+      "Crossbow",
+      "Machete",
+      "Frying pan",
+      "Chainsaw"
+     ]
+    },
+    {
+     "q": "Stuck on a deserted island, you want...",
+     "a": [
+      "Matches",
+      "A knife",
+      "A friend",
+      "A fishing rod",
+      "A book"
+     ]
+    },
+    {
+     "q": "Best age to be?",
+     "a": [
+      "25",
+      "30",
+      "21",
+      "18",
+      "35"
+     ]
+    },
+    {
+     "q": "Best gift to receive?",
+     "a": [
+      "Cash",
+      "Gift card",
+      "An experience",
+      "Jewelry",
+      "Electronics"
+     ]
+    },
+    {
+     "q": "Worst gift to get?",
+     "a": [
+      "Socks",
+      "Fruitcake",
+      "Scented candle",
+      "Gift card to a store you hate",
+      "Exercise equipment"
+     ]
+    },
+    {
+     "q": "Best job perk?",
+     "a": [
+      "Remote work",
+      "Bonuses",
+      "Unlimited vacation",
+      "Free lunch",
+      "4-day work week"
+     ]
+    },
+    {
+     "q": "Dream job as a kid?",
+     "a": [
+      "Athlete",
+      "Doctor",
+      "Teacher",
+      "Astronaut",
+      "Firefighter"
+     ]
+    },
+    {
+     "q": "Time travel destination?",
+     "a": [
+      "Your childhood",
+      "The future",
+      "Dinosaurs",
+      "Ancient Egypt",
+      "Wild West"
+     ]
+    },
+    {
+     "q": "Worst way to get dumped?",
+     "a": [
+      "Text",
+      "Ghosting",
+      "In public",
+      "Through a friend",
+      "Social media post"
+     ]
+    },
+    {
+     "q": "Worst way to wake up?",
+     "a": [
+      "Loud alarm",
+      "Someone shouting",
+      "Phone call",
+      "Bright lights",
+      "Being poked"
+     ]
+    },
+    {
+     "q": "Best party game?",
+     "a": [
+      "Charades",
+      "Trivia",
+      "Karaoke",
+      "Twister",
+      "Pictionary"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Party & Social",
+   "questions": [
+    {
+     "q": "Karaoke song type?",
+     "a": [
+      "Pop hit",
+      "Rock anthem",
+      "Country",
+      "Rap",
+      "Power ballad"
+     ]
+    },
+    {
+     "q": "Best thing to bring to a potluck?",
+     "a": [
+      "Dessert",
+      "Chips and dip",
+      "Pasta salad",
+      "Casserole",
+      "Drinks"
+     ]
+    },
+    {
+     "q": "Best wedding dance song?",
+     "a": [
+      "Cha Cha Slide",
+      "Electric Slide",
+      "Macarena",
+      "YMCA",
+      "Cupid Shuffle"
+     ]
+    },
+    {
+     "q": "Worst thing at a party?",
+     "a": [
+      "Bad music",
+      "Overcrowding",
+      "No food",
+      "Drama",
+      "Running out of drinks"
+     ]
+    },
+    {
+     "q": "Ideal dinner party size?",
+     "a": [
+      "6",
+      "4",
+      "8",
+      "10",
+      "12"
+     ]
+    },
+    {
+     "q": "How late do you stay at parties?",
+     "a": [
+      "Midnight",
+      "11 PM",
+      "10 PM",
+      "Until the end",
+      "1 AM"
+     ]
+    },
+    {
+     "q": "Best first date idea?",
+     "a": [
+      "Dinner",
+      "Coffee",
+      "Movie",
+      "Drinks",
+      "A walk"
+     ]
+    },
+    {
+     "q": "Best first date food?",
+     "a": [
+      "Italian",
+      "Sushi",
+      "Tacos",
+      "Pizza",
+      "Burgers"
+     ]
+    },
+    {
+     "q": "Worst first date behavior?",
+     "a": [
+      "Phone on the table",
+      "Talking about exes",
+      "Rude to the server",
+      "Being late",
+      "Chewing loudly"
+     ]
+    },
+    {
+     "q": "Best road trip snack?",
+     "a": [
+      "Chips",
+      "Candy",
+      "Jerky",
+      "Trail mix",
+      "Fruit"
+     ]
+    },
+    {
+     "q": "Best road trip soundtrack?",
+     "a": [
+      "Pop hits",
+      "Classic rock",
+      "Country",
+      "A podcast",
+      "Hip-hop"
+     ]
+    },
+    {
+     "q": "Favorite Halloween costume?",
+     "a": [
+      "Witch",
+      "Pirate",
+      "Vampire",
+      "Ghost",
+      "Superhero"
+     ]
+    },
+    {
+     "q": "Best Christmas movie?",
+     "a": [
+      "Elf",
+      "Home Alone",
+      "Christmas Vacation",
+      "It's a Wonderful Life",
+      "The Grinch"
+     ]
+    },
+    {
+     "q": "Favorite way to celebrate a birthday?",
+     "a": [
+      "Dinner out",
+      "Party",
+      "Trip",
+      "Quiet night in",
+      "Cake"
+     ]
+    },
+    {
+     "q": "Worst group chat behavior?",
+     "a": [
+      "Leaving people on read",
+      "Too many memes",
+      "Voice memos",
+      "Replying to all",
+      "Spamming"
+     ]
+    },
+    {
+     "q": "Best camping food?",
+     "a": [
+      "S'mores",
+      "Hot dogs",
+      "Burgers",
+      "Chili",
+      "Eggs and bacon"
+     ]
+    },
+    {
+     "q": "Best thing about summer?",
+     "a": [
+      "The beach",
+      "BBQs",
+      "No school",
+      "Long days",
+      "Ice cream"
+     ]
+    },
+    {
+     "q": "Best thing about winter?",
+     "a": [
+      "Hot chocolate",
+      "The holidays",
+      "Snow",
+      "Cozy blankets",
+      "Skiing"
+     ]
+    },
+    {
+     "q": "Best thing about fall?",
+     "a": [
+      "Pumpkin spice",
+      "Football",
+      "Leaves",
+      "Sweaters",
+      "Halloween"
+     ]
+    },
+    {
+     "q": "Best superhero?",
+     "a": [
+      "Spider-Man",
+      "Batman",
+      "Superman",
+      "Iron Man",
+      "Wonder Woman"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pop Culture",
+   "questions": [
+    {
+     "q": "Best Disney movie?",
+     "a": [
+      "The Lion King",
+      "Frozen",
+      "Aladdin",
+      "Toy Story",
+      "Finding Nemo"
+     ]
+    },
+    {
+     "q": "Best sitcom?",
+     "a": [
+      "Friends",
+      "The Office",
+      "Seinfeld",
+      "Parks and Recreation",
+      "Modern Family"
+     ]
+    },
+    {
+     "q": "Best video game system?",
+     "a": [
+      "PlayStation",
+      "Nintendo Switch",
+      "Xbox",
+      "PC",
+      "Mobile"
+     ]
+    },
+    {
+     "q": "Best animated show?",
+     "a": [
+      "The Simpsons",
+      "SpongeBob",
+      "Family Guy",
+      "South Park",
+      "Rick and Morty"
+     ]
+    },
+    {
+     "q": "Best theme park?",
+     "a": [
+      "Disney World",
+      "Universal",
+      "Six Flags",
+      "Cedar Point",
+      "Busch Gardens"
+     ]
+    },
+    {
+     "q": "Favorite car brand?",
+     "a": [
+      "Toyota",
+      "Ford",
+      "Honda",
+      "Chevrolet",
+      "Tesla"
+     ]
+    },
+    {
+     "q": "Best phone?",
+     "a": [
+      "iPhone",
+      "Samsung",
+      "Pixel",
+      "OnePlus",
+      "Motorola"
+     ]
+    },
+    {
+     "q": "Best pizza chain?",
+     "a": [
+      "Domino's",
+      "Pizza Hut",
+      "Papa John's",
+      "Little Caesars",
+      "Papa Murphy's"
+     ]
+    },
+    {
+     "q": "Best coffee chain?",
+     "a": [
+      "Starbucks",
+      "Dunkin'",
+      "A local shop",
+      "McDonald's",
+      "Peet's"
+     ]
+    },
+    {
+     "q": "Best shoe brand?",
+     "a": [
+      "Nike",
+      "Adidas",
+      "Converse",
+      "Vans",
+      "New Balance"
+     ]
+    },
+    {
+     "q": "Best place to shop?",
+     "a": [
+      "Amazon",
+      "Target",
+      "Walmart",
+      "Costco",
+      "IKEA"
+     ]
+    },
+    {
+     "q": "Scariest movie monster?",
+     "a": [
+      "Clown",
+      "Ghost",
+      "Zombie",
+      "Vampire",
+      "Werewolf"
+     ]
+    },
+    {
+     "q": "Favorite decade of music?",
+     "a": [
+      "90s",
+      "80s",
+      "2000s",
+      "70s",
+      "60s"
+     ]
+    },
+    {
+     "q": "Most overrated?",
+     "a": [
+      "Pumpkin spice",
+      "Brunch",
+      "Avocado toast",
+      "Black Friday",
+      "Valentine's Day"
+     ]
+    },
+    {
+     "q": "Best Olympic sport to watch?",
+     "a": [
+      "Gymnastics",
+      "Swimming",
+      "Track",
+      "Figure skating",
+      "Diving"
+     ]
+    },
+    {
+     "q": "Favorite dog breed?",
+     "a": [
+      "Golden retriever",
+      "Labrador",
+      "German shepherd",
+      "Bulldog",
+      "Poodle"
+     ]
+    },
+    {
+     "q": "Favorite cat color?",
+     "a": [
+      "Orange",
+      "Black",
+      "Gray",
+      "Tuxedo",
+      "Calico"
+     ]
+    },
+    {
+     "q": "Best zoo animal?",
+     "a": [
+      "Lion",
+      "Elephant",
+      "Giraffe",
+      "Penguin",
+      "Monkey"
+     ]
+    },
+    {
+     "q": "Best ocean animal?",
+     "a": [
+      "Dolphin",
+      "Shark",
+      "Whale",
+      "Octopus",
+      "Sea turtle"
+     ]
+    },
+    {
+     "q": "Most annoying thing?",
+     "a": [
+      "Loud chewing",
+      "Slow drivers",
+      "Spoilers",
+      "Long voicemails",
+      "Late people"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "What Most People Do",
+   "questions": [
+    {
+     "q": "What do people do in the shower?",
+     "a": [
+      "Sing",
+      "Think",
+      "Plan the day",
+      "Rehearse arguments",
+      "Daydream"
+     ]
+    },
+    {
+     "q": "What do people lie about most?",
+     "a": [
+      "\"I'm fine\"",
+      "\"I'm on my way\"",
+      "Reading the terms",
+      "Liking a gift",
+      "Being busy"
+     ]
+    },
+    {
+     "q": "Most commonly lost item?",
+     "a": [
+      "Keys",
+      "Phone",
+      "Remote",
+      "Wallet",
+      "A sock"
+     ]
+    },
+    {
+     "q": "Most common excuse for being late?",
+     "a": [
+      "Traffic",
+      "Overslept",
+      "Lost my keys",
+      "The kids",
+      "Car trouble"
+     ]
+    },
+    {
+     "q": "Most common New Year's resolution?",
+     "a": [
+      "Exercise",
+      "Eat healthier",
+      "Save money",
+      "Read more",
+      "Quit a habit"
+     ]
+    },
+    {
+     "q": "Biggest time waster?",
+     "a": [
+      "Phone",
+      "TV",
+      "Social media",
+      "Video games",
+      "Email"
+     ]
+    },
+    {
+     "q": "What do people do on the toilet?",
+     "a": [
+      "Scroll their phone",
+      "Read",
+      "Check email",
+      "Play a game",
+      "Think"
+     ]
+    },
+    {
+     "q": "What do people check most on their phone?",
+     "a": [
+      "Text messages",
+      "Social media",
+      "Email",
+      "Weather",
+      "News"
+     ]
+    },
+    {
+     "q": "Most commonly forgotten in a rideshare?",
+     "a": [
+      "Phone",
+      "Umbrella",
+      "Wallet",
+      "Keys",
+      "Bag"
+     ]
+    },
+    {
+     "q": "Most common thing to Google?",
+     "a": [
+      "Weather",
+      "Recipes",
+      "Directions",
+      "Symptoms",
+      "Sports scores"
+     ]
+    },
+    {
+     "q": "What do people do when bored?",
+     "a": [
+      "Scroll their phone",
+      "Watch TV",
+      "Snack",
+      "Nap",
+      "Clean"
+     ]
+    },
+    {
+     "q": "Worst thing on a plane?",
+     "a": [
+      "Crying baby",
+      "Middle seat",
+      "Turbulence",
+      "Kicked seat",
+      "Delays"
+     ]
+    },
+    {
+     "q": "Most stressful life event?",
+     "a": [
+      "Moving",
+      "Job loss",
+      "Divorce",
+      "Planning a wedding",
+      "A new baby"
+     ]
+    },
+    {
+     "q": "Best nap length?",
+     "a": [
+      "20 minutes",
+      "1 hour",
+      "10 minutes",
+      "2 hours",
+      "5 minutes"
+     ]
+    },
+    {
+     "q": "Best way to spend $100?",
+     "a": [
+      "Dinner out",
+      "Shopping",
+      "Save it",
+      "Groceries",
+      "Concert tickets"
+     ]
+    },
+    {
+     "q": "How many pillows do you sleep with?",
+     "a": [
+      "2",
+      "1",
+      "3",
+      "4",
+      "5 or more"
+     ]
+    },
+    {
+     "q": "How many browser tabs are open right now?",
+     "a": [
+      "2 to 5",
+      "6 to 10",
+      "11 to 20",
+      "1",
+      "More than 20"
+     ]
+    },
+    {
+     "q": "Ideal room temperature?",
+     "a": [
+      "70°F",
+      "72°F",
+      "68°F",
+      "75°F",
+      "65°F"
+     ]
+    },
+    {
+     "q": "Best fast-food breakfast item?",
+     "a": [
+      "Hash browns",
+      "Breakfast burrito",
+      "Biscuit sandwich",
+      "Egg McMuffin",
+      "Hotcakes"
+     ]
+    },
+    {
+     "q": "Best thing on a pancake?",
+     "a": [
+      "Maple syrup",
+      "Butter",
+      "Berries",
+      "Whipped cream",
+      "Chocolate chips"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Grab Bag",
+   "questions": [
+    {
+     "q": "Best drink at a bar?",
+     "a": [
+      "Beer",
+      "Margarita",
+      "Wine",
+      "Old fashioned",
+      "Vodka soda"
+     ]
+    },
+    {
+     "q": "Best beer style?",
+     "a": [
+      "IPA",
+      "Lager",
+      "Stout",
+      "Pilsner",
+      "Wheat"
+     ]
+    },
+    {
+     "q": "Favorite wine?",
+     "a": [
+      "Cabernet",
+      "Chardonnay",
+      "Pinot noir",
+      "Rosé",
+      "Moscato"
+     ]
+    },
+    {
+     "q": "Best thing to do on a rainy day?",
+     "a": [
+      "Watch a movie",
+      "Nap",
+      "Read",
+      "Play games",
+      "Bake"
+     ]
+    },
+    {
+     "q": "Best pizza combo?",
+     "a": [
+      "Pepperoni & mushroom",
+      "Sausage & peppers",
+      "Hawaiian",
+      "Meat lovers",
+      "Margherita"
+     ]
+    },
+    {
+     "q": "Best pet name?",
+     "a": [
+      "Max",
+      "Bella",
+      "Charlie",
+      "Luna",
+      "Buddy"
+     ]
+    },
+    {
+     "q": "Cutest baby animal?",
+     "a": [
+      "Puppy",
+      "Kitten",
+      "Baby panda",
+      "Duckling",
+      "Bunny"
+     ]
+    },
+    {
+     "q": "Favorite holiday treat?",
+     "a": [
+      "Christmas cookies",
+      "Pie",
+      "Fudge",
+      "Candy canes",
+      "Eggnog"
+     ]
+    },
+    {
+     "q": "Best sleeping position?",
+     "a": [
+      "Side",
+      "Stomach",
+      "Back",
+      "Fetal",
+      "Sprawled out"
+     ]
+    },
+    {
+     "q": "Shower temperature?",
+     "a": [
+      "Hot",
+      "Warm",
+      "Scalding",
+      "Lukewarm",
+      "Cold"
+     ]
+    },
+    {
+     "q": "Favorite type of shoe?",
+     "a": [
+      "Sneakers",
+      "Boots",
+      "Sandals",
+      "Flip-flops",
+      "Slippers"
+     ]
+    },
+    {
+     "q": "Most comfortable clothing?",
+     "a": [
+      "Sweatpants",
+      "Pajamas",
+      "Jeans",
+      "Leggings",
+      "Shorts"
+     ]
+    },
+    {
+     "q": "Favorite dessert?",
+     "a": [
+      "Cake",
+      "Ice cream",
+      "Brownies",
+      "Cookies",
+      "Pie"
+     ]
+    },
+    {
+     "q": "Favorite cake flavor?",
+     "a": [
+      "Chocolate",
+      "Vanilla",
+      "Red velvet",
+      "Carrot",
+      "Cheesecake"
+     ]
+    },
+    {
+     "q": "Best way to get around a city?",
+     "a": [
+      "Walking",
+      "Driving",
+      "Subway",
+      "Rideshare",
+      "Bike"
+     ]
+    },
+    {
+     "q": "Best way to have pizza?",
+     "a": [
+      "Delivery",
+      "Dine-in",
+      "By the slice",
+      "Frozen at home",
+      "Homemade"
+     ]
+    },
+    {
+     "q": "Best thing to grill?",
+     "a": [
+      "Burgers",
+      "Steak",
+      "Hot dogs",
+      "Chicken",
+      "Ribs"
+     ]
+    },
+    {
+     "q": "Best summer drink?",
+     "a": [
+      "Lemonade",
+      "Iced tea",
+      "Margarita",
+      "Water",
+      "Smoothie"
+     ]
+    },
+    {
+     "q": "Favorite sandwich bread?",
+     "a": [
+      "White",
+      "Wheat",
+      "Sourdough",
+      "Rye",
+      "Ciabatta"
+     ]
+    },
+    {
+     "q": "Most useful app?",
+     "a": [
+      "Maps",
+      "Weather",
+      "Banking",
+      "Notes",
+      "Calculator"
+     ]
+    },
+    {
+     "q": "Most important in a partner?",
+     "a": [
+      "Honesty",
+      "Humor",
+      "Kindness",
+      "Loyalty",
+      "Looks"
+     ]
+    },
+    {
+     "q": "Best quality in a friend?",
+     "a": [
+      "Loyalty",
+      "Humor",
+      "Honesty",
+      "Listening",
+      "Reliability"
+     ]
+    },
+    {
+     "q": "Best trait in a boss?",
+     "a": [
+      "Fairness",
+      "Flexibility",
+      "Clear communication",
+      "Giving credit",
+      "Trust"
+     ]
+    },
+    {
+     "q": "Best part of a wedding?",
+     "a": [
+      "Food",
+      "Dancing",
+      "Ceremony",
+      "Open bar",
+      "Cake"
+     ]
+    },
+    {
+     "q": "Best part of Thanksgiving?",
+     "a": [
+      "Food",
+      "Family",
+      "Football",
+      "Leftovers",
+      "Pie"
+     ]
+    },
+    {
+     "q": "Best part of a vacation?",
+     "a": [
+      "Relaxing",
+      "Food",
+      "Sightseeing",
+      "No work",
+      "Sleeping in"
+     ]
+    },
+    {
+     "q": "Best part of a concert?",
+     "a": [
+      "Hearing your favorite song",
+      "The crowd",
+      "The encore",
+      "The light show",
+      "Merch"
+     ]
+    },
+    {
+     "q": "Best part of a baseball game?",
+     "a": [
+      "Hot dogs",
+      "Seventh-inning stretch",
+      "Home runs",
+      "Beer",
+      "Peanuts"
+     ]
+    },
+    {
+     "q": "Best part of your birthday?",
+     "a": [
+      "Cake",
+      "Presents",
+      "The party",
+      "Feeling celebrated",
+      "Day off"
+     ]
+    },
+    {
+     "q": "Worst sound?",
+     "a": [
+      "Nails on a chalkboard",
+      "Loud chewing",
+      "Baby crying",
+      "Alarm clock",
+      "Drill"
+     ]
+    },
+    {
+     "q": "Best smell?",
+     "a": [
+      "Fresh-baked cookies",
+      "Coffee",
+      "Bacon",
+      "Fresh laundry",
+      "Rain"
+     ]
+    },
+    {
+     "q": "Worst smell?",
+     "a": [
+      "Garbage",
+      "Skunk",
+      "Sour milk",
+      "Gym socks",
+      "Rotten eggs"
+     ]
+    },
+    {
+     "q": "Best way to relax?",
+     "a": [
+      "Nap",
+      "TV",
+      "Bath",
+      "Music",
+      "Reading"
+     ]
+    },
+    {
+     "q": "Favorite thing to do at the beach?",
+     "a": [
+      "Swim",
+      "Sunbathe",
+      "Walk",
+      "Build sandcastles",
+      "Read"
+     ]
+    },
+    {
+     "q": "Best indoor activity with friends?",
+     "a": [
+      "Board games",
+      "Movies",
+      "Video games",
+      "Cooking",
+      "Karaoke"
+     ]
+    },
+    {
+     "q": "Go-to comfort food?",
+     "a": [
+      "Mac and cheese",
+      "Pizza",
+      "Ice cream",
+      "Soup",
+      "Mashed potatoes"
+     ]
+    },
+    {
+     "q": "Best soup?",
+     "a": [
+      "Chicken noodle",
+      "Tomato",
+      "Clam chowder",
+      "Broccoli cheddar",
+      "French onion"
+     ]
+    },
+    {
+     "q": "Best breakfast meat?",
+     "a": [
+      "Bacon",
+      "Sausage",
+      "Ham",
+      "Turkey bacon",
+      "Steak"
+     ]
+    },
+    {
+     "q": "Best kind of cheese?",
+     "a": [
+      "Cheddar",
+      "Mozzarella",
+      "Pepper jack",
+      "Swiss",
+      "Brie"
+     ]
+    }
+   ]
+  }
+ ]
+}

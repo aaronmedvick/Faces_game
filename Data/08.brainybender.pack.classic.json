@@ -1,0 +1,480 @@
+{
+  "id": "classic",
+  "title": "Classic",
+  "category": "Trick Questions",
+  "cards": [
+    {
+      "q": "How many months have 28 days?",
+      "a": "All 12",
+      "wrong": [
+        "Just 1",
+        "2",
+        "6"
+      ],
+      "why": "Every month has at least 28. Sneaky.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "A farmer has 17 sheep. All but 9 run away. How many are left?",
+      "a": "9",
+      "wrong": [
+        "8",
+        "17",
+        "0"
+      ],
+      "why": "\"All but 9\" means 9 stayed.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What weighs more: a pound of feathers or a pound of bricks?",
+      "a": "The same",
+      "wrong": [
+        "Feathers",
+        "Bricks",
+        "Depends on the bricks"
+      ],
+      "why": "A pound is a pound.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "You're in a race and pass the person in 2nd place. What place are you in?",
+      "a": "2nd",
+      "wrong": [
+        "1st",
+        "3rd",
+        "Last"
+      ],
+      "why": "You took their spot, not the leader's.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "How many times can you subtract 10 from 100?",
+      "a": "Once",
+      "wrong": [
+        "10",
+        "9",
+        "Forever"
+      ],
+      "why": "After that, it's 90 you're subtracting from.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "How many seconds are in a year?",
+      "a": "12",
+      "wrong": [
+        "60",
+        "365",
+        "31,536,000"
+      ],
+      "why": "January 2nd, February 2nd, March 2nd...",
+      "cat": "Brain Teasers"
+    },
+    {
+      "q": "A doctor gives you 3 pills and says take one every 30 minutes. How long until they're gone?",
+      "a": "1 hour",
+      "wrong": [
+        "30 minutes",
+        "90 minutes",
+        "3 hours"
+      ],
+      "why": "Pill one now, two at 30, three at 60.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "How many animals of each kind did Moses take on the ark?",
+      "a": "None",
+      "wrong": [
+        "Two",
+        "Seven",
+        "All of them"
+      ],
+      "why": "That was Noah.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "Forwards it's heavy. Backwards it's not. What is it?",
+      "a": "Ton",
+      "wrong": [
+        "Bus",
+        "Weight",
+        "Anchor"
+      ],
+      "why": "Ton. Not. Get it?",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What can you catch but never throw?",
+      "a": "A cold",
+      "wrong": [
+        "A boomerang",
+        "A football",
+        "A grenade"
+      ],
+      "why": "Achoo.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "Which is correct: \"The yolk of the egg are white\" or \"is white\"?",
+      "a": "Neither, yolks are yellow",
+      "wrong": [
+        "Are white",
+        "Is white",
+        "Both"
+      ],
+      "why": "Grammar was never the problem.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "You have 3 apples and take away 2. How many do you have?",
+      "a": "2",
+      "wrong": [
+        "1",
+        "3",
+        "0"
+      ],
+      "why": "The ones you took.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What do you call a bear with no teeth?",
+      "a": "A gummy bear",
+      "wrong": [
+        "Toothless",
+        "A polar bear",
+        "Grizzly"
+      ],
+      "why": "Gum's the word.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What building has the most stories?",
+      "a": "The library",
+      "wrong": [
+        "Skyscraper",
+        "Castle",
+        "Hospital"
+      ],
+      "why": "Plot twist: it's books.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "A rooster lays an egg on top of a barn roof. Which way does it roll?",
+      "a": "Roosters don't lay eggs",
+      "wrong": [
+        "Left",
+        "Right",
+        "Down the front"
+      ],
+      "why": "Hens do the laying.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What has hands but can't clap?",
+      "a": "A clock",
+      "wrong": [
+        "A sandwich",
+        "The moon",
+        "A puddle"
+      ],
+      "why": "Tick tock, no applause.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What gets wetter the more it dries?",
+      "a": "A towel",
+      "wrong": [
+        "A rain cloud",
+        "A fish",
+        "A desert"
+      ],
+      "why": "Drying is its whole job.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What do you get if you drop a white hat in the Red Sea?",
+      "a": "A wet hat",
+      "wrong": [
+        "A red hat",
+        "A pink hat",
+        "A lost hat in Egypt"
+      ],
+      "why": "Nothing magical. Just wet.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What starts with T, ends with T, and has T inside it?",
+      "a": "A teapot",
+      "wrong": [
+        "A tulip",
+        "A turban",
+        "Tuesday"
+      ],
+      "why": "Tea inside. Always.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "If a red house is made of red bricks and a blue house is made of blue bricks, what is a greenhouse made of?",
+      "a": "Glass",
+      "wrong": [
+        "Green bricks",
+        "Moss",
+        "Grass"
+      ],
+      "why": "Lettuce not overthink it.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What is at the end of a rainbow?",
+      "a": "The letter W",
+      "wrong": [
+        "Gold",
+        "A leprechaun",
+        "Another rainbow"
+      ],
+      "why": "Rainbow. Last letter. Done.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What begins with E, ends with E, and usually contains one letter?",
+      "a": "An envelope",
+      "wrong": [
+        "An elephant",
+        "An eyebrow",
+        "An engine"
+      ],
+      "why": "Mail it.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What do you call cheese that isn't yours?",
+      "a": "Nacho cheese",
+      "wrong": [
+        "Stolen cheese",
+        "Gouda",
+        "Swiss"
+      ],
+      "why": "Na-cho cheese.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What do you call a fake noodle?",
+      "a": "An impasta",
+      "wrong": [
+        "Spaghetti",
+        "Al dente",
+        "Ramen"
+      ],
+      "why": "Bravo, pasta.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "Why can't you trust atoms?",
+      "a": "They make up everything",
+      "wrong": [
+        "They're too small",
+        "They split easily",
+        "They're radioactive"
+      ],
+      "why": "Chemistry joke. You're welcome.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What's a ghost's favorite fruit?",
+      "a": "Boo-berries",
+      "wrong": [
+        "Grapes",
+        "Mangoes",
+        "Cherries"
+      ],
+      "why": "Spooky smoothie.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "Before Mount Everest was discovered, what was the tallest mountain on Earth?",
+      "a": "Mount Everest",
+      "wrong": [
+        "K2",
+        "Kilimanjaro",
+        "Mont Blanc"
+      ],
+      "why": "It was just unnamed, not shorter.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What gets bigger the more you take away?",
+      "a": "A hole",
+      "wrong": [
+        "A pile",
+        "A balloon",
+        "A bank account"
+      ],
+      "why": "Dig it.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What has a neck but no head?",
+      "a": "A bottle",
+      "wrong": [
+        "A cloud",
+        "A pillow",
+        "A mitten"
+      ],
+      "why": "Pop the top.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "What can you never eat for breakfast?",
+      "a": "Lunch and dinner",
+      "wrong": [
+        "Eggs",
+        "Cereal",
+        "Pancakes"
+      ],
+      "why": "Wrong meal, wrong time.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "If you call a dog's tail a leg, how many legs does a dog have?",
+      "a": "Four",
+      "wrong": [
+        "Five",
+        "Three",
+        "Six"
+      ],
+      "why": "Calling it a leg doesn't make it one.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "How many eggs can you eat on an empty stomach?",
+      "a": "One",
+      "wrong": [
+        "Two",
+        "Six",
+        "A dozen"
+      ],
+      "why": "After that, it's not empty.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "Where does Friday come before Thursday?",
+      "a": "The dictionary",
+      "wrong": [
+        "A calendar",
+        "An airport",
+        "The moon"
+      ],
+      "why": "F comes before T.",
+      "cat": "Riddles"
+    },
+    {
+      "q": "Mary's father has five daughters: Nana, Nene, Nini, Nono. What is the fifth one called?",
+      "a": "Mary",
+      "wrong": [
+        "Nunu",
+        "Nina",
+        "Nyna"
+      ],
+      "why": "It's in the question.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "How far can a dog run into the woods?",
+      "a": "Halfway",
+      "wrong": [
+        "Forever",
+        "Ten miles",
+        "Until tired"
+      ],
+      "why": "After that, it's running out.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What color is the black box on an airplane?",
+      "a": "Orange",
+      "wrong": [
+        "Black",
+        "Gray",
+        "Invisible"
+      ],
+      "why": "Easier to find in the wreckage.",
+      "cat": "Trick Questions"
+    },
+    {
+      "q": "What letter comes next? O, T, T, F, F, S, S, E, ...",
+      "a": "N",
+      "wrong": [
+        "T",
+        "O",
+        "E"
+      ],
+      "why": "One, Two, Three... Eight, Nine.",
+      "cat": "Brain Teasers"
+    },
+    {
+      "q": "What is 5 + 5 x 0?",
+      "a": "5",
+      "wrong": [
+        "0",
+        "10",
+        "55"
+      ],
+      "why": "Multiply first.",
+      "cat": "Brain Teasers"
+    },
+    {
+      "q": "What is half of 2 + 2?",
+      "a": "3",
+      "wrong": [
+        "2",
+        "4",
+        "1"
+      ],
+      "why": "Half of 2 is 1. Then add 2.",
+      "cat": "Brain Teasers"
+    },
+    {
+      "q": "What do you call a sleeping bull?",
+      "a": "A bulldozer",
+      "wrong": [
+        "A cowch",
+        "Steak",
+        "A bullseye"
+      ],
+      "why": "Bull. Doze. Er.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What's brown and sticky?",
+      "a": "A stick",
+      "wrong": [
+        "Caramel",
+        "Mud",
+        "Toffee"
+      ],
+      "why": "Sometimes it's that simple.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What do you call a bear with no ears?",
+      "a": "B",
+      "wrong": [
+        "Gummy",
+        "Bare",
+        "Teddy"
+      ],
+      "why": "Just a letter.",
+      "cat": "Silly Jokes"
+    },
+    {
+      "q": "What do you call a dinosaur that never gives up?",
+      "a": "A try-try-ceratops",
+      "wrong": [
+        "A stego-snorus",
+        "A raptor-ous",
+        "A dino-snore"
+      ],
+      "why": "Keep trying.",
+      "cat": "Silly Jokes"
+    }
+  ]
+}

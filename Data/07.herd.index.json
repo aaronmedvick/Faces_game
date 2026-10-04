@@ -1,0 +1,7 @@
+{
+ "files": [
+  "07.herd.pack-01.json",
+  "07.herd.pack-02.json"
+ ],
+ "note": "Fallback only. The game normally auto-discovers every data/07.herd.*.json file via the GitHub API."
+}

@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "packs": [
+    "07.pillowtalk.pack.core.json"
+  ]
+}
