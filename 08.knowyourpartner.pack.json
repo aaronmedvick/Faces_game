@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "title": "Know Your Partner",
+    "version": "2.0",
+    "cards": 16,
+    "dimensions": [
+      "adventure",
+      "social",
+      "planning",
+      "affection",
+      "togetherness",
+      "financial",
+      "conflict",
+      "humor"
+    ]
+  },
+  "cards": [
+    {
+      "id": "adv1",
+      "dim": "adventure",
+      "t": "scale",
+      "q": "How adventurous are you?",
+      "sub": "1 = homebody, 10 = never-stop explorer"
+    },
+    {
+      "id": "adv2",
+      "dim": "adventure",
+      "t": "scale",
+      "q": "How often should we try new experiences?",
+      "sub": "1 = stick with what works, 10 = always experimenting"
+    },
+    {
+      "id": "soc1",
+      "dim": "social",
+      "t": "scale",
+      "q": "How social should our life be?",
+      "sub": "1 = quiet nights at home, 10 = out every weekend"
+    },
+    {
+      "id": "soc2",
+      "dim": "social",
+      "t": "scale",
+      "q": "How many close friends in your inner circle?",
+      "sub": "1 = just us two, 10 = huge friend group"
+    },
+    {
+      "id": "plan1",
+      "dim": "planning",
+      "t": "scale",
+      "q": "How much should we plan ahead?",
+      "sub": "1 = go with the flow, 10 = schedule everything"
+    },
+    {
+      "id": "plan2",
+      "dim": "planning",
+      "t": "scale",
+      "q": "Last-minute plans: love or dread?",
+      "sub": "1 = love them, 10 = need warning"
+    },
+    {
+      "id": "aff1",
+      "dim": "affection",
+      "t": "scale",
+      "q": "How important is physical affection?",
+      "sub": "1 = not very, 10 = very important"
+    },
+    {
+      "id": "aff2",
+      "dim": "affection",
+      "t": "scale",
+      "q": "PDA comfort level?",
+      "sub": "1 = keep it private, 10 = show affection everywhere"
+    },
+    {
+      "id": "tog1",
+      "dim": "togetherness",
+      "t": "scale",
+      "q": "How much time together ideal?",
+      "sub": "1 = mostly separate, 10 = constant togetherness"
+    },
+    {
+      "id": "tog2",
+      "dim": "togetherness",
+      "t": "scale",
+      "q": "Solo time needed per week?",
+      "sub": "1 = none, 10 = several days"
+    },
+    {
+      "id": "fin1",
+      "dim": "financial",
+      "t": "scale",
+      "q": "Money mindset?",
+      "sub": "1 = enjoy it now, 10 = save for later"
+    },
+    {
+      "id": "fin2",
+      "dim": "financial",
+      "t": "scale",
+      "q": "Budget for experiences/fun?",
+      "sub": "1 = minimal, 10 = spend freely"
+    },
+    {
+      "id": "con1",
+      "dim": "conflict",
+      "t": "scale",
+      "q": "How should we handle disagreements?",
+      "sub": "1 = avoid conflict, 10 = address immediately"
+    },
+    {
+      "id": "con2",
+      "dim": "conflict",
+      "t": "scale",
+      "q": "When upset, you prefer?",
+      "sub": "1 = give space, 10 = talk it out right away"
+    },
+    {
+      "id": "hum1",
+      "dim": "humor",
+      "t": "scale",
+      "q": "How serious vs jokey should life be?",
+      "sub": "1 = serious, 10 = always joking"
+    },
+    {
+      "id": "hum2",
+      "dim": "humor",
+      "t": "scale",
+      "q": "How often should we laugh together?",
+      "sub": "1 = not essential, 10 = laugh constantly"
+    }
+  ]
+}
