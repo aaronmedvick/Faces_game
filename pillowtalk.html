@@ -228,9 +228,9 @@ function App(){
   
   const botAnswer=(qid)=>{const seed=parseInt(qid.replace(/[^\d]/g,''))||0;return((seed*12345)%10)+1;};
   
-  const start=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);await sb.from("kyp_rooms").update({phase:"answer1",round:0,qids:ids}).eq("code",room.code).then(()=>load(room.code));};
+  const start=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);try{const {error}=await sb.from("kyp_rooms").update({phase:"answer1",round:0,qids:ids}).eq("code",room.code);if(error)setErr("Start failed: "+error.message);else await load(room.code);}catch(e){setErr(String(e.message));}};
   
-  const startBot=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);await sb.from("kyp_rooms").update({phase:"answer1",round:0,qids:ids,guest_name:"Bot"}).eq("code",room.code).then(()=>load(room.code)).catch(e=>setErr("Bot start failed: "+e.message));};
+  const startBot=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);try{const {error}=await sb.from("kyp_rooms").update({guest_name:"Bot",phase:"answer1",round:0,qids:ids}).eq("code",room.code);if(error){setErr("Bot error: "+error.message);}else{await load(room.code);}}catch(e){setErr(String(e.message));}};
   
   const answerQ=async(val)=>{try{await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot,qid:room.qids[room.round],ans:val,guess:null},{onConflict:"room,round,slot"}).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botAns=botAnswer(room.qids[room.round]);await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot:1,qid:room.qids[room.round],ans:botAns,guess:null},{onConflict:"room,round,slot"}).then(async()=>{await new Promise(r=>setTimeout(r,400));const nr=room.round+1;if(nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code);}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code);}await load(room.code);});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
   
