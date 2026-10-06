@@ -73,6 +73,11 @@
   .sNum{ font-family:'Fraunces',serif; font-weight:600; font-size:68px; line-height:1; color:var(--candle); } .sName{ font-size:14px; color:var(--dim); } .vs{ color:var(--dim); font-size:30px; }
   .stat{ display:grid; grid-template-columns:1fr 64px 64px; gap:8px; align-items:center; padding:7px 0; border-top:1px solid var(--haze); font-size:14px; } .stat.head{ border-top:none; color:var(--dim); font-size:12px; }
   .stat b{ text-align:right; font-family:'JetBrains Mono',monospace; font-size:13px; }
+  .joinCard{ border:1.5px solid var(--candle); background:linear-gradient(180deg,rgba(245,177,76,.16),var(--velvet)); padding:16px; }
+  .joinTitle{ font-family:'Fraunces',serif; font-weight:600; font-size:28px; color:var(--candle); margin-bottom:12px; }
+  .spinner{ width:60px; height:60px; border-radius:50%; border:5px solid var(--haze); border-top-color:var(--candle); animation:spin .9s linear infinite; margin:16vh auto 22px; }
+  .joinBig{ font-family:'Fraunces',serif; font-weight:600; font-size:36px; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
   .warnLink{ color:var(--candle); }
   .pill{ font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--haze); }
   .seg{ display:flex; gap:8px; } .seg button{ flex:1; padding:12px 6px; border-radius:12px; border:1px solid var(--haze); background:var(--panel); font-weight:600; font-size:14px; cursor:pointer; }
@@ -564,22 +569,40 @@ function AnswerPanel({q,mode,duo,partnerP,myAns,left,onLock}){
   </div>;
 }
 /* ---- screens ---- */
-function Home({name,setName,codeInput,setCodeInput,saveOn,setSaveOn,onNew,onPractice,onJoin,onForget,banner}){
+function Home({name,setName,codeInput,setCodeInput,saveOn,setSaveOn,onNew,onPractice,onJoin,onForget}){
+  const demo=!!window.KD_DEMO;
   return <div className="wrap">
     <div className="brandBig">Kindred</div>
     <div className="lede">Everyone answers the same questions. See who answers like you.</div>
     <div className="heroThread"><ThreadPair a={{name:"A",color:"#F5B14C"}} b={{name:"B",color:"#A78BFA"}} pct={88} size={38}/></div>
     <input className="txt" placeholder="Your name" maxLength={14} value={name} onChange={e=>setName(e.target.value)} />
-    <button className="go" disabled={!name.trim()} onClick={onNew}>Start a room</button>
-    <div className="row">
-      <input className="txt grow code4" placeholder="Code" maxLength={4} value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
-      <button className="go2 joinBtn" disabled={!name.trim()||codeInput.length<4} onClick={onJoin}>Join</button>
-    </div>
-    <button className="go2" disabled={!name.trim()} onClick={onPractice}>Practice with bots</button>
-    <label className="check"><input type="checkbox" checked={saveOn} onChange={e=>{ setSaveOn(e.target.checked); ls.set("kd_save",e.target.checked?"1":"0"); }}/> <span>Remember my answers so results can compare you with everyone</span></label>
-    <button className="link" onClick={onForget}>Forget my saved answers</button>
+    {demo
+      ? <button className="go" onClick={onPractice}>Play with bots</button>
+      : <>
+        <div className="card joinCard">
+          <div className="joinTitle">Join a game</div>
+          <div className="row">
+            <input className="txt grow code4" placeholder="CODE" maxLength={4} value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} onKeyDown={e=>{ if(e.key==="Enter"&&codeInput.length>=4) onJoin(); }} />
+            <button className="go joinBtn" disabled={codeInput.length<4} onClick={()=>onJoin()}>Join</button>
+          </div>
+          <div className="dim small gap">Or scan the host's QR code with your camera.</div>
+        </div>
+        <button className="go2" onClick={onNew}>Host a new game</button>
+        <button className="link" onClick={onPractice}>Practice with bots</button>
+        <label className="check"><input type="checkbox" checked={saveOn} onChange={e=>{ setSaveOn(e.target.checked); ls.set("kd_save",e.target.checked?"1":"0"); }}/> <span>Remember my answers so results can compare you with everyone</span></label>
+        <button className="link" onClick={onForget}>Forget my saved answers</button>
+      </>}
     <div className="foot verNum">{VERSION} · {BANK.length} questions · {BANK_INFO.packs} packs · {BANK_INFO.source}</div>
     {BANK_INFO.warnings.length>0 && <button className="link warnLink" onClick={()=>alert(BANK_INFO.warnings.join("\n"))}>⚠ {BANK_INFO.warnings.length} question issue{BANK_INFO.warnings.length>1?"s":""} — tap to see</button>}
+  </div>;
+}
+
+function Joining({code}){
+  return <div className="wrap center">
+    <div className="spinner"/>
+    <div className="joinBig">Joining game</div>
+    {code ? <div className="code">{code}</div> : null}
+    <div className="dim">Getting you into the room…</div>
   </div>;
 }
 
@@ -598,8 +621,10 @@ function Create({cfg,setCfg,practice,onOpen,onBack}){
   </div>;
 }
 
-function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKick}){
+function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKick,onRename}){
   const qr=useRef(null);
+  const me=players.find(p=>p.id===myId); const [nm,setNm]=useState(me?me.name:"");
+  useEffect(()=>{ if(me&&nm.trim()&&nm.trim()!==me.name){ const t=setTimeout(()=>onRename(nm.trim()),500); return ()=>clearTimeout(t); } },[nm,me&&me.name]);
   useEffect(()=>{ if(practice||!qr.current||!window.QRCode) return; qr.current.innerHTML=""; try{ new QRCode(qr.current,{text:location.origin+location.pathname+"?code="+code,width:128,height:128,colorDark:"#0E0B1A",colorLight:"#ffffff"}); }catch(e){} },[code,practice]);
   const max=room.mode==="duo"?2:12, need=room.mode==="duo"?players.length===2:players.length>=2;
   const host=players.find(p=>p.id===room.host_id);
@@ -608,6 +633,7 @@ function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKic
     {isHost
       ? <button className="go" disabled={!need} onClick={onStart}>{need?"Deal the first question":(room.mode==="duo"?"Duo needs two players":"Need at least two players")}</button>
       : <div className="card center dim">Waiting for {host?host.name:"the host"} to start…</div>}
+    <div className="card"><div className="lab">Your name</div><input className="txt" maxLength={14} value={nm} onChange={e=>setNm(e.target.value)} placeholder="Your name"/></div>
     <div className="card center">
       <div className="lab">{room.mode==="duo"?"Duo":"Group"} · {room.total} questions</div>
       {!practice && <><div className="code">{code}</div><div id="qr" ref={qr}/></>}
@@ -821,7 +847,7 @@ function Constellation({db,practice,onBack,setPop}){
 }
 /* ================= APP ================= */
 function App(){
-  const [screen,setScreen]=useState(urlQS.get("map")?"map":"home");   // home | create | room | map  (?map opens the all-time constellation)
+  const [screen,setScreen]=useState(urlQS.get("map")?"map":(urlQS.get("code")&&!window.KD_DEMO?"joining":"home"));   // home | joining | create | room | map  (?code= joins straight away, ?map opens the all-time constellation)
   const [name,setName]=useState(ls.get("hub_name")||ls.get("kd_name")||"");
   const [codeInput,setCodeInput]=useState((urlQS.get("code")||"").toUpperCase().slice(0,4));
   const [saveOn,setSaveOn]=useState(ls.get("kd_save")!=="0");
@@ -834,6 +860,7 @@ function App(){
   const [players,setPlayers]=useState([]);
   const [pop,setPop]=useState(emptyPop());
   const [banner,setBanner]=useState("");
+  const [joinCode,setJoinCode]=useState((urlQS.get("code")||"").toUpperCase().slice(0,4));
   const [saveErr,setSaveErr]=useState(false);
   const [floaties,setFloaties]=useState([]);
   const [,bump]=useState(0);
@@ -866,6 +893,9 @@ function App(){
     const poll=setInterval(refetch,db.kind==="mem"?500:2500);
     return ()=>{ dead=true; un(); clearInterval(poll); };
   },[db,code]);
+
+  /* scanned a QR code: join straight away, rename later in the lobby */
+  useEffect(()=>{ const c=(urlQS.get('code')||'').toUpperCase(); if(c.length===4&&!window.KD_DEMO) joinRoom(c); },[]);
 
   /* rejoin after a Safari reload */
   useEffect(()=>{ const c=ls.get("kd_code"); if(!c||urlQS.get("code")||!sb) return; (async()=>{ try{ const d=getDb(false); const r=await d.getRoom(c); const ps=r?await d.players(c):[]; if(r&&ps.some(p=>p.id===myId)){ enter(d,c,false); } else ls.set("kd_code",""); }catch(e){} })(); },[]);
@@ -909,27 +939,32 @@ function App(){
   async function openRoom(){
     if(busy.current) return; busy.current=true; sfx.unlock();
     try{
-      const nm=name.trim(); ls.set("hub_name",nm); const d=getDb(practice); let c=null;
+      const typed=name.trim(), nm=typed||"Guest"; if(typed) ls.set("hub_name",typed); const d=getDb(practice); let c=null;
       for(let i=0;i<4;i++){ c=randCode(); try{ await d.createRoom({code:c,host_id:myId,mode:cfg.mode,total:cfg.total,guess:cfg.mode==="duo",phase:"lobby",idx:0,qids:[],gen:0}); break; }catch(e){ if(i===3) throw e; } }
       await d.addPlayer({id:myId,code:c,name:nm,color:COLORS[0],bot:false,hist:{}});
       if(practice){ const bots=cfg.mode==="duo"?[BOTS[0]]:[BOTS[0],BOTS[2],BOTS[1],BOTS[3]]; let i=1; for(const b of bots){ await d.addPlayer({id:"bot-"+b.name.toLowerCase()+"-"+c,code:c,name:b.name,color:COLORS[i++%COLORS.length],bot:true,persona:String(b.arch),hist:{}}); } }
       enter(d,c,practice);
     }catch(e){ fail(e); } finally{ busy.current=false; }
   }
-  async function joinRoom(){
+  async function joinRoom(codeArg){
     if(busy.current) return; busy.current=true; sfx.unlock();
+    const c=String(codeArg||codeInput).trim().toUpperCase().slice(0,4);
     try{
-      const nm=name.trim(), c=codeInput.trim().toUpperCase(); ls.set("hub_name",nm); const d=getDb(false);
-      const r=await d.getRoom(c); if(!r){ setBanner("No room with that code."); return; }
+      const typed=name.trim(), nm=typed||"Guest"; if(typed) ls.set("hub_name",typed);
+      setJoinCode(c); setScreen("joining");
+      const d=getDb(false);
+      const r=await d.getRoom(c); if(!r){ setCodeInput(c); setScreen("home"); setBanner("No room with that code."); return; }
       const ps=await d.players(c);
       if(!ps.some(p=>p.id===myId)){
-        if(r.phase!=="lobby"){ setBanner("That game already started."); return; }
-        if(ps.length>=(r.mode==="duo"?2:12)){ setBanner("That room is full."); return; }
+        if(r.phase!=="lobby"){ setCodeInput(c); setScreen("home"); setBanner("That game already started."); return; }
+        if(ps.length>=(r.mode==="duo"?2:12)){ setCodeInput(c); setScreen("home"); setBanner("That room is full."); return; }
         await d.addPlayer({id:myId,code:c,name:nm,color:colorFor(ps),bot:false,hist:{}});
-      }
+      } else { const mine=ps.find(p=>p.id===myId); if(!typed&&mine) setName(mine.name); }
+      try{ history.replaceState(null,"",location.pathname); }catch(e){}
       enter(d,c,false);
-    }catch(e){ fail(e); } finally{ busy.current=false; }
+    }catch(e){ setCodeInput(c); setScreen("home"); fail(e); } finally{ busy.current=false; }
   }
+  async function rename(n){ setName(n); ls.set("hub_name",n); try{ await db.patchPlayer(myId,{name:n}); }catch(e){ fail(e); } }
   async function forget(){ if(!confirm("Delete all your saved answers?")) return; try{ await getDb(false).forget(myId); if(memRef.current) await memRef.current.forget(myId); setBanner("Your saved answers are gone."); }catch(e){ fail(e); } }
 
   /* ---- host actions ---- */
@@ -964,12 +999,13 @@ function App(){
   const partnerP=room&&room.mode==="duo"?players.find(p=>p.id!==myId):null;
 
   let body;
-  if(screen==="home") body=<Home name={name} setName={setName} codeInput={codeInput} setCodeInput={setCodeInput} saveOn={saveOn} setSaveOn={setSaveOn} onNew={()=>{ setPractice(false); setScreen("create"); }} onPractice={()=>{ setPractice(true); setScreen("create"); }} onJoin={joinRoom} onForget={forget}/>;
+  if(screen==="home") body=<Home name={name} setName={setName} codeInput={codeInput} setCodeInput={setCodeInput} saveOn={saveOn} setSaveOn={setSaveOn} onNew={()=>{ setPractice(false); setScreen("create"); }} onPractice={()=>{ setPractice(true); setScreen("create"); }} onJoin={()=>joinRoom()} onForget={forget}/>;
   else if(screen==="create") body=<Create cfg={cfg} setCfg={setCfg} practice={practice} onOpen={openRoom} onBack={()=>setScreen("home")}/>;
   else if(screen==="map") body=<Constellation db={db||getDb(practice)} practice={practice} setPop={setPop} onBack={()=>{ if(room&&code) setScreen("room"); else { setDb(null); setScreen("home"); } }}/>;
-  else if(!room) body=<div className="wrap"><div className="card center dim">Joining…</div></div>;
+  else if(screen==="joining") body=<Joining code={joinCode}/>;
+  else if(!room) body=<Joining code={code}/>;
   else if(room.qids&&room.qids.length&&room.qids.some(id=>!QMAP[id])) body=<div className="wrap"><div className="card center">Your question list is out of date.<div className="dim small gap">The host is using questions this phone hasn't loaded yet.</div></div><button className="go" onClick={()=>{ try{ sessionStorage.removeItem("kd_files"); }catch(e){} location.reload(); }}>Reload</button></div>;
-  else if(room.phase==="lobby") body=<Lobby room={room} players={players} isHost={isHost} code={code} practice={practice} onStart={start} onAddBot={addBot} onLeave={leave} onKick={kick}/>;
+  else if(room.phase==="lobby") body=<Lobby room={room} players={players} isHost={isHost} code={code} practice={practice} onStart={start} onAddBot={addBot} onLeave={leave} onKick={kick} onRename={rename}/>;
   else if(room.phase==="asking"&&q) body=<Asking key={room.gen+":"+room.idx} room={room} players={players} q={q} meHist={myHist.current||{}} hists={hists} partnerP={partnerP} onAnswer={a=>onAnswer(q,a)} onGuess={(g,x)=>onGuess(q,g,x)} isHost={isHost} onForce={forceReveal} onLeave={leave} heckle={heckle}/>;
   else if(room.phase==="reveal"&&q) body=<Reveal key={room.gen+":"+room.idx} room={room} players={players} hists={hists} answers={answers} q={q} pop={pop} isHost={isHost} onNext={next} onLeave={leave} heckle={heckle}/>;
   else if(room.phase==="finale") body=<Finale room={room} players={players} hists={hists} answers={answers} pop={pop} isHost={isHost} onAgain={again} onLeave={leave}/>;
