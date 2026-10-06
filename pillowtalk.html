@@ -113,8 +113,9 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 function hubId(){let v=localStorage.getItem("hub_uid");if(!v){v="u"+Math.random().toString(36).slice(2,11);localStorage.setItem("hub_uid",v);}return v;}
 const genCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s;};
+const getQids=(code,allQs)=>{let hash=0;for(let i=0;i<code.length;i++)hash=((hash<<5)-hash)+code.charCodeAt(i)|0;const seeded=()=>{hash=(hash*9301+49297)%233280;return hash/233280;};return allQs.map(q=>q.id).sort(()=>seeded()-.5).slice(0,6);};
 
-async function loadQuestions(){const data=await (await fetch("data/08.knowyourpartner.pack.json"+"?v="+Math.floor(Date.now()/60000))).json();return data.cards||[];}
+async function loadQuestions(){try{const resp=await fetch("data/08.knowyourpartner.pack.json"+"?v="+Math.floor(Date.now()/60000));if(!resp.ok)throw new Error("Failed to load questions");const data=await resp.json();return data.cards||[];}catch(e){return[];}}
 
 function scoreGuess(guess,truth){if(guess==null||truth==null)return 0;const d=Math.abs(guess-truth);return d===0?3:d===1?2:d===2?1:0;}
 
@@ -228,13 +229,13 @@ function App(){
   
   const botAnswer=(qid)=>{const seed=parseInt(qid.replace(/[^\d]/g,''))||0;return((seed*12345)%10)+1;};
   
-  const start=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);try{const {error}=await sb.from("kyp_rooms").update({phase:"answer1",round:0,qids:ids}).eq("code",room.code);if(error)setErr("Start failed: "+error.message);else await load(room.code);}catch(e){setErr(String(e.message));}};
+  const start=async()=>{try{const {error}=await sb.from("kyp_rooms").update({phase:"answer1",round:0}).eq("code",room.code);if(error)setErr(error.message);else await load(room.code);}catch(e){setErr(String(e.message));}};
   
-  const startBot=async()=>{const ids=questions.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,6);try{const {error}=await sb.from("kyp_rooms").update({guest_name:"Bot",phase:"answer1",round:0,qids:ids}).eq("code",room.code);if(error){setErr("Bot error: "+error.message);}else{await load(room.code);}}catch(e){setErr(String(e.message));}};
+  const startBot=async()=>{try{const {error}=await sb.from("kyp_rooms").update({guest_name:"Bot",phase:"answer1",round:0}).eq("code",room.code);if(error){setErr(error.message);}else{await load(room.code);}}catch(e){setErr(String(e.message));}};
   
-  const answerQ=async(val)=>{try{await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot,qid:room.qids[room.round],ans:val,guess:null},{onConflict:"room,round,slot"}).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botAns=botAnswer(room.qids[room.round]);await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot:1,qid:room.qids[room.round],ans:botAns,guess:null},{onConflict:"room,round,slot"}).then(async()=>{await new Promise(r=>setTimeout(r,400));const nr=room.round+1;if(nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code);}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code);}await load(room.code);});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
+  const answerQ=async(val)=>{try{const qids=getQids(room.code,questions);const qid=qids[room.round];await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot,qid,ans:val,guess:null},{onConflict:"room,round,slot"}).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botAns=botAnswer(qid);await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot:1,qid,ans:botAns,guess:null},{onConflict:"room,round,slot"}).then(async()=>{await new Promise(r=>setTimeout(r,400));const nr=room.round+1;if(nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code);}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code);}await load(room.code);});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
   
-  const guessQ=async(val)=>{try{await sb.from("kyp_answers").update({guess:val}).eq("room",room.code).eq("round",room.round).eq("slot",slot).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botGuess=botAnswer(room.qids[room.round]+(room.round*1000));await sb.from("kyp_answers").update({guess:botGuess}).eq("room",room.code).eq("round",room.round).eq("slot",1).then(async()=>{await new Promise(r=>setTimeout(r,400));await nextRound();});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
+  const guessQ=async(val)=>{try{const qids=getQids(room.code,questions);const qid=qids[room.round];await sb.from("kyp_answers").update({guess:val}).eq("room",room.code).eq("round",room.round).eq("slot",slot).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botGuess=botAnswer(qid+(room.round*1000));await sb.from("kyp_answers").update({guess:botGuess}).eq("room",room.code).eq("round",room.round).eq("slot",1).then(async()=>{await new Promise(r=>setTimeout(r,400));await nextRound();});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
   
   const nextRound=async()=>{const nr=room.round+1;if(room.phase==="answer1"&&nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="guess1"&&nr>2){await sb.from("kyp_rooms").update({phase:"answer2",round:3}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="answer2"&&nr>5){await sb.from("kyp_rooms").update({phase:"guess2",round:3}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="guess2"&&nr>5){setMatch(1);await sb.from("kyp_rooms").update({phase:"results"}).eq("code",room.code).then(()=>load(room.code));}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code).then(()=>load(room.code));}};
   
@@ -242,7 +243,7 @@ function App(){
     if(!room)return<Home name={name} setName={setName} joinCode={joinCode} setJoinCode={setJoinCode} create={create} join={join} err={err} busy={busy}/>;
     if(room.phase==="lobby")return<Lobby room={room} isHost={isHost} start={start} startBot={startBot} copyLink={async()=>navigator.clipboard.writeText(location.origin+location.pathname+"?room="+room.code)}/>;
     
-    const qid=room.qids?.[room.round];const q=questions.find(x=>x.id===qid);
+    const qids=getQids(room.code,questions);const qid=qids?.[room.round];const q=questions.find(x=>x.id===qid);
     
     if(!q)return<div className="card center sub">Loading...</div>;
     
