@@ -216,16 +216,18 @@ function App(){
   useEffect(()=>{loadQuestions().then(setQuestions).catch(e=>setErr(String(e.message||e)));},[]);
   
   const load=async(c)=>{
-    const [rr,aa]=await Promise.all([sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle(),sb.from("kyp_answers").select("*").eq("room",c)]);
-    if(rr.data)setRoom(rr.data);else if(!rr.error){setCode("");setRoom(null);}
-    if(aa.data)setAnswers(aa.data);
+    try{
+      const [rr,aa]=await Promise.all([sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle(),sb.from("kyp_answers").select("*").eq("room",c)]);
+      if(rr.error){console.error("Load room error:",rr.error);setErr("DB Error: "+rr.error.message);return;}
+      if(rr.data){console.log("Loaded room:",c,"phase:",rr.data.phase);setRoom(rr.data);if(aa.data)setAnswers(aa.data);}else{console.log("Room not found:",c);setCode("");setRoom(null);}
+    }catch(e){console.error("Load error:",e);setErr(String(e.message));}
   };
   
-  useEffect(()=>{if(!code)return;let dead=false;const tick=async()=>{if(dead)return;await load(code);};tick();const iv=setInterval(tick,2500);return()=>{dead=true;clearInterval(iv);};},[code]);
+  useEffect(()=>{if(!code)return;let dead=false;const tick=async()=>{if(dead)return;console.log("Loading code:",code);await load(code);};tick();const iv=setInterval(tick,2500);return()=>{dead=true;clearInterval(iv);};},[code]);
   
-  const create=async()=>{setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());for(let i=0;i<5;i++){const c=genCode();const {error}=await sb.from("kyp_rooms").insert({code:c,host_uid:uid,host_name:name.trim(),phase:"lobby",round:0});if(!error){localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}}setBusy(false);};
+  const create=async()=>{setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());for(let i=0;i<5;i++){const c=genCode();console.log("Trying code:",c);const {error}=await sb.from("kyp_rooms").insert({code:c,host_uid:uid,host_name:name.trim(),phase:"lobby",round:0});if(!error){console.log("Created room:",c);localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}else{console.error("Try",i,"error:",error?.message);}}setErr("Failed to create room after 5 tries");setBusy(false);};
   
-  const join=async()=>{const c=joinCode.trim().toUpperCase();setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());const {data:r}=await sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle();if(!r){setErr("Room not found");setBusy(false);return;}if(r.host_uid===uid||r.guest_uid===uid){localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}if(r.guest_uid){setErr("Room is full");setBusy(false);return;}const {data:u}=await sb.from("kyp_rooms").update({guest_uid:uid,guest_name:name.trim()}).eq("code",c).is("guest_uid",null).select().maybeSingle();if(!u){setErr("Someone took that seat");setBusy(false);return;}localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);};
+  const join=async()=>{const c=joinCode.trim().toUpperCase();setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());const {data:r,error:e1}=await sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle();if(e1||!r){setErr("Room not found");setBusy(false);return;}if(r.host_uid===uid||r.guest_uid===uid){localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}if(r.guest_uid){setErr("Room is full");setBusy(false);return;}const {data:u,error:e2}=await sb.from("kyp_rooms").update({guest_uid:uid,guest_name:name.trim()}).eq("code",c).is("guest_uid",null).select().maybeSingle();if(e2||!u){setErr("Failed to join (taken or error)");setBusy(false);return;}localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);};
   
   const botAnswer=(qid)=>{const seed=parseInt(qid.replace(/[^\d]/g,''))||0;return((seed*12345)%10)+1;};
   
@@ -266,7 +268,7 @@ function App(){
     return<div className="card center sub">Loading...</div>;
   };
   
-  return<div className={`app${match?" match":""}`}><div className="wrap"><div className="hdr"><div className="logo">Know Your Partner</div><button className="pill" onClick={()=>{if(confirm("Leave?"))localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}>Leave</button></div>{renderBody()}<div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>v2.0</div></div></div>;
+  return<div className={`app${match?" match":""}`}><div className="wrap"><div className="hdr"><div className="logo">Know Your Partner</div><button className="pill" onClick={()=>{if(confirm("Leave?"))localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}>Leave</button></div>{err&&<div style={{background:"#8B0000",padding:"10px",margin:"0 0 10px",borderRadius:"4px"}}><strong>ERROR:</strong> {err}</div>}{!room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>uid:{uid.slice(0,8)}</div>}{room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>room:{room.code} | phase:{room.phase}</div>}{renderBody()}<div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>v2.0</div></div></div>;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
