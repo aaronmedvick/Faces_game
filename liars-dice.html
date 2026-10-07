@@ -222,6 +222,7 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 .rrowbill { align-items:center; }
 .rrowbill .rdice { display:flex; justify-content:flex-end; }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -503,6 +504,10 @@ function Home({ onEnter }){
   const saved = ls.get("ld_code");
   const pickPal=(p)=>{ setPal(p); applyPalette(p); ls.set("ld_palette",p); };
   useEffect(()=>{ applyPalette(pal); },[]);
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); const nm=(ls.get("ld_name")||ls.get("hub_name")||"").trim(); if(!E||!nm) return;
+    ls.set("ld_name",nm);
+    (async()=>{ try{ if(E.role==="host"){ onEnter(nm,E.code,true); return; }
+      const ok=await HUB.waitRoom("ld_games",E.code,20000); onEnter(nm,E.code,!ok); }catch(e){} })(); },[]);
 
   const go = (mode)=>{
     SFX.unlock();

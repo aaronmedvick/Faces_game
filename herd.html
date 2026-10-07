@@ -63,6 +63,7 @@
   .fact{ margin-top:10px; font-size:16px; line-height:1.35; animation:bump .5s both; }
   .gain{ font-family:'Fraunces',serif; font-weight:600; font-size:44px; color:var(--candle); text-align:center; line-height:1; }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -149,20 +150,20 @@ function awardRows(hist,ps){ const rows=[];
   const l=[...stats].sort((a,b)=>b.lone-a.lone)[0]; if(l&&l.lone>0) rows.push("🐺 Lone wolf king: <b>"+esc(l.p.name)+"</b> ("+l.lone+" solo picks)");
   return rows; }
 
-/* ---- question packs: every data/07.herd.*.json file is auto-loaded ---- */
+/* ---- question packs: every Data/07.herd.*.json file is auto-loaded ---- */
 const HERD_PREFIX="07.herd.", HERD_INDEX=HERD_PREFIX+"index.json";
 async function discoverFiles(){
   const fresh=new URLSearchParams(location.search).has("fresh");
   if(!fresh){ try{ const c=JSON.parse(ls.get("herd_files")||"null"); if(c&&Date.now()-c.t<600000&&c.f&&c.f.length) return c.f; }catch(e){} }
-  try{ // 1) ask GitHub what's in data/ (public repo, no key)
+  try{ // 1) ask GitHub what's in Data/ (public repo, no key)
     const gh=location.hostname.endsWith(".github.io"), parts=location.pathname.split("/").filter(Boolean);
     const owner=gh?location.hostname.split(".")[0]:"aaronmedvick", repo=gh&&parts[0]?parts[0]:"Faces_game";
-    const r=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/data"); if(!r.ok) throw 0;
+    const r=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/Data"); if(!r.ok) throw 0;
     const j=await r.json();
     const f=j.map(x=>x.name).filter(n=>n.startsWith(HERD_PREFIX)&&n.endsWith(".json")&&n!==HERD_INDEX).sort();
     if(f.length){ ls.set("herd_files",JSON.stringify({t:Date.now(),f})); return f; }
   }catch(e){}
-  try{ const r=await fetch("./data/"+HERD_INDEX); if(r.ok){ const j=await r.json(); if(j.files&&j.files.length) return j.files; } }catch(e){} // 2) manifest
+  try{ const r=await fetch("./Data/"+HERD_INDEX); if(r.ok){ const j=await r.json(); if(j.files&&j.files.length) return j.files; } }catch(e){} // 2) manifest
   return [];
 }
 function normalizePack(j,fname){
@@ -174,7 +175,7 @@ function normalizePack(j,fname){
 }
 async function loadAllPacks(){
   const files=await discoverFiles();
-  const res=await Promise.all(files.map(async f=>{ try{ const r=await fetch("./data/"+f); if(!r.ok) return null; return normalizePack(await r.json(),f); }catch(e){ return null; } }));
+  const res=await Promise.all(files.map(async f=>{ try{ const r=await fetch("./Data/"+f); if(!r.ok) return null; return normalizePack(await r.json(),f); }catch(e){ return null; } }));
   const seen=new Set(), all=[]; let ok=0;
   res.forEach(list=>{ if(!list) return; ok++; list.forEach(q=>{ const k=q.q.toLowerCase(); if(!seen.has(k)){ seen.add(k); all.push(q); } }); });
   return { questions:all, files:ok };
@@ -218,6 +219,9 @@ function App(){
   useEffect(()=>{ loadAllPacks().then(d=>{ if(d.questions.length) setPack(d.questions); setPackInfo({files:d.files,loading:false}); }).catch(()=>setPackInfo({files:0,loading:false})); },[]);
   useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),300); return ()=>clearInterval(t); },[]);
   useEffect(()=>{ const c=new URLSearchParams(location.search).get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!sb||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await host(E.code); return; }
+      const ok=await HUB.waitRoom("hm_rooms",E.code,20000); if(ok) await join(E.code); else await host(E.code); }catch(e){} })(); },[]);
 
   /* ---- realtime ---- */
   async function refetch(c){
@@ -243,19 +247,19 @@ function App(){
   function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
 
   /* ---- create / join ---- */
-  async function host(){
+  async function host(forced){
     if(!name.trim()) return;
     ls.set("hub_name",name.trim());
-    const c=randCode();
+    const c=(typeof forced==="string"&&forced)?forced:randCode();
     const r=await sb.from("hm_rooms").insert({ code:c, host_id:myId, phase:"lobby", round:0 });
     if(r.error){ alert("Couldn't create room: "+r.error.message); return; }
     await sb.from("hm_players").delete().eq("id",myId);
     await sb.from("hm_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0 });
     setCode(c);
   }
-  async function join(){
-    if(!name.trim()||!codeInput.trim()) return;
-    const c=codeInput.trim().toUpperCase();
+  async function join(cArg){
+    if(!name.trim()||!((typeof cArg==="string"&&cArg)||codeInput).trim()) return;
+    const c=((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
     ls.set("hub_name",name.trim());
     const r=await sb.from("hm_rooms").select("code").eq("code",c).maybeSingle();
     if(!r.data){ alert("No room with that code."); return; }

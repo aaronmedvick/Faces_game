@@ -76,6 +76,7 @@
   .seg button{ flex:1; font-family:'JetBrains Mono'; font-weight:700; font-size:15px; padding:11px 0; border-radius:11px; border:1px solid var(--haze); background:var(--panel); color:var(--dim); cursor:pointer; }
   .seg button.on{ background:var(--candle); color:var(--ink); border-color:var(--candle); }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -113,7 +114,7 @@ const initial = (n)=> (n||"?").trim().charAt(0).toUpperCase();
 const BASE = 1.05;
 const matchPts = (gap)=> 100*Math.pow(BASE,-gap);
 
-/* ---- prompts (deployed file also fetches 06.gutcheck.prompts.json) ---- */
+/* ---- prompts (deployed file also fetches 09.gutcheck.prompts.json) ---- */
 const FALLBACK_PROMPTS = [{"adj":"scary","verb":"are","subject":"cats","c":8},{"adj":"scary","verb":"are","subject":"clowns","c":55},{"adj":"scary","verb":"is","subject":"the dark","c":35},{"adj":"scary","verb":"are","subject":"spiders","c":60},{"adj":"scary","verb":"is","subject":"public speaking","c":70},{"adj":"scary","verb":"is","subject":"an empty parking garage at night","c":75},{"adj":"scary","verb":"are","subject":"geese","c":50},{"adj":"scary","verb":"is","subject":"a group chat going silent","c":40},{"adj":"cozy","verb":"are","subject":"socks","c":78},{"adj":"cozy","verb":"is","subject":"a thunderstorm from inside","c":88},{"adj":"cozy","verb":"is","subject":"a hospital waiting room","c":5},{"adj":"cozy","verb":"are","subject":"airports","c":8},{"adj":"cozy","verb":"is","subject":"soup","c":85},{"adj":"cozy","verb":"is","subject":"a library","c":80},{"adj":"cozy","verb":"are","subject":"Crocs","c":55},{"adj":"cozy","verb":"is","subject":"a camping tent","c":55},{"adj":"healthy","verb":"is","subject":"pizza","c":15},{"adj":"healthy","verb":"is","subject":"coffee","c":45},{"adj":"healthy","verb":"are","subject":"bananas","c":85},{"adj":"healthy","verb":"is","subject":"cereal","c":25},{"adj":"healthy","verb":"is","subject":"peanut butter","c":55},{"adj":"healthy","verb":"is","subject":"a salad from a fast food place","c":50},{"adj":"healthy","verb":"is","subject":"sleeping in","c":55},{"adj":"healthy","verb":"is","subject":"cold showers","c":60},{"adj":"romantic","verb":"is","subject":"a drive-in movie","c":75},{"adj":"romantic","verb":"is","subject":"a long flight together","c":30},{"adj":"romantic","verb":"is","subject":"cooking dinner together","c":85},{"adj":"romantic","verb":"are","subject":"cruise ships","c":45},{"adj":"romantic","verb":"is","subject":"Paris","c":80},{"adj":"romantic","verb":"is","subject":"a shared Netflix password","c":50},{"adj":"romantic","verb":"is","subject":"IKEA","c":25},{"adj":"weird","verb":"is","subject":"cilantro","c":50},{"adj":"weird","verb":"is","subject":"pineapple on pizza","c":30},{"adj":"weird","verb":"are","subject":"mimes","c":75},{"adj":"weird","verb":"is","subject":"wearing socks with sandals","c":50},{"adj":"weird","verb":"is","subject":"eating alone at a restaurant","c":20},{"adj":"weird","verb":"is","subject":"talking to yourself","c":35},{"adj":"weird","verb":"is","subject":"a hot dog","c":40},{"adj":"weird","verb":"are","subject":"fax machines","c":70},{"adj":"weird","verb":"is","subject":"putting ketchup on eggs","c":45},{"adj":"hard","verb":"is","subject":"parallel parking","c":55},{"adj":"hard","verb":"is","subject":"juggling","c":60},{"adj":"hard","verb":"is","subject":"learning the violin","c":80},{"adj":"hard","verb":"is","subject":"quitting sugar","c":70},{"adj":"hard","verb":"is","subject":"folding a fitted sheet","c":75},{"adj":"hard","verb":"is","subject":"being a parent","c":90},{"adj":"hard","verb":"is","subject":"making a good omelette","c":50},{"adj":"hard","verb":"is","subject":"whistling","c":30},{"adj":"hard","verb":"is","subject":"riding a unicycle","c":75},{"adj":"overrated","verb":"is","subject":"brunch","c":65},{"adj":"overrated","verb":"is","subject":"Paris","c":50},{"adj":"overrated","verb":"are","subject":"fireworks","c":30},{"adj":"overrated","verb":"is","subject":"New Year's Eve","c":70},{"adj":"overrated","verb":"is","subject":"the Mona Lisa","c":70},{"adj":"overrated","verb":"is","subject":"avocado toast","c":60},{"adj":"overrated","verb":"are","subject":"weddings","c":50},{"adj":"overrated","verb":"is","subject":"Christmas","c":30},{"adj":"overrated","verb":"is","subject":"Disneyland","c":45},{"adj":"overrated","verb":"are","subject":"sunsets","c":10},{"adj":"embarrassing","verb":"is","subject":"crying at a commercial","c":35},{"adj":"embarrassing","verb":"is","subject":"getting your name wrong on a call","c":55},{"adj":"embarrassing","verb":"is","subject":"singing in the car with the windows down","c":30},{"adj":"embarrassing","verb":"is","subject":"tripping in public","c":60},{"adj":"embarrassing","verb":"is","subject":"waving back at someone who wasn't waving at you","c":75},{"adj":"embarrassing","verb":"is","subject":"a dad joke","c":50},{"adj":"embarrassing","verb":"is","subject":"liking a very old post by accident","c":80},{"adj":"expensive","verb":"is","subject":"a wedding","c":85},{"adj":"expensive","verb":"is","subject":"a good mattress","c":65},{"adj":"expensive","verb":"is","subject":"owning a dog","c":60},{"adj":"expensive","verb":"is","subject":"a college education","c":90},{"adj":"expensive","verb":"is","subject":"a movie night out","c":55},{"adj":"expensive","verb":"is","subject":"a Disney vacation","c":90},{"adj":"expensive","verb":"is","subject":"a pair of AirPods","c":40},{"adj":"expensive","verb":"is","subject":"a haircut","c":35},{"adj":"annoying","verb":"are","subject":"pop-up ads","c":90},{"adj":"annoying","verb":"is","subject":"someone chewing loudly","c":85},{"adj":"annoying","verb":"are","subject":"mosquitoes","c":85},{"adj":"annoying","verb":"is","subject":"a slow walker in front of you","c":75},{"adj":"annoying","verb":"is","subject":"reply-all","c":80},{"adj":"annoying","verb":"is","subject":"a loud group at the next table","c":70},{"adj":"annoying","verb":"is","subject":"Monday","c":55},{"adj":"annoying","verb":"is","subject":"a wobbly table","c":75},{"adj":"dangerous","verb":"is","subject":"skydiving","c":45},{"adj":"dangerous","verb":"is","subject":"texting while walking","c":40},{"adj":"dangerous","verb":"are","subject":"sharks","c":10},{"adj":"dangerous","verb":"are","subject":"hot dogs to toddlers","c":30},{"adj":"dangerous","verb":"is","subject":"driving at night","c":45},{"adj":"dangerous","verb":"is","subject":"a trampoline","c":55},{"adj":"dangerous","verb":"are","subject":"shopping carts","c":15},{"adj":"dangerous","verb":"are","subject":"vending machines","c":8},{"adj":"fancy","verb":"is","subject":"a cheese board","c":65},{"adj":"fancy","verb":"is","subject":"sparkling water","c":50},{"adj":"fancy","verb":"is","subject":"a tuxedo","c":90},{"adj":"fancy","verb":"are","subject":"cloth napkins","c":60},{"adj":"fancy","verb":"is","subject":"caviar","c":95},{"adj":"fancy","verb":"is","subject":"a rooftop bar","c":75},{"adj":"fancy","verb":"is","subject":"a Costco rotisserie chicken","c":5},{"adj":"fancy","verb":"is","subject":"a cruise","c":50},{"adj":"funny","verb":"are","subject":"puns","c":50},{"adj":"funny","verb":"is","subject":"slapstick","c":65},{"adj":"funny","verb":"are","subject":"dad jokes","c":60},{"adj":"funny","verb":"are","subject":"cats falling off things","c":85},{"adj":"funny","verb":"is","subject":"a pie in the face","c":65},{"adj":"funny","verb":"is","subject":"airline food","c":40},{"adj":"funny","verb":"are","subject":"toddlers","c":75},{"adj":"funny","verb":"is","subject":"the word moist","c":30},{"adj":"lucky","verb":"are","subject":"rabbits' feet","c":10},{"adj":"lucky","verb":"is","subject":"the number seven","c":40},{"adj":"lucky","verb":"is","subject":"Friday the 13th","c":10},{"adj":"lucky","verb":"are","subject":"four-leaf clovers","c":25},{"adj":"lucky","verb":"is","subject":"finding a penny","c":35},{"adj":"lucky","verb":"is","subject":"a green light on every street","c":50},{"adj":"boring","verb":"is","subject":"golf","c":60},{"adj":"boring","verb":"are","subject":"meetings","c":75},{"adj":"boring","verb":"is","subject":"chess","c":40},{"adj":"boring","verb":"is","subject":"airport security","c":80},{"adj":"boring","verb":"is","subject":"a long drive through Nebraska","c":80},{"adj":"boring","verb":"are","subject":"tax forms","c":95},{"adj":"boring","verb":"are","subject":"museums","c":35},{"adj":"boring","verb":"is","subject":"watching paint dry","c":100},{"adj":"athletic","verb":"is","subject":"bowling","c":25},{"adj":"athletic","verb":"is","subject":"darts","c":15},{"adj":"athletic","verb":"is","subject":"cheerleading","c":85},{"adj":"athletic","verb":"is","subject":"competitive eating","c":20},{"adj":"athletic","verb":"is","subject":"chess boxing","c":70},{"adj":"athletic","verb":"is","subject":"fishing","c":15},{"adj":"athletic","verb":"is","subject":"dancing","c":70},{"adj":"classy","verb":"is","subject":"wine in a box","c":20},{"adj":"classy","verb":"are","subject":"monocles","c":75},{"adj":"classy","verb":"is","subject":"white after Labor Day","c":40},{"adj":"classy","verb":"is","subject":"a bowtie","c":75},{"adj":"classy","verb":"is","subject":"eating chicken wings with a fork","c":60},{"adj":"classy","verb":"is","subject":"the opera","c":85},{"adj":"classy","verb":"is","subject":"a fanny pack","c":30},{"adj":"relaxing","verb":"is","subject":"a hot tub","c":90},{"adj":"relaxing","verb":"is","subject":"a sauna","c":75},{"adj":"relaxing","verb":"is","subject":"a long flight","c":10},{"adj":"relaxing","verb":"is","subject":"gardening","c":80},{"adj":"relaxing","verb":"are","subject":"beach vacations","c":75},{"adj":"relaxing","verb":"is","subject":"cleaning","c":35},{"adj":"relaxing","verb":"is","subject":"a spa day","c":95},{"adj":"relaxing","verb":"are","subject":"rainy days","c":75},{"adj":"smart","verb":"are","subject":"octopuses","c":80},{"adj":"smart","verb":"are","subject":"pigeons","c":40},{"adj":"smart","verb":"are","subject":"goldfish","c":15},{"adj":"smart","verb":"is","subject":"your phone","c":55},{"adj":"smart","verb":"are","subject":"crows","c":85},{"adj":"smart","verb":"are","subject":"cats","c":35},{"adj":"smart","verb":"are","subject":"dogs","c":50},{"adj":"nostalgic","verb":"are","subject":"VHS tapes","c":85},{"adj":"nostalgic","verb":"is","subject":"the smell of a new crayon box","c":85},{"adj":"nostalgic","verb":"is","subject":"dial-up internet","c":75},{"adj":"nostalgic","verb":"is","subject":"a school cafeteria","c":60},{"adj":"nostalgic","verb":"are","subject":"Saturday morning cartoons","c":90},{"adj":"nostalgic","verb":"is","subject":"a Blockbuster","c":90},{"adj":"nostalgic","verb":"is","subject":"a floppy disk","c":75},{"adj":"nostalgic","verb":"are","subject":"flip phones","c":70},{"adj":"dramatic","verb":"are","subject":"soap operas","c":95},{"adj":"dramatic","verb":"are","subject":"cats","c":70},{"adj":"dramatic","verb":"are","subject":"toddlers","c":85},{"adj":"dramatic","verb":"are","subject":"reality TV reunions","c":90},{"adj":"dramatic","verb":"is","subject":"a group project","c":70},{"adj":"dramatic","verb":"are","subject":"theater kids","c":95},{"adj":"dramatic","verb":"are","subject":"seagulls","c":50}];
 
 /* each round, everyone gets a different target (a rotating cycle, so you meet everyone) */
@@ -151,8 +152,8 @@ function awardsFrom(history,players){
   return { pair:best&&{a:nm(best.a),b:nm(best.b),avg:Math.round(best.avg)}, wolf:wolf&&{name:nm(wolf.id),avg:Math.round(wolf.avg)} };
 }
 
-/* ---- question packs: every .txt/.json in data/06.gutcheck/ ---- */
-const DATA_DIR = "data/06.gutcheck";
+/* ---- question packs: every Data/09.gutcheck.pack*.txt/.json file ---- */
+const DATA_DIR = "Data";
 const keyOf = (p)=> (p.adj+"|"+p.subject).toLowerCase();
 function parseLine(l){
   l=(l||"").trim(); if(!l||l[0]==="#") return null;
@@ -184,7 +185,7 @@ function parsePack(file,text){
 }
 async function loadPacks(){
   let names=[];
-  try{ const r=await fetch("./"+DATA_DIR+"/index.json",{cache:"no-cache"}); const d=await r.json(); names=names.concat(d.files||d); }catch(e){}
+  try{ const r=await fetch("./"+DATA_DIR+"/09.gutcheck.index.json",{cache:"no-cache"}); const d=await r.json(); names=names.concat(d.files||d); }catch(e){}
   try{ /* also ask GitHub directly, so a brand-new file shows up before the index catches up */
     const host=location.hostname;
     if(host.endsWith(".github.io")){
@@ -193,7 +194,7 @@ async function loadPacks(){
       if(r.ok){ const d=await r.json(); if(Array.isArray(d)) names=names.concat(d.map(f=>f.name)); }
     }
   }catch(e){}
-  names=[...new Set(names)].filter(n=>/\.(txt|json)$/i.test(n)&&n!=="index.json"&&!n.startsWith("_")&&!/^readme/i.test(n)).sort();
+  names=[...new Set(names)].filter(n=>/^09\.gutcheck\.pack.*\.(txt|json)$/i.test(n)).sort();
   const seen=new Set(); const packs=[];
   for(const n of names){
     try{
@@ -338,6 +339,9 @@ function App(){
 
   useEffect(()=>{ loadPacks().then(pk=>{ if(pk.length) setPacks(pk); }); },[]);
   useEffect(()=>{ const c=new URLSearchParams(location.search).get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!sb||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await createRoom(E.code); return; }
+      const ok=await HUB.waitRoom("gc_rooms",E.code,20000); if(ok) await joinRoom(E.code); else await createRoom(E.code); }catch(e){} })(); },[]);
   useEffect(()=>{ setDial(50); setTab("match"); },[room?.round]);
 
   /* ---- data layer: same calls whether online or practice ---- */
@@ -387,9 +391,9 @@ function App(){
 
   /* ---- lobby actions ---- */
   function saveName(){ ls.set("gc_name",name.trim()); ls.set("hub_name",name.trim()); }
-  async function createRoom(){
+  async function createRoom(forced){
     if(!name.trim()||!sb) return; saveName(); setErr("");
-    const c=randCode();
+    const c=(typeof forced==="string"&&forced)?forced:randCode();
     const a=await sb.from("gc_rooms").insert({ code:c, host_id:myId, phase:"lobby", round:0, rounds:8, used:[] });
     if(a.error){ setErr(a.error.message); return; }
     await sb.from("gc_players").delete().eq("id",myId);
@@ -397,9 +401,9 @@ function App(){
     if(b.error){ setErr(b.error.message); return; }
     setLocal(false); setCode(c);
   }
-  async function joinRoom(){
+  async function joinRoom(cArg){
     if(!name.trim()||!sb) return; saveName(); setErr("");
-    const c=codeInput.trim().toUpperCase();
+    const c=((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
     const r=await sb.from("gc_rooms").select("code").eq("code",c).maybeSingle();
     if(!r.data){ setErr("No room with that code."); return; }
     const ps=await sb.from("gc_players").select("id").eq("code",c);

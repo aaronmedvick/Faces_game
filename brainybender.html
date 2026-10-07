@@ -89,6 +89,7 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .ver{text-align:center;color:#6d5a52;font-size:12px;margin-top:26px}
 @media (prefers-reduced-motion:reduce){.flame{animation:none}.ans.wrong{animation:none}}
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -111,15 +112,15 @@ function buildGame(bank,cat){
   });
 }
 
-// Reads data/08.brainybender.manifest.json, then every pack file it lists.
-// (Manifest is auto-generated: node data/08.brainybender.pack-gen.js)
+// Reads Data/08.brainybender.manifest.json, then every pack file it lists.
+// (Manifest is auto-generated: node Data/08.brainybender.pack-gen.js)
 async function loadPacks(){
   const bust="?t="+Date.now();
-  const mres=await fetch("data/08.brainybender.manifest.json"+bust,{cache:"no-store"});
+  const mres=await fetch("Data/08.brainybender.manifest.json"+bust,{cache:"no-store"});
   if(!mres.ok) throw new Error("manifest "+mres.status);
   const manifest=await mres.json();
   const packs=await Promise.all((manifest.packs||[]).map(p=>
-    fetch("data/"+p.file+bust,{cache:"no-store"}).then(r=>r.json()).catch(()=>null)));
+    fetch("Data/"+p.file+bust,{cache:"no-store"}).then(r=>r.json()).catch(()=>null)));
   const bank=[];
   packs.forEach(pk=>{
     if(!pk) return;
@@ -268,7 +269,7 @@ function App(){
           {bank===null
             ? <p className="sub">Loading questions...</p>
             : bank.length===0
-              ? <p className="sub">No question packs found. Check that data/08.brainybender.manifest.json and your pack files are uploaded, or run: node data/08.brainybender.pack-gen.js</p>
+              ? <p className="sub">No question packs found. Check that Data/08.brainybender.manifest.json and your pack files are uploaded, or run: node Data/08.brainybender.pack-gen.js</p>
               : <React.Fragment>
                   <button className="big" onClick={start}>Start</button>
                   <div className="chips">

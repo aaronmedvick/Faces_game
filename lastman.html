@@ -76,6 +76,7 @@ body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -132,6 +133,10 @@ function App(){
     if(sc&&sr){ setCode(sc); setRole(sr); setJoined(true); }
   },[]);
 
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await createGame(E.code); return; }
+      const ok=await HUB.waitRoom("lms_rooms",E.code,20000); if(ok) await joinGame(E.code); else await createGame(E.code); }catch(e){} })(); },[]);
+
   const refetch=useCallback(async(c)=>{
     const gc=c||code; if(!gc) return;
     const g=await sb.from("lms_rooms").select("*").eq("code",gc).maybeSingle();
@@ -170,16 +175,16 @@ function App(){
   const upsertUser=()=>{ try{ sb.from("users").upsert({ id:MYID, name:(name||"").trim(), last_seen:new Date().toISOString() }); }catch(e){} };
   const leave=()=>{ localStorage.removeItem("lms_code"); localStorage.removeItem("lms_role"); setJoined(false); setRole(null); setGame(null); setPlayers([]); setErr(""); };
 
-  const createGame=async()=>{
+  const createGame=async(forced)=>{
     setErr("");
-    const c=mkCode();
+    const c=(typeof forced==="string"&&forced)?forced:mkCode();
     const g=await sb.from("lms_rooms").insert({ code:c, host_id:MYID, phase:"lobby", round:0, state:{} });
     if(g.error){ setErr(g.error.message); return; }
     upsertUser(); saveSession(c,"host"); setCode(c); setRole("host"); setJoined(true);
   };
-  const joinGame=async()=>{
+  const joinGame=async(cArg)=>{
     setErr("");
-    const c=(code||"").trim().toUpperCase();
+    const c=((typeof cArg==="string"&&cArg)||code||"").trim().toUpperCase();
     if(!name.trim()){ setErr("Enter your name"); return; }
     if(!c){ setErr("Enter a game code"); return; }
     const g=await sb.from("lms_rooms").select("code,phase").eq("code",c).maybeSingle();

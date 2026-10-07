@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1a1625">
-<title>Know Your Partner</title>
+<meta name="theme-color" content="#0b0e1b">
+<title>Pillow Talk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
@@ -12,265 +12,754 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:#1a1625}
+html,body{margin:0;min-height:100%;background:#0b0e1b}
 body{font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer}
 input{font-family:inherit}
 
-.app{min-height:100dvh;position:relative;overflow-x:hidden;background:linear-gradient(160deg,#1a1625 0%,#2d1b38 100%);color:#e8dff5;transition:background 1.2s}
-.app.match{background:linear-gradient(160deg,#fff0f7,#ffe8f0);color:#4d1838}
-.wrap{position:relative;z-index:2;max-width:480px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
+/* ---------- theme levels: the room warms up as the score climbs ---------- */
+.app{min-height:100dvh;position:relative;overflow-x:hidden;color:var(--ink);transition:color 1.4s}
+.app[data-level="0"]{--panel:#161b32;--line:#2b3355;--ink:#e7eafa;--soft:#8f98bf;--accent:#8aa4ff;--accentInk:#0b0e1c;--gold:#b9c5f2;--chip:#1e2545}
+.app[data-level="1"]{--panel:#291830;--line:#4d2b57;--ink:#f6e8f4;--soft:#b192b3;--accent:#e08bd0;--accentInk:#1d0c1d;--gold:#f0c4e8;--chip:#35203d}
+.app[data-level="2"]{--panel:#3c1424;--line:#74294a;--ink:#ffebf0;--soft:#e0a0b5;--accent:#ff6b8b;--accentInk:#2a0611;--gold:#ffc58c;--chip:#4b1a2e}
+.app[data-level="3"]{--panel:rgba(255,255,255,.74);--line:#f0a2ba;--ink:#4b0e2a;--soft:#955070;--accent:#e0245e;--accentInk:#ffffff;--gold:#b97a10;--chip:rgba(255,255,255,.6)}
+.bg{position:fixed;inset:0;opacity:0;transition:opacity 1.8s ease;z-index:0;pointer-events:none}
+.bg.on{opacity:1}
+.bg0{background:radial-gradient(circle at 15% -10%,#1d2550,transparent 55%),#0b0e1b}
+.bg1{background:radial-gradient(circle at 85% -5%,#52215c,transparent 55%),#170f20}
+.bg2{background:radial-gradient(circle at 50% -10%,#99224f,transparent 60%),radial-gradient(circle at 0 100%,#5e1032,transparent 50%),#2a0a17}
+.bg3{background:radial-gradient(circle at 50% -10%,#fff7fa,transparent 55%),linear-gradient(160deg,#ffd8e3,#ffb7cb 60%,#ffd1b9)}
+.wrap{position:relative;z-index:2;max-width:440px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
 
-.hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.logo{font-family:Fraunces,serif;font-style:italic;font-weight:700;font-size:21px}
-.pill{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:inherit;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
-.app.match .pill{border-color:rgba(0,0,0,.15);background:rgba(255,255,255,.4);color:#4d1838}
+/* ---------- header ---------- */
+.hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.logo{font-family:Fraunces,serif;font-style:italic;font-weight:700;font-size:21px;letter-spacing:-.01em}
+.spark{flex:1;min-width:0}
+.spark .lbl{font-size:11px;color:var(--soft);display:flex;justify-content:space-between;margin-bottom:3px}
+.spark .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.spark .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:3px;transition:width 1s ease}
+.pill{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:6px 11px;font-size:12px;font-weight:600;transition:background-color 1.4s,color 1.4s,border-color 1.4s}
 
-.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:18px}
-.card+.card{margin-top:12px}
-.app.match .card{background:rgba(255,255,255,.4);border-color:rgba(255,255,255,.6)}
-
-.q{font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:27px;line-height:1.18;margin:6px 0 8px}
-.app.match .q{color:#4d1838}
-.sub{color:rgba(255,255,255,.65);font-size:14px;line-height:1.4;margin:0 0 14px}
-.app.match .sub{color:rgba(0,0,0,.6)}
+/* ---------- surfaces ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;transition:background-color 1.4s,border-color 1.4s}
+.card + .card{margin-top:12px}
+.q{font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:27px;line-height:1.18;margin:6px 0 8px;letter-spacing:-.01em}
+.sub{color:var(--soft);font-size:14.5px;line-height:1.4;margin:0 0 14px}
+.rbar{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin:0 2px 8px}
+.steps{display:flex;gap:6px;margin-bottom:6px}
+.steps b{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--soft)}
+.steps b.on{background:var(--accent);border-color:var(--accent);color:var(--accentInk)}
 
 .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.tile{height:56px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:inherit;font-family:Fraunces,serif;font-weight:700;font-size:22px;transition:transform .12s,background-color .2s;cursor:pointer}
-.tile.sel{background:#c684d9;border-color:#c684d9;color:#fff}
-.app.match .tile{border-color:rgba(255,102,153,.2);background:rgba(255,102,153,.08)}
-.app.match .tile.sel{background:#ff6699;border-color:#ff6699;color:#fff}
+.tile{height:56px;border-radius:14px;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);font-family:Fraunces,serif;font-weight:700;font-size:22px;transition:transform .12s,background-color .2s,border-color .2s}
+.tile.sel{background:var(--accent);border-color:var(--accent);color:var(--accentInk);transform:scale(1.07)}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin:8px 2px 0}
+.opt{display:block;width:100%;text-align:left;padding:15px 16px;margin-bottom:9px;border-radius:14px;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);font-size:16.5px;font-weight:500;transition:background-color .2s,border-color .2s,transform .12s}
+.opt.sel{background:var(--accent);border-color:var(--accent);color:var(--accentInk);font-weight:700}
+.btn{display:block;width:100%;padding:16px;border-radius:16px;border:none;background:var(--accent);color:var(--accentInk);font-size:17px;font-weight:700;margin-top:14px;transition:opacity .2s,background-color 1.4s,color 1.4s}
+.btn:disabled{opacity:.35}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.link{background:none;border:none;color:var(--soft);font-size:14px;padding:10px 0 0;text-decoration:underline}
+.inp{width:100%;padding:15px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);font-size:17px;outline:none}
+.inp:focus{border-color:var(--accent)}
+.inp::placeholder{color:var(--soft)}
+.err{color:#ff8a8a;font-size:14px;margin:10px 2px 0}
+.app[data-level="3"] .err{color:#b3123d}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.btn{display:block;width:100%;padding:16px;border-radius:16px;border:none;background:#c684d9;color:#fff;font-size:17px;font-weight:700;margin-top:14px;transition:opacity .2s;cursor:pointer}
-.btn:disabled{opacity:.35;cursor:not-allowed}
-.btn.ghost{background:transparent;color:inherit;border:1.5px solid rgba(255,255,255,.25)}
-.app.match .btn{background:#ff6699}
-.app.match .btn.ghost{border-color:rgba(0,0,0,.2);color:#4d1838}
-
-.inp{width:100%;padding:15px 16px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:inherit;font-size:17px;outline:none}
-.inp:focus{border-color:#c684d9}
-.inp::placeholder{color:rgba(255,255,255,.4)}
-
-.center{text-align:center;padding:26px 8px}
-.hero{font-family:Fraunces,serif;font-weight:800;font-size:44px;line-height:1;margin:22px 0 8px}
-.code{font-family:Fraunces,serif;font-weight:800;font-size:54px;letter-spacing:.14em;text-align:center;margin:4px 0}
-
+/* ---------- home / lobby ---------- */
+.hero{font-family:Fraunces,serif;font-weight:800;font-size:44px;line-height:1;letter-spacing:-.03em;margin:22px 0 8px}
+.hero em{font-weight:500}
+.code{font-family:Fraunces,serif;font-weight:800;font-size:54px;letter-spacing:.14em;text-align:center;margin:4px 0 2px}
+.qr{display:flex;justify-content:center;margin:10px 0}
+.qr div{background:#fff;padding:10px;border-radius:14px;line-height:0}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 4px}
+.chip{padding:12px 8px;border-radius:14px;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);font-size:15px;font-weight:600}
+.chip.sel{background:var(--accent);border-color:var(--accent);color:var(--accentInk)}
+.row{display:flex;gap:8px}
+.row .chip{flex:1}
 .who{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:16px}
-.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3)}
-.dot.on{background:#c684d9}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--accent)}
+.small{font-size:12.5px;color:var(--soft);margin:6px 2px 0}
 
-.chip{padding:12px 8px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:inherit;font-size:15px;font-weight:600;cursor:pointer}
-.chip.sel{background:#c684d9;border-color:#c684d9;color:#fff}
-.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+/* ---------- waiting / countdown ---------- */
+.center{text-align:center;padding:26px 8px}
+.bigheart{font-size:68px;display:inline-block;animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.14)}}
+.cdnum{font-family:Fraunces,serif;font-weight:800;font-size:120px;line-height:1;animation:pulse .8s ease-in-out infinite}
 
-.step{font-size:12px;color:rgba(255,255,255,.5);margin:0 2px 10px;font-weight:600}
-.ends{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.5);margin:8px 2px 0}
+/* ---------- reveal ---------- */
+.duel{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;margin-top:12px}
+.duel.in{opacity:1;transform:none}
+.duel h4{margin:0 0 4px;font-size:14px;font-weight:600;color:var(--soft)}
+.track{position:relative;height:96px;margin:6px 20px 0}
+.rail{position:absolute;left:0;right:0;top:47px;height:4px;border-radius:2px;background:var(--line)}
+.tick{position:absolute;top:43px;width:2px;height:12px;background:var(--line);transform:translateX(-50%)}
+.tnum{position:absolute;top:62px;font-size:10px;color:var(--soft);transform:translateX(-50%)}
+.mk{position:absolute;width:38px;height:38px;margin-left:-19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-weight:800;font-size:18px;left:0;opacity:0;transition:left .9s cubic-bezier(.2,1.45,.4,1),opacity .25s}
+.mk.truth{top:0;background:var(--accent);color:var(--accentInk);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.mk.guess{top:56px;border:2.5px solid var(--gold);background:var(--panel);color:var(--ink)}
+.duel.in .mk.truth{left:var(--p);opacity:1}
+.duel.in .mk.guess{left:var(--g);opacity:1;transition-delay:.7s}
+.legend{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin:0 2px}
+.late{opacity:0;transition:opacity .5s 1.7s}
+.duel.in .late{opacity:1}
+.call{font-weight:600;font-size:15.5px;margin:8px 0 0;line-height:1.35}
+.pts{display:inline-block;padding:3px 11px;border-radius:999px;background:var(--accent);color:var(--accentInk);font-weight:700;font-size:14px}
+.pts.zero{background:var(--chip);color:var(--soft);border:1px solid var(--line)}
+.cmp{display:flex;gap:8px;margin-top:8px}
+.cmp div{flex:1;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--chip);font-size:15.5px;font-weight:600;line-height:1.25;opacity:0;transition:opacity .4s}
+.cmp small{display:block;font-size:11.5px;color:var(--soft);font-weight:500;margin-bottom:3px}
+.duel.in .cmp div{opacity:1}
+.duel.in .cmp div:nth-child(2){transition-delay:.7s}
+.cmp .hit{border-color:var(--accent)}
+.scorebar{display:flex;justify-content:space-between;font-weight:600;font-size:15px}
+.scorebar span b{font-family:Fraunces,serif;font-size:22px;margin-left:4px}
 
-.reveal{opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;margin-top:12px}
-.reveal.in{opacity:1;transform:none}
+/* ---------- final ---------- */
+.pct{font-family:Fraunces,serif;font-weight:800;font-size:92px;line-height:1;text-align:center;margin:6px 0 0}
+.verdict{font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:26px;text-align:center;margin:2px 0 12px;line-height:1.15}
 
-.pct{font-family:Fraunces,serif;font-weight:800;font-size:72px;line-height:1;text-align:center;margin:4px 0}
-.app.match .pct{color:#ff6699}
-
-.verdict{font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:24px;text-align:center;margin:4px 0 12px;line-height:1.2}
-.app.match .verdict{color:#c75a8f}
-
-.knowscore{display:flex;gap:8px;margin:12px 0;font-size:14px;font-weight:600}
-.knowscore>div{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);text-align:center}
-.knowscore .big{font-size:28px;font-family:Fraunces,serif;font-weight:700;color:#c684d9;margin:4px 0}
-.app.match .knowscore>div{border-color:rgba(255,102,153,.2);background:rgba(255,102,153,.08)}
-.app.match .knowscore .big{color:#ff6699}
-
-.dims{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.dim{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05)}
-.app.match .dim{border-color:rgba(255,102,153,.2);background:rgba(255,102,153,.08)}
-.dim h4{margin:0 0 6px;font-size:12px;color:rgba(255,255,255,.65);font-weight:600;text-transform:capitalize}
-.dim .bar{height:5px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:6px}
-.dim .bar i{display:block;height:100%;background:linear-gradient(90deg,#c684d9,#e0a4f0);border-radius:2px;transition:width .4s}
-.dim .pct{font-size:20px;margin:0}
-
-.idea{padding:12px;border-radius:12px;border-left:4px solid #c684d9;background:rgba(255,255,255,.08);font-size:14px;line-height:1.5;margin-bottom:10px}
-.app.match .idea{border-left-color:#ff6699;background:rgba(255,102,153,.08)}
-
-.small{font-size:12px;color:rgba(255,255,255,.45);margin:6px 0}
-.app.match .small{color:rgba(0,0,0,.5)}
-
-.prize{padding:14px;border-radius:14px;background:rgba(255,102,153,.15);border:1px solid rgba(255,102,153,.3);font-size:16px;font-weight:700;text-align:center;margin-top:12px}
-
-:focus-visible{outline:2px solid #c684d9;outline-offset:2px}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ---------- fx ---------- */
+.heart{position:fixed;bottom:-40px;pointer-events:none;z-index:1;opacity:0;animation:floatUp linear infinite;color:var(--accent)}
+@keyframes floatUp{0%{transform:translateY(0) scale(.8);opacity:0}12%{opacity:.55}100%{transform:translateY(-115vh) scale(1.25) rotate(18deg);opacity:0}}
+.banner{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;pointer-events:none;animation:bn 2.6s ease forwards;background:radial-gradient(circle,rgba(0,0,0,.35),transparent 70%)}
+.banner b{font-family:Fraunces,serif;font-style:italic;font-weight:800;font-size:44px;line-height:1.05;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.45)}
+.banner span{color:#fff;font-size:17px;margin-top:8px;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+@keyframes bn{0%{opacity:0;transform:scale(.9)}15%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.04)}}
+@media (prefers-reduced-motion:reduce){.heart,.bigheart,.cdnum{animation:none}.mk,.duel{transition:none}.bg{transition:none}}
+.board{margin:10px 0 4px}.brow{display:flex;justify-content:space-between;padding:7px 2px;font-size:15px;border-bottom:1px solid var(--line)}.brow.me{font-weight:700}
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
+<script type="text/babel" data-presets="react">
 const {useState,useEffect,useRef,useMemo}=React;
+const VERSION="pt-2.1";
+
+/* ============ SAME SUPABASE PROJECT AS THE REST OF THE HUB ============ */
 const SUPABASE_URL="https://gyvgzeculdaxcwinblld.supabase.co";
 const SUPABASE_KEY="sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-function hubId(){let v=localStorage.getItem("hub_uid");if(!v){v="u"+Math.random().toString(36).slice(2,11);localStorage.setItem("hub_uid",v);}return v;}
-const genCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s;};
-const getQids=(code,allQs)=>{let hash=0;for(let i=0;i<code.length;i++)hash=((hash<<5)-hash)+code.charCodeAt(i)|0;const seeded=()=>{hash=(hash*9301+49297)%233280;return hash/233280;};return allQs.map(q=>q.id).sort(()=>seeded()-.5).slice(0,6);};
+/*PURE_START*/
+/* ============ CARD BANK ============
+   Cards live in Data/12.pillowtalk.pack.*.json and are listed in
+   Data/12.pillowtalk.manifest.json. Nothing to edit in this file to add questions. */
+let C=[];
 
-async function loadQuestions(){try{const resp=await fetch("data/08.knowyourpartner.pack.json"+"?v="+Math.floor(Date.now()/60000));if(!resp.ok)throw new Error("Failed to load questions");const data=await resp.json();return data.cards||[];}catch(e){return[];}}
-
-function scoreGuess(guess,truth){if(guess==null||truth==null)return 0;const d=Math.abs(guess-truth);return d===0?3:d===1?2:d===2?1:0;}
-
-function scoreCompat(a1,a2){if(a1==null||a2==null)return 0;const d=Math.abs(a1-a2);return Math.max(0,3-d);}
-
-function verdictFor(pct){if(pct>=95)return "Match made in heaven";if(pct>=80)return "Perfectly in tune";if(pct>=65)return "You've got this";if(pct>=50)return "Getting there";if(pct>=25)return "Work in progress";return "A lot left to learn";}
-
-function Home({name,setName,joinCode,setJoinCode,create,join,err,busy}){return(<div><div className="hero">Know Your<br/>Partner</div><p className="sub">Answer honestly. See how well you know each other. Plus your real compatibility.</p><div className="card"><input className="inp" placeholder="Your name" value={name} maxLength={14} onChange={e=>setName(e.target.value)}/><button className="btn" disabled={busy||!name.trim()} onClick={create}>Start a room</button></div><div className="card"><div className="small">Join with a code</div><div style={{display:"flex",gap:8}}><input className="inp" placeholder="ABCD" value={joinCode} maxLength={4} autoCapitalize="characters" style={{letterSpacing:".2em",textTransform:"uppercase",fontWeight:700}} onChange={e=>setJoinCode(e.target.value.toUpperCase())}/><button className="btn" style={{margin:0,width:"auto",padding:"0 22px"}} disabled={busy||!name.trim()||joinCode.length<4} onClick={join}>Join</button></div></div>{err&&<div style={{color:"#ff8a8a",fontSize:14,margin:"10px 0"}}>{err}</div>}</div>);}
-
-function Lobby({room,isHost,start,copyLink,startBot}){const hasPartner=room.guest_uid||room.guest_name==="Bot";return(<div><div className="card"><div className="small" style={{textAlign:"center",margin:0}}>Room</div><div className="code">{room.code}</div>{isHost&&!hasPartner&&<button className="btn ghost" style={{marginTop:4}} onClick={copyLink}>Copy link</button>}<div style={{marginTop:12}}><div className="who"><span className="dot on"/>{room.host_name}{isHost?" (you)":""}</div>{hasPartner&&<div className="who"><span className="dot on"/>{room.guest_name} {room.guest_name==="Bot"?"(computer)":"(them)"}</div>}</div></div><div className="card"><p className="sub" style={{margin:0}}>Newlywed game: both answer 3 questions, then guess 3.</p></div>{isHost&&!hasPartner&&<button className="btn ghost" onClick={startBot}>🤖 Play with bot</button>}{isHost&&hasPartner?<button className="btn" onClick={start}>Start</button>:<div className="center sub">{isHost?"Waiting for partner...":room.host_name+" will start soon."}</div>}</div>);}
-
-function AnswerScreen({q,names,slot,onSubmit,onSkip}){const [ans,setAns]=useState(null);return(<div><div className="card"><div className="step">Your answer: {names[slot]}</div><div className="q">{q.q}</div><p className="sub">{q.sub}</p><div className="tiles">{Array.from({length:10}).map((_,i)=><button key={i} className={"tile"+(ans===i+1?" sel":"")} onClick={()=>setAns(i+1)}>{i+1}</button>)}</div><div className="ends"><span>1</span><span>10</span></div><button className="btn" disabled={ans==null} onClick={()=>onSubmit(ans)}>Lock in</button><button className="btn ghost" onClick={onSkip}>Skip</button></div></div>);}
-
-function GuessScreen({q,names,guessing,truth,onSubmit,onReveal}){const [guess,setGuess]=useState(null);const [show,setShow]=useState(false);const pts=scoreGuess(guess,truth);return(<div><div className="card"><div className="step">Guess: {names[1-guessing]}'s answer</div><div className="q">{q.q}</div><p className="sub">{q.sub}</p><div className="tiles">{Array.from({length:10}).map((_,i)=><button key={i} className={"tile"+(guess===i+1?" sel":"")} onClick={()=>setGuess(i+1)}>{i+1}</button>)}</div><div className="ends"><span>1</span><span>10</span></div><button className="btn" disabled={guess==null} onClick={()=>{onSubmit(guess);setShow(true);}}>Lock in</button></div>{show&&<div className="card reveal in"><div style={{marginBottom:12,paddingBottom:12,borderBottom:"1px solid rgba(255,255,255,.1)"}}><div style={{fontSize:12,color:"rgba(255,255,255,.5)",marginBottom:4,fontWeight:700}}>THEIR ANSWER:</div><div style={{fontSize:22,fontWeight:700}}>{truth}</div></div><div style={{marginBottom:12,paddingBottom:12,borderBottom:"1px solid rgba(255,255,255,.1)"}}><div style={{fontSize:12,color:"rgba(255,255,255,.5)",marginBottom:4,fontWeight:700}}>YOUR GUESS:</div><div style={{fontSize:22,fontWeight:700}}>{guess}</div></div><div style={{fontSize:20,fontWeight:700,color:guess===truth?"#c684d9":"rgba(255,255,255,.6)",marginBottom:12}}>+{pts} pts</div><button className="btn" onClick={onReveal} style={{marginTop:0}}>Next</button></div>}</div>);}
-
-function ResultsScreen({names,answers,questions,leave}){
-  const dims=['adventure','social','planning','affection','togetherness','financial','conflict','humor'];
-  
-  // Calculate knowledge scores
-  const knowA=answers.filter(a=>a.slot===0&&a.guess!=null).map(a=>scoreGuess(a.guess,a.ans)).reduce((a,b)=>a+b,0)/Math.max(1,answers.filter(a=>a.slot===0&&a.guess!=null).length);
-  const knowB=answers.filter(a=>a.slot===1&&a.guess!=null).map(a=>scoreGuess(a.guess,a.ans)).reduce((a,b)=>a+b,0)/Math.max(1,answers.filter(a=>a.slot===1&&a.guess!=null).length);
-  const knowPctA=Math.round(100*knowA/3);
-  const knowPctB=Math.round(100*knowB/3);
-  
-  // Calculate compatibility per dimension
-  const dimScores=dims.map(d=>{
-    const qs=questions.filter(q=>q.dim===d);
-    const ansPairs=qs.map(q=>{const a0=answers.find(a=>a.qid===q.id&&a.slot===0);const a1=answers.find(a=>a.qid===q.id&&a.slot===1);return a0&&a1?scoreCompat(a0.ans,a1.ans):null;}).filter(x=>x!=null);
-    const avg=ansPairs.length>0?ansPairs.reduce((a,b)=>a+b,0)/ansPairs.length:0;
-    return{dim:d,pct:Math.round(100*avg/3),pairs:ansPairs.length};
-  });
-  
-  const overallCompat=Math.round(dimScores.reduce((a,b)=>a+b.pct,0)/dimScores.length);
-  const weakest=dimScores.filter(d=>d.pct<70).sort((a,b)=>a.pct-b.pct)[0];
-  
-  const ideas={
-    adventure:"Plan a trip somewhere you've never been. Try something new together.",
-    social:"Invite friends over or plan a double date. Build your social circle together.",
-    planning:"Try being spontaneous—take a weekend trip with minimal prep.",
-    affection:"Be more intentional with touch and intimacy. Small gestures matter.",
-    togetherness:"Schedule more one-on-one time. Protect your couple time.",
-    financial:"Have a money conversation. Align on splurges vs saving.",
-    conflict:"Practice expressing disagreements calmly. Don't avoid tough talks.",
-    humor:"Make each other laugh more. Find inside jokes. Don't take everything seriously."
-  };
-  
-  const vacations=["🏝️ Bora Bora","🗻 Swiss Alps","🚂 Japan Rail","🏜️ Morocco","🌊 Iceland","🏖️ Maldives","🎭 Italy Coast","🦁 Kenya Safari","🌴 Costa Rica","🏰 Scotland","🗼 Paris","🌅 Greece"];
-  const vacation=vacations[Math.floor(Math.random()*vacations.length)];
-  
-  return(<div>
-    <div className="card center">
-      <div style={{fontSize:14,color:"rgba(255,255,255,.6)",margin:"0 0 8px",fontWeight:600}}>Overall Compatibility</div>
-      <div className="pct">{overallCompat}%</div>
-      <div className="verdict">{verdictFor(overallCompat)}</div>
-    </div>
-    
-    <div className="card">
-      <div className="small" style={{margin:"0 0 12px",fontWeight:700}}>How well you know each other</div>
-      <div className="knowscore">
-        <div><div style={{fontSize:12}}>{names[0]}<br/>knows you</div><div className="big">{knowPctB}%</div></div>
-        <div><div style={{fontSize:12}}>You know<br/>{names[1]}</div><div className="big">{knowPctA}%</div></div>
-      </div>
-    </div>
-    
-    <div className="card">
-      <div className="small" style={{margin:"0 0 12px",fontWeight:700}}>Compatibility by vibe</div>
-      <div className="dims">
-        {dimScores.map(d=><div key={d.dim} className="dim"><h4>{d.dim}</h4><div className="bar"><i style={{width:d.pct+"%"}}/></div><div className="pct">{d.pct}%</div></div>)}
-      </div>
-    </div>
-    
-    {weakest&&<div className="card">
-      <div className="small" style={{margin:"0 0 10px",fontWeight:700}}>Strengthen your {weakest.dim}</div>
-      <div className="idea">{ideas[weakest.dim]}</div>
-      <div className="prize">🎁 {vacation}</div>
-    </div>}
-    
-    <button className="btn" onClick={leave}>Play again</button>
-  </div>);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function pickCards(heat,n){
+  const by=h=>shuffle(C.filter(c=>c.h===h));
+  let pool;
+  if(heat==="sweet") pool=by(1).slice(0,n);
+  else if(heat==="flirty"){const k=Math.max(2,Math.round(n*.25));pool=shuffle([...by(2).slice(0,n-k),...by(1).slice(0,k)]);}
+  else if(heat==="spicy"){const k=Math.max(2,Math.round(n*.25));pool=shuffle([...by(3).slice(0,n-k),...by(2).slice(0,k)]);}
+  else{const a=Math.round(n/3),b=Math.round(n/3);pool=[...by(1).slice(0,a),...by(2).slice(0,b),...by(3).slice(0,n-a-b)];}
+  if(pool.length<n){const used=new Set(pool.map(c=>c.id));pool=pool.concat(shuffle(C.filter(c=>!used.has(c.id))).slice(0,n-pool.length));}
+  return pool.slice(0,n).map(c=>c.id);
+}
+function ptsFor(card,guess,truth){
+  if(guess==null||truth==null) return 0;
+  if(card.t==="scale"||card.t==="self"){const d=Math.abs(guess-truth);return d===0?3:d===1?2:d===2?1:0;}
+  return guess===truth?3:0;
+}
+/* answers keyed "<round>_<slot>" -> {val,guess}; slot 0 = host, 1 = guest */
+function computeScores(cards,answers,upto){
+  const s=[0,0];
+  for(let r=0;r<upto;r++){
+    const a0=answers[r+"_0"],a1=answers[r+"_1"],c=cards[r];
+    if(!a0||!a1||!c) continue;
+    s[0]+=ptsFor(c,a0.guess,a1.val);
+    s[1]+=ptsFor(c,a1.guess,a0.val);
+  }
+  return s;
 }
 
+/* ---- groups: seats = [{uid,name,bot?}], slot = seat index. Each round everyone is paired up (circle method, so partners
+   rotate); with an odd head-count the odd one out plays "Bot Bae". Answer rows: slot = seat index, a bye's bot = 100+seat. ---- */
+function pairing(n,round){
+  if(n<2) return [];
+  if(n===2) return [1,0];
+  const m=n%2?n+1:n, rest=[];
+  for(let i=1;i<m;i++) rest.push(i);
+  const k=round%(m-1), rot=rest.slice(k).concat(rest.slice(0,k)), circle=[0].concat(rot);
+  const P=Array(n).fill(-1);
+  for(let i=0;i<m/2;i++){ const a=circle[i], b=circle[m-1-i]; if(a<n&&b<n){P[a]=b;P[b]=a;} }
+  return P;
+}
+function computeScoresN(cards,answers,n,upto){
+  const s=Array(n).fill(0);
+  for(let r=0;r<upto;r++){
+    const c=cards[r]; if(!c) continue; const P=pairing(n,r);
+    for(let i=0;i<n;i++){ const mine=answers[r+"_"+i], theirs=answers[r+"_"+(P[i]===-1?100+i:P[i])]; if(mine&&theirs) s[i]+=ptsFor(c,mine.guess,theirs.val); }
+  }
+  return s;
+}
+function roundKeys(seats,round){
+  const n=seats.length, P=pairing(n,round), out=[];
+  for(let i=0;i<n;i++){
+    out.push({key:round+"_"+i,bot:!!seats[i].bot,slot:i});
+    if(P[i]===-1&&!seats[i].bot) out.push({key:round+"_"+(100+i),bot:true,slot:100+i});
+  }
+  return out;
+}
+function pairView(seats,answers,round,s){
+  const n=seats.length, p=pairing(n,round)[s], bye=p===-1;
+  const pname=bye?"Bot Bae":seats[p].name, pa=answers[round+"_"+(bye?100+s:p)], ma=answers[round+"_"+s], low=bye||s<p;
+  return {pname,pa,ma,names:low?[seats[s].name,pname]:[pname,seats[s].name],slot:low?0:1,a0:low?ma:pa,a1:low?pa:ma,lowIdx:low?s:p,highIdx:low?(bye?-1:p):s};
+}
+function seatsOf(r){
+  if(r.seats&&r.seats.length) return r.seats;
+  return [{uid:r.host_uid,name:r.host_name||"Player 1"},{uid:r.guest_uid,name:r.guest_name||"Player 2",bot:r.guest_uid==="bot"}];
+}
+function orderLobby(room,pl){
+  const out=[{uid:room.host_uid,name:room.host_name||"Player 1"}];
+  (pl||[]).forEach(p=>{ if(p.uid!==room.host_uid) out.push({uid:p.uid,name:p.name||"Player"}); });
+  if(room.guest_uid&&room.guest_uid!=="bot"&&!out.some(x=>x.uid===room.guest_uid)) out.push({uid:room.guest_uid,name:room.guest_name||"Player 2"});
+  return out.slice(0,8);
+}
+const LEVEL_FRAC=[0,.10,.25,.40];
+const levelNeeds=total=>LEVEL_FRAC.map(f=>Math.ceil(total*6*f));
+function levelFor(total,sparkTotal){const n=levelNeeds(total);let l=0;for(let i=1;i<4;i++) if(sparkTotal>=n[i]) l=i;return l;}
+function verdictFor(pct){
+  return pct>=80?"Telepathic soulmates":pct>=65?"Dangerously in sync":pct>=50?"Same page, different paragraphs":pct>=35?"Cute, but you've got homework":"Strangers in love";
+}
+/*PURE_END*/
+
+/* ============ question loader ============ */
+const DATA_DIR="Data/";
+const MANIFEST="12.pillowtalk.manifest.json";
+const validCard=c=>c&&typeof c.id==="string"&&c.id&&[1,2,3].includes(c.h)&&["scale","self","who","pick"].includes(c.t)&&typeof c.q==="string"&&c.q.trim()&&(c.t!=="pick"||(Array.isArray(c.o)&&c.o.length>=2&&c.o.length<=6));
+async function loadBank(){
+  const bust="?v="+Math.floor(Date.now()/60000);
+  const m=await (await fetch(DATA_DIR+MANIFEST+bust)).json();
+  const packs=await Promise.all(m.packs.map(async f=>{
+    try{return await (await fetch(DATA_DIR+f+bust)).json();}
+    catch(e){console.warn("Pillow Talk: could not load pack",f,e);return null;}
+  }));
+  const seen=new Set(),out=[];
+  packs.filter(Boolean).forEach(p=>(p.cards||[]).forEach(c=>{
+    if(!validCard(c)){console.warn("Pillow Talk: skipped bad card",c);return;}
+    if(seen.has(c.id)){console.warn("Pillow Talk: duplicate card id",c.id);return;}
+    seen.add(c.id);out.push(c);
+  }));
+  if(out.length<8) throw new Error("Only "+out.length+" valid cards found");
+  return out;
+}
+
+const LEVELS=[
+  {name:"Strangers",line:""},
+  {name:"Spark",line:"Something's flickering\u2026"},
+  {name:"Flame",line:"It's getting warm in here."},
+  {name:"Besotted",line:"Okay, you two. Get a room."}
+];
+const HEATS=[
+  {k:"sweet",label:"\uD83C\uDF39 Sweet",desc:"Hand-holding energy."},
+  {k:"flirty",label:"\uD83D\uDD25 Flirty",desc:"Kissing, teasing, heart eyes."},
+  {k:"spicy",label:"\uD83C\uDF36\uFE0F Spicy",desc:"PG-13. Eyebrows will be raised."},
+  {k:"burn",label:"\uD83D\uDD6F\uFE0F Slow burn",desc:"Starts sweet, ends spicy."}
+];
+
+/* ============ sound (synthesized, no files) ============ */
+const Snd={ctx:null,on:localStorage.getItem("pt_snd")!=="off",
+  init(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(this.ctx&&this.ctx.state==="suspended")this.ctx.resume();},
+  tone(f,t0,d,type,v,f2){
+    if(!this.on||!this.ctx)return;const c=this.ctx,o=c.createOscillator(),g=c.createGain(),t=c.currentTime+t0;
+    o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.05);
+  },
+  beat(k=1){this.tone(80,0,.2,"sine",.6*k,40);this.tone(70,.18,.2,"sine",.4*k,38);},
+  ding(){this.tone(660,0,.35,"triangle",.25);this.tone(990,.08,.4,"triangle",.18);},
+  chime(){[523,659,784,1047].forEach((f,i)=>this.tone(f,i*.12,.55,"sine",.2));},
+  lock(){this.tone(440,0,.14,"triangle",.2,660);}
+};
+document.addEventListener("pointerdown",()=>Snd.init());
+
+/* ============ helpers ============ */
+function hubId(){let v=localStorage.getItem("hub_uid");if(!v){v="u"+Math.random().toString(36).slice(2,11);localStorage.setItem("hub_uid",v);}return v;}
+const genCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s;};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ============ small components ============ */
+function Backdrop({level}){return <>{[0,1,2,3].map(i=><div key={i} className={"bg bg"+i+(level===i?" on":"")}/>)}</>;}
+
+function Hearts({level}){
+  const hs=useMemo(()=>Array.from({length:20}).map((_,i)=>({l:Math.random()*100,d:7+Math.random()*7,dl:-Math.random()*12,s:14+Math.random()*22})),[]);
+  const n=level>=3?20:level===2?8:0;
+  return <>{hs.slice(0,n).map((h,i)=><span key={i} className="heart" style={{left:h.l+"%",animationDuration:h.d+"s",animationDelay:h.dl+"s",fontSize:h.s}}>{"\u2665"}</span>)}</>;
+}
+
+function QR({text}){
+  const ref=useRef(null);
+  useEffect(()=>{if(!ref.current||!window.QRCode)return;ref.current.innerHTML="";new QRCode(ref.current,{text,width:150,height:150,correctLevel:QRCode.CorrectLevel.M});},[text]);
+  return <div className="qr"><div ref={ref}/></div>;
+}
+
+function Track({guess,truth}){
+  const pos=v=>((v-1)/9*100)+"%";
+  return(
+    <div className="track" style={{"--p":pos(truth),"--g":pos(guess)}}>
+      <div className="rail"/>
+      {Array.from({length:10}).map((_,i)=><React.Fragment key={i}><span className="tick" style={{left:(i/9*100)+"%"}}/><span className="tnum" style={{left:(i/9*100)+"%"}}>{i+1}</span></React.Fragment>)}
+      <div className="mk truth">{truth}</div>
+      <div className="mk guess">{guess}</div>
+    </div>
+  );
+}
+
+function callout(card,guess,truth,gname,tname){
+  if(card.t==="scale"||card.t==="self"){
+    const d=guess-truth;
+    if(d===0) return "Dead on. Telepathic.";
+    if(card.t==="scale"){
+      if(d>=3) return "Ego gap! Expected a "+guess+", got a "+truth+".";
+      if(d<=-3) return "Sweet surprise: "+tname+" gave you a "+truth+".";
+    }else{
+      if(d>=3) return "Too generous. "+tname+" only gave themselves a "+truth+".";
+      if(d<=-3) return "Way too modest. "+tname+" went with "+truth+".";
+    }
+    return Math.abs(d)===1?"So close.":"In the neighborhood.";
+  }
+  return guess===truth?"In sync.":"Plot twist.";
+}
+
+function Duel({card,gi,names,a0,a1,show}){
+  const g=gi===0?a0:a1, t=gi===0?a1:a0;
+  const guess=g.guess, truth=t.val, pts=ptsFor(card,guess,truth);
+  const gn=names[gi], tn=names[1-gi];
+  const head=card.t==="scale"?gn+" guessed what "+tn+" rated them"
+    :card.t==="self"?gn+" guessed how "+tn+" rated themselves"
+    :card.t==="who"?gn+" guessed who "+tn+" would pick"
+    :gn+" guessed "+tn+"'s pick";
+  const lab=v=>card.t==="who"?names[v]:card.o?card.o[v]:v;
+  const hit=guess===truth;
+  return(
+    <div className={"card duel"+(show?" in":"")}>
+      <h4>{head}</h4>
+      {(card.t==="scale"||card.t==="self")
+        ? <><Track guess={guess} truth={truth}/><div className="legend"><span>{"\u25CF"} {tn}'s real answer</span><span>{"\u25CB"} {gn}'s guess</span></div></>
+        : <div className="cmp"><div className={hit?"hit":""}><small>{gn} guessed</small>{lab(guess)}</div><div className={hit?"hit":""}><small>{tn} said</small>{lab(truth)}</div></div>}
+      <div className="late" style={{marginTop:6}}>
+        <p className="call">{callout(card,guess,truth,gn,tn)} <span className={"pts"+(pts?"":" zero")}>+{pts}</span></p>
+      </div>
+    </div>
+  );
+}
+
+/* ============ screens ============ */
+function Home({name,setName,joinCode,setJoinCode,create,join,err,busy}){
+  return(
+    <div>
+      <div className="hero">Pillow<br/><em>Talk</em></div>
+      <p className="sub">Rate each other. Guess each other's ratings. Find out who's been paying attention.</p>
+      <div className="card">
+        <input className="inp" placeholder="Your name" value={name} maxLength={14} onChange={e=>setName(e.target.value)}/>
+        <button className="btn" disabled={busy||!name.trim()} onClick={()=>create(false)}>Start a room</button>
+        <button className="btn ghost" style={{marginTop:10}} disabled={busy||!name.trim()} onClick={()=>create(true)}>Try it against a bot</button>
+      </div>
+      <div className="card">
+        <div className="small" style={{margin:"0 0 8px"}}>Got a code from your partner?</div>
+        <div className="row">
+          <input className="inp" placeholder="ABCD" value={joinCode} maxLength={4} autoCapitalize="characters" style={{letterSpacing:".2em",textTransform:"uppercase",fontWeight:700}} onChange={e=>setJoinCode(e.target.value.toUpperCase())}/>
+          <button className="btn" style={{margin:0,width:"auto",padding:"0 22px"}} disabled={busy||!name.trim()||joinCode.trim().length<4} onClick={join}>Join</button>
+        </div>
+      </div>
+      {err&&<div className="err">{err}</div>}
+    </div>
+  );
+}
+
+function Lobby({room,players,me,isHost,setHeat,setRounds,start,copyLink,copied}){
+  const url=location.origin+location.pathname+"?room="+room.code;
+  const joined=room.bot||players.length===2;
+  const heat=HEATS.find(h=>h.k===room.heat)||HEATS[1];
+  return(
+    <div>
+      <div className="card">
+        <div className="small" style={{textAlign:"center",margin:0}}>Room code</div>
+        <div className="code">{room.code}</div>
+        {isHost&&!room.bot&&<><QR text={url}/><button className="btn ghost" style={{marginTop:4}} onClick={copyLink}>{copied?"Link copied":"Copy invite link"}</button></>}
+        <div style={{marginTop:12}}>
+          {room.bot
+            ?<><div className="who"><span className="dot on"/>{room.host_name}{isHost?" (you)":""}</div><div className="who"><span className="dot on"/>{"Bot Bae"}</div></>
+            :players.map(p=><div className="who" key={p.uid}><span className="dot on"/>{p.name}{p.uid===me?" (you)":""}</div>)}
+          {!room.bot&&players.length<2&&<div className="who"><span className="dot"/>{"Waiting for your partner\u2026"}</div>}
+        </div>
+      </div>
+      <div className="card">
+        <div className="small" style={{margin:"0 0 6px"}}>Heat level</div>
+        <div className="chips">
+          {HEATS.map(h=><button key={h.k} className={"chip"+(room.heat===h.k?" sel":"")} disabled={!isHost} onClick={()=>setHeat(h.k)}>{h.label}</button>)}
+        </div>
+        <div className="small">{heat.desc}</div>
+        <div className="small" style={{margin:"14px 0 6px"}}>Rounds</div>
+        <div className="row">
+          {[8,12,16].map(n=><button key={n} className={"chip"+(room.rounds===n?" sel":"")} disabled={!isHost} onClick={()=>setRounds(n)}>{n}</button>)}
+        </div>
+      </div>
+      {isHost
+        ? <button className="btn" disabled={!joined} onClick={start}>{joined?"Start the game":"Waiting for your partner\u2026"}</button>
+        : <div className="center sub">{"Waiting for "+room.host_name+" to start\u2026"}</div>}
+    </div>
+  );
+}
+
+function Answer({card,names,slot,round,total,onSubmit}){
+  const [step,setStep]=useState(0);
+  const [val,setVal]=useState(null);
+  const [guess,setGuess]=useState(null);
+  const [sending,setSending]=useState(false);
+  const them=names[1-slot];
+  const cur=step===0?val:guess, setCur=step===0?setVal:setGuess;
+  const opts=card.t==="who"?names.map((n,i)=>({v:i,label:n+(i===slot?" (you)":"")})):card.t==="pick"?card.o.map((o,i)=>({v:i,label:o})):null;
+  let sub;
+  if(card.t==="scale") sub=step===0?"Your honest rating of "+them+".":"Now guess: what will "+them+" rate YOU on this?";
+  else if(card.t==="self") sub=step===0?"Rate yourself. Honestly.":"Same question, about "+them+". What did they give themselves?";
+  else if(card.t==="who") sub=step===0?"Pick one.":"What will "+them+" pick?";
+  else sub=step===0?"Pick what fits you.":"What will "+them+" pick for themselves?";
+  const go=async()=>{
+    if(step===0){setStep(1);Snd.lock();return;}
+    setSending(true);Snd.lock();
+    await onSubmit(val,guess);
+  };
+  return(
+    <div>
+      <div className="rbar"><span>Round {round+1} of {total}</span><span>{["\uD83C\uDF39","\uD83D\uDD25","\uD83C\uDF36\uFE0F"][card.h-1]}</span></div>
+      <div className="card">
+        <div className="steps"><b className={step===0?"on":""}>Your answer</b><b className={step===1?"on":""}>Your guess</b></div>
+        <div className="q">{card.q}</div>
+        <p className="sub">{sub}</p>
+        {opts
+          ? opts.map(o=><button key={o.v} className={"opt"+(cur===o.v?" sel":"")} onClick={()=>setCur(o.v)}>{o.label}</button>)
+          : <><div className="tiles">{Array.from({length:10}).map((_,i)=><button key={i} className={"tile"+(cur===i+1?" sel":"")} onClick={()=>setCur(i+1)}>{i+1}</button>)}</div><div className="ends"><span>1 not at all</span><span>10 absolutely</span></div></>}
+        <button className="btn" disabled={cur==null||sending} onClick={go}>{step===0?"Next: your guess":sending?"Locking in\u2026":"Lock it in"}</button>
+        {step===1&&!sending&&<button className="link" onClick={()=>setStep(0)}>Change my answer</button>}
+      </div>
+    </div>
+  );
+}
+
+function Waiting({them,round,total,partnerDone}){
+  return(
+    <div>
+      <div className="rbar"><span>Round {round+1} of {total}</span></div>
+      <div className="card center">
+        <div className="bigheart">{"\u2764\uFE0F"}</div>
+        <div className="q" style={{fontSize:24}}>Locked in.</div>
+        <p className="sub" style={{margin:0}}>{partnerDone?"Revealing\u2026":"Waiting for "+them+"\u2026"}</p>
+      </div>
+    </div>
+  );
+}
+
+function Reveal({card,names,a0,a1,round,total,isLast,onNext,onDone,scoresAfter,board,canNext,hostName}){
+  const [step,setStep]=useState(0);
+  const [cd,setCd]=useState(3);
+  useEffect(()=>{
+    const T=[];const at=(ms,fn)=>T.push(setTimeout(fn,ms));
+    Snd.beat(1);
+    at(800,()=>{setCd(2);Snd.beat(1.15);});
+    at(1600,()=>{setCd(1);Snd.beat(1.4);});
+    at(2400,()=>{setStep(s=>Math.max(s,1));Snd.ding();});
+    at(3900,()=>{setStep(s=>Math.max(s,2));Snd.ding();});
+    at(5400,()=>{setStep(3);onDone();});
+    return()=>T.forEach(clearTimeout);
+  },[]);
+  const skip=()=>{if(step<3){setStep(3);onDone();}};
+  return(
+    <div onClick={skip}>
+      <div className="rbar"><span>Round {round+1} of {total}</span>{step<3&&<span>tap to skip</span>}</div>
+      <div className="card" style={{paddingBottom:step===0?18:12}}>
+        <div className="q" style={{fontSize:step===0?27:20,margin:0}}>{card.q}</div>
+        {step===0&&<div className="center" style={{paddingBottom:6}}><div className="cdnum">{cd}</div></div>}
+      </div>
+      {step>=1&&<Duel card={card} gi={0} names={names} a0={a0} a1={a1} show={step>=1}/>}
+      {step>=2&&<Duel card={card} gi={1} names={names} a0={a0} a1={a1} show={step>=2}/>}
+      {step>=3&&(
+        <div className="card" style={{marginTop:12}}>
+          <div className="scorebar"><span>{names[0]}<b>{scoresAfter[0]}</b></span><span>{names[1]}<b>{scoresAfter[1]}</b></span></div>
+          {board&&<div className="board">{board.map((b,i)=><div key={i} className={"brow"+(b.me?" me":"")}><span>{(i+1)+". "+b.name+(b.me?" (you)":"")}</span><b>{b.pts}</b></div>)}</div>}
+          {canNext!==false
+            ?<button className="btn" onClick={e=>{e.stopPropagation();onNext();}}>{isLast?"See results":"Next round"}</button>
+            :<div className="center sub" style={{marginTop:10}}>{"Waiting for "+hostName+" to continue\u2026"}</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Final({seats,scores,total,isHost,rematch,leave,hostName}){
+  const n=seats.length, names=seats.map(x=>x.name);
+  if(n<=2){
+    const max=total*6, pct=Math.round(100*((scores[0]||0)+(scores[1]||0))/max);
+    const d=(scores[0]||0)-(scores[1]||0);
+    const win=d===0?"Dead heat. Equally observant.":(d>0?names[0]:names[1])+" knows "+(d>0?names[1]:names[0])+" better, by "+Math.abs(d)+".";
+    return(
+      <div>
+        <div className="card">
+          <div className="small" style={{textAlign:"center",margin:0}}>Compatibility</div>
+          <div className="pct">{pct}%</div>
+          <div className="verdict">{verdictFor(pct)}</div>
+          <div className="scorebar"><span>{names[0]}<b>{scores[0]}</b></span><span>{names[1]}<b>{scores[1]}</b></span></div>
+          <p className="sub" style={{textAlign:"center",margin:"12px 0 0"}}>{win}</p>
+        </div>
+        {isHost?<button className="btn" onClick={rematch}>Rematch</button>:<div className="center sub">{names[0]} can start a rematch.</div>}
+        <button className="btn ghost" onClick={leave}>Leave room</button>
+      </div>
+    );
+  }
+  const max=total*3*n, sum=scores.reduce((a,b)=>a+b,0), pct=Math.round(100*sum/max);
+  const rank=seats.map((x,i)=>({name:x.name,pts:scores[i]||0})).sort((a,b)=>b.pts-a.pts);
+  const top=rank[0].pts, winners=rank.filter(r=>r.pts===top).map(r=>r.name);
+  return(
+    <div>
+      <div className="card">
+        <div className="small" style={{textAlign:"center",margin:0}}>Group chemistry</div>
+        <div className="pct">{pct}%</div>
+        <div className="verdict">{verdictFor(pct)}</div>
+        <div className="board">{rank.map((r,i)=><div key={i} className={"brow"+(r.pts===top?" me":"")}><span>{(r.pts===top?"\uD83D\uDC51 ":"")+r.name}</span><b>{r.pts}</b></div>)}</div>
+        <p className="sub" style={{textAlign:"center",margin:"12px 0 0"}}>{winners.join(" & ")+(winners.length>1?" tie for best reader.":" read everyone best.")}</p>
+      </div>
+      {isHost?<button className="btn" onClick={rematch}>Rematch</button>:<div className="center sub">{hostName+" can start a rematch."}</div>}
+      <button className="btn ghost" onClick={leave}>Leave room</button>
+    </div>
+  );
+}
+
+/* ============ app ============ */
 function App(){
   const uid=useMemo(hubId,[]);
   const [name,setName]=useState(localStorage.getItem("hub_name")||"");
-  const [code,setCode]=useState(localStorage.getItem("kyp_code")||"");
+  const [code,setCode]=useState(localStorage.getItem("pt_code")||"");
   const [joinCode,setJoinCode]=useState((new URLSearchParams(location.search).get("room")||"").toUpperCase().slice(0,4));
   const [room,setRoom]=useState(null);
-  const [questions,setQuestions]=useState([]);
-  const [answers,setAnswers]=useState([]);
+  const [answers,setAnswers]=useState({});
   const [err,setErr]=useState("");
   const [busy,setBusy]=useState(false);
-  const [match,setMatch]=useState(0);
-  
-  const isHost=!!room&&room.host_uid===uid;
-  const slot=isHost?0:1;
-  const names=room?[room.host_name||"",room.guest_name||""]:[name,""];
-  
-  useEffect(()=>{loadQuestions().then(setQuestions).catch(e=>setErr(String(e.message||e)));},[]);
-  
-  const load=async(c)=>{
-    try{
-      const [rr,aa]=await Promise.all([sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle(),sb.from("kyp_answers").select("*").eq("room",c)]);
-      if(rr.error){console.error("Load room error:",rr.error);setErr("DB Error: "+rr.error.message);return;}
-      if(rr.data){console.log("Loaded room:",c,"phase:",rr.data.phase);setRoom(rr.data);if(aa.data)setAnswers(aa.data);}else{console.log("Room not found:",c);setCode("");setRoom(null);}
-    }catch(e){console.error("Load error:",e);setErr(String(e.message));}
-  };
-  
-  useEffect(()=>{if(!code)return;let dead=false;const tick=async()=>{if(dead)return;console.log("Loading code:",code);await load(code);};tick();const iv=setInterval(tick,2500);return()=>{dead=true;clearInterval(iv);};},[code]);
-  
-  const create=async()=>{setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());for(let i=0;i<5;i++){const c=genCode();console.log("Trying code:",c);const {error}=await sb.from("kyp_rooms").insert({code:c,host_uid:uid,host_name:name.trim(),phase:"lobby",round:0});if(!error){console.log("Created room:",c);const newRoom={code:c,host_uid:uid,host_name:name.trim(),phase:"lobby",round:0,guest_uid:null,guest_name:null};setRoom(newRoom);localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}else{console.error("Try",i,"error:",error?.message);}}setErr("Failed to create room after 5 tries");setBusy(false);};
-  
-  const join=async()=>{const c=joinCode.trim().toUpperCase();setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());const {data:r,error:e1}=await sb.from("kyp_rooms").select("*").eq("code",c).maybeSingle();if(e1||!r){setErr("Room not found");setBusy(false);return;}if(r.host_uid===uid||r.guest_uid===uid){setRoom(r);localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);return;}if(r.guest_uid){setErr("Room is full");setBusy(false);return;}const {data:u,error:e2}=await sb.from("kyp_rooms").update({guest_uid:uid,guest_name:name.trim()}).eq("code",c).is("guest_uid",null).select().maybeSingle();if(e2||!u){setErr("Failed to join (taken or error)");setBusy(false);return;}setRoom(u);localStorage.setItem("kyp_code",c);setCode(c);setBusy(false);};
-  
-  const botAnswer=(qid)=>{const seed=parseInt(qid.replace(/[^\d]/g,''))||0;return((seed*12345)%10)+1;};
-  
-  const start=async()=>{try{const updated={...room,phase:"answer1",round:0};setRoom(updated);const {error}=await sb.from("kyp_rooms").update({phase:"answer1",round:0}).eq("code",room.code);if(error){setErr(error.message);setRoom(room);}else{await load(room.code);}}catch(e){setErr(String(e.message));}};
-  
-  const startBot=async()=>{try{const updated={...room,guest_name:"Bot",phase:"answer1",round:0};setRoom(updated);const {error}=await sb.from("kyp_rooms").update({guest_name:"Bot",phase:"answer1",round:0}).eq("code",room.code);if(error){setErr(error.message);setRoom(room);}else{await load(room.code);}}catch(e){setErr(String(e.message));}};
-  
-  const answerQ=async(val)=>{try{const qids=getQids(room.code,questions);const qid=qids[room.round];await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot,qid,ans:val,guess:null},{onConflict:"room,round,slot"}).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botAns=botAnswer(qid);await sb.from("kyp_answers").upsert({room:room.code,round:room.round,slot:1,qid,ans:botAns,guess:null},{onConflict:"room,round,slot"}).then(async()=>{await new Promise(r=>setTimeout(r,400));const nr=room.round+1;if(nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code);}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code);}await load(room.code);});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
-  
-  const guessQ=async(val)=>{try{const qids=getQids(room.code,questions);const qid=qids[room.round];await sb.from("kyp_answers").update({guess:val}).eq("room",room.code).eq("round",room.round).eq("slot",slot).then(async()=>{if(room.guest_name==="Bot"&&slot===0){await new Promise(r=>setTimeout(r,300));const botGuess=botAnswer(qid+(room.round*1000));await sb.from("kyp_answers").update({guess:botGuess}).eq("room",room.code).eq("round",room.round).eq("slot",1).then(async()=>{await new Promise(r=>setTimeout(r,400));await nextRound();});}else{await load(room.code);}});}catch(e){setErr(String(e.message));}};
-  
-  const nextRound=async()=>{const nr=room.round+1;if(room.phase==="answer1"&&nr>2){await sb.from("kyp_rooms").update({phase:"guess1",round:0}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="guess1"&&nr>2){await sb.from("kyp_rooms").update({phase:"answer2",round:3}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="answer2"&&nr>5){await sb.from("kyp_rooms").update({phase:"guess2",round:3}).eq("code",room.code).then(()=>load(room.code));}else if(room.phase==="guess2"&&nr>5){setMatch(1);await sb.from("kyp_rooms").update({phase:"results"}).eq("code",room.code).then(()=>load(room.code));}else{await sb.from("kyp_rooms").update({round:nr}).eq("code",room.code).then(()=>load(room.code));}};
-  
-  const renderBody=()=>{
-    if(!room)return<Home name={name} setName={setName} joinCode={joinCode} setJoinCode={setJoinCode} create={create} join={join} err={err} busy={busy}/>;
-    if(room.phase==="lobby")return<Lobby room={room} isHost={isHost} start={start} startBot={startBot} copyLink={async()=>navigator.clipboard.writeText(location.origin+location.pathname+"?room="+room.code)}/>;
-    
-    const qids=getQids(room.code,questions);const qid=qids?.[room.round];const q=questions.find(x=>x.id===qid);
-    
-    if(!q)return<div className="card center sub">Loading...</div>;
-    
-    if(room.phase==="answer1"||room.phase==="answer2"){
-      const mine=answers.find(a=>a.qid===qid&&a.slot===slot&&a.round===room.round);
-      return mine?<div className="card center sub">Waiting for {names[1-slot]}...</div>:<AnswerScreen q={q} names={names} slot={slot} onSubmit={answerQ} onSkip={()=>answerQ(-1)}/>;
-    }
-    
-    if(room.phase==="guess1"||room.phase==="guess2"){
-      const other=answers.find(a=>a.qid===qid&&a.slot===(1-slot)&&a.round===room.round);
-      const mine=answers.find(a=>a.qid===qid&&a.slot===slot&&a.round===room.round);
-      if(!other)return<div className="card center sub">Waiting for {names[1-slot]}...</div>;
-      return mine?.guess!=null?<div className="card center sub">Waiting for {names[1-slot]}...</div>:<GuessScreen q={q} names={names} guessing={slot} truth={other.ans} onSubmit={guessQ} onReveal={nextRound}/>;
-    }
-    
-    if(room.phase==="results"){
-      return<ResultsScreen names={names} answers={answers} questions={questions} leave={()=>{localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}/>;
-    }
-    
-    return<div className="card center sub">Loading...</div>;
-  };
-  
-  return<div className={`app${match?" match":""}`}><div className="wrap"><div className="hdr"><div className="logo">Know Your Partner</div><button className="pill" onClick={()=>{if(confirm("Leave?"))localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}>Leave</button></div>{err&&<div style={{background:"#8B0000",padding:"10px",margin:"0 0 10px",borderRadius:"4px"}}><strong>ERROR:</strong> {err}</div>}{!room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>uid:{uid.slice(0,8)}</div>}{room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>room:{room.code} | phase:{room.phase}</div>}{renderBody()}<div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>v2.0</div></div></div>;
-}
+  const [sound,setSound]=useState(Snd.on);
+  const [level,setLevel]=useState(0);
+  const [banner,setBanner]=useState(null);
+  const [revealDone,setRevealDone]=useState(false);
+  const [copied,setCopied]=useState(false);
+  const [bank,setBank]=useState(0);   // 0 loading, n = cards loaded, -1 failed
+  const [bankErr,setBankErr]=useState("");
+  const roomRef=useRef(null),answersRef=useRef({}),answersStr=useRef(""),playersStr=useRef(""),lvlInit=useRef(false);
+  const [lobbyPlayers,setLobbyPlayers]=useState([]);
 
+  const isHost=!!room&&room.host_uid===uid;
+  const lobbySeats=room?orderLobby(room,lobbyPlayers):[];
+  const seats=room?(room.phase==="lobby"?lobbySeats:seatsOf(room)):[];
+  const n=seats.length, mySlot=seats.findIndex(x=>x.uid===uid);
+  const cardsKey=room?JSON.stringify(room.cards||[]):"";
+  const cards=useMemo(()=>room&&room.cards?room.cards.map(id=>C.find(c=>c.id===id)||null):[],[cardsKey,bank]);
+  const missingCards=cards.some(c=>!c);
+  const total=room?room.rounds:0;
+  const settled=!room?0:room.phase==="final"?total:room.phase==="reveal"?(revealDone?room.round+1:room.round):room.phase==="answer"?room.round:0;
+  const scores=computeScoresN(cards,answers,Math.max(n,2),settled);
+  const scoreSum=scores.reduce((a,b)=>a+b,0), sparkTotal=Math.round(scoreSum*2/Math.max(2,n));
+  const targetLevel=room&&room.phase!=="lobby"?levelFor(total,sparkTotal):0;
+
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await create(false,E.code); return; }
+      const ok=await HUB.waitRoom("pt_rooms",E.code,20000); if(ok) await join(E.code); else await create(false,E.code); }catch(e){} })(); },[]);
+
+  useEffect(()=>{loadBank().then(b=>{C=b;setBank(b.length);}).catch(e=>{setBankErr(String(e.message||e));setBank(-1);});},[]);
+
+  /* ----- data sync ----- */
+  const leaveLocal=()=>{localStorage.removeItem("pt_code");roomRef.current=null;answersRef.current={};answersStr.current="";lvlInit.current=false;setCode("");setRoom(null);setAnswers({});setLobbyPlayers([]);playersStr.current="";setLevel(0);setRevealDone(false);};
+  const load=async(c)=>{
+    const [rr,aa,pp]=await Promise.all([sb.from("pt_rooms").select("*").eq("code",c).maybeSingle(),sb.from("pt_answers").select("*").eq("room",c),sb.from("pt_players").select("*").eq("room",c).order("joined_at")]);
+    if(pp&&pp.data){const ps=JSON.stringify(pp.data);if(ps!==playersStr.current){playersStr.current=ps;setLobbyPlayers(pp.data);}}
+    if(rr.data){if(JSON.stringify(rr.data)!==JSON.stringify(roomRef.current)){roomRef.current=rr.data;setRoom(rr.data);}}
+    else if(!rr.error){leaveLocal();return;}
+    if(aa.data){const m={};aa.data.forEach(a=>{m[a.round+"_"+a.slot]=a;});const s=JSON.stringify(m);if(s!==answersStr.current){answersStr.current=s;answersRef.current=m;setAnswers(m);}}
+  };
+  const hostStep=async()=>{
+    const r=roomRef.current;if(!r||r.host_uid!==uid)return;
+    const a=answersRef.current;
+    if(r.phase==="answer"&&roundKeys(seatsOf(r),r.round).every(k=>a[k.key])){
+      await sb.from("pt_rooms").update({phase:"reveal",updated_at:new Date().toISOString()}).eq("code",r.code).eq("phase","answer").eq("round",r.round);
+      await load(r.code);
+    }
+  };
+  useEffect(()=>{
+    if(!code)return;
+    let dead=false;
+    const tick=async()=>{if(dead)return;await load(code);if(dead)return;await hostStep();};
+    tick();
+    const iv=setInterval(tick,2500);
+    const ch=sb.channel("pt_"+code)
+      .on("postgres_changes",{event:"*",schema:"public",table:"pt_rooms",filter:"code=eq."+code},()=>tick())
+      .on("postgres_changes",{event:"*",schema:"public",table:"pt_answers",filter:"room=eq."+code},()=>tick())
+      .on("postgres_changes",{event:"*",schema:"public",table:"pt_players",filter:"room=eq."+code},()=>tick())
+      .subscribe();
+    return()=>{dead=true;clearInterval(iv);sb.removeChannel(ch);};
+  },[code]);
+
+  /* ----- theme level: climbs with the score, announces itself ----- */
+  useEffect(()=>{
+    if(!room){return;}
+    if(!lvlInit.current){lvlInit.current=true;setLevel(targetLevel);return;}
+    if(targetLevel>level){setLevel(targetLevel);setBanner({n:Date.now(),...LEVELS[targetLevel]});Snd.chime();setTimeout(()=>setBanner(null),2700);}
+    else if(targetLevel<level){setLevel(targetLevel);}
+  },[targetLevel,!!room]);
+  useEffect(()=>{if(room&&room.phase!=="reveal")setRevealDone(false);},[room&&room.phase,room&&room.round]);
+  useEffect(()=>{document.querySelector('meta[name="theme-color"]').setAttribute("content",["#0b0e1b","#170f20","#2a0a17","#ffd1b9"][level]);},[level]);
+
+  /* ----- bots: the solo "Bot Bae" seat, and the odd one out in an odd-sized group (host drives them) ----- */
+  useEffect(()=>{
+    if(!room||room.host_uid!==uid||room.phase!=="answer")return;
+    const card=cards[room.round];if(!card)return;
+    const need=roundKeys(seatsOf(room),room.round).filter(k=>k.bot&&!answersRef.current[k.key]);
+    if(!need.length)return;
+    const t=setTimeout(async()=>{
+      const rs=()=>clamp(Math.round(6+Math.random()*5-2.5),1,10);
+      const rows=need.filter(k=>!answersRef.current[k.key]).map(k=>{
+        let val,guess;
+        if(card.t==="scale"||card.t==="self"){val=rs();guess=rs();}
+        else if(card.t==="who"){val=Math.random()<.5?0:1;guess=Math.random()<.5?0:1;}
+        else{const m=card.o.length;val=Math.floor(Math.random()*m);guess=Math.floor(Math.random()*m);}
+        return {room:room.code,round:room.round,slot:k.slot,val,guess};
+      });
+      if(rows.length)await sb.from("pt_answers").upsert(rows,{onConflict:"room,round,slot"});
+      await load(room.code);await hostStep();
+    },2200+Math.random()*2200);
+    return()=>clearTimeout(t);
+  },[room&&room.phase,room&&room.round,room&&JSON.stringify(room.seats||[]),room&&room.bot,cardsKey,bank]);
+
+  /* ----- actions ----- */
+  const updateRoom=async(patch,guard)=>{
+    let q=sb.from("pt_rooms").update({...patch,updated_at:new Date().toISOString()}).eq("code",room.code);
+    if(guard)Object.entries(guard).forEach(([k,v])=>{q=q.eq(k,v);});
+    const {error}=await q;if(error)setErr(error.message);
+    await load(room.code);
+  };
+  const create=async(bot,forced)=>{
+    if(!name.trim())return;
+    setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());
+    const fc=(typeof forced==="string"&&forced)?forced:null;
+    for(let i=0;i<5;i++){
+      const c=fc||genCode();
+      const row={code:c,host_uid:uid,host_name:name.trim(),guest_uid:bot?"bot":null,guest_name:bot?"Bot Bae":null,heat:"flirty",rounds:12,phase:"lobby",round:0,cards:[],bot:!!bot,seats:[]};
+      const {error}=await sb.from("pt_rooms").insert(row);
+      if(!error){
+        await sb.from("pt_players").upsert({room:c,uid,name:name.trim()},{onConflict:"room,uid"});
+        localStorage.setItem("pt_code",c);lvlInit.current=false;setCode(c);setRoom(row);roomRef.current=row;setBusy(false);return;
+      }
+      if(fc||!/duplicate|23505/i.test((error.message||"")+(error.code||""))){setErr(error.message+" (Run supabase_setup.sql in Supabase)");break;}
+    }
+    setBusy(false);
+  };
+  const join=async(cArg)=>{
+    const c=((typeof cArg==="string"&&cArg)||joinCode).trim().toUpperCase();if(!name.trim()||c.length<4)return;
+    setBusy(true);setErr("");localStorage.setItem("hub_name",name.trim());
+    const {data:r,error}=await sb.from("pt_rooms").select("*").eq("code",c).maybeSingle();
+    if(error){setErr(error.message);setBusy(false);return;}
+    if(!r){setErr("No room with that code.");setBusy(false);return;}
+    const already=r.host_uid===uid||r.guest_uid===uid||(r.seats||[]).some(x=>x.uid===uid);
+    if(already){localStorage.setItem("pt_code",c);lvlInit.current=false;setCode(c);setBusy(false);return;}
+    if(r.phase!=="lobby"){setErr("That game already started.");setBusy(false);return;}
+    if(r.bot){setErr("That room is a solo game with the bot.");setBusy(false);return;}
+    const {data:pl}=await sb.from("pt_players").select("uid").eq("room",c);
+    if((pl||[]).length>=2){setErr("Pillow Talk is a 2-player game and this room already has two.");setBusy(false);return;}
+    const {error:e2}=await sb.from("pt_players").upsert({room:c,uid,name:name.trim()},{onConflict:"room,uid"});
+    if(e2){setErr(e2.message+" (Run supabase_setup.sql in Supabase)");setBusy(false);return;}
+    localStorage.setItem("pt_code",c);lvlInit.current=false;setCode(c);setBusy(false);
+  };
+  const start=()=>{
+    const sts=room.bot?[{uid:room.host_uid,name:room.host_name||"Player 1"},{uid:"bot",name:"Bot Bae",bot:true}]:orderLobby(room,lobbyPlayers).slice(0,2);
+    if(sts.length!==2)return;
+    const ids=pickCards(room.heat,room.rounds);
+    updateRoom({phase:"answer",round:0,rounds:ids.length,cards:ids,seats:sts},{phase:"lobby"});
+  };
+  const submit=async(val,guess)=>{
+    if(mySlot<0)return;
+    const row={room:room.code,round:room.round,slot:mySlot,val,guess};
+    const m={...answersRef.current,[room.round+"_"+mySlot]:row};answersRef.current=m;answersStr.current="";setAnswers(m);
+    await sb.from("pt_answers").upsert(row,{onConflict:"room,round,slot"});
+    await load(room.code);await hostStep();
+  };
+  const next=()=>{
+    const nr=room.round+1;setRevealDone(false);
+    if(nr>=room.rounds)updateRoom({phase:"final"},{phase:"reveal",round:room.round});
+    else updateRoom({phase:"answer",round:nr},{phase:"reveal",round:room.round});
+  };
+  const rematch=async()=>{
+    await sb.from("pt_answers").delete().eq("room",room.code);
+    answersRef.current={};answersStr.current="";setAnswers({});setRevealDone(false);
+    const ids=pickCards(room.heat,room.rounds);
+    await updateRoom({phase:"answer",round:0,rounds:ids.length,cards:ids});
+  };
+  const copyLink=async()=>{try{await navigator.clipboard.writeText(location.origin+location.pathname+"?room="+room.code);setCopied(true);setTimeout(()=>setCopied(false),1800);}catch(e){}};
+  const toggleSound=()=>{Snd.on=!Snd.on;Snd.init();localStorage.setItem("pt_snd",Snd.on?"on":"off");setSound(Snd.on);if(Snd.on)Snd.ding();};
+
+  /* ----- spark bar ----- */
+  const needs=levelNeeds(total);
+  const lo=needs[level],hi=level<3?needs[level+1]:needs[3];
+  const pctBar=level>=3?100:clamp(((sparkTotal-lo)/Math.max(1,hi-lo))*100,3,100);
+
+  /* ----- body ----- */
+  let body;
+  if(bank===-1){
+    body=<div className="card center"><div className="q" style={{fontSize:22}}>Couldn't load the questions.</div><p className="sub">Check that the <b>data</b> folder is next to this file and was uploaded to GitHub.<br/><span style={{opacity:.7}}>{bankErr}</span></p><button className="btn" onClick={()=>location.reload()}>Try again</button></div>;
+  }else if(bank===0){
+    body=<div className="card center sub">Shuffling the deck\u2026</div>;
+  }else if(room&&(room.phase==="answer"||room.phase==="reveal")&&missingCards){
+    body=<div className="card center"><div className="q" style={{fontSize:22}}>Your questions are out of date.</div><p className="sub">Your partner has newer cards. Reload to catch up.</p><button className="btn" onClick={()=>location.reload()}>Reload</button></div>;
+  }else if(!room){
+    body=<Home name={name} setName={setName} joinCode={joinCode} setJoinCode={setJoinCode} create={create} join={join} err={err} busy={busy}/>;
+  }else if(room.phase==="lobby"){
+    body=<Lobby room={room} players={lobbySeats} me={uid} isHost={isHost} copied={copied} copyLink={copyLink} start={start}
+      setHeat={h=>updateRoom({heat:h})} setRounds={n=>updateRoom({rounds:n})}/>;
+  }else if(mySlot<0){
+    body=<div className="card center"><div className="q" style={{fontSize:22}}>Game in progress</div><p className="sub">This room already started. Ask the host for a rematch, or start your own room.</p><button className="btn ghost" onClick={leaveLocal}>Leave</button></div>;
+  }else if(room.phase==="answer"){
+    const card=cards[room.round];
+    const v=pairView(seats,answers,room.round,mySlot);
+    const complete=roundKeys(seats,room.round).every(k=>answers[k.key]);
+    body=!card?<div className="card center sub">{"Loading\u2026"}</div>
+      :v.ma?<Waiting them={v.pa?"the other pairs":v.pname} round={room.round} total={total} partnerDone={complete}/>
+      :<Answer key={room.round} card={card} names={v.names} slot={v.slot} round={room.round} total={total} onSubmit={submit}/>;
+  }else if(room.phase==="reveal"){
+    const card=cards[room.round];
+    const v=pairView(seats,answers,room.round,mySlot);
+    const S=computeScoresN(cards,answers,n,room.round+1);
+    const after=[S[v.lowIdx]||0,v.highIdx>=0?(S[v.highIdx]||0):0];
+    const board=n>2?seats.map((x,i)=>({name:x.name,pts:S[i]||0,me:i===mySlot})).sort((a,b)=>b.pts-a.pts):null;
+    body=(card&&v.a0&&v.a1)
+      ?<Reveal key={room.round} card={card} names={v.names} a0={v.a0} a1={v.a1} round={room.round} total={total} isLast={room.round+1>=total} onNext={next} onDone={()=>setRevealDone(true)} scoresAfter={after} board={board} canNext={n<=2||isHost} hostName={room.host_name}/>
+      :<div className="card center sub">{"Loading\u2026"}</div>;
+  }else{
+    body=<Final seats={seats} scores={scores} total={total} isHost={isHost} rematch={rematch} leave={leaveLocal} hostName={room.host_name}/>;
+  }
+
+  return(
+    <div className="app" data-level={level}>
+      <Backdrop level={level}/>
+      <Hearts level={level}/>
+      <div className="wrap">
+        <div className="hdr">
+          <div className="logo">Pillow Talk</div>
+          {room&&room.phase!=="lobby"
+            ?<div className="spark"><div className="lbl"><span>{LEVELS[level].name}</span><span>{level<3?"next: "+LEVELS[level+1].name:"fully smitten"}</span></div><div className="bar"><i style={{width:pctBar+"%"}}/></div></div>
+            :<div className="spark"/>}
+          <button className="pill" onClick={toggleSound}>{sound?"\uD83D\uDD0A On":"\uD83D\uDD07 Off"}</button>
+          {room&&<button className="pill" onClick={()=>{if(confirm("Leave this room?"))leaveLocal();}}>Leave</button>}
+        </div>
+        {body}
+        <div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>{VERSION}</div>
+      </div>
+      {banner&&<div className="banner" key={banner.n}><b>{banner.name}</b><span>{banner.line}</span></div>}
+    </div>
+  );
+}
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 </body>

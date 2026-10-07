@@ -107,6 +107,7 @@ button:focus-visible { outline:2px solid var(--candle); outline-offset:2px; }
 .pendulum { transform-origin:50% 9%; animation:sway 3.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } .pendulum { animation:none !important; } }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -196,6 +197,10 @@ function SoloApp(){
   const [answerMode,setAnswerMode] = useState("yesno");
   const [conf,setConf] = useState(7);
   const [sortMode,setSortMode] = useState("rounds");
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); const nm=(ls.get("hub_name")||ls.get("cr_name")||"").trim(); if(!E||!nm||!sb) return;
+    setName(nm);
+    (async()=>{ try{ if(E.role==="host"){ await createGame(E.code,nm); return; }
+      const ok=await HUB.waitRoom("games",E.code,20000); if(ok) await joinGame(E.code,nm); else await createGame(E.code,nm); }catch(e){} })(); },[]);
   const [status,setStatus] = useState({});
   const [score,setScore] = useState({});
   const [marks,setMarks] = useState({});
@@ -689,29 +694,31 @@ function OnlineApp({ onExit }){
   const roundOrder = useMemo(()=> [...faces].sort((a,b)=>{ const fr=(f)=>freed[f.id]?1:(vision===f.id?-1:0); return fr(a)-fr(b) || ((score[b.id]||0)-(score[a.id]||0)) || a.id-b.id; }), [game&&game.round,faces]);
   const ordered = sortMode==="off"?faces : (sortMode==="live"?liveOrder:roundOrder);
 
-  const createGame = async ()=>{
-    if(!name.trim()){ setErr("Enter a name first"); return; }
-    const c = randCode();
+  const createGame = async (forced,nmArg)=>{
+    const nmv = ((typeof nmArg==="string"&&nmArg)||name||"").trim();
+    if(!nmv){ setErr("Enter a name first"); return; }
+    const c = (typeof forced==="string"&&forced) ? forced : randCode();
     const g = await sb.from("games").insert({ code:c, host_id:myId, phase:"lobby", difficulty:"medium", answer_mode:"yesno", seed:Math.floor(Math.random()*1000000)+1, round:1 });
     if(g.error){ setErr(g.error.message); return; }
     await sb.from("players").delete().eq("id",myId);
-    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num:1, ready:false });
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:nmv, num:1, ready:false });
     if(pi.error){ setErr("Couldn't create the room: "+pi.error.message); return; }
-    ls.set("cr_code",c); ls.set("cr_name",name.trim());
+    ls.set("cr_code",c); ls.set("cr_name",nmv);
     setCode(c);
   };
-  const joinGame = async ()=>{
-    const c = codeInput.trim().toUpperCase();
+  const joinGame = async (cArg,nmArg)=>{
+    const nmv = ((typeof nmArg==="string"&&nmArg)||name||"").trim();
+    const c = ((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
     if(!c){ setErr("Enter a code"); return; }
-    if(!name.trim()){ setErr("Enter a name"); return; }
+    if(!nmv){ setErr("Enter a name"); return; }
     const g = await sb.from("games").select("code").eq("code",c).maybeSingle();
     if(!g.data){ setErr("No game with that code"); return; }
     const ps = await sb.from("players").select("num").eq("code",c);
     const num = (ps.data && ps.data.length ? Math.max.apply(null, ps.data.map(p=>p.num)) : 0) + 1;
     await sb.from("players").delete().eq("id",myId);
-    const pi = await sb.from("players").insert({ id:myId, code:c, name:name.trim(), num, ready:false });
+    const pi = await sb.from("players").insert({ id:myId, code:c, name:nmv, num, ready:false });
     if(pi.error){ setErr("Couldn't join: "+pi.error.message); return; }
-    ls.set("cr_code",c); ls.set("cr_name",name.trim());
+    ls.set("cr_code",c); ls.set("cr_name",nmv);
     setCode(c);
   };
   const toggleReady = async ()=>{ if(!me) return; await sb.from("players").update({ ready:!me.ready }).eq("id",myId); };
@@ -1070,7 +1077,7 @@ function OnlineApp({ onExit }){
 }
 
 function App(){
-  const [mode,setMode] = useState(()=>{ try{ return new URLSearchParams(location.search).get("join") ? "online" : null; }catch(e){ return null; } });
+  const [mode,setMode] = useState(()=>{ try{ return (new URLSearchParams(location.search).get("join") || (window.HUB&&HUB.entry&&HUB.entry())) ? "online" : null; }catch(e){ return null; } });
   useEffect(()=>{ applyPalette(ls.get("cr_palette")||"gr"); },[]);
   if(mode==="solo") return <SoloApp/>;
   if(mode==="online") return <OnlineApp onExit={()=>setMode(null)} />;

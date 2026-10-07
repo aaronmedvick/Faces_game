@@ -92,6 +92,7 @@ body.day{ background: radial-gradient(120% 80% at 50% -10%, #3a2a49 0%, #170f22 
 .chipd.gone{ opacity:.5; text-decoration:line-through; }
 a.link{ color:var(--candle); }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -215,6 +216,272 @@ function useRoom(code, fast){
 
 const seated = (players)=> players.filter(p=>!p.is_storyteller && p.seat!=null).sort((a,b)=>a.seat-b.seat);
 const livingCount = (players)=> seated(players).filter(p=>p.alive).length;
+/* ===== HOST-LESS ENGINE START (pure functions; no DOM, no DB) ===== */
+const AUTO_POOL = { townsfolk:["washerwoman","librarian","investigator","chef","empath","fortuneteller","undertaker","monk","soldier"], outsider:["saint"], minion:["poisoner","scarletwoman"], demon:["imp"] };
+const AUTO_MIN = 5, AUTO_MAX = 12;
+const NIGHT_MIN_MS = 20000, NIGHT_MAX_MS = 75000, DAY_MAX_MS = 600000, VOTE_MAX_MS = 45000;
+const shuf = (a)=>{ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; };
+const pickOne = (a)=> a[Math.floor(Math.random()*a.length)];
+const isEvil = (role)=>{ const R=ROLES[role]; return !!R && (R.type==="minion"||R.type==="demon"); };
+const applyPatches = (list, patches)=> list.map(p=> patches[p.id] ? { ...p, ...patches[p.id] } : p);
+const nightActs = (p, night)=>{ const R=ROLES[p.role]; return !!(R && R.action && (night<=1 ? R.fn : R.on) && !(p.role==="imp" && night<=1)); };
+
+/* deal roles for a host-less game; list = seated players */
+function autoDeal(list){
+  const n = list.length;
+  if(n<AUTO_MIN || n>AUTO_MAX) return null;
+  const d = DISTRIB[n];
+  const o = Math.min(d[1], AUTO_POOL.outsider.length), m = Math.min(d[2], AUTO_POOL.minion.length);
+  const t = d[0] + (d[1]-o) + (d[2]-m);
+  const roles = [].concat(shuf(AUTO_POOL.townsfolk).slice(0,t), shuf(AUTO_POOL.outsider).slice(0,o), shuf(AUTO_POOL.minion).slice(0,m), ["imp"]);
+  const ids = shuf(list.map(p=>p.id));
+  const assign = ids.map((id,i)=>({ id, role:roles[i] }));
+  const good = assign.filter(a=>!isEvil(a.role));
+  const hid = good.length ? pickOne(good).id : null;
+  const herring = hid ? list.find(p=>p.id===hid).seat : null;
+  return { assign, herring };
+}
+
+/* what the evil team is told before night 1 */
+function teamInfo(list){
+  const out = {};
+  const demon = list.find(p=>p.role==="imp");
+  const minions = list.filter(p=>ROLES[p.role] && ROLES[p.role].type==="minion");
+  const inPlay = new Set(list.map(p=>p.role));
+  const bluffPool = Object.keys(ROLES).filter(k=>(ROLES[k].type==="townsfolk"||ROLES[k].type==="outsider") && !inPlay.has(k));
+  const bluffs = shuf(bluffPool).slice(0,3).map(k=>ROLES[k].name);
+  if(demon) out[demon.id] = "Your minions: " + minions.map(x=>x.name+" ("+ROLES[x.role].name+")").join(", ") + ". Bluffs you can claim (good roles not in play): " + bluffs.join(", ") + ".";
+  minions.forEach(mn=>{
+    const others = minions.filter(x=>x.id!==mn.id);
+    out[mn.id] = "Your Demon is " + (demon?demon.name:"?") + " (Imp)." + (others.length ? " Fellow minion: " + others.map(x=>x.name).join(", ") + "." : "");
+  });
+  return out;
+}
+
+function autoWin(list){
+  const alive = list.filter(p=>p.alive);
+  if(!alive.some(p=>p.role==="imp")) return "good";
+  if(alive.length<=2) return "evil";
+  return null;
+}
+
+/* execute the player on the block */
+function executeSeat(list, seat){
+  const v = list.find(p=>p.seat===seat);
+  if(!v) return { patches:{}, winner:null, role:null };
+  const aliveBefore = list.filter(p=>p.alive).length;
+  const patches = {}; patches[v.id] = { alive:false };
+  let winner = null;
+  if(v.role==="saint") winner = "evil";
+  else if(v.role==="imp"){
+    const sw = list.find(p=>p.alive && p.id!==v.id && p.role==="scarletwoman");
+    if(sw && aliveBefore>=5) patches[sw.id] = { role:"imp", role_type:"demon", auto_team:"The Demon was executed, so you are the Imp now. Choose a kill each night." };
+  }
+  if(!winner) winner = autoWin(applyPatches(list, patches));
+  return { patches, winner, role:v.role };
+}
+
+/* resolve one night. list = seated players (with night_action). Returns { info:{id:text}, patches:{id:{...}}, victim, winner } */
+function resolveNight({ list, night, herring, lastExec }){
+  const alive = list.filter(p=>p.alive);
+  const act = (p)=> p.night_action || {};
+  const bySeat = (s)=> list.find(p=>p.seat===s);
+  const nm = (s)=>{ const q=bySeat(s); return q?q.name:"?"; };
+  const poisoner = alive.find(p=>p.role==="poisoner");
+  const poisonedSeat = (poisoner && act(poisoner).target!=null) ? act(poisoner).target : null;
+  const isP = (p)=> poisonedSeat!=null && p.seat===poisonedSeat;
+  const patches = {}, info = {};
+  const give = (p,text)=>{ info[p.id]=text; };
+  const sorted = list.slice().sort((a,b)=>a.seat-b.seat);
+  const rnd = (n)=>Math.floor(Math.random()*n);
+
+  /* ---- night 1: the "you start knowing" roles ---- */
+  if(night<=1){
+    const kinds = { washerwoman:["townsfolk","Townsfolk"], librarian:["outsider","Outsider"], investigator:["minion","Minion"] };
+    alive.forEach(p=>{
+      const k = kinds[p.role];
+      if(k){
+        const pool = list.filter(x=>x.id!==p.id && ROLES[x.role].type===k[0]);
+        if(isP(p)){
+          const wrong = shuf(list.filter(x=>x.id!==p.id && ROLES[x.role].type!==k[0])).slice(0,2);
+          const rn = ROLES[pickOne(Object.keys(ROLES).filter(r=>ROLES[r].type===k[0]))].name;
+          if(wrong.length===2) give(p, "One of "+wrong[0].name+" or "+wrong[1].name+" is the "+rn+".");
+        } else if(!pool.length){
+          give(p, "There are no "+k[1]+"s in play.");
+        } else {
+          const t = pickOne(pool);
+          const decoy = pickOne(list.filter(x=>x.id!==t.id && x.id!==p.id));
+          const two = shuf([t,decoy]);
+          give(p, "One of "+two[0].name+" or "+two[1].name+" is the "+ROLES[t.role].name+".");
+        }
+      }
+      if(p.role==="chef"){
+        let c = 0; for(let i=0;i<sorted.length;i++){ if(isEvil(sorted[i].role) && isEvil(sorted[(i+1)%sorted.length].role)) c++; }
+        if(isP(p)) c = rnd(3);
+        give(p, c+" pair"+(c===1?"":"s")+" of evil players sit next to each other.");
+      }
+    });
+  }
+
+  /* ---- nights 2+: monk, imp ---- */
+  let victim = null;
+  if(night>=2){
+    const monk = alive.find(p=>p.role==="monk");
+    const saved = (monk && !isP(monk) && act(monk).target!=null) ? act(monk).target : null;
+    const imp = alive.find(p=>p.role==="imp");
+    if(imp && !isP(imp) && act(imp).target!=null){
+      const tgt = bySeat(act(imp).target);
+      if(tgt && tgt.alive){
+        if(tgt.id===imp.id){
+          victim = imp;
+          const mins = alive.filter(p=>ROLES[p.role].type==="minion");
+          if(mins.length){ const np = pickOne(mins); patches[np.id] = { role:"imp", role_type:"demon", auto_team:"The Imp took their own life, so you are the Imp now. Choose a kill each night." }; give(np, "You are the Imp now."); }
+        } else if(tgt.seat!==saved && !(tgt.role==="soldier" && !isP(tgt))){
+          victim = tgt;
+        }
+      }
+    }
+    if(victim){ patches[victim.id] = Object.assign({}, patches[victim.id]||{}, { alive:false }); }
+  }
+
+  /* ---- info roles that wake every night (after the kill, like the real night order) ---- */
+  const nowAlive = alive.filter(p=>!victim || p.id!==victim.id);
+  const nbrs = (p)=>{
+    const a = nowAlive.slice().sort((x,y)=>x.seat-y.seat); const k=a.length; const i=a.findIndex(x=>x.id===p.id);
+    if(i<0||k<2) return [];
+    const L=a[(i-1+k)%k], R=a[(i+1)%k]; return L.id===R.id ? [L] : [L,R];
+  };
+  nowAlive.forEach(p=>{
+    if(p.role==="empath"){
+      const ns = nbrs(p); let c = ns.filter(x=>isEvil(x.role)).length; if(isP(p)) c = rnd(ns.length+1);
+      give(p, c+" of your "+ns.length+" living neighbour"+(ns.length===1?"":"s")+(c===1?" is":" are")+" evil.");
+    }
+    if(p.role==="fortuneteller" && act(p).target!=null && act(p).target2!=null){
+      const a = bySeat(act(p).target), b = bySeat(act(p).target2);
+      let yes = [a,b].some(x=>x && (x.role==="imp" || x.seat===herring));
+      if(isP(p)) yes = Math.random()<0.5;
+      give(p, nm(act(p).target)+" & "+nm(act(p).target2)+": "+(yes?"YES, one of them reads as the Demon.":"No, neither reads as the Demon."));
+    }
+    if(night>=2 && p.role==="undertaker"){
+      if(isP(p)){ give(p, "The player executed today was the "+ROLES[pickOne(Object.keys(ROLES))].name+"."); }
+      else give(p, lastExec && lastExec.role ? "The player executed today was the "+ROLES[lastExec.role].name+"." : "No one was executed today.");
+    }
+  });
+
+  const winner = autoWin(applyPatches(list, patches));
+  return { info, patches, victim, winner };
+}
+/* ===== HOST-LESS ENGINE END ===== */
+
+
+/* ============ host-less: DB glue ============ */
+async function autoStart(code, room, list, setErr){
+  const deal = autoDeal(list);
+  if(!deal){ setErr && setErr("Host-less games need "+AUTO_MIN+" to "+AUTO_MAX+" seated players."); return false; }
+  const withRoles = list.map(p=>({ ...p, role: deal.assign.find(a=>a.id===p.id).role }));
+  const team = teamInfo(withRoles);
+  await Promise.all(deal.assign.map(a=> sb.from("botc_players").update({ role:a.role, role_type:ROLES[a.role].type, alive:true, night_action:null, auto_info:null, auto_team:team[a.id]||null, used_ghost_vote:false }).eq("id",a.id)));
+  await dbUpdateRoom(code, { phase:"night", night_num:1, day_num:0, nomination:null, on_block:null, winner:null,
+    settings:{ ...(room.settings||{}), auto:true, runner:MYID, herring:deal.herring, t0:Date.now(), last_exec:null } }, setErr);
+  return true;
+}
+async function autoStep(code, setErr){
+  const rr = await sb.from("botc_rooms").select("*").eq("code",code).maybeSingle(); const room = rr.data; if(!room) return;
+  const st = room.settings||{}; if(!st.auto || st.runner!==MYID) return;
+  const ps = await sb.from("botc_players").select("*").eq("code",code).order("seat",{nullsFirst:false});
+  const players = ps.data||[]; const list = seated(players); const now = Date.now(); const t0 = st.t0||now;
+  if(room.phase==="night"){
+    const need = list.filter(p=>p.alive && nightActs(p,room.night_num));
+    const done = need.every(p=>p.night_action && p.night_action.target!=null);
+    const el = now-t0;
+    if((done && el>=NIGHT_MIN_MS) || el>=NIGHT_MAX_MS){
+      const out = resolveNight({ list, night:room.night_num, herring:st.herring, lastExec:st.last_exec });
+      await Promise.all(list.map(p=> sb.from("botc_players").update({ ...(out.patches[p.id]||{}), night_action:null, auto_info: out.info[p.id] ? { night:room.night_num, text:out.info[p.id] } : null }).eq("id",p.id)));
+      if(out.winner) await dbUpdateRoom(code,{ phase:"over", winner:out.winner, nomination:null, on_block:null }, setErr);
+      else await dbUpdateRoom(code,{ phase:"day", day_num:room.day_num+1, nomination:null, on_block:null, settings:{ ...st, t0:Date.now(), last_exec:null } }, setErr);
+    }
+  } else if(room.phase==="day"){
+    const nom = room.nomination;
+    const alive = list.filter(p=>p.alive);
+    if(nom && nom.open){
+      const votes = nom.votes||{};
+      const cast = alive.filter(p=>votes[p.seat]!==undefined).length;
+      if(cast>=alive.length || (nom.t && now-nom.t>=VOTE_MAX_MS)){
+        const yes = Object.values(votes).filter(Boolean).length, th = Math.ceil(alive.length/2);
+        let ob = room.on_block; if(yes>=th && (!ob || yes>ob.votes)) ob = { seat:nom.nominee, votes:yes };
+        await dbUpdateRoom(code,{ nomination:null, on_block:ob }, setErr);
+      }
+      return;
+    }
+    const ready = alive.every(p=>p.night_action && p.night_action.ready);
+    if(ready || now-t0>=DAY_MAX_MS){
+      let patches = {}, winner = null, last = null;
+      if(room.on_block){ const r = executeSeat(list, room.on_block.seat); patches = r.patches; winner = r.winner; last = { role:r.role, seat:room.on_block.seat }; }
+      await Promise.all(list.map(p=> sb.from("botc_players").update({ ...(patches[p.id]||{}), night_action:null }).eq("id",p.id)));
+      if(winner) await dbUpdateRoom(code,{ phase:"over", winner, nomination:null, on_block:null }, setErr);
+      else await dbUpdateRoom(code,{ phase:"night", night_num:room.night_num+1, nomination:null, on_block:null, settings:{ ...st, t0:Date.now(), last_exec:last } }, setErr);
+    }
+  }
+}
+
+function WhoRuns({ code, room, players, me, setErr, refetch }){
+  const st = room.settings||{}; const auto = !!st.auto; const list = seated(players);
+  const stRow = players.find(p=>p.id===room.host_id);
+  const claim = async ()=>{
+    const r = await sb.from("botc_rooms").update({ host_id:MYID, settings:{ ...st, auto:false, runner:null } }).eq("code",code).is("host_id",null).select();
+    if(r.error){ setErr(r.error.message); return; }
+    if(r.data && r.data.length) await sb.from("botc_players").update({ is_storyteller:true, seat:null, role:null }).eq("id",MYID);
+    refetch();
+  };
+  const setAuto = async (on)=>{ const r = await sb.from("botc_rooms").update({ settings:{ ...st, auto:on, runner:null } }).eq("code",code).is("host_id",null); if(r.error) setErr(r.error.message); refetch(); };
+  const start = async ()=>{ await autoStart(code, room, list, setErr); refetch(); };
+  return (
+    <Shell code={code} who={`Seat ${me.seat} · ${me.name}`} phase="Gathering the town">
+      <div className="card center">
+        <div className="label">Room code</div>
+        <div className="code">{code}</div>
+        <QR text={location.origin+location.pathname+"?join="+code} />
+        <div className="hint">Share the code or QR. Everyone who joins takes a seat.</div>
+      </div>
+      <div className="card">
+        <div className="label">Seated ({list.length})</div>
+        {list.map(p=>(<div className="prow" key={p.id}><div className="pname"><span className="seatn">{p.seat}</span>{p.name}{p.id===MYID?" (you)":""}</div></div>))}
+      </div>
+      <div className="card">
+        <div className="label">Who runs the game?</div>
+        {room.host_id ? (
+          <div className="note">👑 {stRow?stRow.name:"A Storyteller"} is the Storyteller. They'll deal the roles and run the nights.</div>
+        ) : auto ? (
+          <React.Fragment>
+            <div className="note">🤖 Host-less: the app runs the nights, votes and executions. Everyone plays, nobody has to be Storyteller. {AUTO_MIN} to {AUTO_MAX} players.</div>
+            <div className="note" style={{marginTop:6}}>Auto mode uses 14 of the 22 Trouble Brewing characters (the ones that never need a human's judgment).</div>
+            <button className="btn primary go" style={{marginTop:12}} disabled={list.length<AUTO_MIN||list.length>AUTO_MAX} onClick={start}>
+              {list.length<AUTO_MIN ? `Need ${AUTO_MIN-list.length} more (min ${AUTO_MIN})` : list.length>AUTO_MAX ? `Too many (max ${AUTO_MAX})` : "Deal roles & start 🌙"}
+            </button>
+            <button className="btn ghostb" style={{marginTop:8}} onClick={()=>setAuto(false)}>Use a Storyteller instead</button>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div className="note">Pick one: a person runs it as the Storyteller (full game, they don't play), or go host-less and let the app run it.</div>
+            <button className="btn primary go" style={{marginTop:12}} onClick={claim}>👑 I'll be the Storyteller</button>
+            <button className="btn ghostb" style={{marginTop:8}} onClick={()=>setAuto(true)}>🤖 Host-less: everyone plays</button>
+          </React.Fragment>
+        )}
+      </div>
+    </Shell>
+  );
+}
+
+function AutoInfo({ me, day }){
+  const t = me.auto_team, i = me.auto_info;
+  if(!t && !(day && i && i.text)) return null;
+  return (
+    <div className="card">
+      {t && <React.Fragment><div className="label">Your team</div><div className="note" style={{color:"var(--mist)"}}>{t}</div></React.Fragment>}
+      {day && i && i.text && <React.Fragment><div className="label" style={{marginTop:t?10:0}}>Night {i.night}: what you learned</div><div className="note" style={{color:"var(--mist)"}}>{i.text}</div></React.Fragment>}
+    </div>
+  );
+}
 
 /* ============ QR ============ */
 function QR({ text, size=150 }){
@@ -301,10 +568,11 @@ function Landing({ onHost, onJoin, onDemo }){
 }
 
 /* ============ Storyteller ============ */
-function Storyteller({ code, name }){
+function Storyteller({ code, name, onRole }){
   const { room, players, err, setErr, refetch } = useRoom(code);
   const [tab,setTab] = useState("grim");
   const [editSeat,setEditSeat] = useState(null);
+  useEffect(()=>{ if(onRole && room && room.host_id!==MYID) onRole("player"); },[room && room.host_id]);
   useEffect(()=>{ document.body.className = room ? room.phase : ""; },[room && room.phase]);
 
   // ensure ST row exists
@@ -322,6 +590,24 @@ function Storyteller({ code, name }){
 
   const setPhase = (patch)=> dbUpdateRoom(code, patch, setErr);
 
+  /* hand the Storyteller seat to a player (they swap seats with you), or go host-less */
+  const handOver = async (p)=>{
+    const g = await sb.from("botc_rooms").update({ host_id:p.id }).eq("code",code).eq("host_id",MYID).select();
+    if(g.error){ setErr(g.error.message); return; }
+    if(!g.data || !g.data.length){ refetch(); return; }
+    await sb.from("botc_players").update({ is_storyteller:true, seat:null, role:null, alive:true }).eq("id",p.id);
+    await sb.from("botc_players").update({ is_storyteller:false, seat:p.seat, role:null, alive:true }).eq("id",MYID);
+    refetch();
+  };
+  const goAuto = async ()=>{
+    const used = new Set(list.map(x=>x.seat)); let seat=1; while(used.has(seat)) seat++;
+    const g = await sb.from("botc_rooms").update({ host_id:null, settings:{ ...(room.settings||{}), auto:true, runner:null } }).eq("code",code).eq("host_id",MYID).select();
+    if(g.error){ setErr(g.error.message); return; }
+    if(!g.data || !g.data.length){ refetch(); return; }
+    await sb.from("botc_players").update({ is_storyteller:false, seat, role:null, alive:true }).eq("id",MYID);
+    refetch();
+  };
+
   /* ---- Lobby ---- */
   if(room.phase==="lobby"){
     return (
@@ -333,6 +619,13 @@ function Storyteller({ code, name }){
           <div className="hint">Players scan to take a seat. Open the shared screen on a TV/laptop:</div>
           <div className="mono" style={{fontSize:12, wordBreak:"break-all", color:"var(--candle)"}}>?screen={code}</div>
         </div>
+        {!(room.settings && room.settings.demo) && (
+        <div className="card">
+          <div className="label">Storyteller</div>
+          <div className="note">You're the Storyteller. Hand it to someone else (you take their seat), or run the game host-less.</div>
+          {list.map(p=>(<button key={p.id} className="btn ghostb" style={{marginTop:8}} onClick={()=>handOver(p)}>👑 Make {p.name} the Storyteller</button>))}
+          <button className="btn ghostb" style={{marginTop:8}} onClick={goAuto}>🤖 Go host-less (no Storyteller)</button>
+        </div>)}
         <div className="card">
           <div className="label">Seated ({list.length})</div>
           {list.length===0 && <div className="note">No one yet. Waiting for players…</div>}
@@ -553,7 +846,7 @@ function Setup({ code, list, d, counts, onBack, onBegin, setErr, refetch }){
 }
 
 /* ============ Player ============ */
-function Player({ code, name, asId }){
+function PlayerCore({ code, name, asId }){
   const { room, players, setErr, refetch } = useRoom(code);
   const actingId = asId || MYID;
   const me = players.find(p=>p.id===actingId) || null;
@@ -575,6 +868,10 @@ function Player({ code, name, asId }){
   if(!me) return <Splash label="Taking a seat…"/>;
   const R = me.role && ROLES[me.role];
 
+  if(room.phase==="lobby" && !asId){
+    return <WhoRuns code={code} room={room} players={players} me={me} setErr={setErr} refetch={refetch} />;
+  }
+
   if(room.phase==="lobby" || room.phase==="setup"){
     return (
       <Shell code={code} who={`Seat ${me.seat} · ${me.name}`} phase="Waiting for the Storyteller">
@@ -595,9 +892,37 @@ function Player({ code, name, asId }){
   }
 
   if(room.phase==="over"){
-    return <GameOver room={room} players={players} code={code} me={me} isST={false} />;
+    const au = !!(room.settings && room.settings.auto);
+    return <GameOver room={room} players={players} code={code} me={me} isST={au}
+      onReset={au ? ()=>dbUpdateRoom(code,{ phase:"lobby", winner:null, nomination:null, on_block:null, day_num:0, night_num:0, settings:{ ...(room.settings||{}), runner:null, last_exec:null } }, setErr) : undefined} />;
   }
   return <Splash/>;
+}
+
+function Player({ code, name, asId, onRole }){
+  const { room, players, setErr } = useRoom(code);
+  const st = (room && room.settings) || {};
+  useEffect(()=>{ if(!asId && onRole && room && room.host_id===MYID) onRole("host"); },[room && room.host_id]);
+  const runner = !asId && !!st.auto && st.runner===MYID;
+  useEffect(()=>{
+    if(!runner) return;
+    let busy=false;
+    const iv = setInterval(async()=>{ if(busy) return; busy=true; try{ await autoStep(code,setErr); }catch(e){ console.error(e); } busy=false; },1500);
+    return ()=>clearInterval(iv);
+  },[runner,code]);
+  const runnerRow = st.runner ? players.find(p=>p.id===st.runner) : null;
+  const takeOver = async ()=>{ await sb.from("botc_rooms").update({ settings:{ ...st, runner:MYID } }).eq("code",code); };
+  return (
+    <React.Fragment>
+      <PlayerCore code={code} name={name} asId={asId} />
+      {!asId && st.auto && room && room.phase!=="lobby" && room.phase!=="over" && (
+        <div style={{position:"fixed",left:0,right:0,bottom:0,zIndex:40,padding:"6px 10px calc(6px + env(safe-area-inset-bottom,0px))",background:"rgba(10,8,20,.92)",borderTop:"1px solid var(--haze)",fontSize:11,color:"var(--dim)",textAlign:"center"}}>
+          🤖 Host-less · run by {runnerRow?runnerRow.name:"nobody"}{runner?" (you)":""}
+          {!runner && <button className="pill" style={{marginLeft:8,cursor:"pointer"}} onClick={takeOver}>run from my phone</button>}
+        </div>
+      )}
+    </React.Fragment>
+  );
 }
 
 function RoleReveal({ R }){
@@ -658,7 +983,7 @@ function PlayerNight({ code, room, me, R, setErr, refetch, players }){
         </div>
       )}
       {hasAction && submitted && (
-        <div className="card center"><div className="note">Choice sent to the Storyteller. 🔒</div></div>
+        <div className="card center"><div className="note">{room.settings && room.settings.auto ? "Choice locked in. 🔒" : "Choice sent to the Storyteller. 🔒"}</div></div>
       )}
       {!hasAction && R && (
         <div className="card">
@@ -666,6 +991,7 @@ function PlayerNight({ code, room, me, R, setErr, refetch, players }){
           <div className="note">{R.rem} {(R.fn&&first)||(R.on&&!first) ? "The Storyteller may wake you tonight — keep playing until then." : "Nothing to do at night — blend in and play."}</div>
         </div>
       )}
+      {room.settings && room.settings.auto && <AutoInfo me={me} day={false} />}
       <MiniGame me={me} code={code} night={room.night_num} />
     </Shell>
   );
@@ -712,6 +1038,8 @@ function MiniGame({ me, code, night }){
 }
 
 function PlayerDay({ code, room, me, players, setErr, refetch }){
+  const auto = !!(room.settings && room.settings.auto);
+  const readyNow = !!(me.night_action && me.night_action.ready);
   const nom = room.nomination;
   const alive = livingCount(players);
   const threshold = Math.ceil(alive/2);
@@ -724,7 +1052,7 @@ function PlayerDay({ code, room, me, players, setErr, refetch }){
 
   const nominate = async ()=>{
     if(nominee==null) return;
-    await dbUpdateRoom(code,{ nomination:{ nominator:me.seat, nominee, open:true, votes:{} } }, setErr);
+    await dbUpdateRoom(code,{ nomination:{ nominator:me.seat, nominee, open:true, votes:{}, t:Date.now() } }, setErr);
     setNominee(null);
   };
   const castVote = async (v)=>{
@@ -737,6 +1065,7 @@ function PlayerDay({ code, room, me, players, setErr, refetch }){
 
   return (
     <Shell code={code} who={`Seat ${me.seat} · ${me.name}${me.alive?"":" 💀"}`} phase={`Day ${room.day_num}`} icon="☀️">
+      {auto && <AutoInfo me={me} day={true} />}
       <TownCircle players={players} nomination={nom} showVotes={true} />
       {nom && nom.open ? (
         <div className="card center">
@@ -764,6 +1093,12 @@ function PlayerDay({ code, room, me, players, setErr, refetch }){
               <button className="btn blood" style={{marginTop:12}} disabled={nominee==null} onClick={nominate}>Nominate seat {nominee??"—"}</button>
             </React.Fragment>
           ) : <div className="note">The dead cannot nominate. Wait for a vote to spend your final say.</div>}
+        </div>
+      )}
+      {auto && me.alive && (
+        <div className="card center">
+          <button className={"btn"+(readyNow?" ghostb":" primary")} onClick={async()=>{ await dbUpdatePlayer(me.id,{ night_action: readyNow?null:{ ready:true } }, setErr); refetch(); }}>{readyNow?"Not ready yet":"🌙 I'm ready for night"}</button>
+          <div className="note" style={{marginTop:8}}>Night falls when every living player is ready (or after 10 minutes). Whoever is on the block is executed at nightfall.</div>
         </div>
       )}
     </Shell>
@@ -909,11 +1244,22 @@ function App(){
     return code;
   };
 
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); const nm=(localStorage.getItem("hub_name")||localStorage.getItem("botc_name")||"").trim(); if(!E||!nm||!sbReady) return;
+    localStorage.setItem("botc_name",nm);
+    /* lobby entry: everyone sits down as a player; the table then picks a Storyteller or goes host-less */
+    const toPlayer=()=>{ history.replaceState(null,"","?join="+E.code); setMode({role:"player",code:E.code,name:nm}); };
+    const make=()=>sb.from("botc_rooms").insert({ code:E.code, host_id:null, phase:"lobby", settings:{} });
+    (async()=>{ try{ if(E.role==="host"){ await make(); toPlayer(); return; }
+      const ok=await HUB.waitRoom("botc_rooms",E.code,20000);
+      if(!ok) await make();
+      toPlayer(); }catch(e){} })(); },[]);
+
   if(!sbReady) return <div className="wrap"><div className="title">Clocktower</div><div className="err">Supabase not configured.</div></div>;
   if(mode && mode.role==="screen") return <Screen code={mode.code} />;
   if(mode && mode.role==="demo") return <DemoController code={mode.code} />;
-  if(mode && mode.role==="host") return <Storyteller code={mode.code} name={mode.name} />;
-  if(mode && mode.role==="player") return <Player code={mode.code} name={mode.name} />;
+  const switchRole = (role)=>{ try{ history.replaceState(null,"",(role==="host"?"?host=":"?join=")+mode.code); }catch(e){} setMode({ role, code:mode.code, name:mode.name }); };
+  if(mode && mode.role==="host") return <Storyteller code={mode.code} name={mode.name} onRole={switchRole} />;
+  if(mode && mode.role==="player") return <Player code={mode.code} name={mode.name} onRole={switchRole} />;
 
   return <Landing
     onHost={async(name)=>{

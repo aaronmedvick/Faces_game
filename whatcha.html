@@ -61,6 +61,7 @@
   #qr img,#qr canvas{ border-radius:10px; border:6px solid #fff; }
   .link{ background:none; border:none; color:var(--dim); text-decoration:underline; cursor:pointer; font-size:13px; }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -172,6 +173,9 @@ function App(){
   useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),300); return ()=>clearInterval(t); },[]);
   /* auto-fill code from ?code= */
   useEffect(()=>{ const u=new URLSearchParams(location.search); const c=u.get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!sb||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await host(E.code); return; }
+      const ok=await HUB.waitRoom("wt_rooms",E.code,20000); if(ok) await join(E.code); else await host(E.code); }catch(e){} })(); },[]);
 
   /* ---- realtime subscribe ---- */
   async function refetch(c){
@@ -199,18 +203,18 @@ function App(){
   function popHeckle(p){ const id=Math.random(); const left=8+Math.random()*80; setFloaties(f=>[...f,{id,emoji:p.emoji,left}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
 
   /* ---- create / join ---- */
-  async function host(){
+  async function host(forced){
     if(!sb||!name.trim()) return;
     ls.set("wt_name",name.trim());
-    const c=randCode();
+    const c=(typeof forced==="string"&&forced)?forced:randCode();
     await sb.from("wt_rooms").insert({ code:c, host_id:myId, mode, phase:"lobby", round:0 });
     await sb.from("wt_players").delete().eq("id",myId);
     await sb.from("wt_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0 });
     setCode(c);
   }
-  async function join(){
-    if(!sb||!name.trim()||!codeInput.trim()) return;
-    const c=codeInput.trim().toUpperCase();
+  async function join(cArg){
+    if(!sb||!name.trim()||!((typeof cArg==="string"&&cArg)||codeInput).trim()) return;
+    const c=((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
     ls.set("wt_name",name.trim());
     const r=await sb.from("wt_rooms").select("code").eq("code",c).maybeSingle();
     if(!r.data){ alert("No room with that code."); return; }

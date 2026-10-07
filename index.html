@@ -7,61 +7,263 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-* { box-sizing: border-box; }
-html, body { margin: 0; }
-:root { --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853; --candle:#F5B14C; --psychic:#A78BFA; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6; }
-body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height:100vh; font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); -webkit-font-smoothing:antialiased; }
-.wrap { max-width:520px; margin:0 auto; padding:20px 16px 30px; }
-.brand { display:flex; align-items:center; justify-content:center; gap:7px; letter-spacing:.22em; font-weight:700; font-size:13px; color:var(--candle); }
-.title { font-family:'Fraunces',serif; font-weight:600; font-size:44px; text-align:center; margin:16px 0 4px; }
-.sub { text-align:center; color:var(--dim); font-size:13px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:24px; }
-.card { display:block; text-decoration:none; color:inherit; background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:18px; padding:16px 18px; margin-bottom:12px; box-shadow:0 14px 34px -22px #000; transition:transform .12s; }
-.card.live:active { transform:scale(.98); }
-.card.soon { opacity:.6; }
-.row { display:flex; align-items:center; gap:14px; }
-.emoji { font-size:30px; width:44px; text-align:center; flex:0 0 auto; }
-.name { font-family:'Fraunces',serif; font-size:21px; font-weight:600; }
-.tag { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--candle); }
-.tag.soontag { color:var(--dim); }
-.badge { font-size:10px; font-weight:800; letter-spacing:.1em; padding:2px 7px; border-radius:999px; background:var(--candle); color:var(--ink); margin-left:8px; }
-.desc { font-size:13px; line-height:1.5; color:var(--dim); margin-top:8px; }
-.foot { text-align:center; color:var(--dim); font-size:11px; margin-top:18px; }
+*{box-sizing:border-box}
+html,body{margin:0}
+:root{--ink:#0E0B1A;--velvet:#171126;--panel:#1E1735;--haze:#332853;--candle:#F5B14C;--psychic:#A78BFA;--mist:#E9E3F6;--dim:#8B82A6;--mint:#7DF0A6;--rose:#ff8a8a}
+body{background:radial-gradient(120% 80% at 50% -10%,#241a3d 0%,var(--ink) 55%);min-height:100vh;font-family:'Space Grotesk',system-ui,sans-serif;color:var(--mist);-webkit-font-smoothing:antialiased}
+.wrap{max-width:520px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.brand{letter-spacing:.22em;font-weight:700;font-size:13px;color:var(--candle)}
+.who{font-size:12px;color:var(--dim);text-align:right}
+.who b{color:var(--mist)}
+.link{background:none;border:0;color:var(--psychic);font:inherit;font-size:12px;cursor:pointer;padding:0 0 0 6px;text-decoration:underline}
+.title{font-family:'Fraunces',serif;font-weight:600;font-size:40px;text-align:center;margin:14px 0 2px}
+.sub{text-align:center;color:var(--dim);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px}
+.card{background:linear-gradient(180deg,var(--panel),var(--velvet));border:1px solid var(--haze);border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 14px 34px -22px #000}
+.lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.inp{width:100%;padding:13px;border-radius:12px;border:1px solid var(--haze);background:var(--ink);color:var(--mist);font:inherit;font-size:16px;margin-bottom:10px}
+.code-in{letter-spacing:.3em;text-transform:uppercase;font-weight:700;text-align:center}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;border:1px solid var(--haze);background:var(--panel);color:var(--mist);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.btn.go{background:var(--candle);color:var(--ink);border-color:var(--candle);font-weight:700}
+.btn.sm{padding:8px 12px;font-size:12px;width:auto;display:inline-block}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.err{color:var(--rose);font-size:13px;margin:2px 0 8px;min-height:0}
+.ok{color:var(--mint);font-size:13px}
+.hint{color:var(--dim);font-size:13px;line-height:1.5}
+.big{font-family:'Fraunces',serif;font-size:56px;letter-spacing:.2em;text-align:center;color:var(--candle);margin:0 0 6px;padding-left:.2em}
+.qr{display:flex;justify-content:center;margin:8px 0 12px}.qr>div{background:#fff;padding:10px;border-radius:14px;line-height:0}
+.mem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #261d40;font-size:15px}
+.mem:last-child{border:0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--mint);flex:0 0 auto}
+.mem .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mem .at{font-size:12px;color:var(--dim)}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:#2a2147;color:var(--dim)}
+.badge.on{background:var(--mint);color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;border-radius:14px;border:1px solid var(--haze);background:var(--velvet);color:var(--mist);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.g .em{font-size:22px;width:28px;text-align:center}
+.g.sel{border-color:var(--candle);background:#2a2147}
+.g[disabled]{opacity:.5;cursor:default}
+.pick{border-color:var(--candle)}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{flex:1;padding:9px;border-radius:10px;border:1px solid var(--haze);background:var(--velvet);color:var(--dim);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.tab.on{background:var(--panel);color:var(--mist);border-color:var(--candle)}
+.overlay{position:fixed;inset:0;background:rgba(14,11,26,.92);z-index:50;display:none;align-items:center;justify-content:center;text-align:center;font-family:'Fraunces',serif;font-size:26px;padding:30px}
+.overlay.on{display:flex}
+.foot{text-align:center;color:var(--dim);font-size:12px;margin-top:18px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand">◍ GAME&nbsp;NIGHT</div>
-  <div class="title">Pick a game</div>
-  <div class="sub">multiplayer party games · one phone or many</div>
-  <div id="games">Loading…</div>
-  <div class="foot">Made for playing together.</div>
+  <div class="top"><div class="brand">◍ GAME&nbsp;NIGHT</div><div class="who" id="who"></div></div>
+  <div class="title" id="title">Game Night</div>
+  <div class="sub" id="sub">party games · one lobby · everyone together</div>
+  <div id="app"></div>
+  <div class="foot" id="foot"></div>
 </div>
-<script src="games.js"></script>
+<div class="overlay" id="overlay"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="hub.js"></script>
 <script>
-const SUPABASE_URL="https://gyvgzeculdaxcwinblld.supabase.co";
-const SUPABASE_KEY="sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
-const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
-function card(g){
-  const st=g.status||(g.url?"live":"soon");
-  const clickable=(st==="live"||st==="demo") && g.url;
-  const badge = st==="demo" ? "<span class='badge'>DEMO</span>" : "";
-  const tag = clickable ? (esc(g.tag)+badge) : "Coming soon";
-  const inner="<div class='row'><div class='emoji'>"+(esc(g.emoji)||"🎮")+"</div><div><div class='name'>"+esc(g.name)+"</div><div class='tag"+(clickable?"":" soontag")+"'>"+tag+"</div></div></div><div class='desc'>"+esc(g.desc||g.descr)+"</div>";
-  return clickable ? "<a class='card live' href='"+esc(g.url)+"'>"+inner+"</a>" : "<div class='card soon'>"+inner+"</div>";
-}
-function draw(list){ document.getElementById("games").innerHTML = list.map(card).join("") || "<div class='foot'>No games yet.</div>"; }
-async function boot(){
-  let games=null;
-  try{
-    const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    const r=await sb.from("pages").select("*").neq("status","off").order("sort").order("name");
-    if(r.data && r.data.length) games=r.data.map(p=>({name:p.name,tag:p.tag,emoji:p.emoji,url:p.url,desc:p.descr,status:p.status}));
-  }catch(e){}
-  if(!games) games=(window.GAMES||[]);   // offline fallback = games.js
-  draw(games);
-}
-boot();
+(function(){
+  var H = window.HUB, L = H.lobby, esc = H.esc;
+  var app = document.getElementById("app");
+  var mode = "gate";           // gate | lobby
+  var authOpen = false, authTab = "login", authErr = "", authBusy = false, gateErr = "", busy = false;
+  var invite = null, lastSig = "", qrNode = null, qrFor = "", draft = {};
+
+  function $(id){ return document.getElementById(id); }
+  function nameVal(){ var i = $("nm"); return i ? i.value.trim() : H.name(); }
+  app.addEventListener("input", function(e){ if(e.target && e.target.id) draft[e.target.id] = e.target.value; });
+  function restoreDraft(){ Object.keys(draft).forEach(function(id){ var el = $(id); if(el && el.tagName === "INPUT" && el.value !== draft[id]) el.value = draft[id]; }); }
+
+  /* ---------- invite link: ?lobby=CODE joins straight away if we already know who you are ---------- */
+  (function readInvite(){
+    try{
+      var p = new URLSearchParams(location.search), c = (p.get("lobby")||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,8);
+      if(c){ invite = c; p.delete("lobby"); var q = p.toString(); history.replaceState(null,"",location.pathname+(q?"?"+q:"")+location.hash); }
+    }catch(e){}
+  })();
+  function tryAutoJoin(){
+    if(!invite) return;
+    if(L.code() === invite){ invite = null; return; }
+    if(H.name()){ var c = invite; invite = null; busy = true; L.join(c, H.name()).then(function(r){ busy = false; if(r.error) gateErr = r.error; render(true); }); }
+  }
+
+  /* ---------- header ---------- */
+  function drawWho(){
+    var a = H.account.user(), n = H.name();
+    $("who").innerHTML = a ? "👤 <b>"+esc(a.display_name)+"</b><button class='link' id='lo'>log out</button>" : (n ? "Playing as <b>"+esc(n)+"</b>" : "");
+    var lo = $("lo"); if(lo) lo.onclick = function(){ H.account.logout().then(function(){ authOpen=false; render(true); }); };
+  }
+
+  /* ---------- account card ---------- */
+  function authCard(){
+    var a = H.account.user();
+    if(a) return "";
+    if(!authOpen) return "<div class='card'><div class='lab'>Account</div><div class='hint'>Log in to keep your name and history on every phone.</div><button class='btn' id='authOpen' style='margin-top:10px'>Log in or sign up</button></div>";
+    var up = authTab === "signup";
+    return "<div class='card'><div class='tabs'><button class='tab"+(up?"":" on")+"' id='tLogin'>Log in</button><button class='tab"+(up?" on":"")+"' id='tSignup'>Sign up</button></div>"+
+      "<input class='inp' id='au' placeholder='Username' autocapitalize='none' autocomplete='username' maxlength='24'>"+
+      "<input class='inp' id='ap' type='password' placeholder='Password (6+ characters)' autocomplete='"+(up?"new-password":"current-password")+"'>"+
+      (up ? "<input class='inp' id='ad' placeholder='Display name' maxlength='24' value='"+esc(H.name())+"'><input class='inp' id='ae' placeholder='Email (optional)' autocapitalize='none' inputmode='email'><input class='inp' id='aph' placeholder='Phone (optional)' inputmode='tel'>" : "")+
+      "<div class='err'>"+esc(authErr)+"</div><button class='btn go' id='authGo'"+(authBusy?" disabled":"")+">"+(up?"Create account":"Log in")+"</button>"+
+      "<button class='btn' id='authCancel' style='margin-top:8px'>Cancel</button>"+
+      (up ? "<div class='hint' style='margin-top:10px'>Passwords are stored as a salted hash, never in plain text. Don't reuse an important password.</div>" : "")+"</div>";
+  }
+  function bindAuth(){
+    var b = $("authOpen"); if(b) b.onclick = function(){ authOpen = true; authErr = ""; render(true); };
+    var c = $("authCancel"); if(c) c.onclick = function(){ authOpen = false; authErr = ""; render(true); };
+    var t1 = $("tLogin"), t2 = $("tSignup");
+    if(t1) t1.onclick = function(){ authTab = "login"; authErr = ""; render(true); };
+    if(t2) t2.onclick = function(){ authTab = "signup"; authErr = ""; render(true); };
+    var g = $("authGo");
+    if(g) g.onclick = function(){
+      var u = $("au").value, p = $("ap").value, dn = authTab === "signup" ? $("ad").value : "", em = authTab === "signup" ? $("ae").value : "", ph = authTab === "signup" ? $("aph").value : ""; authBusy = true; authErr = ""; g.disabled = true;
+      var job = authTab === "signup"
+        ? H.account.register(u, p, dn || u, em, ph)
+        : H.account.login(u, p);
+      job.then(function(d){ authBusy = false; delete draft.ap; if(d.error){ authErr = d.error; render(true); } else { authOpen = false; render(true); tryAutoJoin(); } });
+    };
+  }
+
+  /* ---------- gate: start or join a lobby ---------- */
+  function gateHtml(){
+    var known = H.account.user() || H.name();
+    var h = "";
+    if(invite){
+      h += "<div class='card pick'><div class='lab'>You're invited</div><div class='big' style='font-size:44px'>"+esc(invite)+"</div>"+
+        (known ? "<div class='hint' style='text-align:center'>Joining as <b>"+esc(H.name())+"</b>…</div>" :
+          "<input class='inp' id='nm' placeholder='Your name' maxlength='18'><div class='err'>"+esc(gateErr)+"</div><button class='btn go' id='joinInvite'>Join lobby</button><div class='hint' style='margin-top:10px'>Or log in below to use your account.</div>")+"</div>";
+    } else {
+      h += "<div class='card'>"+(H.account.user() ? "" : "<div class='lab'>Your name</div><input class='inp' id='nm' placeholder='Your name' maxlength='18' value='"+esc(H.name())+"'>")+
+        "<div class='err'>"+esc(gateErr)+"</div><button class='btn go' id='create'"+(busy?" disabled":"")+">Start a lobby</button></div>"+
+        "<div class='card'><div class='lab'>Join a lobby</div><input class='inp code-in' id='cd' placeholder='ABCD' maxlength='4' autocapitalize='characters'><button class='btn' id='join'"+(busy?" disabled":"")+">Join</button></div>";
+    }
+    return h + authCard();
+  }
+  function bindGate(){
+    var c = $("create"); if(c) c.onclick = function(){ var nm = nameVal() || H.name(); gateErr = ""; busy = true; render(true); L.create(nm).then(function(r){ busy = false; if(r.error) gateErr = r.error; render(true); }); };
+    var j = $("join"); if(j) j.onclick = function(){ gateErr = ""; var code = $("cd").value; var nm = nameVal() || H.name(); busy = true; render(true); L.join(code, nm).then(function(r){ busy = false; if(r.error) gateErr = r.error; render(true); }); };
+    var ji = $("joinInvite"); if(ji) ji.onclick = function(){ var nm = nameVal(); var code = invite; L.join(code, nm).then(function(r){ if(r.error){ gateErr = r.error; render(true); } else { invite = null; render(true); } }); };
+    var cd = $("cd"); if(cd) cd.oninput = function(){ cd.value = cd.value.toUpperCase().replace(/[^A-Z0-9]/g,""); };
+  }
+
+  /* ---------- lobby ---------- */
+  function copyLink(btn){
+    var link = L.inviteLink();
+    function done(){ btn.textContent = "Copied ✓"; setTimeout(function(){ btn.textContent = "📋 Copy invite link"; }, 1600); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(done, function(){ window.prompt("Copy this link", link); }); }
+    else window.prompt("Copy this link", link);
+  }
+  function lobbyHtml(S){
+    var lob = S.lobby, host = S.isHost, ph = lob.phase, file = lob.game ? H.base(lob.game) : null;
+    var h = "<div class='card'><div class='lab'>Lobby</div><div class='big'>"+esc(lob.code)+"</div><div class='qr'><div id='qrbox'></div></div>"+
+      "<div class='row'><button class='btn' id='copy'>📋 Copy invite link</button>"+(navigator.share?"<button class='btn' id='share'>Share</button>":"")+"</div>"+
+      "<div class='hint' style='margin-top:8px;text-align:center'>Scan the code or send the link. Anyone who opens it joins this lobby right away.</div></div>";
+    /* players */
+    var hostM = S.members.filter(function(m){ return m.uid === lob.host_uid; })[0];
+    h += "<div class='card'><div class='lab'>Players ("+S.members.length+")</div>";
+    S.members.forEach(function(m){
+      var isH = m.uid === lob.host_uid, me = m.uid === H.uid(), at = H.base(m.here||""), g = H.gameByFile(at);
+      var rd = ph === "ready" ? (isH || m.ready) : false;
+      h += "<div class='mem'><span class='dot'></span><span class='nm'>"+(isH?"👑 ":"")+esc(m.name||"Player")+(me?" (you)":"")+"</span>"+
+        (ph==="ready" ? "<span class='badge"+(rd?" on":"")+"'>"+(rd?"ready":"not yet")+"</span>" : "<span class='at'>"+(at && at!=="index.html" && g ? esc((g.emoji||"")+" "+g.name) : "in lobby")+"</span>")+
+        (host && !me ? "<button class='btn sm' data-give='"+esc(m.uid)+"'>Make host</button>" : "")+"</div>";
+    });
+    if(!host && !S.hostActive) h += "<div style='margin-top:10px'><div class='err' style='min-height:0'>The host seems to be away.</div><button class='btn' id='claim'>Take over as host</button></div>";
+    h += "</div>";
+    /* phase panels */
+    if(ph === "ready" && file){
+      var g2 = H.gameByFile(file), max = H.maxPlayers(file), notReady = S.members.filter(function(m){ return m.uid!==lob.host_uid && !m.ready; });
+      h += "<div class='card pick'><div class='lab'>Up next</div><div style='font-family:Fraunces,serif;font-size:26px;margin-bottom:6px'>"+esc((g2?g2.emoji:"🎮")+" "+(g2?g2.name:file))+"</div>"+
+        (max && S.members.length>max ? "<div class='err' style='min-height:0'>"+esc(g2.name)+" is "+max+" players. Someone will be left out.</div>" : "");
+      if(host){
+        h += "<button class='btn go' id='start'>"+(notReady.length ? "Start anyway ("+notReady.length+" not ready)" : "Start the game")+"</button><button class='btn' id='unpick' style='margin-top:8px'>Pick a different game</button>";
+      } else {
+        h += "<button class='btn "+(S.ready?"":"go")+"' id='ready'>"+(S.ready?"✓ Ready (tap to undo)":"I'm ready")+"</button><div class='hint' style='margin-top:8px;text-align:center'>Waiting for "+esc(hostM?hostM.name:"the host")+" to start.</div>";
+      }
+      h += "</div>";
+    } else if(ph === "playing" && file){
+      var g3 = H.gameByFile(file);
+      h += "<div class='card pick'><div class='lab'>In progress</div><div style='font-family:Fraunces,serif;font-size:24px;margin-bottom:10px'>"+esc((g3?g3.emoji:"🎮")+" "+(g3?g3.name:file))+"</div><button class='btn go' id='rejoin'>Jump back in</button>"+(host?"<div class='hint' style='margin-top:8px;text-align:center'>Or pick a new game below.</div>":"")+"</div>";
+    }
+    /* game picker */
+    var showPick = host && (ph === "idle" || ph === "playing" || !ph);
+    h += "<div class='card'><div class='lab'>"+(host ? (ph==="ready" ? "Games" : "Pick a game") : "Games")+"</div>";
+    if(!host) h += "<div class='hint' style='margin-bottom:10px'>"+esc(hostM?hostM.name:"The host")+" picks the game. Ask them to hand you the host if you want to choose.</div>";
+    h += "<div class='grid'>";
+    H.games().forEach(function(g){
+      var f = H.base(g.url), sel = file === f && ph !== "idle";
+      h += "<button class='g"+(sel?" sel":"")+"' data-game='"+esc(f)+"'"+(host?"":" disabled")+"><span class='em'>"+esc(g.emoji||"🎮")+"</span><span>"+esc(g.name)+"</span></button>";
+    });
+    h += "</div></div>";
+    h += "<button class='btn' id='leave'>Leave lobby</button>";
+    return h;
+  }
+  function bindLobby(S){
+    var cp = $("copy"); if(cp) cp.onclick = function(){ copyLink(cp); };
+    var sh = $("share"); if(sh) sh.onclick = function(){ try{ navigator.share({ title:"Game Night lobby "+L.code(), text:"Join my game lobby "+L.code(), url:L.inviteLink() }); }catch(e){} };
+    Array.prototype.forEach.call(app.querySelectorAll("[data-give]"), function(b){ b.onclick = function(){ L.giveHost(b.getAttribute("data-give")); }; });
+    var cl = $("claim"); if(cl) cl.onclick = function(){ L.claimHost(); };
+    var st = $("start"); if(st) st.onclick = function(){
+      var nr = S.members.filter(function(m){ return m.uid!==S.lobby.host_uid && !m.ready; }).length;
+      if(nr && !confirm(nr+" player"+(nr===1?" isn't":"s aren't")+" ready. Start anyway?")) return;
+      st.disabled = true; L.start().then(function(r){ if(r && r.error){ alert(r.error); st.disabled = false; } });
+    };
+    var up = $("unpick"); if(up) up.onclick = function(){ L.unpick(); };
+    var rd = $("ready"); if(rd) rd.onclick = function(){ L.setReady(!S.ready); };
+    var rj = $("rejoin"); if(rj) rj.onclick = function(){ L.joinGameNow(H.base(S.lobby.game)); };
+    Array.prototype.forEach.call(app.querySelectorAll("[data-game]"), function(b){ b.onclick = function(){ if(S.isHost) L.pickGame(b.getAttribute("data-game")); }; });
+    var lv = $("leave"); if(lv) lv.onclick = function(){ if(confirm("Leave this lobby?")) L.leave().then(function(){ render(true); }); };
+    /* QR: build once per code, reattach after each redraw */
+    var box = $("qrbox");
+    if(box){
+      if(qrFor !== S.lobby.code || !qrNode){
+        qrFor = S.lobby.code; qrNode = document.createElement("div");
+        try{ new QRCode(qrNode, { text:L.inviteLink(), width:160, height:160, colorDark:"#0E0B1A", colorLight:"#ffffff" }); }catch(e){ qrNode.textContent = L.code(); }
+      }
+      box.appendChild(qrNode);
+    }
+  }
+
+  /* ---------- render ---------- */
+  function signature(S){
+    return JSON.stringify([mode, authOpen, authTab, authErr, authBusy, busy, gateErr, invite, H.name(), !!H.account.user(),
+      S.lobby && [S.lobby.code,S.lobby.host_uid,S.lobby.game,S.lobby.phase], S.members.map(function(m){ return [m.uid,m.name,m.ready,m.here]; }), S.isHost, S.hostActive, S.ready, H.games().length]);
+  }
+  function render(force){
+    var S = L.state();
+    mode = (L.code() && S.lobby) ? "lobby" : "gate";
+    var sig = signature(S);
+    if(!force && sig === lastSig) return;
+    lastSig = sig;
+    drawWho();
+    if(mode === "lobby"){
+      $("title").textContent = "Lobby"; $("sub").textContent = S.isHost ? "you're the host" : "waiting on the host";
+      app.innerHTML = lobbyHtml(S); bindLobby(S);
+    } else {
+      $("title").textContent = "Game Night"; $("sub").textContent = "party games · one lobby · everyone together";
+      app.innerHTML = gateHtml(); restoreDraft(); bindGate(); bindAuth();
+    }
+  }
+
+  /* host started a game: everyone else follows */
+  L.onStart(function(lob){
+    var g = H.gameByFile(H.base(lob.game));
+    var o = $("overlay"); o.textContent = "Starting " + ((g?g.emoji+" ":"") + (g?g.name:"the game")) + "…"; o.classList.add("on");
+    setTimeout(function(){ L.joinGameNow(H.base(lob.game)); }, 700);
+  });
+  L.onChange(function(){ render(false); });
+  H.onCatalog(function(){ render(false); });
+  render(true);
+  H.account.resume().then(function(){ render(true); tryAutoJoin(); });
+  tryAutoJoin();
+  if(L.code()) L.refresh(true);
+})();
 </script>
 </body>
 </html>

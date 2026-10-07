@@ -49,35 +49,6 @@
   .chip{ padding:9px 12px; border-radius:999px; border:1px solid var(--haze); background:var(--panel); font-size:14px; font-weight:600; cursor:pointer; color:var(--dim); }
   .chip span{ margin-left:7px; font-family:'JetBrains Mono',monospace; font-size:11px; opacity:.7; }
   .chip.on{ border-color:var(--candle); background:rgba(245,177,76,.14); color:var(--candle); }
-  .steps{ display:flex; align-items:center; justify-content:center; gap:8px; }
-  .stp{ display:flex; align-items:center; gap:7px; padding:7px 12px; border-radius:999px; border:1px solid var(--haze); font-size:13px; font-weight:600; color:var(--dim); }
-  .stp b{ width:20px; height:20px; border-radius:50%; display:grid; place-items:center; background:var(--haze); font-size:11px; color:var(--mist); }
-  .stp.cur{ border-color:var(--candle); color:var(--candle); background:rgba(245,177,76,.12); } .stp.cur b{ background:var(--candle); color:var(--ink); }
-  .stp.cur.g{ border-color:var(--psychic); color:#CDBEFF; background:rgba(167,139,250,.18); } .stp.cur.g b{ background:var(--psychic); color:var(--ink); }
-  .stp.done b{ background:var(--mint); color:#04241a; } .arrow{ color:var(--dim); }
-  .panel{ display:flex; flex-direction:column; gap:12px; }
-  .panel.isGuess{ padding:12px; margin:0 -4px; border-radius:20px; border:1px solid rgba(167,139,250,.45); background:linear-gradient(180deg,rgba(167,139,250,.20),rgba(167,139,250,.05)); }
-  .guessHead{ display:flex; align-items:center; gap:12px; } .gh1{ font-family:'Fraunces',serif; font-weight:600; font-size:22px; line-height:1.15; } .gh2{ color:#CDBEFF; font-size:14px; margin-top:3px; }
-  .go.purple{ background:var(--psychic); color:var(--ink); }
-  .dbl{ display:flex; align-items:center; gap:12px; width:100%; padding:14px; border-radius:16px; border:2px solid var(--candle); background:rgba(245,177,76,.10); color:var(--mist); text-align:left; cursor:pointer; animation:glow 1.6s ease-in-out infinite; }
-  .dbl.on{ background:var(--candle); color:var(--ink); animation:none; box-shadow:0 0 26px rgba(245,177,76,.55); }
-  .dbl.off{ opacity:.45; animation:none; border-style:dashed; cursor:default; }
-  .dblIcon{ font-size:28px; } .dblTxt{ flex:1; display:flex; flex-direction:column; gap:2px; }
-  .dblTxt b{ font-family:'Fraunces',serif; font-weight:600; font-size:20px; } .dblTxt i{ font-style:normal; font-size:12.5px; opacity:.85; }
-  .sw{ width:50px; height:30px; border-radius:999px; background:var(--haze); position:relative; flex:0 0 auto; transition:background .15s; }
-  .knob{ position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:#fff; transition:transform .15s; }
-  .dbl.on .sw{ background:var(--ink); } .dbl.on .knob{ transform:translateX(20px); background:var(--candle); }
-  .go.purple.x2{ background:var(--candle); box-shadow:0 0 22px rgba(245,177,76,.5); }
-  @keyframes glow{ 0%,100%{ box-shadow:0 0 0 rgba(245,177,76,0); } 50%{ box-shadow:0 0 20px rgba(245,177,76,.45); } }
-  .scoreRow{ display:flex; align-items:center; justify-content:center; gap:22px; margin:4px 0 2px; } .scoreSide{ display:flex; flex-direction:column; align-items:center; gap:6px; }
-  .sNum{ font-family:'Fraunces',serif; font-weight:600; font-size:68px; line-height:1; color:var(--candle); } .sName{ font-size:14px; color:var(--dim); } .vs{ color:var(--dim); font-size:30px; }
-  .stat{ display:grid; grid-template-columns:1fr 64px 64px; gap:8px; align-items:center; padding:7px 0; border-top:1px solid var(--haze); font-size:14px; } .stat.head{ border-top:none; color:var(--dim); font-size:12px; }
-  .stat b{ text-align:right; font-family:'JetBrains Mono',monospace; font-size:13px; }
-  .joinCard{ border:1.5px solid var(--candle); background:linear-gradient(180deg,rgba(245,177,76,.16),var(--velvet)); padding:16px; }
-  .joinTitle{ font-family:'Fraunces',serif; font-weight:600; font-size:28px; color:var(--candle); margin-bottom:12px; }
-  .spinner{ width:60px; height:60px; border-radius:50%; border:5px solid var(--haze); border-top-color:var(--candle); animation:spin .9s linear infinite; margin:16vh auto 22px; }
-  .joinBig{ font-family:'Fraunces',serif; font-weight:600; font-size:36px; }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
   .warnLink{ color:var(--candle); }
   .pill{ font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--haze); }
   .seg{ display:flex; gap:8px; } .seg button{ flex:1; padding:12px 6px; border-radius:12px; border:1px solid var(--haze); background:var(--panel); font-weight:600; font-size:14px; cursor:pointer; }
@@ -142,6 +113,7 @@
   .banner .dim{ color:#5a1b2a; } .banner.warn{ top:auto; bottom:calc(10px + env(safe-area-inset-bottom,0px)); background:var(--candle); color:var(--ink); }
   @media (prefers-reduced-motion:reduce){ .bump,.snap,.sealed{ animation:none; } }
 </style>
+<script src="hub.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -152,13 +124,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
 <script type="text/babel" data-presets="react">
 /* ================= QUESTION BANK (loaded at startup) =================
-   Questions live in data/kindred/*.json (see the README there). BANK/QMAP are filled by setBank(). */
+   Questions live in Data/11.kindred.pack-*.json (see Data/11.kindred.README.md). BANK/QMAP are filled by setBank(). */
 let BANK = [];
 let QMAP = {};
 let BANK_INFO = { source:"", packs:0, warnings:[] };
 function setBank(list){ BANK=list; QMAP=Object.fromEntries(list.map(q=>[q.id,q])); }
-/* built-in copy of data/kindred/*.json (used offline and in the demo) */
-const FALLBACK_PACKS = [{"pack":"Pack 1","on":true,"categories":[{"name":"Food & Drink","questions":[{"id":"k01","d":1,"q":"Tea or coffee?","o":["Tea","Coffee"]},{"id":"k06","d":1,"q":"Sweet or salty?","o":["Sweet","Salty"]},{"id":"k09","d":1,"q":"Pineapple on pizza?","o":["Yes, always","Never"]},{"id":"k14","d":1,"q":"Which snack goes first?","o":["Chips","Chocolate","Fruit","Cheese and crackers"]},{"id":"k17","d":1,"q":"How spicy do you take your food?","lo":"Mild, please","hi":"Burn it down"},{"id":"k22","d":1,"q":"How good a cook are you?","lo":"Cereal chef","hi":"Michelin in my head"}]},{"name":"Daily Life","questions":[{"id":"k03","d":1,"q":"Text or call?","o":["Text","Call"]},{"id":"k05","d":1,"q":"Early bird or night owl?","o":["Early bird","Night owl"]},{"id":"k07","d":1,"q":"Plan everything or wing it?","o":["Plan it all","Wing it"]},{"id":"k11","d":1,"q":"Your ideal Saturday morning?","o":["Sleep till noon","Workout or long walk","Big brunch out","Errands and chores","Tinkering on a project"]},{"id":"k18","d":1,"q":"How many unread notifications do you have?","lo":"Zero, always","hi":"Thousands"},{"id":"k19","d":1,"q":"How early do you show up to things?","lo":"Fashionably late","hi":"An hour early"}]},{"name":"Fun & Games","questions":[{"id":"k08","d":1,"q":"Movie theater or your own couch?","o":["Theater","Couch"]},{"id":"k10","d":1,"q":"Dogs or cats?","o":["Dogs","Cats"]},{"id":"k12","d":1,"q":"Pick a superpower.","o":["Fly","Read minds","Stop time","Turn invisible"]},{"id":"k16","d":1,"q":"Your karaoke move?","o":["Power ballad","Rap verse","90s throwback","I'm not singing"]},{"id":"k23","d":1,"q":"Pick your perfect night.","o":["Live music","Board games with friends","A movie alone"]},{"id":"k24","d":1,"q":"Which would you miss most?","o":["Music","Coffee","Sunshine"]}]},{"name":"Places & Adventure","questions":[{"id":"k02","d":1,"q":"Window seat or aisle?","o":["Window","Aisle"]},{"id":"k04","d":1,"q":"Mountains or beach?","o":["Mountains","Beach"]},{"id":"k13","d":1,"q":"A free weekend trip. Where to?","o":["Big city","Cabin in the woods","Tropical beach","Road trip, no plan"]},{"id":"k28","d":2,"q":"City or countryside?","o":["City","Countryside"]},{"id":"k43","d":2,"q":"How do you feel about skydiving?","lo":"Never","hi":"Already booked"}]},{"name":"Social Life","questions":[{"id":"k15","d":1,"q":"Your role in the group chat?","o":["The instigator","The lurker","The meme dealer","The planner"]},{"id":"k20","d":1,"q":"How much do you talk at a dinner party?","lo":"Mostly listen","hi":"Main character"},{"id":"k21","d":1,"q":"How do you feel about a surprise party for you?","lo":"Dreadful","hi":"Bring it on"},{"id":"k31","d":2,"q":"After a fight: apologize first or wait it out?","o":["Apologize first","Wait it out"]},{"id":"k33","d":2,"q":"A friend pitches a business idea you think is bad. You…","o":["Tell them straight","Soften it","Ask questions until they see it","Cheer them on anyway"]},{"id":"k35","d":2,"q":"In a disagreement, you want…","o":["To win","To be understood","To end it","To find the middle"]},{"id":"k36","d":2,"q":"How do you recharge?","o":["Alone time","One close friend","A lively crowd","Time in nature","Screens and snacks"]},{"id":"k39","d":2,"q":"How much do you trust strangers?","lo":"Not at all","hi":"Instantly"},{"id":"k41","d":2,"q":"How much do you care what people think of you?","lo":"Not a bit","hi":"A lot"},{"id":"k42","d":2,"q":"How comfortable are you with silence?","lo":"Unbearable","hi":"Peaceful"},{"id":"k44","d":2,"q":"How much do you like being the center of attention?","lo":"Hate it","hi":"Love it"}]},{"name":"Money & Work","questions":[{"id":"k26","d":2,"q":"Save your money or spend it on experiences?","o":["Save it","Spend it"]},{"id":"k34","d":2,"q":"A surprise $5,000 lands in your account.","o":["Save it","Travel","Upgrade my home","Help someone","Something gloriously impractical"]},{"id":"k38","d":2,"q":"What matters most in a job?","o":["Pay","Purpose","People","Freedom"]},{"id":"k57","d":3,"q":"Money is mostly…","o":["Security","Freedom","Fun","Stress","Not something I think about"]}]},{"name":"Love & Family","questions":[{"id":"k27","d":2,"q":"Big wedding or elope?","o":["Big wedding","Elope"]},{"id":"k46","d":2,"q":"What do you want most in a partner?","o":["Humor","Loyalty","Ambition"]},{"id":"k52","d":3,"q":"Would you read your partner's messages if you'd never get caught?","o":["Yes","No"]},{"id":"k58","d":3,"q":"When someone you love is struggling, you…","o":["Try to fix it","Listen","Distract them","Give them space"]}]},{"name":"Mind & Self","questions":[{"id":"k25","d":2,"q":"Honest truth or kind lie?","o":["Honest truth","Kind lie"]},{"id":"k30","d":2,"q":"Rules exist for a reason, or rules are suggestions?","o":["For a reason","Suggestions"]},{"id":"k32","d":2,"q":"When you're stressed, you usually…","o":["Go quiet","Talk it out","Stay busy","Sleep it off"]},{"id":"k40","d":2,"q":"How often do you change your mind?","lo":"Almost never","hi":"Constantly"},{"id":"k45","d":2,"q":"How sentimental are you?","lo":"Nothing saved","hi":"Every ticket stub"},{"id":"k48","d":2,"q":"Which fear is worst?","o":["Public speaking","Being forgotten","Heights"]},{"id":"k59","d":3,"q":"How much of your life feels yours to steer?","lo":"Mostly luck","hi":"All me"},{"id":"k62","d":3,"q":"How honest are you about how you really feel?","lo":"I hide it","hi":"Open book"}]},{"name":"Big Questions","questions":[{"id":"k29","d":2,"q":"Would you rather know when you die, or how?","o":["When","How"]},{"id":"k37","d":2,"q":"The best decade of life?","o":["Childhood","Twenties","Midlife","Later years"]},{"id":"k47","d":2,"q":"What would you fix in the world first?","o":["Loneliness","Illness","Injustice"]},{"id":"k49","d":3,"q":"Admired or understood?","o":["Admired","Understood"]},{"id":"k50","d":3,"q":"If you could erase your worst memory, would you?","o":["Erase it","Keep it"]},{"id":"k51","d":3,"q":"Success or happiness, only one?","o":["Success","Happiness"]},{"id":"k53","d":3,"q":"A hard truth or a happy illusion?","o":["Hard truth","Happy illusion"]},{"id":"k54","d":3,"q":"Which kind of regret weighs most?","o":["Something I did","Something I didn't do","Someone I lost touch with","None, really"]},{"id":"k55","d":3,"q":"You'd most want to be remembered as…","o":["Kind","Brilliant","Brave","Fun","Loyal"]},{"id":"k56","d":3,"q":"What do you need more of right now?","o":["Time","Money","Courage","Rest","Love"]},{"id":"k60","d":3,"q":"How often do you think about death?","lo":"Never","hi":"Often"},{"id":"k61","d":3,"q":"How easily do you forgive?","lo":"Grudge keeper","hi":"Already forgot"},{"id":"k63","d":3,"q":"How much do you believe in fate?","lo":"It's all random","hi":"Everything happens for a reason"},{"id":"k64","d":3,"q":"What makes a good life?","o":["Love","Adventure","Peace"]},{"id":"k65","d":3,"q":"What would you never compromise on?","o":["Honesty","Freedom","Loyalty"]}]}],"_file":"07.kindred.pack-01.json"}];
+/* built-in copy of Data/11.kindred.pack-*.json (used offline and in the demo) */
+const FALLBACK_PACKS = [{"pack":"Pack 1","on":true,"categories":[{"name":"Food & Drink","questions":[{"id":"k01","d":1,"q":"Tea or coffee?","o":["Tea","Coffee"]},{"id":"k06","d":1,"q":"Sweet or salty?","o":["Sweet","Salty"]},{"id":"k09","d":1,"q":"Pineapple on pizza?","o":["Yes, always","Never"]},{"id":"k14","d":1,"q":"Which snack goes first?","o":["Chips","Chocolate","Fruit","Cheese and crackers"]},{"id":"k17","d":1,"q":"How spicy do you take your food?","lo":"Mild, please","hi":"Burn it down"},{"id":"k22","d":1,"q":"How good a cook are you?","lo":"Cereal chef","hi":"Michelin in my head"}]},{"name":"Daily Life","questions":[{"id":"k03","d":1,"q":"Text or call?","o":["Text","Call"]},{"id":"k05","d":1,"q":"Early bird or night owl?","o":["Early bird","Night owl"]},{"id":"k07","d":1,"q":"Plan everything or wing it?","o":["Plan it all","Wing it"]},{"id":"k11","d":1,"q":"Your ideal Saturday morning?","o":["Sleep till noon","Workout or long walk","Big brunch out","Errands and chores","Tinkering on a project"]},{"id":"k18","d":1,"q":"How many unread notifications do you have?","lo":"Zero, always","hi":"Thousands"},{"id":"k19","d":1,"q":"How early do you show up to things?","lo":"Fashionably late","hi":"An hour early"}]},{"name":"Fun & Games","questions":[{"id":"k08","d":1,"q":"Movie theater or your own couch?","o":["Theater","Couch"]},{"id":"k10","d":1,"q":"Dogs or cats?","o":["Dogs","Cats"]},{"id":"k12","d":1,"q":"Pick a superpower.","o":["Fly","Read minds","Stop time","Turn invisible"]},{"id":"k16","d":1,"q":"Your karaoke move?","o":["Power ballad","Rap verse","90s throwback","I'm not singing"]},{"id":"k23","t":"rank","d":1,"q":"Rank your perfect night, best first.","o":["Live music","Board games with friends","A movie alone"]},{"id":"k24","t":"rank","d":1,"q":"Rank what you'd miss most, most first.","o":["Music","Coffee","Sunshine"]}]},{"name":"Places & Adventure","questions":[{"id":"k02","d":1,"q":"Window seat or aisle?","o":["Window","Aisle"]},{"id":"k04","d":1,"q":"Mountains or beach?","o":["Mountains","Beach"]},{"id":"k13","d":1,"q":"A free weekend trip. Where to?","o":["Big city","Cabin in the woods","Tropical beach","Road trip, no plan"]},{"id":"k28","d":2,"q":"City or countryside?","o":["City","Countryside"]},{"id":"k43","d":2,"q":"How do you feel about skydiving?","lo":"Never","hi":"Already booked"}]},{"name":"Social Life","questions":[{"id":"k15","d":1,"q":"Your role in the group chat?","o":["The instigator","The lurker","The meme dealer","The planner"]},{"id":"k20","d":1,"q":"How much do you talk at a dinner party?","lo":"Mostly listen","hi":"Main character"},{"id":"k21","d":1,"q":"How do you feel about a surprise party for you?","lo":"Dreadful","hi":"Bring it on"},{"id":"k31","d":2,"q":"After a fight: apologize first or wait it out?","o":["Apologize first","Wait it out"]},{"id":"k33","d":2,"q":"A friend pitches a business idea you think is bad. You…","o":["Tell them straight","Soften it","Ask questions until they see it","Cheer them on anyway"]},{"id":"k35","d":2,"q":"In a disagreement, you want…","o":["To win","To be understood","To end it","To find the middle"]},{"id":"k36","d":2,"q":"How do you recharge?","o":["Alone time","One close friend","A lively crowd","Time in nature","Screens and snacks"]},{"id":"k39","d":2,"q":"How much do you trust strangers?","lo":"Not at all","hi":"Instantly"},{"id":"k41","d":2,"q":"How much do you care what people think of you?","lo":"Not a bit","hi":"A lot"},{"id":"k42","d":2,"q":"How comfortable are you with silence?","lo":"Unbearable","hi":"Peaceful"},{"id":"k44","d":2,"q":"How much do you like being the center of attention?","lo":"Hate it","hi":"Love it"}]},{"name":"Money & Work","questions":[{"id":"k26","d":2,"q":"Save your money or spend it on experiences?","o":["Save it","Spend it"]},{"id":"k34","d":2,"q":"A surprise $5,000 lands in your account.","o":["Save it","Travel","Upgrade my home","Help someone","Something gloriously impractical"]},{"id":"k38","d":2,"q":"What matters most in a job?","o":["Pay","Purpose","People","Freedom"]},{"id":"k57","d":3,"q":"Money is mostly…","o":["Security","Freedom","Fun","Stress","Not something I think about"]}]},{"name":"Love & Family","questions":[{"id":"k27","d":2,"q":"Big wedding or elope?","o":["Big wedding","Elope"]},{"id":"k46","t":"rank","d":2,"q":"Rank what you want most in a partner, most first.","o":["Humor","Loyalty","Ambition"]},{"id":"k52","d":3,"q":"Would you read your partner's messages if you'd never get caught?","o":["Yes","No"]},{"id":"k58","d":3,"q":"When someone you love is struggling, you…","o":["Try to fix it","Listen","Distract them","Give them space"]}]},{"name":"Mind & Self","questions":[{"id":"k25","d":2,"q":"Honest truth or kind lie?","o":["Honest truth","Kind lie"]},{"id":"k30","d":2,"q":"Rules exist for a reason, or rules are suggestions?","o":["For a reason","Suggestions"]},{"id":"k32","d":2,"q":"When you're stressed, you usually…","o":["Go quiet","Talk it out","Stay busy","Sleep it off"]},{"id":"k40","d":2,"q":"How often do you change your mind?","lo":"Almost never","hi":"Constantly"},{"id":"k45","d":2,"q":"How sentimental are you?","lo":"Nothing saved","hi":"Every ticket stub"},{"id":"k48","t":"rank","d":2,"q":"Rank these fears, scariest first.","o":["Public speaking","Being forgotten","Heights"]},{"id":"k59","d":3,"q":"How much of your life feels yours to steer?","lo":"Mostly luck","hi":"All me"},{"id":"k62","d":3,"q":"How honest are you about how you really feel?","lo":"I hide it","hi":"Open book"}]},{"name":"Big Questions","questions":[{"id":"k29","d":2,"q":"Would you rather know when you die, or how?","o":["When","How"]},{"id":"k37","d":2,"q":"The best decade of life?","o":["Childhood","Twenties","Midlife","Later years"]},{"id":"k47","t":"rank","d":2,"q":"Rank what you'd fix in the world first.","o":["Loneliness","Illness","Injustice"]},{"id":"k49","d":3,"q":"Admired or understood?","o":["Admired","Understood"]},{"id":"k50","d":3,"q":"If you could erase your worst memory, would you?","o":["Erase it","Keep it"]},{"id":"k51","d":3,"q":"Success or happiness, only one?","o":["Success","Happiness"]},{"id":"k53","d":3,"q":"A hard truth or a happy illusion?","o":["Hard truth","Happy illusion"]},{"id":"k54","d":3,"q":"Which kind of regret weighs most?","o":["Something I did","Something I didn't do","Someone I lost touch with","None, really"]},{"id":"k55","d":3,"q":"You'd most want to be remembered as…","o":["Kind","Brilliant","Brave","Fun","Loyal"]},{"id":"k56","d":3,"q":"What do you need more of right now?","o":["Time","Money","Courage","Rest","Love"]},{"id":"k60","d":3,"q":"How often do you think about death?","lo":"Never","hi":"Often"},{"id":"k61","d":3,"q":"How easily do you forgive?","lo":"Grudge keeper","hi":"Already forgot"},{"id":"k63","d":3,"q":"How much do you believe in fate?","lo":"It's all random","hi":"Everything happens for a reason"},{"id":"k64","t":"rank","d":3,"q":"Rank what makes a good life, most first.","o":["Love","Adventure","Peace"]},{"id":"k65","t":"rank","d":3,"q":"Rank what you'd never compromise on, most first.","o":["Honesty","Freedom","Loyalty"]}]}],"_file":"11.kindred.pack-01.json"}];
 /* ================= LOGIC (pure, no React) ================= */
 const MIN_OVERLAP = 8;       // shared questions before a score is trusted
 const CLUSTER_CUT = 0.60;    // average-linkage cut for clusters (match %, 0-1)
@@ -167,14 +139,14 @@ function hashStr(s){ let h=1779033703^s.length; for(let i=0;i<s.length;i++){ h=M
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 const seeded = s => mulberry32(hashStr(s));
 
-/* ---- reading question packs (data/kindred/*.json) ---- */
+/* ---- reading question packs (Data/11.kindred.pack-*.json) ---- */
 function normQuestion(r,ctx){
   ctx=ctx||{};
   if(!r||typeof r!=="object") return {err:"not a question object"};
   const q=typeof r.q==="string"?r.q.trim():""; if(!q) return {err:"missing q"};
   const label=q.length>28?q.slice(0,28)+"…":q;
   const o=Array.isArray(r.o)?r.o.map(String).filter(x=>x.trim()):[];
-  const t=(r.t==="rank"?"pick":r.t)||(r.lo&&r.hi?"slide":o.length===2?"this":"pick");
+  const t=r.t||(r.lo&&r.hi?"slide":o.length===2?"this":"pick");
   const d=[1,2,3].includes(r.d)?r.d:[1,2,3].includes(ctx.d)?ctx.d:2;
   let id=typeof r.id==="string"?r.id.trim():"";
   if(r.id!==undefined&&(!id||/\s/.test(id))) return {err:'"'+label+'": id can\'t be empty or have spaces'};
@@ -183,7 +155,8 @@ function normQuestion(r,ctx){
   if(t==="slide"){ if(!r.lo||!r.hi) return {err:'"'+label+'": slider needs lo and hi'}; return {q:{id,t,d,q,cat,lo:String(r.lo),hi:String(r.hi)}}; }
   if(t==="this"){ if(o.length!==2) return {err:'"'+label+'": this-or-that needs exactly 2 options'}; }
   else if(t==="pick"){ if(o.length<3||o.length>6) return {err:'"'+label+'": pick-one needs 3 to 6 options (or lo and hi for a slider)'}; }
-  else return {err:'"'+label+'": t must be this, pick or slide'};
+  else if(t==="rank"){ if(o.length!==3) return {err:'"'+label+'": rank needs exactly 3 options'}; }
+  else return {err:'"'+label+'": t must be this, pick, slide or rank'};
   return {q:{id,t,d,q,cat,o}};
 }
 function parsePacks(packs){
@@ -214,20 +187,25 @@ function categoryList(){
 }
 
 /* ---- answer shapes ----
-   this/pick: option index. slide: 1..7. A guess has the same shape as an answer. */
+   this/pick: option index. slide: 1..7. rank: array of option indexes, best first.
+   guess (duo): same as answer, except rank -> the partner's first choice (single index). */
 const nOpts = q => q.t==="slide" ? 7 : q.o.length;
-const bucketOf = (q,v) => q.t==="slide" ? v-1 : v;
+const bucketOf = (q,v) => q.t==="slide" ? v-1 : q.t==="rank" ? v[0] : v;
 function validVal(q,v){
   if(!q) return false;
   if(q.t==="slide") return Number.isInteger(v) && v>=1 && v<=7;
+  if(q.t==="rank") return Array.isArray(v) && v.length===q.o.length && v.every(x=>Number.isInteger(x)&&x>=0&&x<q.o.length) && new Set(v).size===v.length;
   return Number.isInteger(v) && v>=0 && v<q.o.length;
 }
 function randAns(q,r){
   if(q.t==="slide") return 1+Math.floor(r()*7);
+  if(q.t==="rank"){ const a=q.o.map((_,i)=>i); for(let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
   return Math.floor(r()*q.o.length);
 }
+const guessFromAnswer = (q,a) => q.t==="rank" ? a[0] : a;
 function guessHit(q,g,partnerAns){
   if(g===undefined||g===null||partnerAns===undefined) return false;
+  if(q.t==="rank") return g===partnerAns[0];
   if(q.t==="slide") return Math.abs(g-partnerAns)<=1;
   return g===partnerAns;
 }
@@ -235,6 +213,7 @@ function guessHit(q,g,partnerAns){
 /* ---- similarity 0..1 ---- */
 function simOf(q,a,b){
   if(q.t==="slide") return 1-Math.abs(a-b)/6;
+  if(q.t==="rank"){ const n=q.o.length; let s=0; for(let i=0;i<n;i++) s+=Math.abs(a.indexOf(i)-b.indexOf(i)); return 1-s/Math.floor(n*n/2); }
   return a===b?1:0;
 }
 
@@ -329,7 +308,7 @@ function botAns(q,arch,name){
   if(seeded("N"+name+q.id)()<.25) return randAns(q,seeded("R"+name+q.id));
   return randAns(q,seeded("A"+arch+q.id));
 }
-function botGuess(q,a,name){ return seeded("G"+name+q.id)()<.5 ? a : randAns(q,seeded("H"+name+q.id)); }
+function botGuess(q,a,name){ return seeded("G"+name+q.id)()<.5 ? guessFromAnswer(q,a) : guessFromAnswer(q,randAns(q,seeded("H"+name+q.id))); }
 const SEED_NAMES=["Ada","Bex","Cy","Dot","Eli","Fay","Gus","Hana","Ivo","Jo","Kit","Lou","Max","Noa","Ona","Pax","Quin","Ren"];
 function seedPopulation(colors){
   const answers={},people={};
@@ -337,33 +316,12 @@ function seedPopulation(colors){
   return {answers,people};
 }
 
-/* ---- duo points ----
-   Match with your partner: +1 each. Right guess: +2. Double down on a guess: right +4, wrong -2. */
-const MATCH_PTS=1, GUESS_PTS=2, DOUBLE_WIN=4, DOUBLE_LOSS=-2;
-const doublesFor = total => total>=15?4:3;
-const doublesUsed = hist => Object.values(hist||{}).filter(h=>h&&h.x).length;
-function guessPts(q,g,x,partnerAns){ if(g===undefined||g===null) return 0; const hit=guessHit(q,g,partnerAns); return hit?(x?DOUBLE_WIN:GUESS_PTS):(x?DOUBLE_LOSS:0); }
-function duoPoints(qs,hA,hB){
-  const blank=()=>({pts:0,matches:0,hits:0,dbWon:0,dbLost:0,guessed:0}), A=blank(), B=blank();
-  for(const q of qs){
-    const a=hA[q.id], b=hB[q.id]; if(!a||!b||!validVal(q,a.a)||!validVal(q,b.a)) continue;
-    if(simOf(q,a.a,b.a)>=.83){ A.pts+=MATCH_PTS; B.pts+=MATCH_PTS; A.matches++; B.matches++; }
-    for(const [S,m,o] of [[A,a,b],[B,b,a]]){ if(m.g===undefined) continue; S.guessed++; const hit=guessHit(q,m.g,o.a); S.pts+=guessPts(q,m.g,m.x,o.a); if(hit) S.hits++; if(m.x){ hit?S.dbWon++:S.dbLost++; } }
-  }
-  return {A,B};
-}
-/* how your answers compare with everyone who has saved answers */
-function crowdCheck(qs,A,pop){
-  let withN=0,ofN=0; const rare=[];
-  for(const q of qs){ const v=A[q.id]; if(!validVal(q,v)||popTotal(pop,q)<10) continue; const b=bucketOf(q,v); rare.push({q,v,pct:Math.round(share(pop,q,b)*100)}); if(q.t!=="slide"){ ofN++; const c=pop.counts[q.id]; if(c[b]===Math.max(...c)) withN++; } }
-  rare.sort((x,y)=>x.pct-y.pct); return {withN,ofN,n:rare.length,rare:rare.slice(0,2)};
-}
-
 /* ---- room helpers ---- */
 function isLocked(p,q,room){ const h=p&&p.hist&&p.hist[q.id]; if(!h||h.a===undefined) return false; return (room.mode==="duo"&&room.guess)? h.g!==undefined : true; }
 function fmtAns(q,v){
   if(v===undefined||v===null) return "—";
   if(q.t==="slide") return v+" of 7 · "+(v<=2?q.lo:v>=6?q.hi:"somewhere between");
+  if(q.t==="rank") return v.map(i=>q.o[i]).join(" › ");
   return q.o[v];
 }
 function fmtGuess(q,g){ if(g===undefined||g===null) return "—"; if(q.t==="slide") return String(g); return q.o[g]; }
@@ -443,20 +401,20 @@ function makeMem(colors){
 }
 
 /* ================= LOADING QUESTIONS =================
-   1) list data/kindred through the GitHub API (new files appear instantly)
-   2) else data/kindred/manifest.json (kept fresh by the GitHub Action)
+   1) list Data/ through the GitHub API (11.kindred.pack-* files) (new files appear instantly)
+   2) else Data/11.kindred.manifest.json (kept fresh by the GitHub Action)
    3) else the copy baked into this page. The demo skips straight to 3. */
-const GH_REPO = "aaronmedvick/Faces_game", PACK_DIR = "data/kindred";
+const GH_REPO = "aaronmedvick/Faces_game", PACK_DIR = "Data", MANIFEST = "11.kindred.manifest.json";
 async function loadBank(){
   const qs=new URLSearchParams(location.search), bust=qs.get("fresh")?("?t="+qs.get("fresh")):"";
   const warn=[]; let packs=null, source="built-in";
   const getJ=async u=>{ const r=await fetch(u,{cache:"no-cache"}); if(!r.ok) throw new Error(String(r.status)); return r.json(); };
-  const keep=n=>/\.json$/.test(n)&&n!=="manifest.json"&&!n.startsWith("_");
+  const keep=n=>/^11\.kindred\.pack.*\.json$/.test(n);
   if(!window.KD_DEMO){
     let list=null; // [{name,url}]
     try{ const c=JSON.parse(sessionStorage.getItem("kd_files")||"null"); if(c&&Date.now()-c.t<600000&&!bust) list=c.list; }catch(e){}
     if(!list){ try{ const r=await getJ("https://api.github.com/repos/"+GH_REPO+"/contents/"+PACK_DIR); list=r.filter(x=>x.type==="file"&&keep(x.name)).sort((a,b)=>a.name<b.name?-1:1).map(x=>({name:x.name,url:x.download_url})); try{ sessionStorage.setItem("kd_files",JSON.stringify({t:Date.now(),list})); }catch(e){} source="folder"; }catch(e){ list=null; } }
-    if(!list){ try{ const m=await getJ(PACK_DIR+"/manifest.json"+bust); list=m.files.filter(keep).map(n=>({name:n,url:PACK_DIR+"/"+n+bust})); source="manifest"; }catch(e){ list=null; } }
+    if(!list){ try{ const m=await getJ(PACK_DIR+"/"+MANIFEST+bust); list=m.files.filter(keep).map(n=>({name:n,url:PACK_DIR+"/"+n+bust})); source="manifest"; }catch(e){ list=null; } }
     if(list&&list.length){
       const got=await Promise.all(list.map(f=>getJ(f.url).then(j=>({...j,_file:f.name})).catch(()=>{ warn.push(f.name+": couldn't load or isn't valid JSON"); return null; })));
       packs=got.filter(Boolean);
@@ -511,6 +469,7 @@ function MiniTrack({v}){ return <div className="mini">{[1,2,3,4,5,6,7].map(i=><s
 function AnsView({q,v}){
   if(v===undefined||v===null) return <div className="dim">No answer</div>;
   if(q.t==="slide") return <div><div className="slideNum">{v}</div><MiniTrack v={v}/><div className="dim tiny">{v<=2?q.lo:v>=6?q.hi:"in between"}</div></div>;
+  if(q.t==="rank") return <ol className="rankList">{v.map((i,k)=><li key={k}>{q.o[i]}</li>)}</ol>;
   return <div className="ansText">{q.o[v]}</div>;
 }
 
@@ -540,69 +499,49 @@ function Slider({q,val,setVal}){
     <div className="trackLabels"><span>{q.lo}</span><span>{q.hi}</span></div>
   </div>;
 }
-function StepBar({step,partner}){
-  return <div className="steps">
-    <div className={"stp"+(step===1?" cur":" done")}><b>{step===1?"1":"✓"}</b>Your answer</div>
-    <div className="arrow">→</div>
-    <div className={"stp"+(step===2?" cur g":"")}><b>2</b>Guess {partner}</div>
+function RankPick({q,val,setVal}){
+  const order=val||[];
+  return <div className="opts">
+    {q.o.map((o,i)=>{ const pos=order.indexOf(i); return <button key={i} className={"opt rank"+(pos>=0?" on":"")} onClick={()=>{ if(pos>=0) return; setVal([...order,i]); sfx.snap(); }}><span className="rbadge">{pos>=0?pos+1:""}</span>{o}</button>; })}
+    <button className="link" onClick={()=>setVal([])}>Start over</button>
   </div>;
 }
 
-/* mode "answer": your own pick. mode "guess" (duo only): guess your partner's pick, optionally doubling down. */
-function AnswerPanel({q,mode,duo,partnerP,myAns,left,onLock}){
-  const [val,setVal]=useState(null), [dbl,setDbl]=useState(false);
-  const guess=mode==="guess", ready=val!==null, canDbl=left>0;
-  const idle=guess?"Pick your guess":q.t==="slide"?"Set your answer":"Choose an answer";
-  return <div className={"panel"+(guess?" isGuess":"")}>
-    {duo && <StepBar step={guess?2:1} partner={partnerP.name}/>}
-    {duo && !guess && <div className="dim small center">Next you'll guess {partnerP.name}'s answer, and you can bet on it.</div>}
-    {guess && <div className="guessHead bump"><Av p={partnerP} size={50}/><div><div className="gh1">Now guess {partnerP.name}'s answer</div><div className="gh2">What did {partnerP.name} pick?</div></div></div>}
-    {guess && <button className={"dbl"+(dbl?" on":"")+(canDbl?"":" off")} disabled={!canDbl} onClick={()=>{ setDbl(!dbl); sfx.snap(); }}>
-      <span className="dblIcon">⚡</span>
-      <span className="dblTxt"><b>{!canDbl?"No double downs left":dbl?"Doubled!":"Double down"}</b><i>{!canDbl?"You've used them all":dbl?"Right +4 · wrong −2":left+" left · tap to bet: right +4, wrong −2"}</i></span>
-      {canDbl && <span className="sw"><span className="knob"/></span>}
-    </button>}
-    <button className={"go"+(guess?" purple":"")+(guess&&dbl?" x2":"")} disabled={!ready} onClick={()=>{ sfx.lock(); onLock(val,dbl); }}>{ready?(guess?"Lock guess"+(dbl?" ×2":""):"Lock in"):idle}</button>
-    <div className="card qcard"><div className="catTag">{q.cat}</div><div className="q">{q.q}</div></div>
-    {guess && myAns!==undefined && <div className="dim small center">You picked: {fmtAns(q,myAns)}</div>}
-    {q.t==="slide" ? <Slider q={q} val={val} setVal={setVal}/> : <Choice q={q} val={val} setVal={setVal}/>}
-  </div>;
+function AnswerPanel({q,mode,partner,onLock}){
+  const [val,setVal]=useState(null);
+  const guess=mode==="guess";
+  // rank guesses ask only for the partner's first pick
+  const qq = guess&&q.t==="rank" ? {...q,t:"pick"} : q;
+  const ready = qq.t==="rank" ? (val&&val.length===q.o.length) : val!==null;
+  const idle = guess ? "Make your guess" : qq.t==="rank" ? "Tap all in order" : qq.t==="slide" ? "Set your answer" : "Choose an answer";
+  return <>
+    <button className="go" disabled={!ready} onClick={()=>{ sfx.lock(); onLock(val); }}>{ready?(guess?"Lock guess":"Lock in"):idle}</button>
+    <div className="card qcard">
+      <div className="catTag">{q.cat}</div>
+      {guess && <div className="dim small">Guess <b>{partner}</b>'s answer</div>}
+      <div className="q">{q.q}</div>
+      {guess&&q.t==="rank" && <div className="dim small">Which one did they put first?</div>}
+    </div>
+    {qq.t==="slide" ? <Slider q={qq} val={val} setVal={setVal}/> : qq.t==="rank" ? <RankPick q={qq} val={val} setVal={setVal}/> : <Choice q={qq} val={val} setVal={setVal}/>}
+  </>;
 }
 /* ---- screens ---- */
-function Home({name,setName,codeInput,setCodeInput,saveOn,setSaveOn,onNew,onPractice,onJoin,onForget}){
-  const demo=!!window.KD_DEMO;
+function Home({name,setName,codeInput,setCodeInput,saveOn,setSaveOn,onNew,onPractice,onJoin,onMap,onForget,banner}){
   return <div className="wrap">
     <div className="brandBig">Kindred</div>
     <div className="lede">Everyone answers the same questions. See who answers like you.</div>
     <div className="heroThread"><ThreadPair a={{name:"A",color:"#F5B14C"}} b={{name:"B",color:"#A78BFA"}} pct={88} size={38}/></div>
     <input className="txt" placeholder="Your name" maxLength={14} value={name} onChange={e=>setName(e.target.value)} />
-    {demo
-      ? <button className="go" onClick={onPractice}>Play with bots</button>
-      : <>
-        <div className="card joinCard">
-          <div className="joinTitle">Join a game</div>
-          <div className="row">
-            <input className="txt grow code4" placeholder="CODE" maxLength={4} value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} onKeyDown={e=>{ if(e.key==="Enter"&&codeInput.length>=4) onJoin(); }} />
-            <button className="go joinBtn" disabled={codeInput.length<4} onClick={()=>onJoin()}>Join</button>
-          </div>
-          <div className="dim small gap">Or scan the host's QR code with your camera.</div>
-        </div>
-        <button className="go2" onClick={onNew}>Host a new game</button>
-        <button className="link" onClick={onPractice}>Practice with bots</button>
-        <label className="check"><input type="checkbox" checked={saveOn} onChange={e=>{ setSaveOn(e.target.checked); ls.set("kd_save",e.target.checked?"1":"0"); }}/> <span>Remember my answers so results can compare you with everyone</span></label>
-        <button className="link" onClick={onForget}>Forget my saved answers</button>
-      </>}
+    <button className="go" disabled={!name.trim()} onClick={onNew}>Start a room</button>
+    <div className="row">
+      <input className="txt grow code4" placeholder="Code" maxLength={4} value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} />
+      <button className="go2 joinBtn" disabled={!name.trim()||codeInput.length<4} onClick={onJoin}>Join</button>
+    </div>
+    <button className="go2" disabled={!name.trim()} onClick={onPractice}>Practice with bots</button>
+    <label className="check"><input type="checkbox" checked={saveOn} onChange={e=>{ setSaveOn(e.target.checked); ls.set("kd_save",e.target.checked?"1":"0"); }}/> <span>Remember my answers so the constellation grows over time</span></label>
+    <button className="link" onClick={onForget}>Forget my saved answers</button>
     <div className="foot verNum">{VERSION} · {BANK.length} questions · {BANK_INFO.packs} packs · {BANK_INFO.source}</div>
     {BANK_INFO.warnings.length>0 && <button className="link warnLink" onClick={()=>alert(BANK_INFO.warnings.join("\n"))}>⚠ {BANK_INFO.warnings.length} question issue{BANK_INFO.warnings.length>1?"s":""} — tap to see</button>}
-  </div>;
-}
-
-function Joining({code}){
-  return <div className="wrap center">
-    <div className="spinner"/>
-    <div className="joinBig">Joining game</div>
-    {code ? <div className="code">{code}</div> : null}
-    <div className="dim">Getting you into the room…</div>
   </div>;
 }
 
@@ -615,27 +554,24 @@ function Create({cfg,setCfg,practice,onOpen,onBack}){
   return <div className="wrap">
     <TopBar left={practice?<span className="pill">practice</span>:null} right={<button className="link" onClick={onBack}>Back</button>}/>
     <button className="go" disabled={avail<4} onClick={onOpen}>{avail<4?"Pick more categories":practice?"Start practice":"Open room"}</button>
-    <div className="card"><div className="lab">Who's playing</div>{seg("mode",[["duo","Duo · 2 people"],["group","Group · up to 12"]])}<div className="dim small gap">{cfg.mode==="duo"?"Lock your answer, then guess theirs. They guess yours.":"Everyone answers, then you see who matches."}</div></div>
+    <div className="card"><div className="lab">Who's playing</div><div className="dim small">Automatic. Two players get Duo (lock your answer, then guess theirs). Three or more get Group (see who matches whom).</div></div>
     <div className="card"><div className="lab">Questions</div>{seg("total",[[8,"8"],[10,"10"],[15,"15"]])}<div className="dim small">Games start light and get deeper.{avail<cfg.total?" Only "+avail+" questions match, so this one will be shorter.":""}</div></div>
     <div className="card"><div className="row between"><div className="lab">Categories</div><button className="link" onClick={()=>setCfg({...cfg,cats:null})}>All</button></div><div className="chips">{cats.map(c=><button key={c.name} className={"chip"+(isOn(c)?" on":"")} onClick={()=>toggle(c)}>{c.name}<span>{c.count}</span></button>)}</div></div>
   </div>;
 }
 
-function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKick,onRename}){
+function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKick}){
   const qr=useRef(null);
-  const me=players.find(p=>p.id===myId); const [nm,setNm]=useState(me?me.name:"");
-  useEffect(()=>{ if(me&&nm.trim()&&nm.trim()!==me.name){ const t=setTimeout(()=>onRename(nm.trim()),500); return ()=>clearTimeout(t); } },[nm,me&&me.name]);
   useEffect(()=>{ if(practice||!qr.current||!window.QRCode) return; qr.current.innerHTML=""; try{ new QRCode(qr.current,{text:location.origin+location.pathname+"?code="+code,width:128,height:128,colorDark:"#0E0B1A",colorLight:"#ffffff"}); }catch(e){} },[code,practice]);
-  const max=room.mode==="duo"?2:12, need=room.mode==="duo"?players.length===2:players.length>=2;
+  const max=12, need=players.length>=2, modeNow=players.length===2?"duo":"group";
   const host=players.find(p=>p.id===room.host_id);
   return <div className="wrap">
     <TopBar left={practice?<span className="pill">practice</span>:null} right={<button className="link" onClick={onLeave}>Leave</button>}/>
     {isHost
-      ? <button className="go" disabled={!need} onClick={onStart}>{need?"Deal the first question":(room.mode==="duo"?"Duo needs two players":"Need at least two players")}</button>
+      ? <button className="go" disabled={!need} onClick={onStart}>{need?(modeNow==="duo"?"Deal the first question (Duo)":"Deal the first question (Group)"):"Need at least two players"}</button>
       : <div className="card center dim">Waiting for {host?host.name:"the host"} to start…</div>}
-    <div className="card"><div className="lab">Your name</div><input className="txt" maxLength={14} value={nm} onChange={e=>setNm(e.target.value)} placeholder="Your name"/></div>
     <div className="card center">
-      <div className="lab">{room.mode==="duo"?"Duo":"Group"} · {room.total} questions</div>
+      <div className="lab">{modeNow==="duo"?"Duo":"Group"} · {room.total} questions</div>
       {!practice && <><div className="code">{code}</div><div id="qr" ref={qr}/></>}
     </div>
     <div>{players.map(p=><div className="prow" key={p.id}><Av p={p} size={34}/><div className="grow"><b>{p.name}</b>{p.id===room.host_id&&<span className="dim small"> · host</span>}{p.bot&&<span className="dim small"> · bot</span>}</div>{isHost&&p.bot&&<button className="link" onClick={()=>onKick(p.id)}>Remove</button>}</div>)}</div>
@@ -643,18 +579,15 @@ function Lobby({room,players,isHost,code,practice,onStart,onAddBot,onLeave,onKic
   </div>;
 }
 
-function Asking({room,players,q,meHist,hists,partnerP,onAnswer,onGuess,isHost,onForce,onLeave,heckle}){
-  const h=meHist[q.id], duo=!!room.guess&&!!partnerP;
+function Asking({room,players,q,meHist,partner,onAnswer,onGuess,isHost,onForce,onLeave,practice,heckle}){
+  const h=meHist[q.id];
   const stage = !h||h.a===undefined ? "answer" : (room.guess&&h.g===undefined ? "guess" : "wait");
-  const lockedP=p=>isLocked(p.id===myId?{...p,hist:meHist}:p,q,room);
-  const locked=players.filter(lockedP).length;
-  const left=doublesFor(room.total)-doublesUsed(meHist);
-  const sc=duo?duoPoints(room.qids.slice(0,room.idx).map(id=>QMAP[id]),meHist,hists[partnerP.id]||{}):null;
+  const locked=players.filter(p=>isLocked(p.id===myId?{...p,hist:meHist}:p,q,room)).length;
   return <div className="wrap">
-    <TopBar left={<span className="mono dim small">{room.idx+1} / {room.total}{sc?" · You "+sc.A.pts+" – "+sc.B.pts+" "+partnerP.name+" · ⚡"+left:""}</span>} right={<button className="link" onClick={onLeave}>Leave</button>}/>
-    <div className="pips">{players.map(p=><div key={p.id} className={"pip"+(lockedP(p)?" done":"")}><Av p={p} size={26}/>{lockedP(p)&&<i>✓</i>}</div>)}</div>
-    {stage==="answer" && <AnswerPanel key={q.id+"a"} q={q} mode="answer" duo={duo} partnerP={partnerP} onLock={onAnswer}/>}
-    {stage==="guess" && <AnswerPanel key={q.id+"g"} q={q} mode="guess" duo={duo} partnerP={partnerP} myAns={h.a} left={left} onLock={onGuess}/>}
+    <TopBar left={<span className="mono dim small">{room.idx+1} / {room.total}</span>} right={<button className="link" onClick={onLeave}>Leave</button>}/>
+    <div className="pips">{players.map(p=>{ const done=isLocked(p.id===myId?{...p,hist:meHist}:p,q,room); return <div key={p.id} className={"pip"+(done?" done":"")}><Av p={p} size={26}/>{done&&<i>✓</i>}</div>; })}</div>
+    {stage==="answer" && <AnswerPanel key={q.id+"a"} q={q} mode="answer" onLock={onAnswer}/>}
+    {stage==="guess" && <AnswerPanel key={q.id+"g"} q={q} mode="guess" partner={partner} onLock={onGuess}/>}
     {stage==="wait" && <>
       <div className="card center"><div className="q">{q.q}</div><div className="dim">Locked in. Waiting for {locked<players.length?(players.length-locked)+" more":"the reveal"}…</div></div>
       {isHost && <button className="go2" onClick={onForce}>Reveal now</button>}
@@ -682,25 +615,25 @@ function Reveal({room,players,hists,answers,q,pop,isHost,onNext,onLeave,heckle})
   useEffect(()=>{ if(flipped&&!duo) sfx.chime(); },[flipped]);
   let body;
   if(duo){
-    const sc=them?duoPoints(qsSoFar,hists[you.id]||{},hists[them.id]||{}):{A:{pts:0},B:{pts:0}};
+    const total=them?pairScore(qsSoFar,answers[you.id]||{},answers[them.id]||{},pop):{pct:null,n:0};
     const word=!item?"No comparison":item.s>=.99?"Match":item.s>=.5?"Close":"Split";
     const rare=item&&item.s>=.83&&item.bonus>=.5&&item.tot>=10;
+    const ga=room.guess&&them?guessHit(q,hists[you.id]&&hists[you.id][q.id]&&hists[you.id][q.id].g,b):null;
     body=<>
       <div className="duoCards">
         {[you,them].filter(Boolean).map((p,i)=><div className="rcard" key={p.id}>
           <div className="rtop"><Av p={p} size={30}/><span className="rname">{p.id===myId?"You":p.name}</span></div>
           {flipped ? <div className="bump rans"><AnsView q={q} v={answers[p.id]&&answers[p.id][q.id]}/></div> : <div className="sealed">✦</div>}
-          {resulted && room.guess && (()=>{ const o=p.id===you.id?them:you, oh=(hists[o.id]&&hists[o.id][q.id])||{}, pa=answers[p.id]&&answers[p.id][q.id]; const hit=guessHit(q,oh.g,pa), pts=guessPts(q,oh.g,oh.x,pa); return <div className={"gline "+(hit?"hit":"miss")}>{o.id===myId?"You":o.name} guessed: {fmtGuess(q,oh.g)} {hit?"✓":"✗"} <b>{pts>0?"+"+pts:pts<0?"−"+Math.abs(pts):""}</b>{oh.x?" · ⚡×2":""}</div>; })()}
+          {resulted && room.guess && (()=>{ const o=p.id===you.id?them:you; const g=hists[o.id]&&hists[o.id][q.id]&&hists[o.id][q.id].g; const hit=guessHit(q,g,answers[p.id]&&answers[p.id][q.id]); return <div className={"gline "+(hit?"hit":"miss")}>{o.id===myId?"You":o.name} guessed: {fmtGuess(q,g)} {hit?"✓":"✗"}</div>; })()}
         </div>)}
       </div>
       {resulted && them && <div className="bump center">
         <ThreadPair a={you} b={them} pct={item?item.s*100:0} size={34}/>
         <div className={"verdict "+(item&&item.s>=.5?"good":"bad")}>{word}</div>
-        {item&&item.s>=.83&&<div className="rare">Match · +1 each</div>}
         {rare && <div className="rare">Rare match · only ~{item.pct}% answer like this</div>}
       </div>}
       {extras && them && <div className="card small">
-        <div className="row between"><span className="dim">Score</span><b className="mono">You {sc.A.pts} · {them.name} {sc.B.pts}</b></div>
+        <div className="row between"><span className="dim">Match so far</span><b className="mono">{total.pct==null?"—":total.pct+"%"}</b></div>
       </div>}
     </>;
   } else {
@@ -744,7 +677,7 @@ function GraphMap({nodes,g,meId,sel,onSel,W=340,H=320,labels=true}){
   </svg>;
 }
 
-function Finale({room,players,hists,answers,pop,isHost,onAgain,onLeave}){
+function Finale({room,players,hists,answers,pop,isHost,onAgain,onLeave,onMap,practice}){
   const qs=room.qids.map(id=>QMAP[id]);
   const me=players.find(p=>p.id===myId)||players[0];
   const minOv=Math.min(MIN_OVERLAP,room.total);
@@ -762,38 +695,20 @@ function Finale({room,players,hists,answers,pop,isHost,onAgain,onLeave}){
   const shown=useCountUp(res&&res.pct!=null?res.pct:0,1500);
   useEffect(()=>{ if(res&&res.pct!=null){ const t=setTimeout(()=>res.pct>=55?sfx.chime():sfx.split(),1500); return ()=>clearTimeout(t); } },[]);
   if(useDuo){
-    const sc=duoPoints(qs,hists[me.id]||{},hists[them.id]||{}), A=sc.A, B=sc.B;
     const items=res.items, agree=items.filter(i=>i.s>=.83).sort((x,y)=>y.bonus*y.s-x.bonus*x.s||y.s-x.s).slice(0,2), split=items.filter(i=>i.s<.5).sort((x,y)=>x.s-y.s).slice(0,2);
-    const crowd=crowdCheck(qs,answers[me.id]||{},pop);
-    const win=A.pts===B.pts?"It's a tie":(A.pts>B.pts?"You win":them.name+" wins");
-    const stat=(label,a,b)=><div className="stat"><span>{label}</span><b>{a}</b><b>{b}</b></div>;
+    const reads=(p,o)=>room.guess? qs.filter(q=>guessHit(q,hists[p.id]&&hists[p.id][q.id]&&hists[p.id][q.id].g,answers[o.id]&&answers[o.id][q.id])).length : null;
+    const r1=reads(me,them), r2=reads(them,me);
     return <div className="wrap">{top}
       <div className="card center">
-        <div className="scoreRow">
-          <div className="scoreSide"><Av p={me} size={44}/><div className="sNum">{A.pts}</div><div className="sName">You</div></div>
-          <div className="vs">–</div>
-          <div className="scoreSide"><Av p={them} size={44}/><div className="sNum">{B.pts}</div><div className="sName">{them.name}</div></div>
-        </div>
-        <div className="tier">{win}</div>
+        <ThreadPair a={me} b={them} pct={shown} size={56}/>
+        <div className="bigPct">{Math.round(shown)}<span>%</span></div>
+        <div className="tier">{res.pct==null?"Not enough answers to compare":tierOf(res.pct)}</div>
+        <div className="dim small">{me.name} and {them.name} · {res.n} questions</div>
       </div>
-      <div className="card small">
-        <div className="stat head"><span/><b>You</b><b>{them.name}</b></div>
-        {stat("Matches · +1 each",A.matches,B.matches)}
-        {stat("Right guesses · +2",A.hits+"/"+A.guessed,B.hits+"/"+B.guessed)}
-        {stat("Double downs won · +4",A.dbWon,B.dbWon)}
-        {stat("Double downs lost · −2",A.dbLost,B.dbLost)}
-      </div>
-      <div className="card center">
-        <ThreadPair a={me} b={them} pct={shown} size={44}/>
-        <div className="tier">{res.pct==null?"Not enough answers to compare":Math.round(shown)+"% · "+tierOf(res.pct)}</div>
-        <div className="dim small">Compatibility across {res.n} questions</div>
-      </div>
-      {crowd.n>=3 && <div className="card small"><div className="lab">You vs. everyone</div>
-        {crowd.ofN>0 && <div>With the crowd on <b>{crowd.withN} of {crowd.ofN}</b></div>}
-        {crowd.rare[0] && <div className="listItem"><div>{crowd.rare[0].q.q}</div><div className="dim">{fmtAns(crowd.rare[0].q,crowd.rare[0].v)} · only ~{crowd.rare[0].pct}% pick this</div></div>}
-      </div>}
+      {room.guess && <div className="card small"><div className="lab">Guesses that landed</div><div className="row between"><span>You guessed {them.name}</span><b className="mono">{r1}/{qs.length}</b></div><div className="row between gap"><span>{them.name} guessed you</span><b className="mono">{r2}/{qs.length}</b></div></div>}
       {agree.length>0 && <div className="card small"><div className="lab">Where you clicked</div>{agree.map(i=><div className="listItem" key={i.q.id}><div>{i.q.q}</div><div className="dim">{i.s>=.99?fmtAns(i.q,i.a):"You: "+fmtAns(i.q,i.a)+" · "+them.name+": "+fmtAns(i.q,i.b)}{i.bonus>=.5&&i.tot>=10?" · only ~"+i.pct+"% agree":""}</div></div>)}</div>}
       {split.length>0 && <div className="card small"><div className="lab">Where you split</div>{split.map(i=><div className="listItem" key={i.q.id}><div>{i.q.q}</div><div className="dim">You: {fmtAns(i.q,i.a)} · {them.name}: {fmtAns(i.q,i.b)}</div></div>)}</div>}
+      <button className="go2" onClick={onMap}>See the constellation</button>
     </div>;
   }
   // group
@@ -806,6 +721,7 @@ function Finale({room,players,hists,answers,pop,isHost,onAgain,onLeave}){
       {opp&&opp.p.id!==twin.p.id&&<div className="row between gap"><span className="row"><Av p={opp.p} size={30}/>&nbsp;Your opposite: <b>&nbsp;{opp.p.name}</b></span><b className="mono">{opp.r.pct}%</b></div>}
       {myClu.length>1 && <div className="dim small gap">Your cluster: {myClu.filter(id=>id!==me.id).map(id=>players.find(p=>p.id===id).name).join(", ")}</div>}</div>}
     <div className="card small"><div className="lab">Everyone vs. you</div>{ranked.map(x=><div className="row between lrow" key={x.p.id}><span className="row"><Av p={x.p} size={26}/>&nbsp;{x.p.name}</span><span className="mono">{x.r.pct}%</span></div>)}</div>
+    <button className="go2" onClick={onMap}>See the constellation</button>
   </div>;
 }
 
@@ -847,7 +763,7 @@ function Constellation({db,practice,onBack,setPop}){
 }
 /* ================= APP ================= */
 function App(){
-  const [screen,setScreen]=useState(urlQS.get("map")?"map":(urlQS.get("code")&&!window.KD_DEMO?"joining":"home"));   // home | joining | create | room | map  (?code= joins straight away, ?map opens the all-time constellation)
+  const [screen,setScreen]=useState("home");          // home | create | room | map
   const [name,setName]=useState(ls.get("hub_name")||ls.get("kd_name")||"");
   const [codeInput,setCodeInput]=useState((urlQS.get("code")||"").toUpperCase().slice(0,4));
   const [saveOn,setSaveOn]=useState(ls.get("kd_save")!=="0");
@@ -860,7 +776,6 @@ function App(){
   const [players,setPlayers]=useState([]);
   const [pop,setPop]=useState(emptyPop());
   const [banner,setBanner]=useState("");
-  const [joinCode,setJoinCode]=useState((urlQS.get("code")||"").toUpperCase().slice(0,4));
   const [saveErr,setSaveErr]=useState(false);
   const [floaties,setFloaties]=useState([]);
   const [,bump]=useState(0);
@@ -894,9 +809,6 @@ function App(){
     return ()=>{ dead=true; un(); clearInterval(poll); };
   },[db,code]);
 
-  /* scanned a QR code: join straight away, rename later in the lobby */
-  useEffect(()=>{ const c=(urlQS.get('code')||'').toUpperCase(); if(c.length===4&&!window.KD_DEMO) joinRoom(c); },[]);
-
   /* rejoin after a Safari reload */
   useEffect(()=>{ const c=ls.get("kd_code"); if(!c||urlQS.get("code")||!sb) return; (async()=>{ try{ const d=getDb(false); const r=await d.getRoom(c); const ps=r?await d.players(c):[]; if(r&&ps.some(p=>p.id===myId)){ enter(d,c,false); } else ls.set("kd_code",""); }catch(e){} })(); },[]);
 
@@ -914,7 +826,7 @@ function App(){
           if(!botDue.current[key]) botDue.current[key]=now+1200+Math.random()*3200;
           if(now<botDue.current[key]) continue;
           const arch=parseInt(p.persona||"0",10)||0, a=botAns(q,arch,p.name), entry={a};
-          if(room.guess){ entry.g=botGuess(q,a,p.name); if(doublesUsed(p.hist)<doublesFor(room.total)&&seeded("X"+p.name+q.id)()<.3) entry.x=true; }
+          if(room.guess) entry.g=botGuess(q,a,p.name);
           const hist={...(p.hist||{}),[q.id]:entry}; await d.patchPlayer(p.id,{hist}); p.hist=hist;
         }
         if(ps.length>0 && ps.every(p=>isLocked(p,q,room))){
@@ -931,48 +843,47 @@ function App(){
   function popHeckle(p){ const id=Math.random(); setFloaties(f=>[...f,{id,emoji:p.emoji,left:8+Math.random()*80}]); setTimeout(()=>setFloaties(f=>f.filter(x=>x.id!==id)),2200); }
   const heckle=e=>{ if(db) db.heckle(e,name); };
 
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await openRoom(E.code); return; }
+      const ok=await HUB.waitRoom("kd_rooms",E.code,20000); if(ok) await joinRoom(E.code); else await openRoom(E.code); }catch(e){} })(); },[]);
+
   /* ---- enter / leave ---- */
   function enter(d,c,p){ genRef.current=-1; myHist.current=null; botDue.current={}; setRoom(null); setPlayers([]); setPractice(p); setDb(d); setCode(c); setScreen("room"); if(!p) ls.set("kd_code",c); freshPop(d).catch(()=>{}); }
   function hardLeave(msg){ ls.set("kd_code",""); setCode(""); setRoom(null); setPlayers([]); setDb(null); genRef.current=-1; myHist.current=null; setScreen("home"); if(msg) setBanner(msg); }
   async function leave(){ const d=db,c=code,host=isHost; try{ if(host) await d.deleteRoom(c); else await d.removePlayer(myId); }catch(e){} hardLeave(""); }
 
-  async function openRoom(){
+  async function openRoom(forced){
     if(busy.current) return; busy.current=true; sfx.unlock();
     try{
-      const typed=name.trim(), nm=typed||"Guest"; if(typed) ls.set("hub_name",typed); const d=getDb(practice); let c=null;
-      for(let i=0;i<4;i++){ c=randCode(); try{ await d.createRoom({code:c,host_id:myId,mode:cfg.mode,total:cfg.total,guess:cfg.mode==="duo",phase:"lobby",idx:0,qids:[],gen:0}); break; }catch(e){ if(i===3) throw e; } }
+      const nm=name.trim(); ls.set("hub_name",nm); const d=getDb(practice); let c=null;
+      for(let i=0;i<4;i++){ c=(typeof forced==="string"&&forced)?forced:randCode(); try{ await d.createRoom({code:c,host_id:myId,mode:cfg.mode,total:cfg.total,guess:cfg.mode==="duo",phase:"lobby",idx:0,qids:[],gen:0}); break; }catch(e){ if(i===3) throw e; } }
       await d.addPlayer({id:myId,code:c,name:nm,color:COLORS[0],bot:false,hist:{}});
       if(practice){ const bots=cfg.mode==="duo"?[BOTS[0]]:[BOTS[0],BOTS[2],BOTS[1],BOTS[3]]; let i=1; for(const b of bots){ await d.addPlayer({id:"bot-"+b.name.toLowerCase()+"-"+c,code:c,name:b.name,color:COLORS[i++%COLORS.length],bot:true,persona:String(b.arch),hist:{}}); } }
       enter(d,c,practice);
     }catch(e){ fail(e); } finally{ busy.current=false; }
   }
-  async function joinRoom(codeArg){
+  async function joinRoom(cArg){
     if(busy.current) return; busy.current=true; sfx.unlock();
-    const c=String(codeArg||codeInput).trim().toUpperCase().slice(0,4);
     try{
-      const typed=name.trim(), nm=typed||"Guest"; if(typed) ls.set("hub_name",typed);
-      setJoinCode(c); setScreen("joining");
-      const d=getDb(false);
-      const r=await d.getRoom(c); if(!r){ setCodeInput(c); setScreen("home"); setBanner("No room with that code."); return; }
+      const nm=name.trim(), c=((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase(); ls.set("hub_name",nm); const d=getDb(false);
+      const r=await d.getRoom(c); if(!r){ setBanner("No room with that code."); return; }
       const ps=await d.players(c);
       if(!ps.some(p=>p.id===myId)){
-        if(r.phase!=="lobby"){ setCodeInput(c); setScreen("home"); setBanner("That game already started."); return; }
-        if(ps.length>=(r.mode==="duo"?2:12)){ setCodeInput(c); setScreen("home"); setBanner("That room is full."); return; }
+        if(r.phase!=="lobby"){ setBanner("That game already started."); return; }
+        if(ps.length>=12){ setBanner("That room is full."); return; }
         await d.addPlayer({id:myId,code:c,name:nm,color:colorFor(ps),bot:false,hist:{}});
-      } else { const mine=ps.find(p=>p.id===myId); if(!typed&&mine) setName(mine.name); }
-      try{ history.replaceState(null,"",location.pathname); }catch(e){}
+      }
       enter(d,c,false);
-    }catch(e){ setCodeInput(c); setScreen("home"); fail(e); } finally{ busy.current=false; }
+    }catch(e){ fail(e); } finally{ busy.current=false; }
   }
-  async function rename(n){ setName(n); ls.set("hub_name",n); try{ await db.patchPlayer(myId,{name:n}); }catch(e){ fail(e); } }
-  async function forget(){ if(!confirm("Delete all your saved answers?")) return; try{ await getDb(false).forget(myId); if(memRef.current) await memRef.current.forget(myId); setBanner("Your saved answers are gone."); }catch(e){ fail(e); } }
+  async function forget(){ if(!confirm("Delete all your saved answers from the constellation?")) return; try{ await getDb(false).forget(myId); if(memRef.current) await memRef.current.forget(myId); setBanner("Your saved answers are gone."); }catch(e){ fail(e); } }
 
   /* ---- host actions ---- */
   async function addBot(){ try{ const used=new Set(players.filter(p=>p.bot).map(p=>p.name)); const b=BOTS.find(x=>!used.has(x.name)); if(!b) return; await db.addPlayer({id:"bot-"+b.name.toLowerCase()+"-"+code,code,name:b.name,color:colorFor(players),bot:true,persona:String(b.arch),hist:{}}); }catch(e){ fail(e); } }
   async function kick(id){ try{ await db.removePlayer(id); }catch(e){ fail(e); } }
   async function start(){
     if(busy.current) return; busy.current=true; sfx.unlock();
-    try{ const P=await freshPop(db); const qids=dealQuestions(cfg.total,P,P.answers[myId]||{},Math.random,cfg.cats); if(qids.length<2){ setBanner("Not enough questions loaded to start."); return; } await db.patchRoom(code,{phase:"asking",idx:0,qids,total:qids.length,gen:room.gen||0}); }catch(e){ fail(e); } finally{ busy.current=false; }
+    try{ const P=await freshPop(db); const qids=dealQuestions(cfg.total,P,P.answers[myId]||{},Math.random,cfg.cats); if(qids.length<2){ setBanner("Not enough questions loaded to start."); return; } const duoNow=players.length===2; await db.patchRoom(code,{phase:"asking",idx:0,qids,total:qids.length,gen:room.gen||0,mode:duoNow?"duo":"group",guess:duoNow}); }catch(e){ fail(e); } finally{ busy.current=false; }
   }
   async function forceReveal(){ try{ await db.patchRoom(code,{phase:"reveal"}); }catch(e){ fail(e); } }
   async function next(){
@@ -990,25 +901,24 @@ function App(){
     if(save&&saveOn){ const v=entry.a; db.saveAnswer(myId,name.trim()||"Player",(me&&me.color)||COLORS[0],q.id,v).then(()=>setSaveErr(false)).catch(e=>{ console.error(e); setSaveErr(true); }); }
   }
   const onAnswer=(q,a)=>{ const cur=(myHist.current||{})[q.id]||{}; writeMine(q,{...cur,a},true); };
-  const onGuess=(q,g,x)=>{ const cur=(myHist.current||{})[q.id]||{}; writeMine(q,x?{...cur,g,x:true}:{...cur,g},false); };
+  const onGuess=(q,g)=>{ const cur=(myHist.current||{})[q.id]||{}; writeMine(q,{...cur,g},false); };
 
   /* ---- derive histories for display ---- */
   const hists={}, answers={};   // hists: qid -> {a,g}. answers: qid -> a (what scoring wants)
   players.forEach(p=>{ const h=p.id===myId?(myHist.current||p.hist||{}):(p.hist||{}); hists[p.id]=h; answers[p.id]={}; Object.keys(h).forEach(k=>{ if(h[k]&&h[k].a!==undefined) answers[p.id][k]=h[k].a; }); });
   const q=room&&room.qids&&room.qids.length?QMAP[room.qids[Math.min(room.idx,room.qids.length-1)]]:null;
-  const partnerP=room&&room.mode==="duo"?players.find(p=>p.id!==myId):null;
+  const partner=room&&room.mode==="duo"?(players.find(p=>p.id!==myId)||{}).name:"";
 
   let body;
-  if(screen==="home") body=<Home name={name} setName={setName} codeInput={codeInput} setCodeInput={setCodeInput} saveOn={saveOn} setSaveOn={setSaveOn} onNew={()=>{ setPractice(false); setScreen("create"); }} onPractice={()=>{ setPractice(true); setScreen("create"); }} onJoin={()=>joinRoom()} onForget={forget}/>;
+  if(screen==="home") body=<Home name={name} setName={setName} codeInput={codeInput} setCodeInput={setCodeInput} saveOn={saveOn} setSaveOn={setSaveOn} onNew={()=>{ setPractice(false); setScreen("create"); }} onPractice={()=>{ setPractice(true); setScreen("create"); }} onJoin={joinRoom} onMap={()=>{ try{ setDb(getDb(false)); setPractice(false); setScreen("map"); }catch(e){ fail(e); } }} onForget={forget}/>;
   else if(screen==="create") body=<Create cfg={cfg} setCfg={setCfg} practice={practice} onOpen={openRoom} onBack={()=>setScreen("home")}/>;
   else if(screen==="map") body=<Constellation db={db||getDb(practice)} practice={practice} setPop={setPop} onBack={()=>{ if(room&&code) setScreen("room"); else { setDb(null); setScreen("home"); } }}/>;
-  else if(screen==="joining") body=<Joining code={joinCode}/>;
-  else if(!room) body=<Joining code={code}/>;
+  else if(!room) body=<div className="wrap"><div className="card center dim">Joining…</div></div>;
   else if(room.qids&&room.qids.length&&room.qids.some(id=>!QMAP[id])) body=<div className="wrap"><div className="card center">Your question list is out of date.<div className="dim small gap">The host is using questions this phone hasn't loaded yet.</div></div><button className="go" onClick={()=>{ try{ sessionStorage.removeItem("kd_files"); }catch(e){} location.reload(); }}>Reload</button></div>;
-  else if(room.phase==="lobby") body=<Lobby room={room} players={players} isHost={isHost} code={code} practice={practice} onStart={start} onAddBot={addBot} onLeave={leave} onKick={kick} onRename={rename}/>;
-  else if(room.phase==="asking"&&q) body=<Asking key={room.gen+":"+room.idx} room={room} players={players} q={q} meHist={myHist.current||{}} hists={hists} partnerP={partnerP} onAnswer={a=>onAnswer(q,a)} onGuess={(g,x)=>onGuess(q,g,x)} isHost={isHost} onForce={forceReveal} onLeave={leave} heckle={heckle}/>;
+  else if(room.phase==="lobby") body=<Lobby room={room} players={players} isHost={isHost} code={code} practice={practice} onStart={start} onAddBot={addBot} onLeave={leave} onKick={kick}/>;
+  else if(room.phase==="asking"&&q) body=<Asking key={room.gen+":"+room.idx} room={room} players={players} q={q} meHist={myHist.current||{}} partner={partner} onAnswer={a=>onAnswer(q,a)} onGuess={g=>onGuess(q,g)} isHost={isHost} onForce={forceReveal} onLeave={leave} practice={practice} heckle={heckle}/>;
   else if(room.phase==="reveal"&&q) body=<Reveal key={room.gen+":"+room.idx} room={room} players={players} hists={hists} answers={answers} q={q} pop={pop} isHost={isHost} onNext={next} onLeave={leave} heckle={heckle}/>;
-  else if(room.phase==="finale") body=<Finale room={room} players={players} hists={hists} answers={answers} pop={pop} isHost={isHost} onAgain={again} onLeave={leave}/>;
+  else if(room.phase==="finale") body=<Finale room={room} players={players} hists={hists} answers={answers} pop={pop} isHost={isHost} onAgain={again} onLeave={leave} practice={practice} onMap={()=>setScreen("map")}/>;
   else body=<div className="wrap"><div className="card center dim">Loading…</div></div>;
 
   return <>
