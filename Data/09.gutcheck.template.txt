@@ -1,0 +1,16 @@
+# pack: My new pack
+# Copy this file, rename it 09.gutcheck.pack-03.txt (must start with 09.gutcheck.pack), drop it in Data/.
+# Files starting with _ are ignored by the game.
+#
+# ## starts a category.  Under it, one question per line:
+#     adjective | is or are | the thing | typical answer 0-100 (optional)
+# It reads as: "How <adjective> <is/are> <the thing>?"
+# Other lines starting with # and blank lines are ignored.
+
+## Spooky stuff
+scary | are | ghosts | 40
+scary | is | a basement | 55
+
+## Cozy stuff
+cozy | is | a fireplace | 92
+cozy | are | blankets | 95

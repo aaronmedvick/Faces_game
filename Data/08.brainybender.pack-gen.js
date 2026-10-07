@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Brainy Bender pack generator + validator
-// Run from the repo root:  node data/08.brainybender.pack-gen.js
-// Scans data/08.brainybender.pack.*.json, validates every card,
-// and writes data/08.brainybender.manifest.json (auto-generated, never edit).
+// Run from the repo root:  node Data/08.brainybender.pack-gen.js
+// Scans Data/08.brainybender.pack.*.json, validates every card,
+// and writes Data/08.brainybender.manifest.json (auto-generated, never edit).
 const fs = require("fs");
 const path = require("path");
 
