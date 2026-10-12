@@ -301,7 +301,7 @@ const fmt = s => { const m=Math.floor(s/60), r=s-m*60; return m+":"+r.toFixed(1)
 
 /* ---- server clock: every phone times the race from the same instant ---- */
 let OFFSET = 0;
-const nowS = () => Date.now() + OFFSET;
+const nowS = () => Math.round(Date.now() + OFFSET);   /* whole ms: the database columns are bigint */
 async function syncClock(){
   if(!sb) return; let best=null;
   for(let i=0;i<5;i++){
@@ -659,18 +659,21 @@ function App(){
   async function beginRound(idx,planIn){
     const { room:rm, code:c, players:ps }=stRef.current; const plan=planIn||rm.plan; const n=plan.sizes[idx];
     const base=BASE_TIME[n]*SKILL[rm.skill||"medium"];
-    await sb.from("qb_players").update({ q:0, mist:0, pen_ms:0, done:false, real_ms:null, eff_ms:null, frozen_until:0, frozen_by:null, fog_until:0, fog_by:null, recolor_until:0, nomark_until:0, dark_until:0, rotate_until:0, fx_by:null }).eq("code",c);
+    const chk=r=>{ if(r&&r.error) throw new Error(r.error.message); return r; };
+    chk(await sb.from("qb_players").update({ q:0, mist:0, pen_ms:0, done:false, real_ms:null, eff_ms:null, frozen_until:0, frozen_by:null, fog_until:0, fog_by:null, recolor_until:0, nomark_until:0, dark_until:0, rotate_until:0, fx_by:null }).eq("code",c));
     for(const b of ps.filter(p=>p.is_bot)) await sb.from("qb_players").update({ solve_at:base*(0.8+Math.random()*0.5) }).eq("id",b.id);
     const t0=nowS()+COUNT_MS;
-    await sb.from("qb_rooms").update({ phase:"play", round:idx, plan, t0, drop_at:t0+(9+Math.random()*12)*1000, results:null, results_until:null }).eq("code",c);
+    chk(await sb.from("qb_rooms").update({ phase:"play", round:idx, plan, t0, drop_at:Math.round(t0+(9+Math.random()*12)*1000), results:null, results_until:null }).eq("code",c));
   }
   async function startMatch(){
     const { room:rm, code:c, players:ps }=stRef.current; if(ps.length<2||busy.current) return; busy.current=true;
     try{
       const sizes=SIZES[rm.rounds||5], plan={ sizes, seeds:sizes.map(()=>(Math.random()*2147483647)|0), golden:1+Math.floor(Math.random()*(sizes.length-1)) };
+      setErr("");
       await sb.from("qb_players").update({ score:0, streak:0, inv:{hint:1,freeze:0,fog:0}, last_pts:null, last_place:null }).eq("code",c);
       await beginRound(0,plan);
-    } finally { busy.current=false; }
+    } catch(e){ setErr("Couldn't start the match: "+e.message+". If it mentions a missing column, run qb_setup.sql again in Supabase."); }
+    finally { busy.current=false; }
   }
   async function finalizeRound(){
     const { room:rm, code:c }=stRef.current; const golden=rm.plan.golden===rm.round;
@@ -784,6 +787,7 @@ function App(){
       <div><div className="lab">Bot skill</div><div className="seg">{[["easy","Easy"],["medium","Medium"],["hard","Hard"]].map(o=><button key={o[0]} disabled={!isHost} className={(room.skill||"medium")===o[0]?"on":""} onClick={()=>setCfg({skill:o[0]})}>{o[1]}</button>)}</div></div>
       <div><span className="pill gold">{mode}</span></div>
     </div>
+    {err&&<div className="card" style={{color:"var(--rose)"}}>{err}</div>}
     {isHost?<button className="go" disabled={players.length<2} onClick={startMatch}>{players.length<2?"Add a bot or invite a friend":"Start match"}</button>
       :<div className="dim" style={{textAlign:"center"}}>Waiting for the host to start</div>}
     <details className="card"><summary style={{cursor:"pointer",fontWeight:600}}>How power-ups work</summary>
