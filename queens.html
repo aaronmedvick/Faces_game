@@ -262,7 +262,7 @@ function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt
 
 
 const { useState, useEffect, useRef, useMemo, useCallback, memo } = React;
-const VERSION = "v1";
+const VERSION = "v4 (start fix)";
 
 /* ---- Supabase (same project as the other games) ---- */
 const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
@@ -664,6 +664,8 @@ function App(){
     for(const b of ps.filter(p=>p.is_bot)) await sb.from("qb_players").update({ solve_at:base*(0.8+Math.random()*0.5) }).eq("id",b.id);
     const t0=nowS()+COUNT_MS;
     chk(await sb.from("qb_rooms").update({ phase:"play", round:idx, plan, t0, drop_at:Math.round(t0+(9+Math.random()*12)*1000), results:null, results_until:null }).eq("code",c));
+    const back=await sb.from("qb_rooms").select("phase,t0").eq("code",c).maybeSingle();
+    if(!back.data||back.data.phase!=="play") throw new Error("the database did not accept the room update (check row-level security on qb_rooms)");
   }
   async function startMatch(){
     const { room:rm, code:c, players:ps }=stRef.current; if(ps.length<2||busy.current) return; busy.current=true;
