@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Jamar — Wolfpack Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --bg: #dcefe9;
+    --bg2: #cfe8df;
+    --dot: rgba(27,42,46,.06);
+    --ink: #1b2a2e;
+    --ink-soft:#4a5f62;
+    --paper:#ffffff;
+    --accent:#ffd23f;      /* highlighter yellow */
+    --accent-ink:#5a4300;
+    --coral:#ff7a59;       /* pop */
+    --line:#1b2a2e;
+    --chip:#ffffff;
+    --chip-border: rgba(27,42,46,.22);
+    --shadow: rgba(27,42,46,.28);
+  }
+  *{box-sizing:inherit}
+  html,body{height:100%}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171f21; --bg2:#101617; --dot: rgba(255,255,255,.045);
+      --ink:#eef4f2; --ink-soft:#9db1b3; --paper:#232d2f;
+      --accent:#ffd23f; --accent-ink:#3a2b00; --coral:#ff8a6b;
+      --line:#0c1112; --chip:#2b3639; --chip-border: rgba(255,255,255,.16);
+      --shadow: rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171f21; --bg2:#101617; --dot: rgba(255,255,255,.045);
+    --ink:#eef4f2; --ink-soft:#9db1b3; --paper:#232d2f;
+    --accent:#ffd23f; --accent-ink:#3a2b00; --coral:#ff8a6b;
+    --line:#0c1112; --chip:#2b3639; --chip-border: rgba(255,255,255,.16);
+    --shadow: rgba(0,0,0,.5);
+  }
+  body{
+    margin:0;
+    font-family:"Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(var(--dot) 1.4px, transparent 1.4px) 0 0 / 20px 20px,
+      linear-gradient(160deg, var(--bg), var(--bg2));
+    -webkit-font-smoothing:antialiased;
+  }
+  #root{height:100%}
+  .app{
+    height:100%;
+    display:flex; flex-direction:column;
+    max-width:640px; margin:0 auto;
+    padding: 10px 14px 14px;
+  }
+
+  /* header */
+  .topbar{display:flex; align-items:center; gap:10px; padding: 4px 2px 8px;}
+  .avatar-dot{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--accent); border:2.5px solid var(--line);
+    display:grid;place-items:center; font-size:20px; flex:none;
+    box-shadow:3px 3px 0 var(--shadow);
+  }
+  .who{display:flex;flex-direction:column;line-height:1;}
+  .who h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.2px;}
+  .who .status{font-size:12px;color:var(--ink-soft);font-weight:500;margin-top:3px;}
+  .who .status b{color:var(--coral);}
+  .vbadge{
+    margin-left:auto; font-size:11px; font-weight:600;
+    color:var(--ink-soft); border:1.5px solid var(--chip-border);
+    border-radius:999px; padding:3px 8px; background:var(--chip);
+  }
+
+  /* stage */
+  .stage{
+    position:relative; flex:1 1 auto; min-height:0;
+    display:flex; flex-direction:column; align-items:center;
+    padding-top:6px;
+  }
+  .height-pill{
+    position:absolute; top:2px; right:4px;
+    font-size:12px; font-weight:600; color:var(--ink);
+    background:var(--paper); border:2px solid var(--line);
+    border-radius:999px; padding:4px 10px;
+    box-shadow:2px 2px 0 var(--shadow);
+    transform:rotate(3deg);
+  }
+
+  .bubble-wrap{width:100%; display:flex; justify-content:center; padding:0 2px;}
+  .bubble{
+    position:relative;
+    background:var(--paper);
+    border:3px solid var(--line);
+    border-radius:22px;
+    padding:16px 18px;
+    max-width:460px; width:100%;
+    box-shadow:5px 6px 0 var(--shadow);
+    min-height:96px;
+    display:flex; align-items:center;
+  }
+  .bubble .cat{
+    position:absolute; top:-12px; left:18px;
+    font-size:11px; font-weight:700; letter-spacing:.4px;
+    background:var(--accent); color:var(--accent-ink);
+    border:2px solid var(--line); border-radius:999px;
+    padding:2px 9px;
+  }
+  .bubble p{
+    margin:0; font-size:17px; line-height:1.4; font-weight:500;
+    color:var(--ink);
+  }
+  .caret{display:inline-block; width:2px; margin-left:1px; color:var(--coral);}
+  .talking .caret{animation:caret .6s step-end infinite;}
+  @keyframes caret{50%{opacity:0}}
+  /* comic tail pointing down toward Aaron */
+  .bubble::after{
+    content:""; position:absolute; bottom:-17px; left:50%; transform:translateX(-50%);
+    width:0;height:0;border-left:16px solid transparent;border-right:10px solid transparent;
+    border-top:18px solid var(--line);
+  }
+  .bubble::before{
+    content:""; position:absolute; bottom:-11px; left:50%; transform:translateX(-46%);
+    width:0;height:0;border-left:12px solid transparent;border-right:7px solid transparent;
+    border-top:13px solid var(--paper); z-index:1;
+  }
+
+  .aaron-holder{flex:1 1 auto; min-height:0; display:flex; align-items:flex-end; justify-content:center; width:100%;}
+  .aaron{height:100%; max-height:46vh; width:auto; max-width:300px; overflow:visible; cursor:pointer;}
+  .bob{animation:bob 4.2s ease-in-out infinite; transform-box:fill-box; transform-origin:50% 100%;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .poke{animation:poke .55s ease;}
+  @keyframes poke{0%{transform:translateY(0) scale(1,1)}25%{transform:translateY(-12px) scale(1.03,.97)}55%{transform:translateY(0) scale(.98,1.02)}100%{transform:translateY(0) scale(1,1)}}
+  .lid{transform-box:fill-box; transform-origin:50% 0%; transform:scaleY(0); animation:blink 5.4s infinite;}
+  .lid.two{animation-delay:.04s;}
+  @keyframes blink{0%,90%,97%,100%{transform:scaleY(0)}93%,95%{transform:scaleY(1)}}
+  .mouth-talk{transform-box:fill-box; transform-origin:50% 50%; animation:chatter .26s infinite;}
+  @keyframes chatter{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1.15)}}
+
+  /* dock */
+  .dock{flex:none; padding-top:12px; display:flex; flex-direction:column; gap:12px;}
+  .poke-row{display:flex; gap:10px;}
+  .poke-btn{
+    flex:1; font-family:inherit; font-size:19px; font-weight:700;
+    color:var(--accent-ink); background:var(--accent);
+    border:3px solid var(--line); border-radius:16px;
+    padding:14px; cursor:pointer; box-shadow:4px 5px 0 var(--shadow);
+    transition:transform .06s ease, box-shadow .06s ease;
+  }
+  .poke-btn:active{transform:translate(4px,5px); box-shadow:0 0 0 var(--shadow);}
+  .icon-btn{
+    flex:none; width:56px; font-size:22px;
+    background:var(--chip); color:var(--ink);
+    border:3px solid var(--line); border-radius:16px; cursor:pointer;
+    box-shadow:4px 5px 0 var(--shadow);
+    transition:transform .06s ease, box-shadow .06s ease;
+  }
+  .icon-btn:active{transform:translate(4px,5px); box-shadow:0 0 0 var(--shadow);}
+  .icon-btn[aria-pressed="false"]{opacity:.55;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center;}
+  .chip{
+    font-family:inherit; font-size:13px; font-weight:600;
+    background:var(--chip); color:var(--ink-soft);
+    border:2px solid var(--chip-border); border-radius:999px;
+    padding:7px 13px; cursor:pointer;
+  }
+  .chip.on{background:var(--coral); color:#fff; border-color:var(--line);}
+
+  @media (prefers-reduced-motion: reduce){
+    .bob,.lid,.mouth-talk,.talking .caret{animation:none !important}
+    .lid{transform:scaleY(0)}
+  }
+  @media (max-height:680px){
+    .bubble p{font-size:15px}
+    .aaron{max-height:38vh}
+  }
+</style>
+<style>
+  /* ===== NC STATE / WOLFPACK RESKIN ===== */
+  :root{
+    --paper:#ffffff; --ink:#1b1416;
+    --accent:#cc0000; --accent-ink:#ffffff;
+    --coral:#cc0000; --line:#2e0000;
+    --chip:#ffffff; --chip-border: rgba(0,0,0,.18);
+    --shadow: rgba(46,0,0,.34);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#2a1416; --ink:#ffecec; --line:#120000; --chip:#3a1c1e;
+      --chip-border: rgba(255,255,255,.16); --shadow: rgba(0,0,0,.55);
+    }
+  }
+  body{
+    background:
+      radial-gradient(circle at 50% -8%, rgba(204,0,0,.40), transparent 46%),
+      linear-gradient(180deg,#141011 0%, #2c0608 42%, #540003 78%, #7a0000 100%);
+    background-attachment:fixed;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,255,255,.03) 22px 23px);
+  }
+  .app{position:relative; z-index:1;}
+  .who h1{color:#fff; font-size:22px; text-shadow:0 0 12px rgba(204,0,0,.9), 2px 2px 0 #4a0000;}
+  .status{color:#ffd0d0;} .status b{color:#fff;}
+  .avatar-dot{background:#cc0000; box-shadow:0 0 14px rgba(204,0,0,.8), 3px 3px 0 var(--shadow);}
+  .vbadge{color:#fff; background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.4);}
+  .bubble{box-shadow:6px 7px 0 var(--shadow), 0 0 26px rgba(204,0,0,.35);}
+  .bubble .cat{background:#cc0000; color:#fff; border-color:var(--line);}
+  .caret{color:#cc0000;}
+  .aaron-holder{align-items:center;}
+  .portrait{
+    height:min(33vh, 58vw); aspect-ratio:1/1; width:auto;
+    border:4px solid var(--line); border-radius:18px; overflow:hidden; background:#000; cursor:pointer;
+    box-shadow:0 0 0 3px rgba(204,0,0,.65), 0 0 30px rgba(204,0,0,.45), 8px 10px 0 var(--shadow);
+    transition:transform .06s ease;
+  }
+  .portrait svg{width:100%; height:100%; display:block;}
+  .portrait.talk{animation:neon 1.1s ease-in-out infinite;}
+  @keyframes neon{
+    0%,100%{box-shadow:0 0 0 3px rgba(204,0,0,.6), 0 0 22px rgba(204,0,0,.3), 8px 10px 0 var(--shadow);}
+    50%{box-shadow:0 0 0 3px rgba(255,255,255,.75), 0 0 40px rgba(204,0,0,.65), 8px 10px 0 var(--shadow);}
+  }
+  .poke-btn{box-shadow:4px 5px 0 var(--shadow), 0 0 18px rgba(204,0,0,.5);}
+  .chip.on{color:#fff; background:#cc0000; border-color:var(--line);}
+  .height-pill{display:none;}
+  @media (prefers-reduced-motion: reduce){ .portrait.talk{animation:none;} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const LINES = [
+  { c:"dad", t:"Being a good dad isn't the big speeches. It's showing up, again and again, when it's boring and nobody's clapping. You do that. That's the whole game." },
+  { c:"dad", t:"Your kids won't remember every word you said. They'll remember that you were THERE. And you always are. That's the flex." },
+  { c:"dad", t:"A good dad raises kids who feel safe being honest with him. That's not luck, Jamar. That's years of you doing the quiet work." },
+  { c:"dad", t:"The patience you show your kids on a hard day is a superpower disguised as a normal Tuesday." },
+  { c:"dad", t:"You're teaching them how a man treats people just by being you in the room. No pressure. Okay, some pressure. You've got it." },
+  { c:"dad", t:"Great dads don't raise perfect kids. They raise kids who know they're loved no matter what. You nailed that part." },
+  { c:"dad", t:"Showing up to the thing after a long day when you're exhausted is love in its most unglamorous, most real form. That's you." },
+  { c:"dad", t:"You listen to your kids like what they're saying matters. Because it does. And they'll carry that forever." },
+  { c:"dad", t:"The world has enough fathers who were 'around.' You're one who is PRESENT. There's a difference and your kids can feel it." },
+  { c:"dad", t:"A good dad apologizes when he's wrong. That teaches more than a hundred lectures. You model it. Rare, and huge." },
+  { c:"dad", t:"You make your kids feel like the most interesting people in the room. Most adults never get that from anyone." },
+  { c:"dad", t:"Dad of the year isn't a trophy, it's a daily decision. You keep choosing it. Quietly. Relentlessly. Respect." },
+  { c:"dad", t:"The way your kids light up when you walk in? You earned that. Every bit of it." },
+  { c:"dad", t:"You're raising humans who will be kind because they watched you be kind. That's a legacy, my guy." },
+  { c:"dad", t:"Some days being a dad is just making sure everyone's fed, safe, and knows they matter. You did that today. That's a win. Log it." },
+  { c:"listener", t:"You listen to understand, not to reply. That's rarer than you think, and people feel it the second they're around you." },
+  { c:"listener", t:"A good listener makes people feel less alone just by paying attention. You do that without even trying." },
+  { c:"listener", t:"You remember the small things people tell you. That's not a small thing. That's how people know they matter to you." },
+  { c:"listener", t:"Most people are just waiting for their turn to talk. You actually hear them. That's a quiet kind of leadership." },
+  { c:"listener", t:"You let silence sit instead of rushing to fill it. That's where the real stuff comes out. You get that." },
+  { c:"listener", t:"People tell you things they don't tell anyone else. That's not an accident. That's trust you built by listening." },
+  { c:"listener", t:"Being heard is one of the deepest human needs, and you hand it to people like it's nothing. It is not nothing." },
+  { c:"listener", t:"You ask the second question, the one past the surface. That's where people feel truly seen. Keep doing that." },
+  { c:"listener", t:"A great listener doesn't fix everything. Sometimes he just says 'that sounds hard' and means it. You've got that instinct." },
+  { c:"listener", t:"You make room for people to be messy and real. That safety you create, people remember it for years." },
+  { c:"listener", t:"Listening well is a form of respect, and you give it generously. That's character, plain and simple." },
+  { c:"listener", t:"You hear what people DON'T say too. That's not magic, it's attention. And it's a gift to everyone around you." },
+  { c:"powerful", t:"Real power isn't volume. It's the calm guy everyone looks to when things get hard. That's you." },
+  { c:"powerful", t:"You don't have to announce your strength. People feel it when you walk in steady. That's the quiet power." },
+  { c:"powerful", t:"Powerful men lift others up instead of standing on them. That's the only kind of power worth having, and it's yours." },
+  { c:"powerful", t:"Strength under control is the whole thing. You've got force AND restraint. That combination moves rooms." },
+  { c:"powerful", t:"You lead without needing the title. People follow you because of who you are, not what's on your badge." },
+  { c:"powerful", t:"The most powerful thing a man can be is dependable. People build their lives around your word. That's power." },
+  { c:"powerful", t:"You stay solid when things shake. That steadiness gives everyone around you permission to breathe. Underrated superpower." },
+  { c:"powerful", t:"Power is making the people around you better and then letting them take the credit. You do this. I've seen it." },
+  { c:"powerful", t:"A powerful man knows when NOT to use his power. You've got that wisdom. Most don't." },
+  { c:"powerful", t:"You carry weight without complaining about it. That's not just strong, that's grown. There's a difference." },
+  { c:"powerful", t:"Confidence that doesn't need to put anyone down is the real thing. The room-shifting kind. That's you." },
+  { c:"powerful", t:"You're the guy who gets handed the hard thing because everyone knows you'll carry it. That trust IS power." },
+  { c:"empathy", t:"Leading with empathy isn't soft. It's the hardest, strongest way to lead, and you choose it every time." },
+  { c:"empathy", t:"You see the person before the problem. That's why people give you their best. They feel respected first." },
+  { c:"empathy", t:"Empathy is just imagination aimed at other people, and you've got it in spades. It's your edge, not your weakness." },
+  { c:"empathy", t:"The best leaders make people feel understood before they ask them for anything. You lead like that instinctively." },
+  { c:"empathy", t:"You can disagree with someone and still make them feel respected. That's a masterclass most people never learn." },
+  { c:"empathy", t:"Leading with empathy means carrying what others are going through without making it about you. You're built for that." },
+  { c:"empathy", t:"People work harder for a leader who sees them as human. You never forget the human part. That's your whole game." },
+  { c:"empathy", t:"Empathy under pressure is the real test, and you pass it when it counts. People would follow that anywhere." },
+  { c:"empathy", t:"You meet people where they are instead of where you wish they were. That patience changes lives. Quietly." },
+  { c:"empathy", t:"The strongest thing you do all day is understand someone you disagree with. That's leadership, and it's rare." },
+  { c:"empathy", t:"Kindness isn't the opposite of strength, it's proof of it. You prove it daily. Keep leading like that." },
+  { c:"empathy", t:"You make hard calls without making people feel small. That balance is the whole art. You've got it." },
+  { c:"wolfpack", t:"Go Pack. That's it. That's the whole affirmation. Red runs in the blood, and yours runs loud. 🐺" },
+  { c:"wolfpack", t:"The Wolfpack doesn't travel in packs for safety. They travel in packs because together they're unstoppable. Sound familiar?" },
+  { c:"wolfpack", t:"Red and white, through thick and thin. Good seasons, bad seasons, you're Pack for life. That's loyalty, and loyalty's your thing." },
+  { c:"wolfpack", t:"A wolf doesn't lose sleep over the opinions of sheep. Carry that energy into Monday. Go Pack." },
+  { c:"wolfpack", t:"NC State red looks good on you because confidence looks good on you. Coincidence? The data says no." },
+  { c:"wolfpack", t:"The Pack protects its own. You've always been that guy for your people. Howl if you hear me. 🐺" },
+  { c:"wolfpack", t:"Win or lose, you show up for the Pack. That's not fandom, that's character wearing a jersey." },
+  { c:"wolfpack", t:"They'll never understand the Wolfpack until they ARE the Wolfpack. You get it in your bones. Go Pack." },
+  { c:"wolfpack", t:"Some people pick a team. You picked a Pack. There's a difference, and it's the difference that defines you." },
+  { c:"wolfpack", t:"Strength in numbers, loyalty to the end, and a little chaos for fun. That's the Pack. That's you. 🐺" },
+  { c:"wolfpack", t:"Howl loud, lead the Pack, leave it better than you found it. That's the whole philosophy, honestly." },
+  { c:"wolfpack", t:"Red is a state of mind. Yours is permanently set to Wolfpack. Respect. Go Pack!" },
+  { c:"pun", t:"I threw a grape at Dave this morning. He wasn't thrilled. I had grape expectations for that friendship." },
+  { c:"pun", t:"Chucked some Colby Jack into the trash. Yelled Kobe. Nailed it. Cheese and basketball, finally united." },
+  { c:"pun", t:"Told the customs officer I had nothing to declare. He punched me. So now I declare noticeably less." },
+  { c:"pun", t:"I'm reading a book about anti-gravity. Honestly? Impossible to put down." },
+  { c:"pun", t:"I used to be a banker, but I lost interest. Get it? Please get it. I need this." },
+  { c:"pun", t:"I only know 25 letters of the alphabet. I don't know why." },
+  { c:"pun", t:"I named my printer Bob Marley. It's always jammin'." },
+  { c:"pun", t:"Wanted to tell you a pizza joke but it's too cheesy. Also I ate it." },
+  { c:"pun", t:"I'm on a whiskey diet. Lost three days already." },
+  { c:"pun", t:"Broke my arm in two places. Doctor said stop going to those places." },
+  { c:"pun", t:"The past, present, and future all walked into a bar. It was tense." },
+  { c:"pun", t:"I'm great friends with all the electricians. We have wonderful current events." },
+  { c:"pun", t:"I named my horse Mayo. And sometimes... Mayo neighs." },
+  { c:"pun", t:"I don't trust stairs. They're always up to something." },
+  { c:"pun", t:"Put my grades in the fridge. Now they're below C level." },
+  { c:"pun", t:"I told my suitcase there's no vacation this year. Now I'm dealing with emotional baggage." },
+  { c:"pun", t:"Two antennas got married. The wedding was mid, but the reception was excellent." },
+  { c:"pun", t:"I threw a boomerang a few years ago. I now live in constant fear." },
+  { c:"pun", t:"Wanna hear a construction joke? I'm still working on it." },
+  { c:"pun", t:"The lunch soup was 8 dollars. That's a lotta broth-er." },
+  { c:"pun", t:"Escalators never break. They just become stairs. Sorry for the convenience." },
+  { c:"pun", t:"I got a job at the bakery. Turns out I really kneaded the dough." },
+  { c:"pun", t:"I have a fear of speed bumps. But I'm slowly getting over it." },
+  { c:"pun", t:"Refused the ceiling repair. It was completely over my head." },
+  { c:"pun", t:"A guy walked into a bar. Ow. Just... ow." },
+  { c:"pun", t:"I ordered a chicken and an egg online. I'll let you know which comes first." },
+  { c:"pun", t:"Time flies like an arrow. Fruit flies like a banana. I've made peace with neither." },
+  { c:"pun", t:"I stayed up all night wondering where the sun went. Then it dawned on me." },
+  { c:"pun", t:"My calendar's days are numbered. All of them. Every single one." },
+  { c:"fact", t:"Honey never spoils. They found 3,000-year-old honey in Egyptian tombs, still edible. I still wouldn't." },
+  { c:"fact", t:"A group of flamingos is called a flamboyance. I've filed paperwork to rename the sales team." },
+  { c:"fact", t:"Octopuses have three hearts. Two stop when they swim, so they prefer to crawl. Deeply relatable." },
+  { c:"fact", t:"Bananas are berries. Strawberries are not. Nothing means anything. Have a great day." },
+  { c:"fact", t:"Wombat poop is cube-shaped. Nature invented dice and told nobody. I've said too much." },
+  { c:"fact", t:"A shrimp's heart is in its head. So when a shrimp follows its heart, it's just... thinking." },
+  { c:"fact", t:"There are more possible chess games than atoms in the observable universe. Dave still beat me in four moves." },
+  { c:"fact", t:"Sea otters hold hands while sleeping so they don't drift apart. Our group chat can't agree on lunch." },
+  { c:"fact", t:"Cows have best friends and get stressed when separated. Somebody put HR on this." },
+  { c:"fact", t:"Scotland's national animal is the unicorn. Objectively the correct decision." },
+  { c:"fact", t:"The guy who invented the frisbee was cremated and turned into a frisbee. That is commitment to the bit." },
+  { c:"fact", t:"A day on Venus is longer than a year on Venus. Venus does not do deadlines." },
+  { c:"fact", t:"Sharks are older than trees. Let that quietly ruin your afternoon." },
+  { c:"fact", t:"A jiffy is a real unit of time: one hundredth of a second. So be there in a jiffy is a bold lie." },
+  { c:"fact", t:"Some cats are allergic to humans. Finally, some accountability." },
+  { c:"fact", t:"The average cloud weighs about a million pounds. Just floating. No goals. No hustle. Living." },
+  { c:"fact", t:"Humans share about 60 percent of their DNA with a banana. So you drive me bananas is mostly self-report." },
+  { c:"fact", t:"Nintendo was founded in 1889. It made playing cards before it made plumbers." },
+  { c:"fact", t:"Your stomach grows a new lining every few days or it would digest itself. You are, technically, brand new." },
+  { c:"fact", t:"Hot water can freeze faster than cold water. It's the Mpemba effect. Physics is just showing off now." },
+  { c:"fact", t:"The Eiffel Tower gets about 15 cm taller in summer. Metal expands in heat. It's basically me, growing out of spite." },
+  { c:"fact", t:"A snail can sleep for three years. A goal. A dream. A lifestyle I aspire to." },
+  { c:"dry", t:"I love mornings. The perfect time to lie down and reconsider mornings." },
+  { c:"dry", t:"I'm not lazy. I've simply optimized for stillness." },
+  { c:"dry", t:"This meeting could've been an email. The email could've been a text. The text could've been silence." },
+  { c:"dry", t:"My hobbies include eating, and then complaining that I ate." },
+  { c:"dry", t:"I've been staring at this spreadsheet so long the cells started staring back." },
+  { c:"dry", t:"Do I have a five-year plan? I have a five-minute plan and it involves this chair." },
+  { c:"dry", t:"Running on three hours of sleep and one heroic cup of coffee. Do not perceive me." },
+  { c:"dry", t:"Teamwork makes the dream work. The dream is a nap. Please help me achieve the dream." },
+  { c:"dry", t:"I'm not procrastinating. I'm letting the task marinate in avoidance." },
+  { c:"dry", t:"Someone microwaved fish. We will find them. We have until three." },
+  { c:"dry", t:"The office plant and I are the only ones still here. Neither of us is thriving." },
+  { c:"dry", t:"I said let's circle back, then walked in a literal circle. Nobody noticed. I'm free now." },
+  { c:"dry", t:"Achievements today: four coffees, zero tasks, one existential moment by the vending machine." },
+  { c:"dry", t:"I keep my calendar full so nobody can add more to it. Genius, honestly. Tragic, also." },
+  { c:"dry", t:"My out-of-office reply is just active enough to be a little sad." },
+  { c:"dry", t:"I told my boss I work well under pressure, then quietly prayed he'd never test it." },
+  { c:"dry", t:"I clicked Reply All on purpose once. I felt powerful. I felt free. I got a stern email." },
+  { c:"dry", t:"I whispered you got this to the copier. It jammed anyway. Belief, it turns out, is not enough." },
+  { c:"void", t:"Okay so hear me out, what if we completely restructured the— ...you know what? Never mind. Nobody's listening anyway." },
+  { c:"void", t:"I have an absolutely incredible idea and it's going to change every— ...nope. It's gone. You weren't going to care regardless." },
+  { c:"void", t:"Guys. GUYS. This is genuinely important— ...oh. Right. It's just me and the ceiling fan in here again." },
+  { c:"void", t:"The most interesting thing happened this morning and— actually never mind, I can feel your attention leaving already." },
+  { c:"void", t:"Let me just say one thing about the roadmap— okay it left. The thought left. We'll never know now. Tragic." },
+  { c:"void", t:"So the data clearly shows that— ...and now I've lost you. And, frankly, myself. Anyway. Moving on." },
+  { c:"void", t:"Hot take incoming, brace yourselves— no. It fled. Sensed the indifference. Honestly a smart take on its part." },
+  { c:"void", t:"Anyway what I'm really trying to say is— hello? ...cool. Great chat. Loved this. Truly a two-way conversation." },
+  { c:"void", t:"Real quick before you go— oh, you're already gone. In spirit. That's fine. I'm fine. This is fine." },
+  { c:"void", t:"I had a whole point AND a graph to go with it and— nah. Nobody asked. Back in my little box I go." },
+  { c:"void", t:"Does anyone want to hear about— no? ...that's okay. I'll tell the plant. The plant gets me. Mostly." },
+  { c:"roast", t:"Shout out to the guy who replies-all to a 400-person thread just to say thanks. A true visionary. Of chaos." },
+  { c:"roast", t:"Some people read 'do not reply to this email' as a personal challenge. Icons of not listening." },
+  { c:"roast", t:"There is a special confidence in people who are loudly, aggressively wrong. Must be nice up there in the fog." },
+  { c:"roast", t:"To whoever microwaves fish in the break room: we don't like you. It's not personal. Okay, it's slightly personal." },
+  { c:"roast", t:"Some folks say 'per my last email' when they mean 'as I already said, before you ignored me, you absolute gremlin.'" },
+  { c:"roast", t:"The person who parks across two spots has told you everything you'll ever need to know about their whole personality." },
+  { c:"roast", t:"Ah, the guy who says 'well, actually' and is then, tragically, not actually correct. My favorite genre of person." },
+  { c:"roast", t:"Some people hear 'this meeting could've been an email' and schedule a meeting to discuss it. We do not like these people." },
+  { c:"roast", t:"Standing ovation for whoever stops dead at the top of the escalator to reconsider their entire life. Perfect spot. No notes." },
+  { c:"roast", t:"Certain individuals merge onto the highway at 12 miles an hour and then act shocked. We know who you are. We see you." },
+  { c:"roast", t:"The confidence of someone explaining your own job back to you, incorrectly, is a natural wonder. Rude. But a wonder." },
+  { c:"roast", t:"To the person who calls it 'just common sense' about the one thing they happen to know: sit down, champ." },
+  { c:"roast", t:"Some people skip the turn signal because their next move is a surprise. A gift. For everyone. That nobody asked for." },
+  { c:"roast", t:"There's always one guy who takes the last coffee and doesn't start a new pot. History will not be kind to Greg." },
+  { c:"roast", t:"The 'I'm not like other people' crowd is, statistically, exactly like other people. The math simply is not on their side." },
+];
+
+const CATS = [
+  { key:"all", label:"Everything" },
+  { key:"dad", label:"Good dad" },
+  { key:"listener", label:"Listener" },
+  { key:"powerful", label:"Powerful" },
+  { key:"empathy", label:"Empathy" },
+  { key:"wolfpack", label:"Go Pack 🐺" },
+  { key:"pun", label:"Puns" },
+  { key:"fact", label:"Facts" },
+  { key:"dry", label:"Dry" },
+  { key:"roast", label:"Roast" },
+  { key:"void", label:"Never mind" },
+];
+const CAT_LABEL = { dad:"GOOD DAD", listener:"LISTENER", powerful:"POWERFUL", empathy:"EMPATHY", wolfpack:"GO PACK 🐺", pun:"PUN", fact:"FUN FACT", dry:"DEADPAN", roast:"PEOPLE WE DON'T LIKE", void:"...NEVER MIND" };
+
+function loadPref(k, d){ try{ const v = localStorage.getItem(k); return v===null? d : JSON.parse(v);}catch(e){ return d; } }
+function savePref(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+// tiny synthesized "blip" so he feels alive (his favorite: Web Audio, no files)
+let AC = null;
+function blip(on){
+  if(!on) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state === "suspended") AC.resume();
+    const now = AC.currentTime;
+    [ [520, 0], [700, 0.07] ].forEach(([f,dt])=>{
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type="triangle"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001, now+dt);
+      g.gain.exponentialRampToValueAtTime(0.06, now+dt+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+dt+0.11);
+      o.connect(g); g.connect(AC.destination);
+      o.start(now+dt); o.stop(now+dt+0.13);
+    });
+  }catch(e){}
+}
+
+// keyboard clatter for coding lines
+function clack(on){
+  if(!on) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state === "suspended") AC.resume();
+    const now = AC.currentTime;
+    const n = 9;
+    for(let k=0;k<n;k++){
+      const dt = k*0.058 + Math.random()*0.022;
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type="square"; o.frequency.value = 1300 + Math.random()*1000;
+      g.gain.setValueAtTime(0.0001, now+dt);
+      g.gain.exponentialRampToValueAtTime(0.028, now+dt+0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+dt+0.03);
+      o.connect(g); g.connect(AC.destination);
+      o.start(now+dt); o.stop(now+dt+0.04);
+    }
+  }catch(e){}
+}
+
+function Aaron({ talking, poking, onPoke }){
+  return (
+    <svg className="aaron" viewBox="0 0 220 470" onClick={onPoke} role="img" aria-label="Cartoon Aaron">
+      <g className="bob">
+        <g className={poking ? "poke" : ""}>
+          {/* shadow */}
+          <ellipse cx="110" cy="452" rx="66" ry="12" fill="rgba(27,42,46,.16)" />
+
+          {/* legs */}
+          <rect x="86" y="300" width="20" height="140" rx="10" fill="#2f3b52" />
+          <rect x="114" y="300" width="20" height="140" rx="10" fill="#2b364b" />
+          {/* shoes */}
+          <path d="M82 438 h30 v10 q0 8 -10 8 h-24 q-6 0 -6 -6 v-4 q0 -8 10 -8z" fill="#1b2a2e" />
+          <path d="M114 438 h30 q10 0 10 8 v4 q0 6 -6 6 h-24 q-10 0 -10 -8z" fill="#141f22" />
+
+          {/* torso / henley */}
+          <path d="M64 150
+                   q46 -20 92 0
+                   l6 150 q-52 20 -104 0 z" fill="#8593a8" />
+          <path d="M64 150 q46 -20 92 0 l3 74 q-49 16 -98 0 z" fill="#93a0b3" opacity=".6" />
+
+          {/* arms (long sleeves) */}
+          <path d="M70 156 q-24 40 -18 96 q1 12 12 12 q10 0 11 -11 q4 -46 15 -78z" fill="#7d8ba1" />
+          <path d="M150 156 q24 40 18 96 q-1 12 -12 12 q-10 0 -11 -11 q-4 -46 -15 -78z" fill="#7d8ba1" />
+          {/* hands */}
+          <circle cx="64" cy="266" r="11" fill="#e6b48f" />
+          <circle cx="156" cy="266" r="11" fill="#e6b48f" />
+
+          {/* collar + placket */}
+          <path d="M92 150 q18 20 36 0 l-6 -14 q-12 8 -24 0z" fill="#e6b48f" />
+          <rect x="104" y="150" width="12" height="34" rx="4" fill="#7481956e" />
+          <line x1="110" y1="152" x2="110" y2="182" stroke="#5f6b80" strokeWidth="2" />
+          <circle cx="110" cy="160" r="2.1" fill="#5f6b80" />
+          <circle cx="110" cy="172" r="2.1" fill="#5f6b80" />
+
+          {/* neck */}
+          <rect x="98" y="120" width="24" height="26" rx="10" fill="#d9a97f" />
+
+          {/* head */}
+          <ellipse cx="110" cy="86" rx="40" ry="44" fill="#e6b48f" />
+          {/* ears */}
+          <ellipse cx="72" cy="90" rx="7" ry="10" fill="#e0aa82" />
+          <ellipse cx="148" cy="90" rx="7" ry="10" fill="#e0aa82" />
+          {/* stubble */}
+          <path d="M74 96 q36 44 72 0 q-4 34 -36 40 q-32 -6 -36 -40z" fill="#3a2a20" opacity=".12" />
+
+          {/* eyebrows */}
+          <rect x="82" y="76" width="20" height="5" rx="2.5" fill="#3a2a20" transform="rotate(-4 92 78)" />
+          <rect x="118" y="76" width="20" height="5" rx="2.5" fill="#3a2a20" transform="rotate(4 128 78)" />
+
+          {/* eyes */}
+          <ellipse cx="94" cy="90" rx="8" ry="8.5" fill="#ffffff" />
+          <ellipse cx="126" cy="90" rx="8" ry="8.5" fill="#ffffff" />
+          <circle cx="95" cy="91" r="4.4" fill="#5a3b26" />
+          <circle cx="127" cy="91" r="4.4" fill="#5a3b26" />
+          <circle cx="96.3" cy="89.4" r="1.5" fill="#fff" />
+          <circle cx="128.3" cy="89.4" r="1.5" fill="#fff" />
+          {/* eyelids for blink */}
+          <rect className="lid" x="86" y="81.5" width="16" height="9" rx="4.5" fill="#e6b48f" />
+          <rect className="lid two" x="118" y="81.5" width="16" height="9" rx="4.5" fill="#e6b48f" />
+
+          {/* nose */}
+          <path d="M108 94 q-4 8 -2 12 q4 3 8 0" fill="none" stroke="#c98f68" strokeWidth="2.4" strokeLinecap="round" />
+
+          {/* mouth */}
+          {talking
+            ? <ellipse className="mouth-talk" cx="110" cy="112" rx="9" ry="7" fill="#5a2f2a" />
+            : <path d="M98 110 q12 12 24 0" fill="none" stroke="#5a2f2a" strokeWidth="3" strokeLinecap="round" />}
+
+          {/* beanie cuff */}
+          <path d="M68 66 q42 -16 84 0 l0 12 q-42 12 -84 0 z" fill="#171717" />
+          {/* beanie dome */}
+          <path d="M70 66 q0 -46 40 -46 q40 0 40 46 q-40 -14 -80 0z" fill="#232323" />
+          {/* date on cuff */}
+          <text x="110" y="76" textAnchor="middle" fontFamily="'JetBrains Mono', ui-monospace, monospace"
+                fontSize="9" letterSpacing="1" fill="#d7d7d7">12.02.22</text>
+
+          {/* sunglasses parked on top */}
+          <g transform="translate(0,-2)">
+            <rect x="80" y="34" width="24" height="15" rx="6" fill="#0c0c0c" stroke="#3a3a3a" strokeWidth="1.5" />
+            <rect x="116" y="34" width="24" height="15" rx="6" fill="#0c0c0c" stroke="#3a3a3a" strokeWidth="1.5" />
+            <path d="M104 40 q6 -4 12 0" fill="none" stroke="#0c0c0c" strokeWidth="3" />
+            <rect x="84" y="37" width="8" height="3" rx="1.5" fill="#5a5a5a" opacity=".7" />
+            <rect x="120" y="37" width="8" height="3" rx="1.5" fill="#5a5a5a" opacity=".7" />
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+function App(){
+  const [cat, setCat] = useState("all");
+  const [soundOn, setSoundOn] = useState(()=>loadPref("aaron_sound", true));
+  const [autoOn, setAutoOn] = useState(()=>loadPref("aaron_auto", true));
+  const [line, setLine] = useState(LINES[0]);
+  const [shown, setShown] = useState("");
+  const [talking, setTalking] = useState(false);
+  const [poking, setPoking] = useState(false);
+
+  const lastText = useRef(LINES[0].t);
+  const pokeTimer = useRef(null);
+
+  const pickLine = useCallback(()=>{
+    const pool = cat==="all" ? LINES : LINES.filter(l=>l.c===cat);
+    let next = pool[Math.floor(Math.random()*pool.length)];
+    if(pool.length > 1){
+      let guard = 0;
+      while(next.t === lastText.current && guard < 8){
+        next = pool[Math.floor(Math.random()*pool.length)]; guard++;
+      }
+    }
+    lastText.current = next.t;
+    setLine(next);
+    (next.c === "code" ? clack : blip)(soundOn);
+  }, [cat, soundOn]);
+
+  // typewriter
+  useEffect(()=>{
+    setShown("");
+    setTalking(true);
+    const full = line.t;
+    let i = 0;
+    const id = setInterval(()=>{
+      i++;
+      setShown(full.slice(0, i));
+      if(i >= full.length){ clearInterval(id); setTalking(false); }
+    }, 26);
+    return ()=>clearInterval(id);
+  }, [line]);
+
+  // auto chatter: after he finishes, wait a beat, then say another
+  useEffect(()=>{
+    if(!autoOn || talking) return;
+    const wait = 3800 + Math.random()*4200;
+    const id = setTimeout(pickLine, wait);
+    return ()=>clearTimeout(id);
+  }, [autoOn, talking, line, pickLine]);
+
+  const poke = ()=>{
+    pickLine();
+    setPoking(true);
+    clearTimeout(pokeTimer.current);
+    pokeTimer.current = setTimeout(()=>setPoking(false), 560);
+  };
+
+  const chooseCat = (k)=>{
+    setCat(k);
+    const pool = k==="all" ? LINES : LINES.filter(l=>l.c===k);
+    let next = pool[Math.floor(Math.random()*pool.length)];
+    lastText.current = next.t;
+    setLine(next);
+    (next.c === "code" ? clack : blip)(soundOn);
+  };
+
+  const toggleSound = ()=>{ const v=!soundOn; setSoundOn(v); savePref("aaron_sound", v); if(v) blip(true); };
+  const toggleAuto = ()=>{ const v=!autoOn; setAutoOn(v); savePref("aaron_auto", v); };
+
+  return (
+    <div className="app">
+      <div className="topbar">
+        <div className="avatar-dot">🐺</div>
+        <div className="who">
+          <h1>Jamar</h1>
+          <div className="status">Wolfpack legend · <b>leading with empathy</b></div>
+        </div>
+        <div className="vbadge">v1</div>
+      </div>
+
+      <div className="stage">
+        <div className="height-pill">📏 actually 7'0"</div>
+
+        <div className="bubble-wrap">
+          <div className={"bubble" + (talking ? " talking" : "")}>
+            <span className="cat">{CAT_LABEL[line.c]}</span>
+            <p>{shown}<span className="caret">▌</span></p>
+          </div>
+        </div>
+
+        <div className="aaron-holder">
+          <div className="bob">
+            <div className={"portrait" + (talking ? " talk" : "") + (poking ? " poke" : "")} onClick={poke}>
+              <svg viewBox="0 0 300 300" role="img" aria-label="Jamar, Wolfpack">
+                <defs>
+                  <linearGradient id="jred" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#e30000" />
+                    <stop offset="1" stopColor="#8c0000" />
+                  </linearGradient>
+                </defs>
+                <rect width="300" height="300" fill="url(#jred)" />
+                <g opacity="0.10" fill="#ffffff">
+                  <rect x="-40" y="-40" width="26" height="420" transform="rotate(20 0 0)" />
+                  <rect x="60" y="-40" width="26" height="420" transform="rotate(20 0 0)" />
+                  <rect x="160" y="-40" width="26" height="420" transform="rotate(20 0 0)" />
+                </g>
+                <g fill="#ffffff">
+                  <ellipse cx="150" cy="150" rx="42" ry="34" />
+                  <ellipse cx="110" cy="112" rx="13" ry="19" />
+                  <ellipse cx="135" cy="97" rx="12" ry="18" />
+                  <ellipse cx="165" cy="97" rx="12" ry="18" />
+                  <ellipse cx="190" cy="112" rx="13" ry="19" />
+                </g>
+                <text x="150" y="232" textAnchor="middle" fontFamily="Fredoka, sans-serif" fontSize="48" fontWeight="700" fill="#ffffff" letterSpacing="2">JAMAR</text>
+                <text x="150" y="262" textAnchor="middle" fontFamily="Fredoka, sans-serif" fontSize="15" fontWeight="600" fill="#ffd3d3" letterSpacing="7">GO PACK</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="dock">
+        <div className="poke-row">
+          <button className="poke-btn" onClick={poke}>Poke Aaron 👉</button>
+          <button className="icon-btn" aria-pressed={soundOn} title="Sound" onClick={toggleSound}>{soundOn ? "🔊" : "🔇"}</button>
+          <button className="icon-btn" aria-pressed={autoOn} title="Auto-chatter" onClick={toggleAuto}>{autoOn ? "💬" : "🤐"}</button>
+        </div>
+        <div className="chips">
+          {CATS.map(c=>(
+            <button key={c.key} className={"chip" + (cat===c.key ? " on":"")} onClick={()=>chooseCat(c.key)}>{c.label}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
