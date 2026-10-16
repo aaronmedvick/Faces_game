@@ -58,6 +58,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--c,var(--gold));box-sh
 .msg{min-height:1.4em;text-align:center;color:var(--rose);font-size:.92rem;margin-bottom:10px}
 .note{color:var(--dim);font-size:.86rem;margin-top:8px}
 .hide{display:none}
+#phases{display:flex;flex-direction:column}
 #preview{width:100%;height:78vh;border:1px solid rgba(255,255,255,.15);border-radius:18px;background:#12081b;margin-top:14px}
 .two{display:grid;gap:10px;grid-template-columns:1fr 1fr;margin-top:12px}
 </style>
@@ -65,16 +66,32 @@ input:focus,textarea:focus,select:focus{border-color:var(--c,var(--gold));box-sh
 <body>
 <main>
   <h1>Reading builder</h1>
-  <p class="sub">Pick the cards. Build the page, or send it all to Claude for the story.</p>
+  <p class="sub">Lay the cards, log them here, and let Claude write the story.</p>
+
+  <section class="panel" style="--c:var(--rose)">
+    <details open>
+      <summary style="cursor:pointer;font-family:var(--serif);font-size:1.7rem;color:var(--rose)">How to lay the spread</summary>
+      <ol style="margin:14px 0 0 20px;display:grid;gap:10px;color:#e3d9cd">
+        <li><b>Shuffle</b> the deck while holding your question or situation in mind.</li>
+        <li><b>Present.</b> Draw one card and place it in the middle. It represents where things stand now.</li>
+        <li><b>Around the present.</b> Draw 3 to 4 more cards and place them around the middle card. They show what is shaping the present.</li>
+        <li><b>Reversed (optional).</b> If you read reversals, turn a card upside down when it lands that way in the shuffle, or flip a few on purpose.</li>
+        <li><b>Past.</b> Shuffle again. Draw a new middle card for the past and place 3 to 4 cards around it.</li>
+        <li><b>Future.</b> Shuffle again. Draw a new middle card for the future and place 3 to 4 cards around it.</li>
+        <li><b>Extra card (optional).</b> If a card falls out or you feel pulled to add one, place it where it belongs and mark it extra below.</li>
+      </ol>
+      <p class="note" style="margin-top:14px">Then log each group below, add your question, and copy everything to Claude.</p>
+    </details>
+  </section>
 
   <section class="panel">
-    <h2 style="color:var(--rose)">Background</h2>
-    <label class="f" for="bg">Her background or your question (used for Claude only, never printed on the page)</label>
-    <textarea id="bg" placeholder="Who is this about, what is going on, what do you want to know?"></textarea>
-    <label class="f" for="title">Page title</label>
+    <h2 style="color:var(--rose)">Question or context</h2>
+    <label class="f" for="bg">What is going on, or what do you want to know? (goes to Claude only, never printed on the page)</label>
+    <textarea id="bg" placeholder="Describe the situation, the people involved, and what you hope the reading will shed light on."></textarea>
+    <label class="f" for="title">Page title (optional)</label>
     <input type="text" id="title" placeholder="The Reading">
     <label class="f" for="hero">One line under the title (optional)</label>
-    <input type="text" id="hero" placeholder="A woman rebuilding on her own terms">
+    <input type="text" id="hero" placeholder="Claude can write this for you">
   </section>
 
   <div id="phases"></div>
@@ -82,7 +99,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--c,var(--gold));box-sh
   <section class="panel">
     <h2 style="color:var(--rose)">Overall</h2>
     <label class="f" for="overall">The shape of the story (optional)</label>
-    <textarea id="overall" placeholder="Leave blank and the page writes a simple line from your key cards."></textarea>
+    <textarea id="overall" placeholder="The overall feedback from Claude goes here, or leave blank for a simple line from the middle cards."></textarea>
   </section>
 
   <div class="msg" id="msg" role="status"></div>
@@ -203,16 +220,16 @@ PH.forEach(([k,name])=>{
   const sec=document.createElement("section");sec.className="panel "+k;
   sec.innerHTML=
     '<h2>'+name+'</h2>'+
-    '<label class="f">Key card</label>'+
+    '<label class="f">'+(k==="present"?"Middle card (the present)":"Middle card ("+name.toLowerCase()+")")+'</label>'+
     '<div class="row"><span class="ks"></span><label class="chk"><input type="checkbox" class="krev">reversed</label></div>'+
     '<div class="kw"></div>'+
-    '<label class="f">Surrounding cards (tick extra for a card she added herself)</label>'+
+    '<label class="f">Cards around it (3 to 4). Tick extra for a card added outside the layout.</label>'+
     '<div class="list"></div>'+
     '<button type="button" class="add">+ Add card</button>'+
-    '<label class="f">Theme line (optional)</label>'+
-    '<input type="text" class="theme" placeholder="e.g. The weight she carried">'+
-    '<label class="f">Your interpretation (optional, blank lines make paragraphs)</label>'+
-    '<textarea class="story" placeholder="Leave blank and the page writes from the card keywords."></textarea>';
+    '<label class="f">Theme line (Claude can fill this)</label>'+
+    '<input type="text" class="theme" placeholder="3 to 5 words">'+
+    '<label class="f">Feedback (filled from the Claude reply, or write your own)</label>'+
+    '<textarea class="story" placeholder="Leave blank and the page writes a simple version from the card keywords."></textarea>';
   const ks=cardSelect();
   sec.querySelector(".ks").replaceWith(ks);
   ks.style.flex="1";ks.parentElement.style.alignItems="center";
@@ -220,6 +237,7 @@ PH.forEach(([k,name])=>{
   const showKw=()=>{const v=ks.value;refs[k].kw.textContent=v===""?"":kw(CARDS[+v],refs[k].keyRev.checked)};
   ks.onchange=showKw;refs[k].keyRev.onchange=showKw;
   sec.querySelector(".add").onclick=()=>addAround(k);
+  sec.style.order=({present:0,past:1,future:2})[k];
   $("phases").appendChild(sec);
   addAround(k);
 });
@@ -351,8 +369,8 @@ function buildPage(d){
 function buildPrompt(d){
   const all=[];d.phases.forEach(p=>{if(p.key)all.push(p.key);p.around.forEach(a=>all.push(a))});
   const sc={};all.forEach(a=>sc[SUITNAME[a.c.suit]]=(sc[SUITNAME[a.c.suit]]||0)+1);
-  const desc=a=>a.c.name+(a.c.title?" ("+a.c.title+")":"")+" \u2013 "+(a.rev?"REVERSED":"upright")+(a.extra?" [extra card she drew herself]":"")+": "+kw(a.c,a.rev);
-  let t="I did a three-position Thoth tarot reading (past, present, future). Please interpret it in light of the background below.\n\n"+
+  const desc=a=>a.c.name+(a.c.title?" ("+a.c.title+")":"")+" \u2013 "+(a.rev?"REVERSED":"upright")+(a.extra?" [extra card drawn outside the layout]":"")+": "+kw(a.c,a.rev);
+  let t="I did a three-position Thoth tarot reading (past, present, future). The middle card of each group is the center of that time period, and the cards around it influence it. Please interpret it in light of the question or context below, then write the overall feedback and final story.\n\n"+
    "Ground rules: tie the cards to the background, say what the cards support and what they do not, and do not promise timing or specific outcomes. Be honest, including about cautions.\n\n"+
    "BACKGROUND / QUESTION:\n"+(d.bg||"(none given)")+"\n\n"+
    "SPREAD STATS: "+all.length+" cards, "+all.filter(a=>a.rev).length+" reversed. Suits: "+Object.keys(sc).map(k=>k+" "+sc[k]).join(", ")+".\n\n";
@@ -362,6 +380,8 @@ function buildPrompt(d){
     p.around.forEach(a=>{t+="Around: "+desc(a)+"\n"});
     t+="\n";
   });
+  const notes=d.phases.filter(p=>p.story||p.theme).map(p=>p.name+": "+[p.theme,p.story].filter(Boolean).join(" \u2013 ")).concat(d.overall?["Overall: "+d.overall]:[]);
+  if(notes.length)t+="EXISTING FEEDBACK / NOTES TO WEAVE IN (revise freely):\n"+notes.join("\n")+"\n\n";
   t+="Reply in exactly this labeled plain-text format, no markdown, each label on its own line followed by the text:\n"+
    "TITLE: a short evocative title\nHERO: one sentence under the title\n"+
    "PAST_THEME: 3 to 5 words\nPAST: 2 to 4 sentences\n"+
@@ -394,7 +414,7 @@ let lastHtml="";
 function needKeys(d){return d.phases.every(p=>p.key)}
 $("build").onclick=()=>{
   const d=collect();
-  if(!needKeys(d)){msg("Choose a key card for Past, Present and Future first.");return}
+  if(!needKeys(d)){msg("Choose a middle card for Present, Past and Future first.");return}
   msg("");
   lastHtml=buildPage(d);
   $("preview").srcdoc=lastHtml;
