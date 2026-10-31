@@ -11,12 +11,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
+  --tile-h:54px; --tile-f:clamp(14px,4.8vw,24px); --vb-h:56px; --vv-f:34px; --yn-h:48px; --yn-f:18px; --big-f:44px;
   --navy:#020535; --navy2:#050a63; --blue:#0a1bd1; --blue2:#1a2cf0;
   --gold:#ffcc33; --ink:#ffffff; --mute:#9fb0ff;
   --ok:#3ee08a; --bad:#ff7070;
   --display:"Anton","Impact","Arial Narrow",sans-serif;
   --body:"Barlow","Helvetica Neue",Arial,sans-serif;
 }
+body.sz-s{--tile-h:44px;--tile-f:clamp(12px,4.2vw,20px);--vb-h:44px;--vv-f:26px;--yn-h:40px;--yn-f:16px;--big-f:34px}
+body.sz-l{--tile-h:62px;--tile-f:clamp(15px,5.4vw,28px);--vb-h:74px;--vv-f:46px;--yn-h:62px;--yn-f:22px;--big-f:58px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);font-weight:500}
 body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -52,7 +55,7 @@ input{font-family:inherit}
 .board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;background:#000;padding:3px;border-radius:6px}
 .cat{background:var(--blue);border:0;border-radius:2px;min-height:54px;padding:4px 2px;font-size:12px;font-weight:700;line-height:1.1;color:#fff;overflow:hidden;word-break:break-word;text-transform:uppercase}
 .cat.empty{color:#7f8fff;font-weight:600;text-transform:none}
-.tile{background:var(--blue);border:0;border-radius:2px;min-height:62px;font-family:var(--display);font-size:clamp(15px,5.4vw,28px);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0}
+.tile{background:var(--blue);border:0;border-radius:2px;min-height:var(--tile-h);font-family:var(--display);font-size:var(--tile-f);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0}
 .tile:active{background:var(--blue2)}
 .tile.done{background:#040a55;font-family:var(--body);font-size:13px;font-weight:700;text-shadow:none;color:var(--mute)}
 .tile.done.r{color:var(--ok)}
@@ -77,26 +80,33 @@ input{font-family:inherit}
 .ps.neg{color:var(--bad)}
 
 .scrim{position:fixed;inset:0;background:rgba(0,0,20,.72);display:flex;align-items:flex-end;justify-content:center;z-index:50}
-.sheet{width:100%;max-width:640px;background:var(--blue);border-top:4px solid var(--gold);border-radius:14px 14px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom,0px))}
-.big{font-family:var(--display);font-size:64px;line-height:1;color:var(--gold);text-align:center;text-shadow:3px 3px 0 #000;margin:4px 0 4px}
+.sheet{width:100%;max-width:640px;background:var(--blue);border-top:4px solid var(--gold);border-radius:14px 14px 0 0;padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.big{font-family:var(--display);font-size:var(--big-f);line-height:1;color:var(--gold);text-align:center;text-shadow:3px 3px 0 #000;margin:2px 0 2px}
+.ddsplash{font-family:var(--display);font-size:40px;line-height:1;text-align:center;color:var(--gold);text-shadow:3px 3px 0 #000,0 0 18px rgba(255,204,51,.7);margin:2px 0 6px;letter-spacing:1px}
+.ddamt{color:#fff}
+.slide{width:100%;height:46px;accent-color:var(--gold);margin:6px 0 0}
+.ticks{display:flex;justify-content:space-between;color:var(--mute);font-size:13px;font-weight:700;margin:-4px 2px 4px}
 .ddtag{text-align:center;font-family:var(--display);font-size:22px;color:#fff;letter-spacing:1px}
-.note{text-align:center;color:#d6dcff;font-size:15px;margin:2px 0 10px}
+.note{text-align:center;color:#d6dcff;font-size:14px;margin:2px 0 8px}
 .q{display:flex;gap:6px;margin-top:8px}
 .q button{flex:1;background:var(--navy2);border:2px solid var(--navy);border-radius:6px;padding:11px 4px;font-weight:700;font-size:15px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.three .btn{font-size:22px;min-height:64px;padding:12px 6px}
-.vlist{display:grid;gap:8px}
-.vbtn{display:flex;justify-content:space-between;align-items:center;background:var(--blue);border:0;border-radius:6px;padding:14px 18px;min-height:78px;box-shadow:inset 0 0 0 3px #000}
+.three .btn,.sheet .two .btn{font-size:var(--yn-f);min-height:var(--yn-h);padding:6px}
+.seg{display:flex;gap:4px;margin-top:8px}
+.seg button{flex:1;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:9px 4px;font-weight:700;font-size:14px}
+.seg button.on{border-color:var(--gold);color:var(--gold)}
+.vlist{display:grid;gap:6px}
+.vbtn{display:flex;justify-content:space-between;align-items:center;background:var(--blue);border:0;border-radius:6px;padding:6px 16px;min-height:var(--vb-h);box-shadow:inset 0 0 0 3px #000}
 .vbtn:active{background:var(--blue2)}
-.vv{font-family:var(--display);font-size:48px;color:var(--gold);text-shadow:3px 3px 0 #000}
+.vv{font-family:var(--display);font-size:var(--vv-f);color:var(--gold);text-shadow:3px 3px 0 #000}
 .vs{color:var(--mute);font-size:15px;font-weight:700}
 
 .final{background:var(--navy2);border:3px solid var(--gold);border-radius:8px;padding:16px;margin-top:10px}
 .pod{display:flex;align-items:center;gap:12px;padding:14px 12px;border-bottom:1px solid #000}
 .rank{font-family:var(--display);font-size:34px;color:var(--gold);width:48px}
 .mute{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));background:var(--navy2);border:2px solid var(--blue);border-radius:20px;padding:8px 12px;font-size:13px;font-weight:700;z-index:40}
-@media (prefers-reduced-motion:no-preference){ .sheet{animation:up .16s ease-out} @keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}} }
+@media (prefers-reduced-motion:no-preference){ .ddsplash{animation:ddpop .55s cubic-bezier(.2,1.4,.4,1)} @keyframes ddpop{0%{transform:scale(.3) rotate(-6deg);opacity:0}60%{transform:scale(1.2) rotate(2deg);opacity:1}100%{transform:none}} .scrim:has(.ddsplash){animation:ddflash .7s ease-out} @keyframes ddflash{0%{background:rgba(255,204,51,.85)}100%{background:rgba(0,0,20,.72)}} .sheet{animation:up .16s ease-out} @keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}} }
 </style>
 <script src="hub.js"></script>
 </head>
@@ -144,6 +154,7 @@ function sfx(kind){
       o.connect(g); g.connect(AC.destination); o.start(AC.currentTime+t); o.stop(AC.currentTime+t+d+0.02); };
     if(kind==="r"){ note(660,0,.14,"sine",.25); note(880,.12,.22,"sine",.25); }
     else if(kind==="w"){ note(140,0,.38,"sawtooth",.2); }
+    else if(kind==="ddr"){ note(392,0,.12,"triangle",.28); note(523,.1,.12,"triangle",.28); note(659,.2,.12,"triangle",.28); note(784,.3,.14,"triangle",.28); note(1047,.42,.5,"triangle",.3); note(1319,.42,.5,"sine",.15); }
     else if(kind==="dd"){ note(523,0,.12,"triangle",.25); note(659,.11,.12,"triangle",.25); note(784,.22,.12,"triangle",.25); note(1047,.33,.3,"triangle",.25); }
   }catch(e){}
 }
@@ -162,6 +173,9 @@ function App(){
   const [finalW,setFinalW] = useState("");
   const [cats,setCats] = useState({});
   const [muted,setMuted] = useState(ls.get("jp_mute")==="1");
+  const [size,setSize] = useState(ls.get("jp_size")||"m");   /* s | m | l */
+  const [ddPct,setDdPct] = useState(5);                       /* Daily Double slider: 0..10 = $1, 10%..100% of bank */
+  const [ddLock,setDdLock] = useState(null);                  /* {key,w} locked Daily Double wager */
   const [view,setView] = useState(ls.get("jp_view")||"board");   /* board | values */
   const lastWrite = useRef(0);
 
@@ -270,14 +284,18 @@ function App(){
   const findEntry = (c,i) => log.find(e=>e.r===round&&e.c===c&&e.i===i);
   const maxWager = myScore;
   const noPen = !!(room && room.nopen);
+  const ddFlat = !!(room && room.ddflat);
+  const tk = (c,i) => round+"-"+c+"-"+i;
+  useEffect(()=>{ document.body.className="sz-"+size; ls.set("jp_size",size); },[size]);
 
-  function openTile(c,i){ setSel({c,i}); setMode("clue"); setWager(""); }
+  function openTile(c,i){ setSel({c,i}); setWager(""); setMode(ddLock&&ddLock.key===tk(c,i)?"ddplay":"clue"); }
   function closeSheet(){ setSel(null); }
   function answer(t){
     const v=vals[sel.i];
-    if(mode==="dd"){
-      const w=maxWager>=MIN_WAGER ? parseInt(wager,10) : v;
-      if(maxWager>=MIN_WAGER && !(w>=MIN_WAGER&&w<=maxWager)) return;
+    if(mode==="ddplay"){
+      if(!ddLock) return;
+      const w=ddLock.w;
+      setDdLock(null);
       writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?w:(noPen?0:-w),dd:1,w}]); sfx(t==="r"?"dd":"w");
     } else {
       writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?v:t==="w"?(noPen?0:-v):0}]); sfx(t);
@@ -339,6 +357,11 @@ function App(){
       <div className="two">
         <button className={"vcard"+(!noPen?" on":"")} disabled={!isHost} onClick={()=>patchRoom({nopen:false})}><b>Lose points</b><span>Wrong costs the clue value</span></button>
         <button className={"vcard"+(noPen?" on":"")} disabled={!isHost} onClick={()=>patchRoom({nopen:true})}><b>No penalty</b><span>Wrong costs nothing</span></button>
+      </div>
+      <label className="lbl">Daily Double</label>
+      <div className="two">
+        <button className={"vcard"+(!ddFlat?" on":"")} disabled={!isHost} onClick={()=>patchRoom({ddflat:false})}><b>Wager</b><span>Lock in a wager first</span></button>
+        <button className={"vcard"+(ddFlat?" on":"")} disabled={!isHost} onClick={()=>patchRoom({ddflat:true})}><b>Clue value</b><span>Worth the clue points</span></button>
       </div>
       <label className="lbl">Your screen (just you)</label>
       <div className="two">
@@ -412,9 +435,9 @@ function App(){
 
   /* ---- play: the board ---- */
   const entry = (sel && sel.c!=="v") ? findEntry(sel.c,sel.i) : null;
-  const wNum = parseInt(wager,10);
-  const ddFallback = maxWager<MIN_WAGER;
-  const wOk = ddFallback || (wNum>=MIN_WAGER && wNum<=maxWager);
+    const ddFallback = maxWager<MIN_WAGER;
+  const ddWager = (i) => ddFallback ? vals[i] : Math.min(maxWager, ddPct===0 ? MIN_WAGER : Math.max(MIN_WAGER, Math.round(maxWager*ddPct/10)));
+  const ddLabel = ddPct===0?"Minimum bet":ddPct<=3?"Playing it safe":ddPct<=6?"Confident":ddPct<=9?"Very confident":"ALL IN - extremely confident";
   return (
     <div>
       <div className="top">
@@ -426,7 +449,7 @@ function App(){
           {vals.map((v,i)=>{
             const es=log.filter(e=>e.r===round&&e.i===i&&e.c==="v");
             return (
-              <button key={i} className="vbtn" onClick={()=>{setSel({c:"v",i});setMode("clue");setWager("");}}>
+              <button key={i} className="vbtn" onClick={()=>openTile("v",i)}>
                 <span className="vv">{"$"+v}</span>
                 <span className="vs">{es.length?es.length+" played":""}</span>
               </button>);
@@ -446,6 +469,9 @@ function App(){
       <p className="hint">{view==="values"?"Tap the dollar value of the clue being played. You can play the same value more than once.":"Tap a value when the clue is picked on the show. Tap a category header to name it. This board is just yours."}</p>
       <div className="row" style={{marginTop:8}}>
         <button className="btn ghost sm" style={{flex:1}} onClick={()=>setViewMode(view==="values"?"board":"values")}>{view==="values"?"Switch to full board":"Switch to values only"}</button>
+      </div>
+      <div className="seg">
+        {[["s","Small"],["m","Medium"],["l","Large"]].map(x=>(<button key={x[0]} className={size===x[0]?"on":""} onClick={()=>setSize(x[0])}>{x[1]}</button>))}
       </div>
       <div className="row" style={{marginTop:10}}>
         <button className="btn ghost sm" style={{flex:1}} onClick={undoLast} disabled={!log.length}>Undo last</button>
@@ -474,20 +500,35 @@ function App(){
                   <button className="btn bad" style={{marginTop:0}} onClick={()=>answer("w")}>No</button>
                   <button className="btn ghost" style={{marginTop:0}} onClick={()=>answer("p")}>Pass</button>
                 </div>
-                <button className="btn ghost" style={{borderColor:"var(--gold)",color:"var(--gold)"}} onClick={()=>{setMode("dd");setWager("");}}>This is the Daily Double</button>
+                {!ddFlat && <button className="link" style={{color:"var(--gold)"}} onClick={()=>{setMode("dd");setDdPct(5);sfx("ddr");}}>This is a Daily Double</button>}
                 <button className="link" onClick={closeSheet}>Close</button>
+              </div>
+            ) : mode==="dd" ? (
+              <div>
+                <div className="ddsplash">DAILY DOUBLE!</div>
+                {ddFallback ? (
+                  <div className="note">Your bank is under $1, so this plays at the clue value: {fmt(vals[sel.i])}</div>
+                ) : (
+                  <div>
+                    <div className="big ddamt">{fmt(ddWager(sel.i))}</div>
+                    <div className="note">{ddLabel}{ddPct>0&&ddPct<10?" - "+(ddPct*10)+"% of your "+fmt(maxWager):""}</div>
+                    <input className="slide" type="range" min="0" max="10" step="1" value={ddPct} onChange={e=>setDdPct(parseInt(e.target.value,10))} aria-label="Wager as a percent of your total" />
+                    <div className="ticks"><span>$1</span><span>50%</span><span>ALL IN</span></div>
+                  </div>
+                )}
+                <button className="btn gold" onClick={()=>{ setDdLock({key:tk(sel.c,sel.i),w:ddWager(sel.i)}); setMode("ddplay"); }}>Lock in wager</button>
+                <button className="link" onClick={()=>setMode("clue")}>Back</button>
               </div>
             ) : (
               <div>
-                <div className="ddtag">DAILY DOUBLE</div>
-                <div className="note">{ddFallback?"Your bank is under $1, so this plays at the clue value: "+fmt(vals[sel.i]):"Type any wager from "+fmt(MIN_WAGER)+" up to "+fmt(maxWager)+" (your total)."}</div>
-                {!ddFallback && <input className="in" inputMode="numeric" autoFocus value={wager} onChange={e=>setWager(e.target.value.replace(/[^0-9]/g,""))} placeholder="Wager" />}
-                {!ddFallback && wager!=="" && !wOk && <div className="err" style={{marginTop:6,textAlign:"center"}}>{wNum>maxWager?"That is more than your total.":"Wager must be at least "+fmt(MIN_WAGER)+"."}</div>}
-                <div className="two" style={{marginTop:12}}>
-                  <button className="btn ok" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("r")}>Yes{wOk&&!ddFallback?" +"+wNum.toLocaleString("en-US"):""}</button>
-                  <button className="btn bad" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("w")}>No{wOk&&!ddFallback&&!noPen?" -"+wNum.toLocaleString("en-US"):""}</button>
+                <div className="ddtag">DAILY DOUBLE - LOCKED</div>
+                <div className="big">{fmt(ddLock?ddLock.w:0)}</div>
+                <div className="note">Wager is locked. Did you get it right?</div>
+                <div className="two">
+                  <button className="btn ok" style={{marginTop:0}} onClick={()=>answer("r")}>Yes +{(ddLock?ddLock.w:0).toLocaleString("en-US")}</button>
+                  <button className="btn bad" style={{marginTop:0}} onClick={()=>answer("w")}>No{noPen?"":" -"+(ddLock?ddLock.w:0).toLocaleString("en-US")}</button>
                 </div>
-                <button className="link" onClick={()=>setMode("clue")}>Back</button>
+                <button className="link" onClick={()=>{ setDdLock(null); setMode("clue"); }}>Not a Daily Double after all</button>
               </div>
             )}
           </div>
