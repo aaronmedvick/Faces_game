@@ -84,6 +84,13 @@ input{font-family:inherit}
 .q{display:flex;gap:6px;margin-top:8px}
 .q button{flex:1;background:var(--navy2);border:2px solid var(--navy);border-radius:6px;padding:11px 4px;font-weight:700;font-size:15px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.three .btn{font-size:22px;min-height:64px;padding:12px 6px}
+.vlist{display:grid;gap:8px}
+.vbtn{display:flex;justify-content:space-between;align-items:center;background:var(--blue);border:0;border-radius:6px;padding:14px 18px;min-height:78px;box-shadow:inset 0 0 0 3px #000}
+.vbtn:active{background:var(--blue2)}
+.vv{font-family:var(--display);font-size:48px;color:var(--gold);text-shadow:3px 3px 0 #000}
+.vs{color:var(--mute);font-size:15px;font-weight:700}
 
 .final{background:var(--navy2);border:3px solid var(--gold);border-radius:8px;padding:16px;margin-top:10px}
 .pod{display:flex;align-items:center;gap:12px;padding:14px 12px;border-bottom:1px solid #000}
@@ -111,7 +118,7 @@ const VERSIONS = {
 };
 const ROUND_NAMES = ["Jeopardy","Double Jeopardy","Triple Jeopardy"];
 const COLS = 6;
-const MIN_WAGER = 5;
+const MIN_WAGER = 1;
 
 /* ================= helpers ================= */
 const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
@@ -155,6 +162,7 @@ function App(){
   const [finalW,setFinalW] = useState("");
   const [cats,setCats] = useState({});
   const [muted,setMuted] = useState(ls.get("jp_mute")==="1");
+  const [view,setView] = useState(ls.get("jp_view")||"board");   /* board | values */
   const lastWrite = useRef(0);
 
   const remote = !!sb && !!code && code!=="SOLO";
@@ -260,18 +268,19 @@ function App(){
     if(remote) sb.from("jp_players").update({log:newLog,score}).eq("id",myId).then(()=>{},()=>{});
   }
   const findEntry = (c,i) => log.find(e=>e.r===round&&e.c===c&&e.i===i);
-  const maxWager = Math.max(myScore,topVal);
+  const maxWager = myScore;
+  const noPen = !!(room && room.nopen);
 
   function openTile(c,i){ setSel({c,i}); setMode("clue"); setWager(""); }
   function closeSheet(){ setSel(null); }
   function answer(t){
     const v=vals[sel.i];
     if(mode==="dd"){
-      const w=parseInt(wager,10);
-      if(!(w>=MIN_WAGER&&w<=maxWager)) return;
-      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?w:-w,dd:1,w}]); sfx(t==="r"?"dd":"w");
+      const w=maxWager>=MIN_WAGER ? parseInt(wager,10) : v;
+      if(maxWager>=MIN_WAGER && !(w>=MIN_WAGER&&w<=maxWager)) return;
+      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?w:(noPen?0:-w),dd:1,w}]); sfx(t==="r"?"dd":"w");
     } else {
-      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?v:t==="w"?-v:0}]); sfx(t);
+      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?v:t==="w"?(noPen?0:-v):0}]); sfx(t);
     }
     closeSheet();
   }
@@ -280,9 +289,10 @@ function App(){
   function finalAnswer(t){
     const w=parseInt(finalW,10);
     if(!(w>=0&&w<=Math.max(0,myScore))) return;
-    writeMe([...log.filter(e=>e.r!=="F"),{r:"F",t,d:t==="r"?w:-w,w}]); sfx(t);
+    writeMe([...log.filter(e=>e.r!=="F"),{r:"F",t,d:t==="r"?w:(noPen?0:-w),w}]); sfx(t);
   }
   function finalSkip(){ writeMe([...log.filter(e=>e.r!=="F"),{r:"F",t:"p",d:0,w:0}]); }
+  function setViewMode(v){ setView(v); ls.set("jp_view",v); }
   function toggleMute(){ const m=!muted; setMuted(m); ls.set("jp_mute",m?"1":"0"); }
 
   const ranked = [...players].sort((a,b)=>(b.score||0)-(a.score||0));
@@ -324,6 +334,16 @@ function App(){
           <button key={k} className={"vcard"+(room.version===k?" on":"")} disabled={!isHost} onClick={()=>patchRoom({version:k})}>
             <b>{VERSIONS[k].name}</b><span>{blurb(VERSIONS[k])}</span>
           </button>))}
+      </div>
+      <label className="lbl">Wrong answers</label>
+      <div className="two">
+        <button className={"vcard"+(!noPen?" on":"")} disabled={!isHost} onClick={()=>patchRoom({nopen:false})}><b>Lose points</b><span>Wrong costs the clue value</span></button>
+        <button className={"vcard"+(noPen?" on":"")} disabled={!isHost} onClick={()=>patchRoom({nopen:true})}><b>No penalty</b><span>Wrong costs nothing</span></button>
+      </div>
+      <label className="lbl">Your screen (just you)</label>
+      <div className="two">
+        <button className={"vcard"+(view==="board"?" on":"")} onClick={()=>setViewMode("board")}><b>Full board</b><span>6 columns, name categories</span></button>
+        <button className={"vcard"+(view==="values"?" on":"")} onClick={()=>setViewMode("values")}><b>Values only</b><span>Five big buttons</span></button>
       </div>
       {isHost && <button className="btn gold" onClick={startGame}>Start game</button>}
       <Scoreboard />
@@ -391,15 +411,28 @@ function App(){
   }
 
   /* ---- play: the board ---- */
-  const entry = sel ? findEntry(sel.c,sel.i) : null;
+  const entry = (sel && sel.c!=="v") ? findEntry(sel.c,sel.i) : null;
   const wNum = parseInt(wager,10);
-  const wOk = wNum>=MIN_WAGER && wNum<=maxWager;
+  const ddFallback = maxWager<MIN_WAGER;
+  const wOk = ddFallback || (wNum>=MIN_WAGER && wNum<=maxWager);
   return (
     <div>
       <div className="top">
         <div><div className="rt">{ROUND_NAMES[round-1]}</div><div className="meta">{V.name} / Room {code==="SOLO"?"solo":code}</div></div>
         <div className="mine"><small>{name||"You"}</small><div className={"score"+(myScore<0?" neg":"")}>{fmt(myScore)}</div></div>
       </div>
+      {view==="values" ? (
+        <div className="vlist">
+          {vals.map((v,i)=>{
+            const es=log.filter(e=>e.r===round&&e.i===i&&e.c==="v");
+            return (
+              <button key={i} className="vbtn" onClick={()=>{setSel({c:"v",i});setMode("clue");setWager("");}}>
+                <span className="vv">{"$"+v}</span>
+                <span className="vs">{es.length?es.length+" played":""}</span>
+              </button>);
+          })}
+        </div>
+      ) : (
       <div className="board">
         {Array.from({length:COLS},(_,c)=>{ const t=cats[round+"-"+c]; return <button key={"h"+c} className={"cat"+(t?"":" empty")} onClick={()=>editCat(c)}>{t||"Name it"}</button>; })}
         {vals.map((v,i)=>Array.from({length:COLS},(_,c)=>{
@@ -409,7 +442,11 @@ function App(){
           return <button key={c+"-"+i} className="tile" onClick={()=>openTile(c,i)} aria-label={fmt(v)+" column "+(c+1)}>{"$"+v}</button>;
         }))}
       </div>
-      <p className="hint">Tap a value when the clue is picked on the show. Tap a category header to name it. This board is just yours.</p>
+      )}
+      <p className="hint">{view==="values"?"Tap the dollar value of the clue being played. You can play the same value more than once.":"Tap a value when the clue is picked on the show. Tap a category header to name it. This board is just yours."}</p>
+      <div className="row" style={{marginTop:8}}>
+        <button className="btn ghost sm" style={{flex:1}} onClick={()=>setViewMode(view==="values"?"board":"values")}>{view==="values"?"Switch to full board":"Switch to values only"}</button>
+      </div>
       <div className="row" style={{marginTop:10}}>
         <button className="btn ghost sm" style={{flex:1}} onClick={undoLast} disabled={!log.length}>Undo last</button>
         {isHost && <button className="btn gold sm" style={{flex:2}} onClick={nextStage}>{round<V.steps.length?"Next: "+ROUND_NAMES[round]:"Go to Final Jeopardy"}</button>}
@@ -424,35 +461,31 @@ function App(){
             {entry ? (
               <div>
                 <div className="big">{entry.dd?"DD "+fmt(entry.w):fmt(vals[sel.i])}</div>
-                <div className="note">{entry.t==="r"?"You got it: "+sgn(entry.d):entry.t==="w"?"You missed: "+sgn(entry.d):"No answer, no change."}</div>
+                <div className="note">{entry.t==="r"?"You got it: "+sgn(entry.d):entry.t==="w"?(noPen?"You missed: no penalty":"You missed: "+sgn(entry.d)):"No answer, no change."}</div>
                 <button className="btn bad" onClick={clearTile}>Clear this clue</button>
                 <button className="btn ghost" onClick={closeSheet}>Close</button>
               </div>
             ) : mode==="clue" ? (
               <div>
                 <div className="big">{fmt(vals[sel.i])}</div>
-                <div className="note">Did you get it right?</div>
-                <div className="two">
+                <div className="note">Did you get it right?{noPen?" (no penalty for wrong)":""}</div>
+                <div className="three">
                   <button className="btn ok" style={{marginTop:0}} onClick={()=>answer("r")}>Yes</button>
                   <button className="btn bad" style={{marginTop:0}} onClick={()=>answer("w")}>No</button>
+                  <button className="btn ghost" style={{marginTop:0}} onClick={()=>answer("p")}>Pass</button>
                 </div>
-                <button className="btn ghost" onClick={()=>answer("p")}>Nobody buzzed / I passed</button>
                 <button className="btn ghost" style={{borderColor:"var(--gold)",color:"var(--gold)"}} onClick={()=>{setMode("dd");setWager("");}}>This is the Daily Double</button>
                 <button className="link" onClick={closeSheet}>Close</button>
               </div>
             ) : (
               <div>
                 <div className="ddtag">DAILY DOUBLE</div>
-                <div className="note">Wager {fmt(MIN_WAGER)} to {fmt(maxWager)}{myScore<topVal?" (the top clue value, since your bank is lower)":" (your whole bank)"}</div>
-                <input className="in" inputMode="numeric" autoFocus value={wager} onChange={e=>setWager(e.target.value.replace(/[^0-9]/g,""))} placeholder="Wager" />
-                <div className="q">
-                  <button onClick={()=>setWager(String(MIN_WAGER))}>{fmt(MIN_WAGER)}</button>
-                  <button onClick={()=>setWager(String(Math.max(MIN_WAGER,Math.floor(maxWager/2))))}>Half</button>
-                  <button onClick={()=>setWager(String(maxWager))}>True DD</button>
-                </div>
+                <div className="note">{ddFallback?"Your bank is under $1, so this plays at the clue value: "+fmt(vals[sel.i]):"Type any wager from "+fmt(MIN_WAGER)+" up to "+fmt(maxWager)+" (your total)."}</div>
+                {!ddFallback && <input className="in" inputMode="numeric" autoFocus value={wager} onChange={e=>setWager(e.target.value.replace(/[^0-9]/g,""))} placeholder="Wager" />}
+                {!ddFallback && wager!=="" && !wOk && <div className="err" style={{marginTop:6,textAlign:"center"}}>{wNum>maxWager?"That is more than your total.":"Wager must be at least "+fmt(MIN_WAGER)+"."}</div>}
                 <div className="two" style={{marginTop:12}}>
-                  <button className="btn ok" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("r")}>Got it{wOk?" +"+wNum.toLocaleString("en-US"):""}</button>
-                  <button className="btn bad" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("w")}>Missed{wOk?" -"+wNum.toLocaleString("en-US"):""}</button>
+                  <button className="btn ok" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("r")}>Yes{wOk&&!ddFallback?" +"+wNum.toLocaleString("en-US"):""}</button>
+                  <button className="btn bad" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("w")}>No{wOk&&!ddFallback&&!noPen?" -"+wNum.toLocaleString("en-US"):""}</button>
                 </div>
                 <button className="link" onClick={()=>setMode("clue")}>Back</button>
               </div>
