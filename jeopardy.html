@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#020535">
+<title>Jeopardy Watch Party</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#020535; --navy2:#050a63; --blue:#0a1bd1; --blue2:#1a2cf0;
+  --gold:#ffcc33; --ink:#ffffff; --mute:#9fb0ff;
+  --ok:#3ee08a; --bad:#ff7070;
+  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);font-weight:500}
+body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font-family:inherit;color:inherit;cursor:pointer}
+input{font-family:inherit}
+#root{max-width:640px;margin:0 auto;padding:12px 10px 40px}
+
+.logo{font-family:var(--display);font-weight:400;font-size:44px;line-height:1;color:var(--gold);margin:18px 0 6px;letter-spacing:.5px;text-shadow:3px 3px 0 #000}
+.sub{color:var(--mute);margin:0 0 20px;font-size:16px;line-height:1.35}
+.lbl{display:block;font-weight:700;margin:14px 0 6px;color:var(--mute);font-size:14px}
+.in{width:100%;background:var(--navy2);border:2px solid var(--blue);color:#fff;border-radius:6px;padding:13px 12px;font-size:18px;font-weight:600}
+.in:focus{outline:3px solid var(--gold);outline-offset:1px}
+.row{display:flex;gap:8px;align-items:stretch}
+.btn{display:block;width:100%;border:0;border-radius:6px;padding:15px 14px;font-size:18px;font-weight:700;background:var(--blue2);color:#fff;margin-top:10px;min-height:54px}
+.btn:active{filter:brightness(1.15)}
+.btn.gold{background:var(--gold);color:#1a1200}
+.btn.ghost{background:transparent;border:2px solid var(--blue2)}
+.btn.ok{background:var(--ok);color:#042312}
+.btn.bad{background:var(--bad);color:#2b0505}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.sm{width:auto;margin:0;padding:12px 18px;min-height:0;font-size:16px}
+.err{margin-top:12px;color:var(--bad);font-weight:700}
+.link{background:none;border:0;color:var(--mute);text-decoration:underline;font-size:15px;padding:10px 4px}
+
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin:6px 2px 10px}
+.rt{font-family:var(--display);font-size:26px;line-height:1.05;color:var(--gold);text-shadow:2px 2px 0 #000}
+.meta{color:var(--mute);font-size:14px;margin-top:3px}
+.mine{text-align:right}
+.mine small{display:block;color:var(--mute);font-size:13px;font-weight:700}
+.score{font-family:var(--display);font-size:40px;line-height:1;text-shadow:2px 2px 0 #000}
+.score.neg{color:var(--bad)}
+
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;background:#000;padding:3px;border-radius:6px}
+.cat{background:var(--blue);border:0;border-radius:2px;min-height:54px;padding:4px 2px;font-size:12px;font-weight:700;line-height:1.1;color:#fff;overflow:hidden;word-break:break-word;text-transform:uppercase}
+.cat.empty{color:#7f8fff;font-weight:600;text-transform:none}
+.tile{background:var(--blue);border:0;border-radius:2px;min-height:62px;font-family:var(--display);font-size:clamp(15px,5.4vw,28px);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0}
+.tile:active{background:var(--blue2)}
+.tile.done{background:#040a55;font-family:var(--body);font-size:13px;font-weight:700;text-shadow:none;color:var(--mute)}
+.tile.done.r{color:var(--ok)}
+.tile.done.w{color:var(--bad)}
+.tile .dd{display:block;font-size:10px;color:var(--gold)}
+.hint{color:var(--mute);font-size:13px;margin:8px 2px 0}
+
+.cards{display:grid;gap:8px}
+.vcard{text-align:left;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:12px;width:100%}
+.vcard.on{border-color:var(--gold);background:#0a1280}
+.vcard b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--gold);display:block}
+.vcard span{color:var(--mute);font-size:14px}
+
+.sb{margin-top:16px;background:var(--navy2);border-radius:6px;overflow:hidden}
+.sbh{padding:10px 12px;font-weight:700;color:var(--mute);font-size:14px;border-bottom:2px solid #000}
+.pr{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid #000}
+.pr:last-child{border-bottom:0}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.pn{flex:1;font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn i{font-style:normal;color:var(--gold);font-size:13px;margin-left:6px}
+.ps{font-family:var(--display);font-size:24px}
+.ps.neg{color:var(--bad)}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,20,.72);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.sheet{width:100%;max-width:640px;background:var(--blue);border-top:4px solid var(--gold);border-radius:14px 14px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom,0px))}
+.big{font-family:var(--display);font-size:64px;line-height:1;color:var(--gold);text-align:center;text-shadow:3px 3px 0 #000;margin:4px 0 4px}
+.ddtag{text-align:center;font-family:var(--display);font-size:22px;color:#fff;letter-spacing:1px}
+.note{text-align:center;color:#d6dcff;font-size:15px;margin:2px 0 10px}
+.q{display:flex;gap:6px;margin-top:8px}
+.q button{flex:1;background:var(--navy2);border:2px solid var(--navy);border-radius:6px;padding:11px 4px;font-weight:700;font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.final{background:var(--navy2);border:3px solid var(--gold);border-radius:8px;padding:16px;margin-top:10px}
+.pod{display:flex;align-items:center;gap:12px;padding:14px 12px;border-bottom:1px solid #000}
+.rank{font-family:var(--display);font-size:34px;color:var(--gold);width:48px}
+.mute{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));background:var(--navy2);border:2px solid var(--blue);border-radius:20px;padding:8px 12px;font-size:13px;font-weight:700;z-index:40}
+@media (prefers-reduced-motion:no-preference){ .sheet{animation:up .16s ease-out} @keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}} }
+</style>
+<script src="hub.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ================= CONFIG: edit values here ================= */
+/* steps = clue value step per round. Round 1 of "modern" = 200,400,600,800,1000. */
+const VERSIONS = {
+  modern:  { name:"Modern (2001 to now)",     steps:[200,400] },
+  classic: { name:"Classic (1984 to 2001)",   steps:[100,200] },
+  triple:  { name:"Triple Jeopardy (3 rounds)", steps:[100,200,300] }
+};
+const ROUND_NAMES = ["Jeopardy","Double Jeopardy","Triple Jeopardy"];
+const COLS = 6;
+const MIN_WAGER = 5;
+
+/* ================= helpers ================= */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const randCode = () => Array.from({length:4},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join("");
+const myId = (()=>{ let v = ls.get("hub_uid"); if(!v){ v = "u"+Math.random().toString(36).slice(2,11); ls.set("hub_uid",v); } return v; })();
+const COLORS = ["#ffcc33","#3ee08a","#ff7070","#c79bff","#5fd4ff","#ff9ad5","#9be15d","#ffffff"];
+const ladder = (s) => [1,2,3,4,5].map(n=>n*s);
+const fmt = (n) => (n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US");
+const sgn = (n) => (n>0?"+":n<0?"-":"")+Math.abs(n).toLocaleString("en-US");
+const blurb = (v) => v.steps.map(s=>fmt(s)+" to "+fmt(s*5)).join(", ")+", then Final";
+
+let AC = null;
+function sfx(kind){
+  if(ls.get("jp_mute")==="1") return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const note=(f,t,d,type,v)=>{ const o=AC.createOscillator(), g=AC.createGain(); o.type=type; o.frequency.value=f;
+      g.gain.setValueAtTime(v,AC.currentTime+t); g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+t+d);
+      o.connect(g); g.connect(AC.destination); o.start(AC.currentTime+t); o.stop(AC.currentTime+t+d+0.02); };
+    if(kind==="r"){ note(660,0,.14,"sine",.25); note(880,.12,.22,"sine",.25); }
+    else if(kind==="w"){ note(140,0,.38,"sawtooth",.2); }
+    else if(kind==="dd"){ note(523,0,.12,"triangle",.25); note(659,.11,.12,"triangle",.25); note(784,.22,.12,"triangle",.25); note(1047,.33,.3,"triangle",.25); }
+  }catch(e){}
+}
+
+/* ================= app ================= */
+function App(){
+  const [name,setName] = useState(ls.get("hub_name")||"");
+  const [code,setCode] = useState("");
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState("");
+  const [err,setErr] = useState("");
+  const [sel,setSel] = useState(null);       /* {c,i} tile open in the sheet */
+  const [mode,setMode] = useState("clue");   /* clue | dd */
+  const [wager,setWager] = useState("");
+  const [finalW,setFinalW] = useState("");
+  const [cats,setCats] = useState({});
+  const [muted,setMuted] = useState(ls.get("jp_mute")==="1");
+  const lastWrite = useRef(0);
+
+  const remote = !!sb && !!code && code!=="SOLO";
+  const me = players.find(p=>p.id===myId);
+  const log = (me && me.log) || [];
+  const myScore = log.reduce((a,e)=>a+e.d,0);
+  const isHost = !!room && room.host_id===myId;
+  const V = VERSIONS[room && room.version] || VERSIONS.modern;
+  const round = room ? Math.min(Math.max(room.round||1,1),V.steps.length) : 1;
+  const vals = ladder(V.steps[round-1]);
+  const topVal = vals[vals.length-1];
+
+  useEffect(()=>{ const c=new URLSearchParams(location.search).get("code"); if(c) setCodeInput(c.toUpperCase()); },[]);
+  useEffect(()=>{ const E=window.HUB&&HUB.entry&&HUB.entry(); if(!E||!sb||!(name||"").trim()) return;
+    (async()=>{ try{ if(E.role==="host"){ await host(E.code); return; }
+      const ok=await HUB.waitRoom("jp_rooms",E.code,20000); if(ok) await join(E.code); else await host(E.code); }catch(e){} })(); },[]);
+
+  /* category names are local-only (each phone names its own board) */
+  useEffect(()=>{ if(!code) return; try{ setCats(JSON.parse(ls.get("jp_cats_"+code)||"{}")); }catch(e){ setCats({}); } },[code]);
+  function editCat(c){
+    const key=round+"-"+c; const v=window.prompt("Category name (only you see this)", cats[key]||"");
+    if(v===null) return; const n={...cats,[key]:v.trim()}; setCats(n); ls.set("jp_cats_"+code,JSON.stringify(n));
+  }
+
+  /* ---- realtime + poll ---- */
+  async function refetch(c){
+    const r = await sb.from("jp_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data) setRoom(r.data);
+    const ps = await sb.from("jp_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data) setPlayers(old=>ps.data.map(p=> (p.id===myId && Date.now()-lastWrite.current<4000) ? (old.find(o=>o.id===myId)||p) : p));
+  }
+  useEffect(()=>{
+    if(!remote) return;
+    refetch(code);
+    const ch = sb.channel("jp:"+code)
+      .on("postgres_changes",{event:"*",schema:"public",table:"jp_rooms",filter:"code=eq."+code},()=>refetch(code))
+      .on("postgres_changes",{event:"*",schema:"public",table:"jp_players",filter:"code=eq."+code},()=>refetch(code))
+      .subscribe();
+    const poll = setInterval(()=>refetch(code),2500);
+    return ()=>{ sb.removeChannel(ch); clearInterval(poll); };
+  },[code]);
+
+  /* ---- create / join / solo ---- */
+  async function host(forced){
+    setErr(""); if(!name.trim()){ setErr("Enter your name first."); return; }
+    if(!sb){ setErr("Can't reach the server. Try solo mode."); return; }
+    ls.set("hub_name",name.trim());
+    const c=(typeof forced==="string"&&forced)?forced:randCode();
+    if(typeof forced==="string"&&forced) await sb.from("jp_rooms").delete().eq("code",c);
+    const r=await sb.from("jp_rooms").insert({ code:c, host_id:myId, phase:"lobby", version:"modern", round:1 });
+    if(r.error){ setErr("Couldn't create room: "+r.error.message); return; }
+    await sb.from("jp_players").delete().eq("id",myId);
+    await sb.from("jp_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0, log:[] });
+    setCode(c);
+  }
+  async function join(cArg){
+    setErr("");
+    const c=((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
+    if(!name.trim()){ setErr("Enter your name first."); return; }
+    if(!c){ setErr("Enter a room code."); return; }
+    if(!sb){ setErr("Can't reach the server. Try solo mode."); return; }
+    ls.set("hub_name",name.trim());
+    const r=await sb.from("jp_rooms").select("code").eq("code",c).maybeSingle();
+    if(!r.data){ setErr("No room "+c+". Check the code."); return; }
+    const ps=await sb.from("jp_players").select("id").eq("code",c);
+    const n=(ps.data||[]).filter(p=>p.id!==myId).length;
+    await sb.from("jp_players").delete().eq("id",myId);
+    const ins=await sb.from("jp_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[n%COLORS.length], score:0, log:[] });
+    if(ins.error){ setErr("Couldn't join: "+ins.error.message); return; }
+    setCode(c);
+  }
+  function solo(){
+    if(!name.trim()){ setErr("Enter your name first."); return; }
+    ls.set("hub_name",name.trim());
+    setRoom({ code:"SOLO", host_id:myId, phase:"lobby", version:"modern", round:1 });
+    setPlayers([{ id:myId, name:name.trim(), color:COLORS[0], score:0, log:[] }]);
+    setCode("SOLO");
+  }
+  function leave(){ setCode(""); setRoom(null); setPlayers([]); setSel(null); }
+
+  /* ---- room changes (host) ---- */
+  function patchRoom(p){
+    setRoom(r=>({...r,...p}));
+    if(remote) sb.from("jp_rooms").update(p).eq("code",code).then(()=>{},()=>{});
+  }
+  function startGame(){ patchRoom({ phase:"play", round:1 }); }
+  function nextStage(){
+    if(round<V.steps.length) patchRoom({ phase:"play", round:round+1 });
+    else patchRoom({ phase:"final" });
+  }
+  function endGame(){ patchRoom({ phase:"done" }); }
+  function newGame(){
+    setPlayers(ps=>ps.map(p=>({...p,log:[],score:0})));
+    if(remote) sb.from("jp_players").update({log:[],score:0}).eq("code",code).then(()=>{},()=>{});
+    setFinalW(""); patchRoom({ phase:"lobby", round:1 });
+  }
+
+  /* ---- my scoring (log is the source of truth, score = sum of d) ---- */
+  function writeMe(newLog){
+    const score=newLog.reduce((a,e)=>a+e.d,0);
+    lastWrite.current=Date.now();
+    setPlayers(ps=>ps.map(p=>p.id===myId?{...p,log:newLog,score}:p));
+    if(remote) sb.from("jp_players").update({log:newLog,score}).eq("id",myId).then(()=>{},()=>{});
+  }
+  const findEntry = (c,i) => log.find(e=>e.r===round&&e.c===c&&e.i===i);
+  const maxWager = Math.max(myScore,topVal);
+
+  function openTile(c,i){ setSel({c,i}); setMode("clue"); setWager(""); }
+  function closeSheet(){ setSel(null); }
+  function answer(t){
+    const v=vals[sel.i];
+    if(mode==="dd"){
+      const w=parseInt(wager,10);
+      if(!(w>=MIN_WAGER&&w<=maxWager)) return;
+      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?w:-w,dd:1,w}]); sfx(t==="r"?"dd":"w");
+    } else {
+      writeMe([...log,{r:round,c:sel.c,i:sel.i,t,d:t==="r"?v:t==="w"?-v:0}]); sfx(t);
+    }
+    closeSheet();
+  }
+  function clearTile(){ writeMe(log.filter(e=>!(e.r===round&&e.c===sel.c&&e.i===sel.i))); closeSheet(); }
+  function undoLast(){ if(log.length) writeMe(log.slice(0,-1)); }
+  function finalAnswer(t){
+    const w=parseInt(finalW,10);
+    if(!(w>=0&&w<=Math.max(0,myScore))) return;
+    writeMe([...log.filter(e=>e.r!=="F"),{r:"F",t,d:t==="r"?w:-w,w}]); sfx(t);
+  }
+  function finalSkip(){ writeMe([...log.filter(e=>e.r!=="F"),{r:"F",t:"p",d:0,w:0}]); }
+  function toggleMute(){ const m=!muted; setMuted(m); ls.set("jp_mute",m?"1":"0"); }
+
+  const ranked = [...players].sort((a,b)=>(b.score||0)-(a.score||0));
+  const Scoreboard = () => (
+    <div className="sb"><div className="sbh">Scores{remote?" (live)":""}</div>
+      {ranked.map(p=>(
+        <div className="pr" key={p.id}>
+          <span className="dot" style={{background:p.color||"#fff"}}></span>
+          <span className="pn">{p.name}{p.id===myId&&<i>you</i>}{room&&p.id===room.host_id&&<i>host</i>}</span>
+          <span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span>
+        </div>))}
+    </div>);
+  const MuteBtn = () => <button className="mute" onClick={toggleMute}>{muted?"Sound off":"Sound on"}</button>;
+
+  /* ---------- screens ---------- */
+  if(!code) return (
+    <div>
+      <h1 className="logo">Jeopardy Watch Party</h1>
+      <p className="sub">Watch together. Tap each clue, mark it right or wrong, and keep your own score. Everyone in the room sees the leaderboard.</p>
+      <label className="lbl">Your name</label>
+      <input className="in" value={name} onChange={e=>setName(e.target.value)} maxLength={20} placeholder="Name" />
+      <button className="btn gold" onClick={()=>host()}>Create room</button>
+      <label className="lbl">Or join a friend</label>
+      <div className="row">
+        <input className="in" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} maxLength={8} placeholder="Room code" autoCapitalize="characters" />
+        <button className="btn sm" onClick={()=>join()}>Join</button>
+      </div>
+      <button className="btn ghost" onClick={solo}>Play solo, no room</button>
+      {err && <div className="err">{err}</div>}
+    </div>);
+
+  if(!room) return <div><p className="sub">Connecting to room {code}...</p><button className="link" onClick={leave}>Cancel</button></div>;
+
+  if(room.phase==="lobby") return (
+    <div>
+      <div className="top"><div><div className="rt">Room {code==="SOLO"?"(solo)":code}</div><div className="meta">{isHost?"Pick the version, then start when the show starts.":"Waiting for the host to start."}</div></div></div>
+      <div className="cards">
+        {Object.keys(VERSIONS).map(k=>(
+          <button key={k} className={"vcard"+(room.version===k?" on":"")} disabled={!isHost} onClick={()=>patchRoom({version:k})}>
+            <b>{VERSIONS[k].name}</b><span>{blurb(VERSIONS[k])}</span>
+          </button>))}
+      </div>
+      {isHost && <button className="btn gold" onClick={startGame}>Start game</button>}
+      <Scoreboard />
+      <button className="link" onClick={leave}>Leave room</button>
+    </div>);
+
+  if(room.phase==="done") return (
+    <div>
+      <h1 className="logo">Final scores</h1>
+      <div className="sb">
+        {ranked.map((p,i)=>(
+          <div className="pod" key={p.id}>
+            <span className="rank">{i+1}</span>
+            <span className="dot" style={{background:p.color||"#fff"}}></span>
+            <span className="pn">{p.name}{p.id===myId&&<i>you</i>}</span>
+            <span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span>
+          </div>))}
+      </div>
+      {isHost && <button className="btn gold" onClick={newGame}>New game, same room</button>}
+      {!isHost && <p className="hint">Waiting for the host to start a new game.</p>}
+      <button className="link" onClick={leave}>Leave room</button>
+    </div>);
+
+  if(room.phase==="final"){
+    const fe=log.find(e=>e.r==="F");
+    const w=parseInt(finalW,10); const okW = w>=0 && w<=Math.max(0,myScore);
+    return (
+      <div>
+        <div className="top">
+          <div><div className="rt">Final Jeopardy</div><div className="meta">One clue. Wager first, then mark it.</div></div>
+          <div className="mine"><small>{name||"You"}</small><div className={"score"+(myScore<0?" neg":"")}>{fmt(myScore)}</div></div>
+        </div>
+        <div className="final">
+          {fe ? (
+            <div>
+              <div className="big" style={{fontSize:42}}>{fe.t==="r"?"Correct":fe.t==="w"?"Incorrect":"Sat out"}</div>
+              <div className="note">{fe.t==="p"?"No wager.":(fe.t==="r"?"+":"-")+fmt(fe.w).replace("-","")+" on the wager."}</div>
+              <button className="btn ghost" onClick={()=>writeMe(log.filter(e=>e.r!=="F"))}>Redo final</button>
+            </div>
+          ) : myScore<=0 ? (
+            <div>
+              <div className="note">You need a positive score to wager in Final.</div>
+              <button className="btn gold" onClick={finalSkip}>Sit this one out</button>
+            </div>
+          ) : (
+            <div>
+              <label className="lbl" style={{marginTop:0}}>Your wager (0 to {fmt(myScore)})</label>
+              <input className="in" inputMode="numeric" value={finalW} onChange={e=>setFinalW(e.target.value.replace(/[^0-9]/g,""))} placeholder="Wager" />
+              <div className="q">
+                <button onClick={()=>setFinalW("0")}>0</button>
+                <button onClick={()=>setFinalW(String(Math.floor(myScore/2)))}>Half</button>
+                <button onClick={()=>setFinalW(String(myScore))}>All in</button>
+              </div>
+              <div className="two" style={{marginTop:12}}>
+                <button className="btn ok" style={{marginTop:0}} disabled={!okW} onClick={()=>finalAnswer("r")}>Got it</button>
+                <button className="btn bad" style={{marginTop:0}} disabled={!okW} onClick={()=>finalAnswer("w")}>Missed</button>
+              </div>
+            </div>
+          )}
+        </div>
+        <Scoreboard />
+        {isHost && <button className="btn gold" onClick={endGame}>End game and show winner</button>}
+        <MuteBtn />
+      </div>);
+  }
+
+  /* ---- play: the board ---- */
+  const entry = sel ? findEntry(sel.c,sel.i) : null;
+  const wNum = parseInt(wager,10);
+  const wOk = wNum>=MIN_WAGER && wNum<=maxWager;
+  return (
+    <div>
+      <div className="top">
+        <div><div className="rt">{ROUND_NAMES[round-1]}</div><div className="meta">{V.name} / Room {code==="SOLO"?"solo":code}</div></div>
+        <div className="mine"><small>{name||"You"}</small><div className={"score"+(myScore<0?" neg":"")}>{fmt(myScore)}</div></div>
+      </div>
+      <div className="board">
+        {Array.from({length:COLS},(_,c)=>{ const t=cats[round+"-"+c]; return <button key={"h"+c} className={"cat"+(t?"":" empty")} onClick={()=>editCat(c)}>{t||"Name it"}</button>; })}
+        {vals.map((v,i)=>Array.from({length:COLS},(_,c)=>{
+          const e=findEntry(c,i);
+          if(e) return <button key={c+"-"+i} className={"tile done "+e.t} onClick={()=>{setSel({c,i});setMode("clue");}} aria-label={"Played "+fmt(v)}>
+            {e.dd?<span className="dd">DD</span>:null}{e.t==="p"?"pass":sgn(e.d)}</button>;
+          return <button key={c+"-"+i} className="tile" onClick={()=>openTile(c,i)} aria-label={fmt(v)+" column "+(c+1)}>{"$"+v}</button>;
+        }))}
+      </div>
+      <p className="hint">Tap a value when the clue is picked on the show. Tap a category header to name it. This board is just yours.</p>
+      <div className="row" style={{marginTop:10}}>
+        <button className="btn ghost sm" style={{flex:1}} onClick={undoLast} disabled={!log.length}>Undo last</button>
+        {isHost && <button className="btn gold sm" style={{flex:2}} onClick={nextStage}>{round<V.steps.length?"Next: "+ROUND_NAMES[round]:"Go to Final Jeopardy"}</button>}
+      </div>
+      {!isHost && <p className="hint">The host moves everyone to the next round.</p>}
+      <Scoreboard />
+      <MuteBtn />
+
+      {sel && (
+        <div className="scrim" onClick={closeSheet}>
+          <div className="sheet" onClick={e=>e.stopPropagation()}>
+            {entry ? (
+              <div>
+                <div className="big">{entry.dd?"DD "+fmt(entry.w):fmt(vals[sel.i])}</div>
+                <div className="note">{entry.t==="r"?"You got it: "+sgn(entry.d):entry.t==="w"?"You missed: "+sgn(entry.d):"No answer, no change."}</div>
+                <button className="btn bad" onClick={clearTile}>Clear this clue</button>
+                <button className="btn ghost" onClick={closeSheet}>Close</button>
+              </div>
+            ) : mode==="clue" ? (
+              <div>
+                <div className="big">{fmt(vals[sel.i])}</div>
+                <div className="note">Did you get it right?</div>
+                <div className="two">
+                  <button className="btn ok" style={{marginTop:0}} onClick={()=>answer("r")}>Yes</button>
+                  <button className="btn bad" style={{marginTop:0}} onClick={()=>answer("w")}>No</button>
+                </div>
+                <button className="btn ghost" onClick={()=>answer("p")}>Nobody buzzed / I passed</button>
+                <button className="btn ghost" style={{borderColor:"var(--gold)",color:"var(--gold)"}} onClick={()=>{setMode("dd");setWager("");}}>This is the Daily Double</button>
+                <button className="link" onClick={closeSheet}>Close</button>
+              </div>
+            ) : (
+              <div>
+                <div className="ddtag">DAILY DOUBLE</div>
+                <div className="note">Wager {fmt(MIN_WAGER)} to {fmt(maxWager)}{myScore<topVal?" (the top clue value, since your bank is lower)":" (your whole bank)"}</div>
+                <input className="in" inputMode="numeric" autoFocus value={wager} onChange={e=>setWager(e.target.value.replace(/[^0-9]/g,""))} placeholder="Wager" />
+                <div className="q">
+                  <button onClick={()=>setWager(String(MIN_WAGER))}>{fmt(MIN_WAGER)}</button>
+                  <button onClick={()=>setWager(String(Math.max(MIN_WAGER,Math.floor(maxWager/2))))}>Half</button>
+                  <button onClick={()=>setWager(String(maxWager))}>True DD</button>
+                </div>
+                <div className="two" style={{marginTop:12}}>
+                  <button className="btn ok" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("r")}>Got it{wOk?" +"+wNum.toLocaleString("en-US"):""}</button>
+                  <button className="btn bad" style={{marginTop:0}} disabled={!wOk} onClick={()=>answer("w")}>Missed{wOk?" -"+wNum.toLocaleString("en-US"):""}</button>
+                </div>
+                <button className="link" onClick={()=>setMode("clue")}>Back</button>
+              </div>
+            )}
+          </div>
+        </div>)}
+    </div>);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
