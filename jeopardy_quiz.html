@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#020535">
+<title>Jeopardy Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#020535; --navy2:#050a63; --blue:#0a1bd1; --blue2:#1a2cf0;
+  --gold:#ffcc33; --ink:#ffffff; --mute:#9fb0ff;
+  --ok:#3ee08a; --bad:#ff7070;
+  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);font-weight:500}
+body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font-family:inherit;color:inherit;cursor:pointer}
+#root{max-width:640px;margin:0 auto;padding:12px 10px 60px}
+
+.logo{font-family:var(--display);font-weight:400;font-size:48px;line-height:1;color:var(--gold);margin:22px 0 8px;text-shadow:3px 3px 0 #000}
+.sub{color:var(--mute);margin:0 0 18px;font-size:17px;line-height:1.4}
+.lbl{display:block;font-weight:700;margin:16px 0 6px;color:var(--mute);font-size:14px}
+.btn{display:block;width:100%;border:0;border-radius:6px;padding:15px 14px;font-size:19px;font-weight:700;background:var(--blue2);color:#fff;margin-top:10px;min-height:54px}
+.btn:active{filter:brightness(1.15)}
+.btn.gold{background:var(--gold);color:#1a1200}
+.btn.ghost{background:transparent;border:2px solid var(--blue2)}
+.btn.sm{width:auto;margin:0;padding:10px 16px;min-height:0;font-size:15px}
+.link{background:none;border:0;color:var(--mute);text-decoration:underline;font-size:15px;padding:10px 4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{text-align:left;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:12px;width:100%}
+.card.on{border-color:var(--gold);background:#0a1280}
+.card b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--gold);display:block}
+.card span{color:var(--mute);font-size:14px}
+
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin:6px 2px 10px}
+.rt{font-family:var(--display);font-size:26px;line-height:1.05;color:var(--gold);text-shadow:2px 2px 0 #000}
+.meta{color:var(--mute);font-size:14px;margin-top:3px}
+.mine{text-align:right}
+.mine small{display:block;color:var(--mute);font-size:13px;font-weight:700}
+.score{font-family:var(--display);font-size:40px;line-height:1;text-shadow:2px 2px 0 #000}
+.score.neg{color:var(--bad)}
+
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;background:#000;padding:3px;border-radius:6px}
+.cat{background:var(--blue);border-radius:2px;min-height:58px;padding:4px 2px;font-size:11px;font-weight:700;line-height:1.1;color:#fff;text-transform:uppercase;display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-word}
+.tile{background:var(--blue);border:0;border-radius:2px;min-height:58px;font-family:var(--display);font-size:clamp(14px,4.8vw,24px);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0}
+.tile:active{background:var(--blue2)}
+.tile.done{background:#040a55;font-family:var(--body);font-size:12px;font-weight:700;text-shadow:none;color:var(--mute)}
+.tile.done.r{color:var(--ok)}
+.tile.done.w{color:var(--bad)}
+.hint{color:var(--mute);font-size:14px;margin:10px 2px 0}
+
+.clue{background:var(--blue);border:3px solid #000;border-radius:8px;padding:16px 14px 18px;margin-top:6px}
+.cc{font-family:var(--display);font-size:20px;color:var(--gold);text-shadow:2px 2px 0 #000;text-align:center;letter-spacing:.5px}
+.cv{font-family:var(--display);font-size:30px;color:#fff;text-align:center;margin:2px 0 10px;text-shadow:2px 2px 0 #000}
+.cq{font-size:23px;line-height:1.3;font-weight:700;text-align:center;margin:6px 4px 16px;text-shadow:1px 1px 0 #000}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:var(--navy2);border:2px solid #000;border-radius:6px;padding:14px 12px;font-size:19px;font-weight:700;min-height:58px;width:100%}
+.opt:active{background:var(--navy)}
+.opt i{font-style:normal;font-family:var(--display);color:var(--gold);font-size:22px;width:22px;flex:none}
+.opt.right{background:var(--ok);color:#042312;border-color:#042312}
+.opt.right i{color:#042312}
+.opt.wrong{background:var(--bad);color:#2b0505;border-color:#2b0505}
+.opt.wrong i{color:#2b0505}
+.opt.dim{opacity:.45}
+.res{text-align:center;font-family:var(--display);font-size:34px;margin:14px 0 2px;text-shadow:2px 2px 0 #000}
+.res.r{color:var(--ok)}
+.res.w{color:var(--bad)}
+.rn{text-align:center;color:#d6dcff;font-size:16px;margin:0 0 4px}
+
+.ddsplash{font-family:var(--display);font-size:46px;line-height:1;text-align:center;color:var(--gold);text-shadow:3px 3px 0 #000,0 0 18px rgba(255,204,51,.7);margin:10px 0 6px}
+.big{font-family:var(--display);font-size:52px;line-height:1;color:#fff;text-align:center;text-shadow:3px 3px 0 #000;margin:6px 0}
+.note{text-align:center;color:#d6dcff;font-size:16px;margin:2px 0 8px}
+.slide{width:100%;height:48px;accent-color:var(--gold);margin:6px 0 0}
+.ticks{display:flex;justify-content:space-between;color:var(--mute);font-size:13px;font-weight:700;margin:-4px 2px 6px}
+
+.stats{background:var(--navy2);border-radius:6px;padding:14px;margin-top:14px;font-size:18px;line-height:1.7}
+.stats b{color:var(--gold)}
+.mute{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));background:var(--navy2);border:2px solid var(--blue);border-radius:20px;padding:8px 12px;font-size:13px;font-weight:700;z-index:40}
+@media (prefers-reduced-motion:no-preference){
+  .ddsplash{animation:ddpop .55s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes ddpop{0%{transform:scale(.3) rotate(-6deg);opacity:0}60%{transform:scale(1.2) rotate(2deg);opacity:1}100%{transform:none}}
+  .clue.flash{animation:ddflash .7s ease-out}
+  @keyframes ddflash{0%{background:#ffcc33}100%{background:var(--blue)}}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+/* ================= QUESTIONS: edit or add here ================= */
+/* Each clue: q = clue text, o = four choices, a = index (0-3) of the correct choice. */
+/* Each category needs exactly 5 clues, easiest first (they map to the 5 dollar values). */
+const BOARDS = [
+  /* ---------- Round 1: Jeopardy ($200 - $1000) ---------- */
+  [
+    { name:"U.S. Geography", clues:[
+      { q:"This is the only U.S. state made up entirely of islands.", o:["Hawaii","Alaska","Rhode Island","Maine"], a:0 },
+      { q:"The Mississippi River empties into this body of water.", o:["Gulf of Mexico","Atlantic Ocean","Lake Michigan","Hudson Bay"], a:0 },
+      { q:"This city is the capital of California.", o:["Los Angeles","Sacramento","San Francisco","San Diego"], a:1 },
+      { q:"Lake Okeechobee, a huge lake near the Everglades, is in this state.", o:["Louisiana","Georgia","Florida","Texas"], a:2 },
+      { q:"Of the five Great Lakes, this is the only one entirely within the United States.", o:["Lake Erie","Lake Huron","Lake Ontario","Lake Michigan"], a:3 }
+    ]},
+    { name:"Famous Firsts", clues:[
+      { q:"He was the first President of the United States.", o:["George Washington","Thomas Jefferson","John Adams","Benjamin Franklin"], a:0 },
+      { q:"In 1969, Neil Armstrong was the first person to walk on this.", o:["Mars","The Moon","Venus","An asteroid"], a:1 },
+      { q:"In 1953, Edmund Hillary and Tenzing Norgay were the first to reach the top of this mountain.", o:["K2","Kilimanjaro","Mount Everest","Denali"], a:2 },
+      { q:"In 1903, the Wright brothers made their first powered flight at Kitty Hawk in this state.", o:["Ohio","Virginia","South Carolina","North Carolina"], a:3 },
+      { q:"In 1932, she became the first woman to fly solo across the Atlantic Ocean.", o:["Amelia Earhart","Bessie Coleman","Harriet Quimby","Jacqueline Cochran"], a:0 }
+    ]},
+    { name:"Food & Drink", clues:[
+      { q:"Guacamole is made primarily from this fruit.", o:["Lime","Avocado","Tomato","Pepper"], a:1 },
+      { q:"This Italian cheese, originally made from buffalo milk, tops a Margherita pizza.", o:["Parmesan","Provolone","Mozzarella","Ricotta"], a:2 },
+      { q:"This Spanish rice dish with saffron is named for the wide pan it is cooked in.", o:["Gazpacho","Risotto","Tortilla","Paella"], a:3 },
+      { q:"The expensive spice saffron comes from the stigmas of this flower.", o:["Crocus","Rose","Poppy","Tulip"], a:0 },
+      { q:"The Scoville scale measures the heat of these.", o:["Mustard seeds","Chili peppers","Ginger roots","Black peppercorns"], a:1 }
+    ]},
+    { name:"Animals", clues:[
+      { q:"This is the largest animal on Earth.", o:["African elephant","Giraffe","Blue whale","Great white shark"], a:2 },
+      { q:"A group of lions is called this.", o:["Pack","Herd","Flock","Pride"], a:3 },
+      { q:"This flightless bird is the fastest runner of all birds.", o:["Ostrich","Emu","Penguin","Kiwi"], a:0 },
+      { q:"Koalas eat almost nothing but the leaves of this tree.", o:["Bamboo","Eucalyptus","Oak","Palm"], a:1 },
+      { q:"This is the only mammal capable of true, sustained flight.", o:["Flying squirrel","Sugar glider","Bat","Flying lemur"], a:2 }
+    ]},
+    { name:"Classic Movies", clues:[
+      { q:"In 'The Wizard of Oz', Dorothy's little dog has this name.", o:["Toto","Rex","Benji","Lassie"], a:0 },
+      { q:"This 1975 Steven Spielberg thriller is about a shark terrorizing Amity Island.", o:["Orca","Jaws","Piranha","The Deep"], a:1 },
+      { q:"Marlon Brando played Vito Corleone in this 1972 film.", o:["Scarface","Goodfellas","The Godfather","Casino"], a:2 },
+      { q:"In 'Casablanca', Humphrey Bogart's character owns a nightclub called this.", o:["Sam's Place","The Blue Parrot","Cafe de Paris","Rick's Cafe Americain"], a:3 },
+      { q:"Audrey Hepburn played Holly Golightly in this 1961 film.", o:["Breakfast at Tiffany's","Roman Holiday","Sabrina","Charade"], a:0 }
+    ]},
+    { name:"Science", clues:[
+      { q:"This planet is known as the Red Planet.", o:["Venus","Mars","Jupiter","Mercury"], a:1 },
+      { q:"H2O is the chemical formula for this.", o:["Hydrogen peroxide","Salt","Water","Oxygen"], a:2 },
+      { q:"Plants take in this gas from the air to carry out photosynthesis.", o:["Oxygen","Nitrogen","Hydrogen","Carbon dioxide"], a:3 },
+      { q:"This is the hardest natural substance on Earth.", o:["Diamond","Quartz","Topaz","Granite"], a:0 },
+      { q:"The speed of light is about 186,000 of these per second.", o:["Kilometers","Miles","Feet","Meters"], a:1 }
+    ]}
+  ],
+  /* ---------- Round 2: Double Jeopardy ($400 - $2000) ---------- */
+  [
+    { name:"World History", clues:[
+      { q:"The ancient Egyptians built the pyramids as tombs for these rulers.", o:["Pharaohs","Caesars","Sultans","Emperors"], a:0 },
+      { q:"This document, sealed by King John of England in 1215, limited the power of the king.", o:["Domesday Book","Magna Carta","Bill of Rights","Mayflower Compact"], a:1 },
+      { q:"This French military leader crowned himself Emperor in 1804.", o:["Louis XIV","Charlemagne","Napoleon Bonaparte","Charles de Gaulle"], a:2 },
+      { q:"This queen ruled England when the Spanish Armada was defeated in 1588.", o:["Victoria","Mary I","Anne","Elizabeth I"], a:3 },
+      { q:"This empire, ruled from Constantinople, lasted until the city fell in 1453.", o:["Byzantine Empire","Ottoman Empire","Persian Empire","Holy Roman Empire"], a:0 }
+    ]},
+    { name:"Literature", clues:[
+      { q:"In this Shakespeare play, the feuding families are the Montagues and the Capulets.", o:["Hamlet","Romeo and Juliet","Macbeth","Othello"], a:1 },
+      { q:"She wrote 'Pride and Prejudice' and 'Emma'.", o:["Charlotte Bronte","Mary Shelley","Jane Austen","Emily Dickinson"], a:2 },
+      { q:"Captain Ahab hunts a great white whale in this Herman Melville novel.", o:["The Old Man and the Sea","Billy Budd","Treasure Island","Moby-Dick"], a:3 },
+      { q:"This Russian author wrote 'War and Peace' and 'Anna Karenina'.", o:["Leo Tolstoy","Fyodor Dostoevsky","Anton Chekhov","Alexander Pushkin"], a:0 },
+      { q:"This Charles Dickens novel opens with 'It was the best of times, it was the worst of times'.", o:["Great Expectations","A Tale of Two Cities","Oliver Twist","Hard Times"], a:1 }
+    ]},
+    { name:"Music", clues:[
+      { q:"The 'King of Pop' released the best-selling album 'Thriller' in 1982.", o:["Prince","Stevie Wonder","Michael Jackson","Lionel Richie"], a:2 },
+      { q:"This composer kept writing music after going deaf, including the 'Moonlight Sonata'.", o:["Mozart","Bach","Chopin","Beethoven"], a:3 },
+      { q:"Elvis Presley's Memphis mansion is known by this name.", o:["Graceland","Neverland","Sun Studio","Tupelo Hall"], a:0 },
+      { q:"Aretha Franklin spelled out this word in her 1967 hit.", o:["Freedom","Respect","Rhythm","Soul"], a:1 },
+      { q:"This Austrian composer wrote the opera 'The Magic Flute'.", o:["Haydn","Schubert","Mozart","Strauss"], a:2 }
+    ]},
+    { name:"World Geography", clues:[
+      { q:"This is the largest country in the world by area.", o:["Canada","China","United States","Russia"], a:3 },
+      { q:"Most of the Amazon rainforest lies in this country.", o:["Brazil","Peru","Colombia","Venezuela"], a:0 },
+      { q:"This city, not Sydney, is the capital of Australia.", o:["Sydney","Melbourne","Canberra","Perth"], a:2 },
+      { q:"The Strait of Gibraltar separates Spain from this African country.", o:["Algeria","Morocco","Tunisia","Egypt"], a:1 },
+      { q:"Africa's highest mountain, Kilimanjaro, is in this country.", o:["Kenya","Uganda","Ethiopia","Tanzania"], a:3 }
+    ]},
+    { name:"Television", clues:[
+      { q:"On 'I Love Lucy', Lucy's husband Ricky Ricardo was played by this actor.", o:["Fred MacMurray","Desi Arnaz","Dick Van Dyke","Bob Newhart"], a:1 },
+      { q:"This animated family lives in the town of Springfield.", o:["The Griffins","The Belchers","The Simpsons","The Hills"], a:2 },
+      { q:"Alex Trebek hosted this game show for 36 years, until 2020.", o:["Wheel of Fortune","The Price Is Right","Family Feud","Jeopardy!"], a:3 },
+      { q:"On each episode, Mister Rogers changed into a cardigan sweater and these shoes.", o:["Sneakers","Slippers","Loafers","Boots"], a:0 },
+      { q:"The TV sitcom 'Cheers' was set in a bar in this U.S. city.", o:["Chicago","Boston","New York","Philadelphia"], a:1 }
+    ]},
+    { name:"The Human Body", clues:[
+      { q:"This is the largest organ of the human body.", o:["Liver","Lungs","Skin","Brain"], a:2 },
+      { q:"An adult human body has about this many bones.", o:["106","306","412","206"], a:3 },
+      { q:"Your skin produces this vitamin when exposed to sunlight.", o:["Vitamin D","Vitamin C","Vitamin A","Vitamin B12"], a:0 },
+      { q:"The smallest bone in the human body, the stapes, is found in this part of the body.", o:["Hand","Ear","Foot","Nose"], a:1 },
+      { q:"This organ produces insulin.", o:["Liver","Kidney","Pancreas","Spleen"], a:2 }
+    ]}
+  ]
+];
+const ROUNDS = [ { name:"Jeopardy", step:200 }, { name:"Double Jeopardy", step:400 } ];
+const DD_COUNT = [1, 2];   /* Daily Doubles per round */
+const PER_ROUND = 30;      /* 6 categories x 5 clues */
+const MIN_WAGER = 1;
+
+/* ================= helpers ================= */
+const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const fmt = (n) => (n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US");
+const rand = (n) => Math.floor(Math.random()*n);
+const shuffle = (a) => { const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=rand(i+1); [b[i],b[j]]=[b[j],b[i]]; } return b; };
+const LETTERS = ["A","B","C","D"];
+
+function placeDD(){
+  const out=[];
+  DD_COUNT.forEach((n,r)=>{
+    const cols=shuffle([0,1,2,3,4,5]).slice(0,n);
+    cols.forEach(c=>out.push(r+"-"+c+"-"+(1+rand(4))));   /* never the top row */
+  });
+  return out;
+}
+function newGame(nopen){ return { round:0, score:0, played:{}, dd:placeDD(), nopen:!!nopen, right:0, wrong:0 }; }
+
+let AC = null;
+function sfx(kind){
+  if(ls.get("jpq_mute")==="1") return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const note=(f,t,d,type,v)=>{ const o=AC.createOscillator(), g=AC.createGain(); o.type=type; o.frequency.value=f;
+      g.gain.setValueAtTime(v,AC.currentTime+t); g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+t+d);
+      o.connect(g); g.connect(AC.destination); o.start(AC.currentTime+t); o.stop(AC.currentTime+t+d+0.02); };
+    if(kind==="r"){ note(660,0,.14,"sine",.25); note(880,.12,.22,"sine",.25); }
+    else if(kind==="w"){ note(140,0,.38,"sawtooth",.2); }
+    else if(kind==="ddr"){ note(392,0,.12,"triangle",.28); note(523,.1,.12,"triangle",.28); note(659,.2,.12,"triangle",.28); note(784,.3,.14,"triangle",.28); note(1047,.42,.5,"triangle",.3); note(1319,.42,.5,"sine",.15); }
+  }catch(e){}
+}
+
+/* ================= app ================= */
+function App(){
+  const [game,setGame] = useState(null);
+  const [cur,setCur] = useState(null);      /* the clue being played */
+  const [pct,setPct] = useState(5);         /* Daily Double slider 0..10 */
+  const [nopen,setNopen] = useState(false);
+  const [muted,setMuted] = useState(ls.get("jpq_mute")==="1");
+  const [saved,setSaved] = useState(()=>{ try{ return JSON.parse(ls.get("jpq_save")||"null"); }catch(e){ return null; } });
+
+  useEffect(()=>{ if(game) ls.set("jpq_save",JSON.stringify(game)); },[game]);
+
+  const round = game ? game.round : 0;
+  const board = BOARDS[round];
+  const step = ROUNDS[round].step;
+  const vals = [1,2,3,4,5].map(n=>n*step);
+  const topVal = vals[4];
+  const playedCount = game ? Object.keys(game.played).filter(k=>k.indexOf(round+"-")===0).length : 0;
+  const roundDone = !!game && !cur && playedCount>=PER_ROUND;
+  const maxWager = game ? Math.max(game.score,topVal) : topVal;
+  const wagerFor = (p) => p===0 ? MIN_WAGER : Math.min(maxWager, Math.max(MIN_WAGER, Math.round(maxWager*p/10)));
+  const ddLabel = pct===0?"Minimum bet":pct<=3?"Playing it safe":pct<=6?"Confident":pct<=9?"Very confident":"ALL IN - extremely confident";
+
+  function start(){ setGame(newGame(nopen)); setCur(null); }
+  function resume(){ setGame(saved); setCur(null); }
+  function restart(){ if(window.confirm("Start a new game? Your current score will be lost.")){ ls.set("jpq_save",""); setSaved(null); setGame(null); setCur(null); } }
+  function toggleMute(){ const m=!muted; setMuted(m); ls.set("jpq_mute",m?"1":"0"); }
+
+  function openTile(c,i){
+    const key = round+"-"+c+"-"+i;
+    if(game.played[key]) return;
+    const isDD = game.dd.indexOf(key)>=0;
+    setCur({ c, i, key, dd:isDD, stage:isDD?"wager":"clue", order:shuffle([0,1,2,3]), picked:null, wager:0, delta:0 });
+    if(isDD){ setPct(5); sfx("ddr"); }
+  }
+  function lockWager(){ setCur({ ...cur, stage:"clue", wager:wagerFor(pct) }); }
+  function pick(slot){
+    if(cur.picked!==null) return;
+    const clue = board[cur.c].clues[cur.i];
+    const idx = cur.order[slot];
+    const right = idx===clue.a;
+    const amount = cur.dd ? cur.wager : vals[cur.i];
+    const delta = right ? amount : (game.nopen ? 0 : -amount);
+    setGame(g=>({ ...g, score:g.score+delta, played:{ ...g.played, [cur.key]:right?"r":"w" }, right:g.right+(right?1:0), wrong:g.wrong+(right?0:1) }));
+    setCur({ ...cur, picked:slot, stage:"result", delta, right });
+    sfx(right?"r":"w");
+  }
+  function nextRound(){ setGame(g=>({ ...g, round:g.round+1 })); }
+  function playAgain(){ ls.set("jpq_save",""); setSaved(null); setGame(newGame(game.nopen)); setCur(null); }
+
+  const MuteBtn = () => <button className="mute" onClick={toggleMute}>{muted?"Sound off":"Sound on"}</button>;
+  const Head = ({title,meta}) => (
+    <div className="top">
+      <div><div className="rt">{title}</div><div className="meta">{meta}</div></div>
+      <div className="mine"><small>Score</small><div className={"score"+(game.score<0?" neg":"")}>{fmt(game.score)}</div></div>
+    </div>);
+
+  /* ---------- start ---------- */
+  if(!game) return (
+    <div>
+      <h1 className="logo">Jeopardy Quiz</h1>
+      <p className="sub">Real questions, four choices each. Two rounds of 30 clues, with Daily Doubles hidden on the board. Pick a clue, pick your answer, and see how much you can win.</p>
+      <label className="lbl">Wrong answers</label>
+      <div className="two">
+        <button className={"card"+(!nopen?" on":"")} onClick={()=>setNopen(false)}><b>Lose points</b><span>Like the real show</span></button>
+        <button className={"card"+(nopen?" on":"")} onClick={()=>setNopen(true)}><b>No penalty</b><span>Wrong costs nothing</span></button>
+      </div>
+      <button className="btn gold" onClick={start}>Start new game</button>
+      {saved && <button className="btn ghost" onClick={resume}>Continue saved game ({fmt(saved.score)})</button>}
+      <MuteBtn />
+    </div>);
+
+  /* ---------- clue screen ---------- */
+  if(cur){
+    const cat = board[cur.c];
+    const clue = cat.clues[cur.i];
+    const value = vals[cur.i];
+    if(cur.stage==="wager") return (
+      <div>
+        <Head title={ROUNDS[round].name} meta={cat.name} />
+        <div className="clue flash">
+          <div className="ddsplash">DAILY DOUBLE!</div>
+          <div className="cc">{cat.name}</div>
+          <div className="big">{fmt(wagerFor(pct))}</div>
+          <div className="note">{ddLabel}{pct>0&&pct<10?" - "+(pct*10)+"% of "+fmt(maxWager):""}</div>
+          <input className="slide" type="range" min="0" max="10" step="1" value={pct} onChange={e=>setPct(parseInt(e.target.value,10))} aria-label="Wager" />
+          <div className="ticks"><span>$1</span><span>50%</span><span>ALL IN</span></div>
+          <div className="note" style={{fontSize:14}}>You can wager up to {fmt(maxWager)}{game.score<topVal?" (the top clue value, since your score is lower)":" (your whole score)"}.</div>
+          <button className="btn gold" onClick={lockWager}>Lock in wager and show clue</button>
+        </div>
+        <MuteBtn />
+      </div>);
+    return (
+      <div>
+        <Head title={ROUNDS[round].name} meta={cat.name} />
+        <div className="clue">
+          <div className="cc">{cat.name}</div>
+          <div className="cv">{cur.dd?"Daily Double: "+fmt(cur.wager):fmt(value)}</div>
+          <div className="cq">{clue.q}</div>
+          <div className="opts">
+            {cur.order.map((idx,slot)=>{
+              let cls="opt";
+              if(cur.picked!==null){
+                if(idx===clue.a) cls+=" right";
+                else if(slot===cur.picked) cls+=" wrong";
+                else cls+=" dim";
+              }
+              return <button key={slot} className={cls} onClick={()=>pick(slot)} disabled={cur.picked!==null}><i>{LETTERS[slot]}</i><span>{clue.o[idx]}</span></button>;
+            })}
+          </div>
+          {cur.stage==="result" && (
+            <div>
+              <div className={"res "+(cur.right?"r":"w")}>{cur.right?"Correct!":"Sorry!"}</div>
+              <div className="rn">{cur.right?"You win "+fmt(cur.delta)+".":(game.nopen?"The answer is shown in green. No penalty.":"You lose "+fmt(-cur.delta)+". The answer is shown in green.")}</div>
+              <button className="btn gold" onClick={()=>setCur(null)}>Continue</button>
+            </div>)}
+        </div>
+        <MuteBtn />
+      </div>);
+  }
+
+  /* ---------- round complete / final ---------- */
+  if(roundDone){
+    const last = round===ROUNDS.length-1;
+    const total = game.right+game.wrong;
+    const pctRight = total?Math.round(100*game.right/total):0;
+    if(!last) return (
+      <div>
+        <h1 className="logo">{ROUNDS[round].name} complete</h1>
+        <div className="stats">Score: <b>{fmt(game.score)}</b><br/>Correct so far: <b>{game.right} of {total}</b></div>
+        <p className="sub" style={{marginTop:14}}>Next up: {ROUNDS[round+1].name}. Every clue is worth double, and there are {DD_COUNT[round+1]} Daily Doubles hiding.</p>
+        <button className="btn gold" onClick={nextRound}>Start {ROUNDS[round+1].name}</button>
+        <MuteBtn />
+      </div>);
+    const msg = pctRight>=90?"Quiz champion!":pctRight>=70?"Very sharp!":pctRight>=50?"Nicely done!":"Good game. Play again and beat it!";
+    return (
+      <div>
+        <h1 className="logo">Final score</h1>
+        <div className="big" style={{fontSize:64,color:game.score<0?"var(--bad)":"var(--gold)"}}>{fmt(game.score)}</div>
+        <div className="note" style={{fontSize:20}}>{msg}</div>
+        <div className="stats">Correct: <b>{game.right}</b><br/>Missed: <b>{game.wrong}</b><br/>Right answers: <b>{pctRight}%</b></div>
+        <button className="btn gold" onClick={playAgain}>Play again</button>
+        <MuteBtn />
+      </div>);
+  }
+
+  /* ---------- board ---------- */
+  return (
+    <div>
+      <Head title={ROUNDS[round].name} meta={playedCount+" of "+PER_ROUND+" clues played"} />
+      <div className="board">
+        {board.map((cat,c)=><div key={"h"+c} className="cat">{cat.name}</div>)}
+        {vals.map((v,i)=>board.map((cat,c)=>{
+          const st = game.played[round+"-"+c+"-"+i];
+          if(st) return <div key={c+"-"+i} className={"tile done "+st}>{st==="r"?"right":"missed"}</div>;
+          return <button key={c+"-"+i} className="tile" onClick={()=>openTile(c,i)} aria-label={cat.name+" "+fmt(v)}>{"$"+v}</button>;
+        }))}
+      </div>
+      <p className="hint">Tap any dollar amount to play that clue. There {DD_COUNT[round]===1?"is 1 Daily Double":"are "+DD_COUNT[round]+" Daily Doubles"} hiding on this board.</p>
+      <button className="link" onClick={restart}>New game</button>
+      <MuteBtn />
+    </div>);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
