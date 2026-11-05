@@ -12,96 +12,166 @@
 <style>
 :root{
   --navy:#020535; --navy2:#050a63; --blue:#0a1bd1; --blue2:#1a2cf0;
-  --gold:#ffcc33; --ink:#ffffff; --mute:#9fb0ff;
-  --ok:#3ee08a; --bad:#ff7070;
+  --gold:#ffcc33; --mute:#9fb0ff; --ok:#3ee08a; --bad:#ff7070;
   --display:"Anton","Impact","Arial Narrow",sans-serif;
   --body:"Barlow","Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);font-weight:500}
-body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--navy);color:#fff;font-family:var(--body);font-weight:500}
 button{font-family:inherit;color:inherit;cursor:pointer}
-#root{max-width:640px;margin:0 auto;padding:12px 10px 60px}
+input{font-family:inherit}
+/* the whole app always fits the visible screen, so the Safari bars never cover it */
+#root{height:100vh;height:calc(100dvh - var(--hb,0px));max-width:640px;margin:0 auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+.scr{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch}
 
-.logo{font-family:var(--display);font-weight:400;font-size:48px;line-height:1;color:var(--gold);margin:22px 0 8px;text-shadow:3px 3px 0 #000}
-.sub{color:var(--mute);margin:0 0 18px;font-size:17px;line-height:1.4}
-.lbl{display:block;font-weight:700;margin:16px 0 6px;color:var(--mute);font-size:14px}
-.btn{display:block;width:100%;border:0;border-radius:6px;padding:15px 14px;font-size:19px;font-weight:700;background:var(--blue2);color:#fff;margin-top:10px;min-height:54px}
+.logo{font-family:var(--display);font-weight:400;font-size:40px;line-height:1;color:var(--gold);margin:10px 0 4px;text-shadow:3px 3px 0 #000}
+.sub{color:var(--mute);margin:0 0 12px;font-size:16px;line-height:1.35}
+.lbl{display:block;font-weight:700;margin:12px 0 5px;color:var(--mute);font-size:13px}
+.in{width:100%;background:var(--navy2);border:2px solid var(--blue);color:#fff;border-radius:6px;padding:12px;font-size:18px;font-weight:600}
+.in:focus{outline:3px solid var(--gold);outline-offset:1px}
+.row{display:flex;gap:8px;align-items:stretch}
+.btn{display:block;width:100%;border:0;border-radius:6px;padding:13px 12px;font-size:18px;font-weight:700;background:var(--blue2);color:#fff;margin-top:8px;min-height:48px}
 .btn:active{filter:brightness(1.15)}
 .btn.gold{background:var(--gold);color:#1a1200}
 .btn.ghost{background:transparent;border:2px solid var(--blue2)}
-.btn.sm{width:auto;margin:0;padding:10px 16px;min-height:0;font-size:15px}
-.link{background:none;border:0;color:var(--mute);text-decoration:underline;font-size:15px;padding:10px 4px}
+.btn.ok{background:var(--ok);color:#042312}
+.btn.sm{width:auto;margin:0;padding:9px 14px;min-height:0;font-size:15px}
+.btn[disabled]{opacity:.4}
+.link{background:none;border:0;color:var(--mute);text-decoration:underline;font-size:14px;padding:8px 4px}
+.err{margin-top:10px;color:var(--bad);font-weight:700}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.card{text-align:left;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:12px;width:100%}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.card{text-align:left;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:10px;width:100%}
 .card.on{border-color:var(--gold);background:#0a1280}
-.card b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--gold);display:block}
-.card span{color:var(--mute);font-size:14px}
+.card b{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold);display:block}
+.card span{color:var(--mute);font-size:13px}
 
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin:6px 2px 10px}
-.rt{font-family:var(--display);font-size:26px;line-height:1.05;color:var(--gold);text-shadow:2px 2px 0 #000}
-.meta{color:var(--mute);font-size:14px;margin-top:3px}
+.streak{display:flex;align-items:center;gap:12px;background:var(--navy2);border:2px solid var(--blue);border-radius:10px;padding:10px 12px;margin-top:6px}
+.streak .n{font-family:var(--display);font-size:42px;line-height:1;color:var(--gold)}
+.streak small{display:block;color:var(--mute);font-size:13px;font-weight:700}
+.banner{background:#0a1280;border:2px solid var(--gold);border-radius:8px;padding:9px 12px;margin-top:8px;font-weight:700;font-size:15px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none}
+.rt{font-family:var(--display);font-size:21px;line-height:1.05;color:var(--gold);text-shadow:2px 2px 0 #000}
+.meta{color:var(--mute);font-size:12px;margin-top:2px}
 .mine{text-align:right}
-.mine small{display:block;color:var(--mute);font-size:13px;font-weight:700}
-.score{font-family:var(--display);font-size:40px;line-height:1;text-shadow:2px 2px 0 #000}
+.mine small{display:block;color:var(--mute);font-size:11px;font-weight:700}
+.score{font-family:var(--display);font-size:30px;line-height:1;text-shadow:2px 2px 0 #000}
 .score.neg{color:var(--bad)}
 
-.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;background:#000;padding:3px;border-radius:6px}
-.cat{background:var(--blue);border-radius:2px;min-height:58px;padding:4px 2px;font-size:11px;font-weight:700;line-height:1.1;color:#fff;text-transform:uppercase;display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-word}
-.tile{background:var(--blue);border:0;border-radius:2px;min-height:58px;font-family:var(--display);font-size:clamp(14px,4.8vw,24px);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0}
+.board{flex:1;min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:auto repeat(5,minmax(0,1fr));gap:3px;background:#000;padding:3px;border-radius:6px}
+.cat{background:var(--blue);border-radius:2px;min-height:42px;padding:3px 2px;font-size:10px;font-weight:700;line-height:1.1;text-transform:uppercase;display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-word;overflow:hidden}
+.tile{background:var(--blue);border:0;border-radius:2px;font-family:var(--display);font-size:clamp(13px,4.6vw,22px);color:var(--gold);text-shadow:2px 2px 0 #000;padding:0;min-height:0}
 .tile:active{background:var(--blue2)}
-.tile.done{background:#040a55;font-family:var(--body);font-size:12px;font-weight:700;text-shadow:none;color:var(--mute)}
+.tile[disabled]{opacity:.85}
+.tile.done{background:#040a55;font-family:var(--body);font-size:11px;font-weight:700;text-shadow:none;color:var(--mute);display:flex;align-items:center;justify-content:center}
+.board.c5 .tile{font-size:clamp(14px,5.6vw,26px)}
+.board.c5 .cat{font-size:11px;min-height:46px}
 .tile.done.r{color:var(--ok)}
 .tile.done.w{color:var(--bad)}
-.hint{color:var(--mute);font-size:14px;margin:10px 2px 0}
+.foot{display:flex;justify-content:space-between;align-items:center;flex:none}
+.hint{color:var(--mute);font-size:12px;margin:0}
 
-.clue{background:var(--blue);border:3px solid #000;border-radius:8px;padding:16px 14px 18px;margin-top:6px}
-.cc{font-family:var(--display);font-size:20px;color:var(--gold);text-shadow:2px 2px 0 #000;text-align:center;letter-spacing:.5px}
-.cv{font-family:var(--display);font-size:30px;color:#fff;text-align:center;margin:2px 0 10px;text-shadow:2px 2px 0 #000}
-.cq{font-size:23px;line-height:1.3;font-weight:700;text-align:center;margin:6px 4px 16px;text-shadow:1px 1px 0 #000}
-.opts{display:grid;gap:8px}
-.opt{display:flex;align-items:center;gap:12px;text-align:left;background:var(--navy2);border:2px solid #000;border-radius:6px;padding:14px 12px;font-size:19px;font-weight:700;min-height:58px;width:100%}
+.clue{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;background:var(--blue);border:3px solid #000;border-radius:8px;padding:8px 10px;position:relative;overflow:hidden}
+.cchead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex:none}
+.cc{font-family:var(--display);font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #000;letter-spacing:.4px}
+.cv{font-family:var(--display);font-size:22px;color:#fff;text-shadow:2px 2px 0 #000}
+.cqwrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto}
+.cq{font-size:clamp(16px,4.7vw,21px);line-height:1.25;font-weight:700;text-align:center;padding:2px 4px;text-shadow:1px 1px 0 #000}
+.cq.flip{transform:rotate(180deg)}
+.opts{display:grid;gap:6px;flex:none}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;background:var(--navy2);border:2px solid #000;border-radius:6px;padding:8px 10px;font-size:16px;font-weight:700;min-height:46px;width:100%}
 .opt:active{background:var(--navy)}
-.opt i{font-style:normal;font-family:var(--display);color:var(--gold);font-size:22px;width:22px;flex:none}
+.opt i{font-style:normal;font-family:var(--display);color:var(--gold);font-size:19px;width:18px;flex:none}
 .opt.right{background:var(--ok);color:#042312;border-color:#042312}
-.opt.right i{color:#042312}
+.opt.right i,.opt.wrong i{color:inherit}
 .opt.wrong{background:var(--bad);color:#2b0505;border-color:#2b0505}
-.opt.wrong i{color:#2b0505}
 .opt.dim{opacity:.45}
-.res{text-align:center;font-family:var(--display);font-size:34px;margin:14px 0 2px;text-shadow:2px 2px 0 #000}
+.opt[disabled]{opacity:1}
+.opt.dim[disabled]{opacity:.45}
+.rrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none}
+.res{font-family:var(--display);font-size:22px;text-shadow:2px 2px 0 #000;line-height:1.1}
 .res.r{color:var(--ok)}
 .res.w{color:var(--bad)}
-.rn{text-align:center;color:#d6dcff;font-size:16px;margin:0 0 4px}
+.rn{color:#d6dcff;font-size:13px}
+.tbar{flex:none;height:8px;background:#000;border-radius:4px;overflow:hidden;position:relative}
+.tbar div{height:100%;background:var(--gold)}
+.tbar.low div{background:var(--bad)}
+.tlab{position:absolute;right:6px;top:-1px;font-size:10px;font-weight:700}
 
-.ddsplash{font-family:var(--display);font-size:46px;line-height:1;text-align:center;color:var(--gold);text-shadow:3px 3px 0 #000,0 0 18px rgba(255,204,51,.7);margin:10px 0 6px}
-.big{font-family:var(--display);font-size:52px;line-height:1;color:#fff;text-align:center;text-shadow:3px 3px 0 #000;margin:6px 0}
-.note{text-align:center;color:#d6dcff;font-size:16px;margin:2px 0 8px}
-.slide{width:100%;height:48px;accent-color:var(--gold);margin:6px 0 0}
-.ticks{display:flex;justify-content:space-between;color:var(--mute);font-size:13px;font-weight:700;margin:-4px 2px 6px}
+.ddsplash{font-family:var(--display);font-size:40px;line-height:1;text-align:center;color:var(--gold);text-shadow:3px 3px 0 #000,0 0 18px rgba(255,204,51,.7)}
+.big{font-family:var(--display);font-size:46px;line-height:1;color:#fff;text-align:center;text-shadow:3px 3px 0 #000}
+.note{text-align:center;color:#d6dcff;font-size:14px}
+.slide{width:100%;height:44px;accent-color:var(--gold)}
+.ticks{display:flex;justify-content:space-between;color:var(--mute);font-size:12px;font-weight:700;margin:-4px 2px 0}
+.mid{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
 
-.stats{background:var(--navy2);border-radius:6px;padding:14px;margin-top:14px;font-size:18px;line-height:1.7}
+.buzz{flex:none;min-height:88px;border:0;border-radius:14px;font-family:var(--display);font-size:42px;letter-spacing:1px;background:var(--gold);color:#1a1200;box-shadow:0 6px 0 #a67c00}
+.buzz:active{transform:translateY(4px);box-shadow:0 2px 0 #a67c00}
+.buzz[disabled]{background:#3a4180;color:#9fb0ff;box-shadow:none;transform:none}
+
+.chips{display:flex;gap:6px;overflow-x:auto;flex:none;padding-bottom:2px}
+.chip{flex:none;background:var(--navy2);border:2px solid #000;border-radius:8px;padding:3px 8px;min-width:76px}
+.chip.pick{border-color:var(--gold)}
+.chip.ans{background:var(--blue2);border-color:#fff}
+.chip.out{opacity:.5}
+.chip b{display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap}
+.chip .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.chip em{font-style:normal;font-family:var(--display);font-size:16px}
+.chip em.neg{color:var(--bad)}
+.items{display:flex;gap:6px;flex:none;align-items:center;flex-wrap:wrap}
+.item{background:#4b1fb8;border:2px solid #000;border-radius:6px;padding:7px 10px;font-weight:700;font-size:14px}
+.item:active{filter:brightness(1.2)}
+.items small{color:var(--mute);font-size:12px}
+.fog{position:absolute;inset:0;z-index:5;pointer-events:none;background:rgba(210,220,255,.66);backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px)}
+.toast{position:fixed;left:10px;right:10px;top:calc(var(--hb,0px) + 8px);z-index:60;background:#000;border:2px solid var(--gold);border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:15px;max-width:620px;margin:0 auto}
+
+.pr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #000}
+.pr:last-child{border-bottom:0}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.pn{flex:1;font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn i{font-style:normal;color:var(--gold);font-size:12px;margin-left:6px}
+.ps{font-family:var(--display);font-size:22px}
+.ps.neg{color:var(--bad)}
+.rank{font-family:var(--display);font-size:26px;color:var(--gold);width:34px}
+.box{background:var(--navy2);border-radius:6px;overflow:hidden}
+.boxh{padding:9px 12px;font-weight:700;color:var(--mute);font-size:13px;border-bottom:2px solid #000}
+.stats{background:var(--navy2);border-radius:6px;padding:10px 12px;font-size:16px;line-height:1.6}
 .stats b{color:var(--gold)}
-.mute{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));background:var(--navy2);border:2px solid var(--blue);border-radius:20px;padding:8px 12px;font-size:13px;font-weight:700;z-index:40}
+.code{font-family:var(--display);font-size:54px;letter-spacing:6px;color:var(--gold);text-align:center;text-shadow:3px 3px 0 #000}
+.tabs{display:flex;gap:6px;margin-bottom:6px}
+.tabs button{flex:1;background:var(--navy2);border:2px solid var(--blue);border-radius:6px;padding:8px 4px;font-weight:700;font-size:14px}
+.tabs button.on{border-color:var(--gold);color:var(--gold)}
 @media (prefers-reduced-motion:no-preference){
   .ddsplash{animation:ddpop .55s cubic-bezier(.2,1.4,.4,1)}
   @keyframes ddpop{0%{transform:scale(.3) rotate(-6deg);opacity:0}60%{transform:scale(1.2) rotate(2deg);opacity:1}100%{transform:none}}
   .clue.flash{animation:ddflash .7s ease-out}
   @keyframes ddflash{0%{background:#ffcc33}100%{background:var(--blue)}}
+  .fog{animation:fogpulse 1.6s ease-in-out infinite alternate}
+  @keyframes fogpulse{from{background:rgba(210,220,255,.55)}to{background:rgba(230,235,255,.82)}}
 }
 </style>
 </head>
 <body>
 <div id="root"></div>
+<script>
+/* arriving from the hub lobby (?lobby=CODE): load the shared hub script so the room code and players carry over */
+(function(){ try{ if(new URLSearchParams(location.search).get("lobby")){ var s=document.createElement("script"); s.src="hub.js"; document.head.appendChild(s); } }catch(e){} })();
+</script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
+const TS = window.JQ_TIMESCALE || 1;   /* test hook only: shrinks every timer */
 
-/* ================= QUESTIONS: edit or add here ================= */
+/* ================= QUESTION POOLS: edit or add here ================= */
 /* Each clue: q = clue text, o = four choices, a = index (0-3) of the correct choice. */
-/* Each category needs exactly 5 clues, easiest first (they map to the 5 dollar values). */
-const BOARDS = [
+/* Each category needs exactly 5 clues, easiest first. Every game draws categories at random from the pool,
+   so add as many categories as you like. Mini boards use the first 4 clues of each category. */
+const POOLS = [
   /* ---------- Round 1: Jeopardy ($200 - $1000) ---------- */
   [
     { name:"U.S. Geography", clues:[
@@ -145,6 +215,69 @@ const BOARDS = [
       { q:"Plants take in this gas from the air to carry out photosynthesis.", o:["Oxygen","Nitrogen","Hydrogen","Carbon dioxide"], a:3 },
       { q:"This is the hardest natural substance on Earth.", o:["Diamond","Quartz","Topaz","Granite"], a:0 },
       { q:"The speed of light is about 186,000 of these per second.", o:["Kilometers","Miles","Feet","Meters"], a:1 }
+    ]}
+    ,{ name:"Sports", clues:[
+      { q:"In baseball, a batter who hits the ball over the outfield fence has hit one of these.", o:["Home run","Triple","Double play","Bunt"], a:0 },
+      { q:"A soccer team has this many players on the field, including the goalkeeper.", o:["9","10","11","12"], a:2 },
+      { q:"The Wimbledon tennis championships are played on this surface.", o:["Clay","Concrete","Carpet","Grass"], a:3 },
+      { q:"Michael Phelps won more Olympic gold medals than anyone, competing in this sport.", o:["Gymnastics","Swimming","Rowing","Track and field"], a:1 },
+      { q:"In golf, finishing a hole one stroke under par is called this.", o:["Eagle","Bogey","Birdie","Albatross"], a:2 }
+    ]}
+    ,{ name:"Fairy Tales", clues:[
+      { q:"In this fairy tale, a girl in a red cloak visits her grandmother and meets a wolf.", o:["Little Red Riding Hood","Cinderella","Snow White","Rapunzel"], a:0 },
+      { q:"Jack climbs a giant one of these to reach a giant's castle in the clouds.", o:["Ladder","Beanstalk","Tree","Vine"], a:1 },
+      { q:"Cinderella loses one of these at the ball.", o:["Tiara","Necklace","Glass slipper","Cloak"], a:2 },
+      { q:"In 'The Three Little Pigs', the first pig builds his house out of this.", o:["Bricks","Sticks","Mud","Straw"], a:3 },
+      { q:"'The Little Mermaid' and 'The Ugly Duckling' were written by this Danish author.", o:["Roald Dahl","Hans Christian Andersen","Charles Perrault","Aesop"], a:1 }
+    ]}
+    ,{ name:"Holidays", clues:[
+      { q:"On this holiday, children in the U.S. go trick-or-treating.", o:["Halloween","Thanksgiving","Easter","Labor Day"], a:0 },
+      { q:"This U.S. holiday, held on the fourth Thursday of November, features a turkey dinner.", o:["Memorial Day","Thanksgiving","Veterans Day","Columbus Day"], a:1 },
+      { q:"The Jewish Festival of Lights is called this.", o:["Passover","Purim","Hanukkah","Sukkot"], a:2 },
+      { q:"The Rose Parade in Pasadena, California, is held on this holiday.", o:["Thanksgiving","Christmas Eve","Memorial Day","New Year's Day"], a:3 },
+      { q:"People in Mexico honor deceased loved ones on November 1 and 2 with this holiday.", o:["Day of the Dead","Cinco de Mayo","Carnival","Las Posadas"], a:0 }
+    ]}
+    ,{ name:"Space", clues:[
+      { q:"This is the star at the center of our solar system.", o:["Sirius","The Sun","Polaris","Proxima Centauri"], a:1 },
+      { q:"This planet is famous for its bright rings.", o:["Jupiter","Uranus","Saturn","Neptune"], a:2 },
+      { q:"This is the largest planet in our solar system.", o:["Saturn","Neptune","Uranus","Jupiter"], a:3 },
+      { q:"In 1961, Yuri Gagarin became the first human in space, flying for this country.", o:["The Soviet Union","The United States","China","Great Britain"], a:0 },
+      { q:"This space telescope, launched in 1990, is named for an astronomer who showed other galaxies exist.", o:["Kepler","Hubble","Spitzer","Webb"], a:1 }
+    ]}
+    ,{ name:"Inventions", clues:[
+      { q:"Alexander Graham Bell is credited with inventing this device.", o:["Radio","Television","Telephone","Telegraph"], a:2 },
+      { q:"Thomas Edison is famous for developing a practical version of this lighting invention.", o:["Candle","Gas lamp","Flashlight","Light bulb"], a:3 },
+      { q:"Johannes Gutenberg invented this machine in the 1400s, spreading books across Europe.", o:["Printing press","Steam engine","Telescope","Loom"], a:0 },
+      { q:"Tim Berners-Lee invented this in 1989, letting people browse linked pages online.", o:["Email","The World Wide Web","The search engine","The smartphone"], a:1 },
+      { q:"This Italian inventor is credited with developing the first practical radio telegraph.", o:["Nikola Tesla","Thomas Edison","Guglielmo Marconi","Alexander Bell"], a:2 }
+    ]}
+    ,{ name:"U.S. Presidents", clues:[
+      { q:"He was president during the Civil War and gave the Gettysburg Address.", o:["Abraham Lincoln","Ulysses Grant","Andrew Jackson","Andrew Johnson"], a:0 },
+      { q:"This president led the country through the Great Depression and most of World War II.", o:["Herbert Hoover","Franklin D. Roosevelt","Harry Truman","Dwight Eisenhower"], a:1 },
+      { q:"The seventh president, his face is on the U.S. twenty-dollar bill.", o:["Thomas Jefferson","James Madison","Andrew Jackson","James Monroe"], a:2 },
+      { q:"This president's Louisiana Purchase of 1803 roughly doubled the size of the United States.", o:["John Adams","James Madison","James Monroe","Thomas Jefferson"], a:3 },
+      { q:"He is the only U.S. president to resign from office.", o:["Richard Nixon","Lyndon Johnson","Gerald Ford","Jimmy Carter"], a:0 }
+    ]}
+    ,{ name:"Weather & Nature", clues:[
+      { q:"This colorful arc appears in the sky when the sun shines through rain.", o:["Aurora","Rainbow","Halo","Eclipse"], a:1 },
+      { q:"A tornado that forms over water is called this.", o:["Typhoon","Tsunami","Waterspout","Whirlpool"], a:2 },
+      { q:"The rapid expansion of air heated by lightning causes this sound.", o:["Echo","Sonic boom","Static","Thunder"], a:3 },
+      { q:"This California giant is the tallest type of tree on Earth.", o:["Coast redwood","Douglas fir","Oak","Cedar"], a:0 },
+      { q:"Hurricanes are rated from 1 to 5 on this scale.", o:["Richter scale","Saffir-Simpson scale","Beaufort scale","Fujita scale"], a:1 }
+    ]}
+    ,{ name:"Disney & Cartoons", clues:[
+      { q:"This Disney mouse has a girlfriend named Minnie.", o:["Jerry","Speedy Gonzales","Mickey Mouse","Stuart Little"], a:2 },
+      { q:"This cartoon sponge lives in a pineapple under the sea.", o:["Patrick Star","Squidward","Plankton","SpongeBob SquarePants"], a:3 },
+      { q:"In 'The Lion King', Simba's father is named this.", o:["Mufasa","Scar","Rafiki","Zazu"], a:0 },
+      { q:"This 1937 film was Disney's first full-length animated feature.", o:["Pinocchio","Snow White and the Seven Dwarfs","Bambi","Cinderella"], a:1 },
+      { q:"In 'Finding Nemo', Dory is this type of fish.", o:["Clownfish","Angelfish","Blue tang","Pufferfish"], a:2 }
+    ]}
+    ,{ name:"Famous Pairs", clues:[
+      { q:"Batman and this sidekick fight crime in Gotham City.", o:["Robin","Alfred","Gordon","The Joker"], a:0 },
+      { q:"Bonnie and this partner robbed banks in the 1930s.", o:["Butch","Clyde","Jesse","Dillinger"], a:1 },
+      { q:"Comedy duo Laurel and this partner starred in 'Sons of the Desert'.", o:["Abbott","Costello","Hardy","Lewis"], a:2 },
+      { q:"Lewis and this explorer led the 1804 to 1806 expedition across the western U.S.", o:["Pike","Boone","Crockett","Clark"], a:3 },
+      { q:"Rodgers and this lyricist wrote 'Oklahoma!' and 'South Pacific'.", o:["Hammerstein","Hart","Sondheim","Lerner"], a:0 }
     ]}
   ],
   /* ---------- Round 2: Double Jeopardy ($400 - $2000) ---------- */
@@ -191,29 +324,127 @@ const BOARDS = [
       { q:"The smallest bone in the human body, the stapes, is found in this part of the body.", o:["Hand","Ear","Foot","Nose"], a:1 },
       { q:"This organ produces insulin.", o:["Liver","Kidney","Pancreas","Spleen"], a:2 }
     ]}
+    ,{ name:"Art & Artists", clues:[
+      { q:"Leonardo da Vinci painted this famous portrait of a woman with a mysterious smile.", o:["Mona Lisa","Girl with a Pearl Earring","The Birth of Venus","Lady with an Ermine"], a:0 },
+      { q:"This Dutch painter created 'The Starry Night' in 1889.", o:["Rembrandt","Vincent van Gogh","Vermeer","Claude Monet"], a:1 },
+      { q:"This Spanish artist helped found Cubism and painted 'Guernica'.", o:["Salvador Dali","Joan Miro","Pablo Picasso","Francisco Goya"], a:2 },
+      { q:"Claude Monet's 'Impression, Sunrise' gave its name to this art movement.", o:["Cubism","Surrealism","Romanticism","Impressionism"], a:3 },
+      { q:"This 1931 painting by Salvador Dali features melting pocket watches.", o:["The Persistence of Memory","The Scream","American Gothic","Nighthawks"], a:0 }
+    ]}
+    ,{ name:"Mythology", clues:[
+      { q:"In Greek mythology, this is the king of the gods who hurls thunderbolts.", o:["Apollo","Zeus","Poseidon","Hades"], a:1 },
+      { q:"This Greek hero was famous for completing twelve labors.", o:["Achilles","Perseus","Hercules","Odysseus"], a:2 },
+      { q:"In Roman mythology, this goddess of love matches the Greek Aphrodite.", o:["Juno","Minerva","Diana","Venus"], a:3 },
+      { q:"This creature with a bull's head and a man's body was trapped in a labyrinth.", o:["Minotaur","Cyclops","Centaur","Chimera"], a:0 },
+      { q:"In the Odyssey, Odysseus blinds this one-eyed giant.", o:["Argus","Polyphemus","Atlas","Antaeus"], a:1 }
+    ]}
+    ,{ name:"U.S. History", clues:[
+      { q:"The Declaration of Independence was adopted in this year.", o:["1765","1783","1776","1789"], a:2 },
+      { q:"This 1863 proclamation by Abraham Lincoln declared slaves in rebelling states to be free.", o:["Gettysburg Address","Homestead Act","Bill of Rights","Emancipation Proclamation"], a:3 },
+      { q:"This amendment, ratified in 1920, gave women the right to vote.", o:["19th Amendment","15th Amendment","21st Amendment","26th Amendment"], a:0 },
+      { q:"In 1869, a golden spike at Promontory Summit, Utah, completed this.", o:["The Panama Canal","The Transcontinental Railroad","The Erie Canal","The Pony Express"], a:1 },
+      { q:"Marbury v. Madison in 1803 established this Supreme Court power: striking down laws as unconstitutional.", o:["Executive privilege","Impeachment","Judicial review","Habeas corpus"], a:2 }
+    ]}
+    ,{ name:"Famous Landmarks", clues:[
+      { q:"The Eiffel Tower stands in this city.", o:["London","Rome","Berlin","Paris"], a:3 },
+      { q:"The ancient Colosseum, a huge amphitheater, is in this city.", o:["Rome","Athens","Istanbul","Florence"], a:0 },
+      { q:"Emperor Shah Jahan built this white marble mausoleum in memory of his wife Mumtaz Mahal.", o:["Red Fort","Taj Mahal","Lotus Temple","Golden Temple"], a:1 },
+      { q:"This Incan citadel high in the Peruvian Andes was brought to world attention in 1911.", o:["Chichen Itza","Tikal","Machu Picchu","Cusco"], a:2 },
+      { q:"This Cambodian temple complex is the largest religious monument in the world.", o:["Borobudur","Bagan","Wat Arun","Angkor Wat"], a:3 }
+    ]}
+    ,{ name:"Science Pioneers", clues:[
+      { q:"Isaac Newton is said to have been inspired to develop his theory of this force by a falling apple.", o:["Gravity","Magnetism","Electricity","Friction"], a:0 },
+      { q:"Marie Curie won Nobel Prizes for her pioneering work on this.", o:["Photosynthesis","Radioactivity","Genetics","Gravity"], a:1 },
+      { q:"This scientist proposed evolution by natural selection in 'On the Origin of Species'.", o:["Gregor Mendel","Louis Pasteur","Charles Darwin","Jean-Baptiste Lamarck"], a:2 },
+      { q:"Alexander Fleming discovered this first widely used antibiotic in 1928.", o:["Insulin","Aspirin","Streptomycin","Penicillin"], a:3 },
+      { q:"This Polish astronomer proposed in 1543 that the Earth orbits the Sun.", o:["Nicolaus Copernicus","Galileo Galilei","Johannes Kepler","Tycho Brahe"], a:0 }
+    ]}
+    ,{ name:"Hollywood Legends", clues:[
+      { q:"Charlie Chaplin's most famous character was known as the Little this.", o:["Dictator","Tramp","Kid","Prospector"], a:1 },
+      { q:"Marilyn Monroe starred with Jack Lemmon and Tony Curtis in this 1959 comedy.", o:["Gentlemen Prefer Blondes","The Seven Year Itch","Some Like It Hot","How to Marry a Millionaire"], a:2 },
+      { q:"This director made 'Psycho', 'Vertigo' and 'The Birds'.", o:["Stanley Kubrick","Steven Spielberg","Orson Welles","Alfred Hitchcock"], a:3 },
+      { q:"Orson Welles directed and starred in this 1941 film, often ranked among the greatest ever made.", o:["Citizen Kane","The Third Man","Touch of Evil","The Magnificent Ambersons"], a:0 },
+      { q:"Katharine Hepburn holds the record for the most acting Oscars won by a performer. How many did she win?", o:["2","4","3","5"], a:1 }
+    ]}
+    ,{ name:"Words & Language", clues:[
+      { q:"A word with the opposite meaning of another word is called this.", o:["Synonym","Homonym","Antonym","Acronym"], a:2 },
+      { q:"A word like 'laser' or 'scuba', formed from the first letters of a phrase, is called this.", o:["Palindrome","Portmanteau","Onomatopoeia","Acronym"], a:3 },
+      { q:"The Latin phrase 'carpe diem' means this.", o:["Seize the day","Time flies","Know thyself","Live and let live"], a:0 },
+      { q:"The Cyrillic alphabet is used to write this language, spoken in Moscow.", o:["Greek","Russian","Arabic","Hebrew"], a:1 },
+      { q:"This language has the most native speakers in the world.", o:["English","Spanish","Mandarin Chinese","Hindi"], a:2 }
+    ]}
+    ,{ name:"Famous Women", clues:[
+      { q:"She sparked the Montgomery bus boycott in 1955 by refusing to give up her seat.", o:["Rosa Parks","Harriet Tubman","Ruby Bridges","Coretta Scott King"], a:0 },
+      { q:"This British nurse founded modern nursing during the Crimean War.", o:["Clara Barton","Florence Nightingale","Mary Seacole","Edith Cavell"], a:1 },
+      { q:"She led French armies in the Hundred Years' War and was burned at the stake in 1431.", o:["Eleanor of Aquitaine","Catherine de Medici","Joan of Arc","Marie Antoinette"], a:2 },
+      { q:"Sally Ride became the first American woman in space in this year.", o:["1979","1986","1990","1983"], a:3 },
+      { q:"In 2014, this Pakistani activist became the youngest person ever to win the Nobel Peace Prize.", o:["Malala Yousafzai","Benazir Bhutto","Greta Thunberg","Aung San Suu Kyi"], a:0 }
+    ]}
+    ,{ name:"Rock & Roll", clues:[
+      { q:"Elvis Presley was known by this nickname.", o:["The Boss","The King","The Chairman","The Killer"], a:1 },
+      { q:"This Liverpool band's 1964 appearance on 'The Ed Sullivan Show' sparked Beatlemania in America.", o:["The Rolling Stones","The Who","The Beatles","The Kinks"], a:2 },
+      { q:"The Rock and Roll Hall of Fame is located in this U.S. city.", o:["Memphis","Nashville","Detroit","Cleveland"], a:3 },
+      { q:"This band, led by Freddie Mercury, recorded 'Bohemian Rhapsody'.", o:["Queen","Led Zeppelin","Pink Floyd","Genesis"], a:0 },
+      { q:"At Woodstock in 1969, Jimi Hendrix famously played this song on electric guitar.", o:["America the Beautiful","The Star-Spangled Banner","God Bless America","My Country 'Tis of Thee"], a:1 }
+    ]}
   ]
 ];
 const ROUNDS = [ { name:"Jeopardy", step:200 }, { name:"Double Jeopardy", step:400 } ];
-const DD_COUNT = [1, 2];   /* Daily Doubles per round */
-const PER_ROUND = 30;      /* 6 categories x 5 clues */
+const DD_COUNT = [1, 2];   /* Individual Bets per round */
+const SIZES = {
+  mini: { cols:5, rows:4, label:"Mini quiz show", blurb:"5 categories x 4 clues, 40 clues total" },
+  full: { cols:6, rows:5, label:"Full quiz show", blurb:"6 categories x 5 clues, 60 clues total" }
+};
+const perRound = (size) => SIZES[size].cols*SIZES[size].rows;
 const MIN_WAGER = 1;
+const PACE = { quick:{ buzz:6, ans:8, label:"Quick" }, normal:{ buzz:9, ans:12, label:"Normal" }, relaxed:{ buzz:14, ans:18, label:"Relaxed" } };
+const ITEMS = {
+  fog:   { n:"Fog",      ms:7000, d:"clouds the leader's screen" },
+  flip:  { n:"Flip",     ms:8000, d:"turns the leader's clue upside down" },
+  rev:   { n:"Reverse",  ms:8000, d:"writes the leader's clue backwards" },
+  scr:   { n:"Scramble", ms:8000, d:"scrambles the leader's answers" }
+};
+const ITEM_KEYS = Object.keys(ITEMS);
+const COLORS = ["#ffcc33","#3ee08a","#ff7070","#c79bff","#5fd4ff","#ff9ad5","#9be15d","#ffffff"];
 
 /* ================= helpers ================= */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 const ls = { get:(k)=>{ try{return localStorage.getItem(k);}catch(e){return null;} }, set:(k,v)=>{ try{localStorage.setItem(k,v);}catch(e){} } };
+const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const randCode = () => Array.from({length:4},()=>ALPHA[Math.floor(Math.random()*ALPHA.length)]).join("");
+const myId = (()=>{ let v = ls.get("hub_uid"); if(!v){ v = "u"+Math.random().toString(36).slice(2,11); ls.set("hub_uid",v); } return v; })();
 const fmt = (n) => (n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US");
 const rand = (n) => Math.floor(Math.random()*n);
 const shuffle = (a) => { const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=rand(i+1); [b[i],b[j]]=[b[j],b[i]]; } return b; };
 const LETTERS = ["A","B","C","D"];
+const wagerFor = (p,maxW) => p===0 ? MIN_WAGER : Math.min(maxW, Math.max(MIN_WAGER, Math.round(maxW*p/10)));
+const ddWords = (p) => p===0?"Minimum bet":p<=3?"Playing it safe":p<=6?"Confident":p<=9?"Very confident":"ALL IN - extremely confident";
 
-function placeDD(){
+function placeDD(nRounds,size){
+  const { cols, rows } = SIZES[size];
   const out=[];
-  DD_COUNT.forEach((n,r)=>{
-    const cols=shuffle([0,1,2,3,4,5]).slice(0,n);
-    cols.forEach(c=>out.push(r+"-"+c+"-"+(1+rand(4))));   /* never the top row */
+  DD_COUNT.slice(0,nRounds).forEach((n,r)=>{
+    shuffle(Array.from({length:cols},(_,i)=>i)).slice(0,n).forEach(c=>out.push(r+"-"+c+"-"+(1+rand(rows-1))));   /* never the top row */
   });
   return out;
 }
-function newGame(nopen){ return { round:0, score:0, played:{}, dd:placeDD(), nopen:!!nopen, right:0, wrong:0 }; }
+/* every game draws its categories at random from the pools, so no two games match */
+function pickCats(size){ return POOLS.map(pool=>shuffle(pool.map((_,i)=>i)).slice(0,SIZES[size].cols)); }
+const boardFor = (cats,round) => cats[round].map(i=>POOLS[round][i]);
+const valuesFor = (round,size) => Array.from({length:SIZES[size].rows},(_,i)=>(i+1)*ROUNDS[round].step);
+/* seeded scramble so a "scramble" effect does not reshuffle on every redraw */
+function prng(seed){ let h=2166136261; for(let i=0;i<seed.length;i++){ h^=seed.charCodeAt(i); h=Math.imul(h,16777619); } return ()=>{ h+=0x6D2B79F5; let t=h; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+function scrambleText(text,seed){
+  const r=prng(seed+"|"+text);
+  return text.split(" ").map(w=>{
+    if(w.length<4) return w;
+    const mid=w.slice(1,-1).split(""); for(let i=mid.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [mid[i],mid[j]]=[mid[j],mid[i]]; }
+    return w[0]+mid.join("")+w[w.length-1];
+  }).join(" ");
+}
+const revText = (t) => t.split("").reverse().join("");
 
 let AC = null;
 function sfx(kind){
@@ -225,34 +456,241 @@ function sfx(kind){
       o.connect(g); g.connect(AC.destination); o.start(AC.currentTime+t); o.stop(AC.currentTime+t+d+0.02); };
     if(kind==="r"){ note(660,0,.14,"sine",.25); note(880,.12,.22,"sine",.25); }
     else if(kind==="w"){ note(140,0,.38,"sawtooth",.2); }
+    else if(kind==="buzz"){ note(310,0,.16,"square",.18); }
+    else if(kind==="item"){ note(300,0,.1,"sawtooth",.15); note(600,.08,.1,"sawtooth",.15); note(1200,.16,.14,"sawtooth",.12); }
     else if(kind==="ddr"){ note(392,0,.12,"triangle",.28); note(523,.1,.12,"triangle",.28); note(659,.2,.12,"triangle",.28); note(784,.3,.14,"triangle",.28); note(1047,.42,.5,"triangle",.3); note(1319,.42,.5,"sine",.15); }
   }catch(e){}
 }
 
-/* ================= app ================= */
-function App(){
+/* ---------- daily streak + stats (local first, synced to the server when it is reachable) ---------- */
+const pad2 = (n) => (n<10?"0":"")+n;
+const today = () => { const d=new Date(); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); };
+const dayDiff = (a,b) => Math.round((Date.parse(b+"T00:00:00Z")-Date.parse(a+"T00:00:00Z"))/86400000);
+const EMPTY_STATS = () => ({ streak:0, best_streak:0, last_login:"", hints:0, games:0, best_score:0, best_mini:0, correct:0, answered:0 });
+function loadLocalStats(){ try{ return { ...EMPTY_STATS(), ...JSON.parse(ls.get("jq_stats")||"{}") }; }catch(e){ return EMPTY_STATS(); } }
+function saveStats(st,name){
+  ls.set("jq_stats",JSON.stringify(st));
+  if(sb) sb.from("jq_stats").upsert({ id:myId, name:name||"", ...st, updated_at:new Date().toISOString() }).then(()=>{},()=>{});
+}
+async function loadStats(name){
+  let st = loadLocalStats();
+  if(sb){ try{
+    const r = await sb.from("jq_stats").select("*").eq("id",myId).maybeSingle();
+    if(r.data && (r.data.last_login||"")>=(st.last_login||"")){ const { id, name:_n, updated_at, ...rest } = r.data; st = { ...EMPTY_STATS(), ...rest }; }
+  }catch(e){} }
+  let bonus = null;
+  const t = today();
+  if(st.last_login!==t){
+    const cont = !!st.last_login && dayDiff(st.last_login,t)===1;
+    const streak = cont ? st.streak+1 : 1;
+    bonus = { streak, reset: !!st.last_login && !cont };
+    st = { ...st, streak, best_streak:Math.max(st.best_streak,streak), last_login:t, hints:Math.min(3,st.hints+1) };
+    saveStats(st,name);
+  }
+  return { st, bonus };
+}
+async function rankInfo(score,pct,size){
+  if(!sb) return null;
+  try{
+    const base = () => sb.from("jq_scores").select("id",{ count:"exact", head:true }).eq("ranked",true).eq("size",size);
+    const all = await base();
+    const total = all.count||0;
+    if(!total) return { total:0 };
+    const s = await base().lt("score",score);
+    const p = await base().lt("pct",pct);
+    return { total, beatScore:Math.round(100*(s.count||0)/total), beatPct:Math.round(100*(p.count||0)/total) };
+  }catch(e){ return null; }
+}
+
+/* ================= shared pieces ================= */
+function Countdown({ secs, k, onExpire }){
+  const [left,setLeft] = useState(secs*1000);
+  const cb = useRef(onExpire); cb.current = onExpire;
+  useEffect(()=>{
+    const total = secs*1000*TS, t0 = Date.now(); let fired = false;
+    setLeft(total);
+    const iv = setInterval(()=>{
+      const l = Math.max(0,total-(Date.now()-t0));
+      setLeft(l);
+      if(l<=0 && !fired){ fired = true; clearInterval(iv); if(cb.current) cb.current(); }
+    },100);
+    return ()=>clearInterval(iv);
+  },[k,secs]);
+  const frac = Math.max(0,Math.min(1,left/(secs*1000*TS)));
+  return <div className={"tbar"+(frac<0.3?" low":"")}><div style={{width:(frac*100)+"%"}}></div><span className="tlab">{Math.ceil(left/1000/TS)}s</span></div>;
+}
+
+function BoardView({ board, vals, round, played, onTile, disabled }){
+  const cols=board.length, rows=vals.length;
+  const style={ gridTemplateColumns:"repeat("+cols+",minmax(0,1fr))", gridTemplateRows:"auto repeat("+rows+",minmax(0,1fr))" };
+  return (
+    <div className={"board c"+cols} style={style}>
+      {board.map((cat,c)=><div key={"h"+c} className="cat">{cat.name}</div>)}
+      {vals.map((v,i)=>board.map((cat,c)=>{
+        const st = played[round+"-"+c+"-"+i];
+        if(st) return <div key={c+"-"+i} className={"tile done "+st}>{st==="r"?"right":st==="w"?"missed":st==="t"?"time":"none"}</div>;
+        return <button key={c+"-"+i} className="tile" disabled={disabled} onClick={()=>onTile(c,i)} aria-label={cat.name+" "+fmt(v)}>{"$"+v}</button>;
+      }))}
+    </div>);
+}
+
+function Options({ clue, order, picked, hidden, onPick, locked, fx, showAnswer }){
+  return (
+    <div className="opts">
+      {order.map((idx,slot)=>{
+        if(hidden && hidden.indexOf(idx)>=0) return null;
+        let cls = "opt";
+        if(showAnswer){ if(idx===clue.a) cls+=" right"; else if(slot===picked) cls+=" wrong"; else cls+=" dim"; }
+        const label = fx && fx.scr ? scrambleText(clue.o[idx],fx.scr) : clue.o[idx];
+        return <button key={slot} className={cls} disabled={locked||showAnswer} onClick={()=>onPick(slot)}><i>{LETTERS[slot]}</i><span>{label}</span></button>;
+      })}
+    </div>);
+}
+
+function ClueText({ text, fx }){
+  return <div className="cqwrap"><div className={"cq"+(fx&&fx.flip?" flip":"")}>{fx&&fx.rev?revText(text):text}</div></div>;
+}
+
+function DDPicker({ maxWager, onLock, lockLabel }){
+  const [pct,setPct] = useState(5);
+  return (
+    <div className="mid">
+      <div className="ddsplash">INDIVIDUAL BET!</div>
+      <div className="big">{fmt(wagerFor(pct,maxWager))}</div>
+      <div className="note">{ddWords(pct)}{pct>0&&pct<10?" - "+(pct*10)+"% of "+fmt(maxWager):""}</div>
+      <input className="slide" type="range" min="0" max="10" step="1" value={pct} onChange={e=>setPct(parseInt(e.target.value,10))} aria-label="Bet" />
+      <div className="ticks"><span>$1</span><span>50%</span><span>ALL IN</span></div>
+      <div className="note" style={{fontSize:12}}>You can bet up to {fmt(maxWager)}.</div>
+      <button className="btn gold" onClick={()=>onLock(pct)}>{lockLabel||"Lock in bet"}</button>
+    </div>);
+}
+
+function Head({ title, meta, score }){
+  return (
+    <div className="top">
+      <div><div className="rt">{title}</div><div className="meta">{meta}</div></div>
+      {score!==undefined && <div className="mine"><small>Score</small><div className={"score"+(score<0?" neg":"")}>{fmt(score)}</div></div>}
+    </div>);
+}
+
+/* ================= HOME ================= */
+function Home({ name, setName, stats, bonus, go }){
+  const [nm,setNm] = useState(name);
+  const has = !!name.trim();
+  const avg = stats.answered ? Math.round(100*stats.correct/stats.answered) : null;
+  function saveName(){ const v=nm.trim(); if(!v) return; ls.set("hub_name",v); setName(v); }
+  return (
+    <div className="scr scroll">
+      <h1 className="logo">Jeopardy Quiz</h1>
+      {!has ? (
+        <div>
+          <p className="sub">Pick a name so your streak and scores follow you.</p>
+          <input className="in" value={nm} onChange={e=>setNm(e.target.value)} maxLength={20} placeholder="Your name" />
+          <button className="btn gold" onClick={saveName}>Continue</button>
+        </div>
+      ) : (
+        <div>
+          <p className="sub" style={{marginBottom:4}}>Welcome back, {name}. <button className="link" style={{padding:0,fontSize:13}} onClick={()=>{ ls.set("hub_name",""); setName(""); setNm(name); }}>change</button></p>
+          <div className="streak">
+            <svg viewBox="0 0 24 24" width="38" height="38"><path d="M12 2c1 4-4 6-4 11a6 6 0 0 0 12 0c0-3-2-4-3-7-1 2-2 2-2 0 0-2-1-3-3-4z" fill="#ffcc33"/></svg>
+            <div><div className="n">{stats.streak}</div></div>
+            <div style={{flex:1}}><small>{stats.streak===1?"day streak":"day streak"}</small><small>Best: {stats.best_streak} | 50/50 tokens: {stats.hints}</small></div>
+          </div>
+          {bonus && <div className="banner">{bonus.reset?"Streak reset - new run started. ":"Daily login bonus! "}{bonus.streak>1?bonus.streak+" days in a row. ":""}+1 50/50 token (max 3).</div>}
+          <button className="btn gold" onClick={()=>go("solo")}>Solo play</button>
+          <button className="btn" onClick={()=>go("mp")}>Multiplayer</button>
+          <button className="btn ghost" onClick={()=>go("leaders")}>Leaderboard</button>
+          <div className="stats" style={{marginTop:10}}>Games played: <b>{stats.games}</b> | Best: full <b>{fmt(stats.best_score)}</b>, mini <b>{fmt(stats.best_mini||0)}</b>{avg!==null && <span> | Accuracy: <b>{avg}%</b></span>}</div>
+        </div>
+      )}
+    </div>);
+}
+
+/* ================= LEADERBOARD ================= */
+function Leaders({ stats, onBack }){
+  const [tab,setTab] = useState("score");
+  const [period,setPeriod] = useState("all");
+  const [size,setSize] = useState("full");
+  const [rows,setRows] = useState(null);
+  useEffect(()=>{
+    setRows(null);
+    if(!sb){ setRows([]); return; }
+    let q = sb.from("jq_scores").select("name,uid,score,pct,day").eq("ranked",true).eq("size",size);
+    if(period==="today") q = q.eq("day",today());
+    q = q.order(tab==="score"?"score":"pct",{ ascending:false });
+    if(tab==="pct") q = q.order("score",{ ascending:false });
+    q.limit(150).then(r=>{
+      const best = {}; const out = [];
+      (r.data||[]).forEach(x=>{ if(!best[x.uid]){ best[x.uid]=1; out.push(x); } });
+      setRows(out.slice(0,15));
+    },()=>setRows([]));
+  },[tab,period,size]);
+  return (
+    <div className="scr">
+      <Head title="Leaderboard" meta="Ranked runs only (points-loss mode)" />
+      <div className="tabs"><button className={size==="full"?"on":""} onClick={()=>setSize("full")}>Full quiz show</button><button className={size==="mini"?"on":""} onClick={()=>setSize("mini")}>Mini quiz show</button></div>
+      <div className="tabs"><button className={tab==="score"?"on":""} onClick={()=>setTab("score")}>Top score</button><button className={tab==="pct"?"on":""} onClick={()=>setTab("pct")}>Accuracy</button></div>
+      <div className="tabs"><button className={period==="today"?"on":""} onClick={()=>setPeriod("today")}>Today</button><button className={period==="all"?"on":""} onClick={()=>setPeriod("all")}>All time</button></div>
+      <div className="box scroll" style={{flex:1,minHeight:0}}>
+        {rows===null && <div className="pr"><span className="pn">Loading...</span></div>}
+        {rows && !rows.length && <div className="pr"><span className="pn">No runs yet. Be the first!</span></div>}
+        {rows && rows.map((r,i)=>(
+          <div className="pr" key={r.uid}>
+            <span className="rank">{i+1}</span>
+            <span className="pn">{r.name||"Player"}{r.uid===myId&&<i>you</i>}</span>
+            <span className="ps">{tab==="score"?fmt(r.score):r.pct+"%"}</span>
+          </div>))}
+      </div>
+      <div className="foot"><span className="hint">Your best ({size}): {fmt(size==="mini"?(stats.best_mini||0):stats.best_score)}</span><button className="btn sm" onClick={onBack}>Back</button></div>
+    </div>);
+}
+
+/* ================= SOLO ================= */
+function Solo({ name, stats, setStats, onMenu, onLeaders }){
   const [game,setGame] = useState(null);
-  const [cur,setCur] = useState(null);      /* the clue being played */
-  const [pct,setPct] = useState(5);         /* Daily Double slider 0..10 */
+  const [cur,setCur] = useState(null);
   const [nopen,setNopen] = useState(false);
+  const [timer,setTimer] = useState(0);
+  const [size,setSize] = useState("full");
   const [muted,setMuted] = useState(ls.get("jpq_mute")==="1");
-  const [saved,setSaved] = useState(()=>{ try{ return JSON.parse(ls.get("jpq_save")||"null"); }catch(e){ return null; } });
+  const [endInfo,setEndInfo] = useState(null);
+  const submitted = useRef(false);
+  const [saved,setSaved] = useState(()=>{ try{ const s=JSON.parse(ls.get("jpq_save")||"null"); return s&&s.cats&&s.size?s:null; }catch(e){ return null; } });
 
   useEffect(()=>{ if(game) ls.set("jpq_save",JSON.stringify(game)); },[game]);
 
+  const gsize = game ? game.size : size;
+  const SZ = SIZES[gsize];
   const round = game ? game.round : 0;
-  const board = BOARDS[round];
-  const step = ROUNDS[round].step;
-  const vals = [1,2,3,4,5].map(n=>n*step);
-  const topVal = vals[4];
+  const board = game ? boardFor(game.cats,round) : null;
+  const vals = valuesFor(round,gsize);
+  const topVal = vals[vals.length-1];
+  const per = perRound(gsize);
+  const total = per*ROUNDS.length;
   const playedCount = game ? Object.keys(game.played).filter(k=>k.indexOf(round+"-")===0).length : 0;
-  const roundDone = !!game && !cur && playedCount>=PER_ROUND;
+  const roundDone = !!game && !cur && playedCount>=per;
+  const finished = roundDone && round===ROUNDS.length-1;
   const maxWager = game ? Math.max(game.score,topVal) : topVal;
-  const wagerFor = (p) => p===0 ? MIN_WAGER : Math.min(maxWager, Math.max(MIN_WAGER, Math.round(maxWager*p/10)));
-  const ddLabel = pct===0?"Minimum bet":pct<=3?"Playing it safe":pct<=6?"Confident":pct<=9?"Very confident":"ALL IN - extremely confident";
 
-  function start(){ setGame(newGame(nopen)); setCur(null); }
-  function resume(){ setGame(saved); setCur(null); }
+  /* submit the finished run once: save score, update stats, show where you rank */
+  useEffect(()=>{
+    if(!finished || submitted.current) return;
+    submitted.current = true;
+    const pct = Math.round(100*game.right/total);
+    (async()=>{
+      const info = await rankInfo(game.score,pct,game.size);
+      setEndInfo({ pct, info });
+      const bestKey = game.size==="mini" ? "best_mini" : "best_score";
+      const st = { ...stats, games:stats.games+1, [bestKey]:Math.max(stats[bestKey]||0,game.score), correct:stats.correct+game.right, answered:stats.answered+total };
+      setStats(st); saveStats(st,name);
+      if(sb) sb.from("jq_scores").insert({ uid:myId, name, score:game.score, correct:game.right, answered:total, pct, ranked:!game.nopen, timer:game.timer, hints:game.hintsUsed, size:game.size, day:today() }).then(()=>{},()=>{});
+      ls.set("jpq_save",""); setSaved(null);
+    })();
+  },[finished]);
+
+  function newRun(sz,np,tm){ return { round:0, score:0, played:{}, dd:placeDD(ROUNDS.length,sz), cats:pickCats(sz), size:sz, nopen:np, timer:tm, right:0, wrong:0, hintsUsed:0 }; }
+  function start(){ submitted.current=false; setEndInfo(null); setGame(newRun(size,nopen,timer)); setCur(null); }
+  function resume(){ submitted.current=false; setEndInfo(null); setGame(saved); setCur(null); }
   function restart(){ if(window.confirm("Start a new game? Your current score will be lost.")){ ls.set("jpq_save",""); setSaved(null); setGame(null); setCur(null); } }
   function toggleMute(){ const m=!muted; setMuted(m); ls.set("jpq_mute",m?"1":"0"); }
 
@@ -260,136 +698,612 @@ function App(){
     const key = round+"-"+c+"-"+i;
     if(game.played[key]) return;
     const isDD = game.dd.indexOf(key)>=0;
-    setCur({ c, i, key, dd:isDD, stage:isDD?"wager":"clue", order:shuffle([0,1,2,3]), picked:null, wager:0, delta:0 });
-    if(isDD){ setPct(5); sfx("ddr"); }
+    setCur({ c, i, key, dd:isDD, stage:isDD?"wager":"clue", order:shuffle([0,1,2,3]), picked:null, wager:0, delta:0, hidden:[] });
+    if(isDD) sfx("ddr");
   }
-  function lockWager(){ setCur({ ...cur, stage:"clue", wager:wagerFor(pct) }); }
-  function pick(slot){
-    if(cur.picked!==null) return;
+  function lockWager(pct){ setCur(cu=>({ ...cu, stage:"clue", wager:wagerFor(pct,maxWager) })); }
+  function finish(slot,kind){
+    /* kind: "pick" (slot chosen) or "timeout" */
     const clue = board[cur.c].clues[cur.i];
-    const idx = cur.order[slot];
-    const right = idx===clue.a;
+    const right = kind==="pick" && cur.order[slot]===clue.a;
     const amount = cur.dd ? cur.wager : vals[cur.i];
-    const delta = right ? amount : (game.nopen ? 0 : -amount);
-    setGame(g=>({ ...g, score:g.score+delta, played:{ ...g.played, [cur.key]:right?"r":"w" }, right:g.right+(right?1:0), wrong:g.wrong+(right?0:1) }));
-    setCur({ ...cur, picked:slot, stage:"result", delta, right });
+    const timeout = kind==="timeout";
+    const delta = right ? amount : (timeout && !cur.dd) ? 0 : (game.nopen ? 0 : -amount);
+    const code = right?"r":timeout?"t":"w";
+    setGame(g=>({ ...g, score:g.score+delta, played:{ ...g.played, [cur.key]:code }, right:g.right+(right?1:0), wrong:g.wrong+(right?0:1) }));
+    setCur({ ...cur, picked:timeout?-1:slot, stage:"result", delta, right, timeout });
     sfx(right?"r":"w");
   }
+  function pick(slot){ if(cur.picked!==null) return; finish(slot,"pick"); }
+  function expire(){ if(cur && cur.stage==="clue" && cur.picked===null) finish(-1,"timeout"); }
+  function useHint(){
+    if(stats.hints<1 || cur.hidden.length) return;
+    const clue = board[cur.c].clues[cur.i];
+    const wrong = shuffle([0,1,2,3].filter(i=>i!==clue.a)).slice(0,2);
+    setCur({ ...cur, hidden:wrong });
+    setGame(g=>({ ...g, hintsUsed:g.hintsUsed+1 }));
+    const st = { ...stats, hints:stats.hints-1 }; setStats(st); saveStats(st,name);
+  }
   function nextRound(){ setGame(g=>({ ...g, round:g.round+1 })); }
-  function playAgain(){ ls.set("jpq_save",""); setSaved(null); setGame(newGame(game.nopen)); setCur(null); }
-
-  const MuteBtn = () => <button className="mute" onClick={toggleMute}>{muted?"Sound off":"Sound on"}</button>;
-  const Head = ({title,meta}) => (
-    <div className="top">
-      <div><div className="rt">{title}</div><div className="meta">{meta}</div></div>
-      <div className="mine"><small>Score</small><div className={"score"+(game.score<0?" neg":"")}>{fmt(game.score)}</div></div>
-    </div>);
+  function playAgain(){ submitted.current=false; setEndInfo(null); setGame(newRun(game.size,game.nopen,game.timer)); setCur(null); }
 
   /* ---------- start ---------- */
   if(!game) return (
-    <div>
-      <h1 className="logo">Jeopardy Quiz</h1>
-      <p className="sub">Real questions, four choices each. Two rounds of 30 clues, with Daily Doubles hidden on the board. Pick a clue, pick your answer, and see how much you can win.</p>
+    <div className="scr scroll">
+      <h1 className="logo">Solo play</h1>
+      <p className="sub">Two rounds, with Individual Bets hidden on the board. Pick a clue, pick your answer.</p>
+      <label className="lbl">Quiz show size</label>
+      <div className="two">
+        {Object.keys(SIZES).map(k=>(<button key={k} className={"card"+(size===k?" on":"")} onClick={()=>setSize(k)}><b>{SIZES[k].label}</b><span>{SIZES[k].blurb}</span></button>))}
+      </div>
       <label className="lbl">Wrong answers</label>
       <div className="two">
-        <button className={"card"+(!nopen?" on":"")} onClick={()=>setNopen(false)}><b>Lose points</b><span>Like the real show</span></button>
-        <button className={"card"+(nopen?" on":"")} onClick={()=>setNopen(true)}><b>No penalty</b><span>Wrong costs nothing</span></button>
+        <button className={"card"+(!nopen?" on":"")} onClick={()=>setNopen(false)}><b>Lose points</b><span>Ranked on the leaderboard</span></button>
+        <button className={"card"+(nopen?" on":"")} onClick={()=>setNopen(true)}><b>No penalty</b><span>Casual, not ranked</span></button>
+      </div>
+      <label className="lbl">Clue timer</label>
+      <div className="three">
+        {[[0,"Off"],[10,"10 sec"],[20,"20 sec"]].map(x=>(<button key={x[0]} className={"card"+(timer===x[0]?" on":"")} onClick={()=>setTimer(x[0])}><b>{x[1]}</b></button>))}
       </div>
       <button className="btn gold" onClick={start}>Start new game</button>
-      {saved && <button className="btn ghost" onClick={resume}>Continue saved game ({fmt(saved.score)})</button>}
-      <MuteBtn />
+      {saved && <button className="btn ghost" onClick={resume}>Continue saved {SIZES[saved.size].label.toLowerCase()} ({fmt(saved.score)})</button>}
+      <button className="link" onClick={onMenu}>Back to menu</button>
     </div>);
 
-  /* ---------- clue screen ---------- */
+  /* ---------- clue ---------- */
   if(cur){
-    const cat = board[cur.c];
-    const clue = cat.clues[cur.i];
-    const value = vals[cur.i];
+    const cat = board[cur.c], clue = cat.clues[cur.i];
     if(cur.stage==="wager") return (
-      <div>
-        <Head title={ROUNDS[round].name} meta={cat.name} />
-        <div className="clue flash">
-          <div className="ddsplash">DAILY DOUBLE!</div>
-          <div className="cc">{cat.name}</div>
-          <div className="big">{fmt(wagerFor(pct))}</div>
-          <div className="note">{ddLabel}{pct>0&&pct<10?" - "+(pct*10)+"% of "+fmt(maxWager):""}</div>
-          <input className="slide" type="range" min="0" max="10" step="1" value={pct} onChange={e=>setPct(parseInt(e.target.value,10))} aria-label="Wager" />
-          <div className="ticks"><span>$1</span><span>50%</span><span>ALL IN</span></div>
-          <div className="note" style={{fontSize:14}}>You can wager up to {fmt(maxWager)}{game.score<topVal?" (the top clue value, since your score is lower)":" (your whole score)"}.</div>
-          <button className="btn gold" onClick={lockWager}>Lock in wager and show clue</button>
-        </div>
-        <MuteBtn />
+      <div className="scr">
+        <Head title={ROUNDS[round].name} meta={cat.name} score={game.score} />
+        <div className="clue flash"><DDPicker maxWager={maxWager} lockLabel="Lock in bet and show clue" onLock={lockWager} /></div>
       </div>);
     return (
-      <div>
-        <Head title={ROUNDS[round].name} meta={cat.name} />
+      <div className="scr">
+        <Head title={ROUNDS[round].name} meta={cat.name} score={game.score} />
         <div className="clue">
-          <div className="cc">{cat.name}</div>
-          <div className="cv">{cur.dd?"Daily Double: "+fmt(cur.wager):fmt(value)}</div>
-          <div className="cq">{clue.q}</div>
-          <div className="opts">
-            {cur.order.map((idx,slot)=>{
-              let cls="opt";
-              if(cur.picked!==null){
-                if(idx===clue.a) cls+=" right";
-                else if(slot===cur.picked) cls+=" wrong";
-                else cls+=" dim";
-              }
-              return <button key={slot} className={cls} onClick={()=>pick(slot)} disabled={cur.picked!==null}><i>{LETTERS[slot]}</i><span>{clue.o[idx]}</span></button>;
-            })}
-          </div>
+          <div className="cchead"><span className="cc">{cat.name}</span><span className="cv">{cur.dd?"BET "+fmt(cur.wager):fmt(vals[cur.i])}</span></div>
+          {game.timer>0 && cur.stage==="clue" && <Countdown secs={game.timer} k={cur.key} onExpire={expire} />}
+          <ClueText text={clue.q} />
+          <Options clue={clue} order={cur.order} picked={cur.picked} hidden={cur.hidden} onPick={pick} showAnswer={cur.stage==="result"} />
+          {cur.stage==="clue" && stats.hints>0 && !cur.hidden.length && <button className="btn ghost sm" style={{alignSelf:"flex-start"}} onClick={useHint}>50/50 ({stats.hints} left)</button>}
           {cur.stage==="result" && (
-            <div>
-              <div className={"res "+(cur.right?"r":"w")}>{cur.right?"Correct!":"Sorry!"}</div>
-              <div className="rn">{cur.right?"You win "+fmt(cur.delta)+".":(game.nopen?"The answer is shown in green. No penalty.":"You lose "+fmt(-cur.delta)+". The answer is shown in green.")}</div>
-              <button className="btn gold" onClick={()=>setCur(null)}>Continue</button>
+            <div className="rrow">
+              <div>
+                <div className={"res "+(cur.right?"r":"w")}>{cur.right?"Correct! +"+fmt(cur.delta):cur.timeout?"Time's up":"Sorry!"}</div>
+                <div className="rn">{cur.right?"":cur.delta<0?"You lose "+fmt(-cur.delta)+".":"No points lost."}</div>
+              </div>
+              <button className="btn gold sm" onClick={()=>setCur(null)}>Continue</button>
             </div>)}
         </div>
-        <MuteBtn />
       </div>);
   }
 
   /* ---------- round complete / final ---------- */
   if(roundDone){
-    const last = round===ROUNDS.length-1;
-    const total = game.right+game.wrong;
-    const pctRight = total?Math.round(100*game.right/total):0;
-    if(!last) return (
-      <div>
+    const done = game.right+game.wrong;
+    if(!finished) return (
+      <div className="scr scroll">
         <h1 className="logo">{ROUNDS[round].name} complete</h1>
-        <div className="stats">Score: <b>{fmt(game.score)}</b><br/>Correct so far: <b>{game.right} of {total}</b></div>
-        <p className="sub" style={{marginTop:14}}>Next up: {ROUNDS[round+1].name}. Every clue is worth double, and there are {DD_COUNT[round+1]} Daily Doubles hiding.</p>
+        <div className="stats">Score: <b>{fmt(game.score)}</b><br/>Correct so far: <b>{game.right} of {done}</b></div>
+        <p className="sub" style={{marginTop:10}}>Next up: {ROUNDS[round+1].name}. Every clue is worth double, and {DD_COUNT[round+1]} Individual Bets are hiding.</p>
         <button className="btn gold" onClick={nextRound}>Start {ROUNDS[round+1].name}</button>
-        <MuteBtn />
       </div>);
-    const msg = pctRight>=90?"Quiz champion!":pctRight>=70?"Very sharp!":pctRight>=50?"Nicely done!":"Good game. Play again and beat it!";
+    const pct = Math.round(100*game.right/total);
+    const msg = game.right===total?"FLAWLESS! Every answer right!":pct>=90?"Quiz champion!":pct>=70?"Very sharp!":pct>=50?"Nicely done!":"Good game. Play again and beat it!";
+    const info = endInfo && endInfo.info;
     return (
-      <div>
+      <div className="scr scroll">
         <h1 className="logo">Final score</h1>
-        <div className="big" style={{fontSize:64,color:game.score<0?"var(--bad)":"var(--gold)"}}>{fmt(game.score)}</div>
-        <div className="note" style={{fontSize:20}}>{msg}</div>
-        <div className="stats">Correct: <b>{game.right}</b><br/>Missed: <b>{game.wrong}</b><br/>Right answers: <b>{pctRight}%</b></div>
+        <div className="big" style={{fontSize:56,color:game.score<0?"var(--bad)":"var(--gold)"}}>{fmt(game.score)}</div>
+        <div className="note" style={{fontSize:18,margin:"4px 0 8px"}}>{msg}</div>
+        <div className="stats">{SIZES[game.size].label}<br/>Correct: <b>{game.right}</b> of {total} (<b>{pct}%</b>)<br/>Streak: <b>{stats.streak} {stats.streak===1?"day":"days"}</b>{game.nopen && <span><br/>No-penalty run: not ranked.</span>}
+          {!game.nopen && info && info.total>0 && <span><br/>Your score beats <b>{info.beatScore}%</b> of ranked {game.size} runs.<br/>Your accuracy beats <b>{info.beatPct}%</b> of ranked {game.size} runs.</span>}
+          {!game.nopen && info && info.total===0 && <span><br/>You set the first ranked {game.size} run!</span>}
+        </div>
         <button className="btn gold" onClick={playAgain}>Play again</button>
-        <MuteBtn />
+        <button className="btn ghost" onClick={onLeaders}>Leaderboard</button>
+        <button className="link" onClick={onMenu}>Back to menu</button>
       </div>);
   }
 
   /* ---------- board ---------- */
   return (
-    <div>
-      <Head title={ROUNDS[round].name} meta={playedCount+" of "+PER_ROUND+" clues played"} />
-      <div className="board">
-        {board.map((cat,c)=><div key={"h"+c} className="cat">{cat.name}</div>)}
-        {vals.map((v,i)=>board.map((cat,c)=>{
-          const st = game.played[round+"-"+c+"-"+i];
-          if(st) return <div key={c+"-"+i} className={"tile done "+st}>{st==="r"?"right":"missed"}</div>;
-          return <button key={c+"-"+i} className="tile" onClick={()=>openTile(c,i)} aria-label={cat.name+" "+fmt(v)}>{"$"+v}</button>;
-        }))}
+    <div className="scr">
+      <Head title={ROUNDS[round].name} meta={playedCount+" of "+per+" played"+(game.timer?" | "+game.timer+"s timer":"")} score={game.score} />
+      <BoardView board={board} vals={vals} round={round} played={game.played} onTile={openTile} cols={SZ.cols} rows={SZ.rows} />
+      <div className="foot">
+        <span className="hint">{DD_COUNT[round]===1?"1 Individual Bet":DD_COUNT[round]+" Individual Bets"} hiding</span>
+        <span>
+          <button className="link" onClick={toggleMute}>{muted?"Sound off":"Sound on"}</button>
+          <button className="link" onClick={onMenu}>Menu</button>
+          <button className="link" onClick={restart}>New game</button>
+        </span>
       </div>
-      <p className="hint">Tap any dollar amount to play that clue. There {DD_COUNT[round]===1?"is 1 Daily Double":"are "+DD_COUNT[round]+" Daily Doubles"} hiding on this board.</p>
-      <button className="link" onClick={restart}>New game</button>
-      <MuteBtn />
     </div>);
+}
+
+/* ================= MULTIPLAYER ================= */
+function fxFor(S,uid){
+  const r = {};
+  ((S&&S.fx)||[]).filter(f=>f.target===uid).forEach(f=>{ if(f.kind==="fog") r.fog=true; if(f.kind==="flip") r.flip=true; if(f.kind==="rev") r.rev=true; if(f.kind==="scr") r.scr=String(f.id); });
+  return r;
+}
+
+function Versus({ name, setName, entry, joinCode, onMenu }){
+  const [code,setCode] = useState("");
+  const [room,setRoom] = useState(null);
+  const [players,setPlayers] = useState([]);
+  const [codeInput,setCodeInput] = useState(joinCode||"");
+  const [err,setErr] = useState("");
+  const [sent,setSent] = useState(false);
+  const [toast,setToast] = useState("");
+  const codeRef = useRef(""); const playersRef = useRef([]); const hostRef = useRef(false);
+  const eng = useRef({ S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false });
+  const seenToast = useRef(0);
+  codeRef.current = code; playersRef.current = players;
+
+  const S = room && room.state || null;
+  const isHost = !!room && room.host_id===myId;
+  hostRef.current = isHost;
+  const nameOf = (id) => { const p = playersRef.current.find(x=>x.id===id); return p?p.name:"Player"; };
+
+  /* ---- hub hand-off (same pattern as the other hub games) ---- */
+  useEffect(()=>{
+    if(!entry || !sb || !(name||"").trim()) return;
+    (async()=>{ try{
+      if(entry.role==="host"){ await createRoom(entry.code); return; }
+      const ok = await window.HUB.waitRoom("jq_rooms",entry.code,20000);
+      if(ok) await joinRoom(entry.code); else await createRoom(entry.code);
+    }catch(e){} })();
+  },[]);
+
+  /* ---- sync ---- */
+  async function refetch(c){
+    const r = await sb.from("jq_rooms").select("*").eq("code",c).maybeSingle();
+    if(r.data && !hostRef.current) setRoom(r.data);
+    const ps = await sb.from("jq_players").select("*").eq("code",c).order("joined_at");
+    if(ps.data){
+      setPlayers(ps.data.map(x=> (hostRef.current && eng.current.P[x.id]) ? { ...x, score:eng.current.P[x.id].score, items:eng.current.P[x.id].items } : x));
+    }
+  }
+  useEffect(()=>{
+    if(!code) return;
+    refetch(code);
+    let ch = null;
+    try{
+      ch = sb.channel("jq:"+code)
+        .on("postgres_changes",{event:"*",schema:"public",table:"jq_rooms",filter:"code=eq."+code},()=>refetch(code))
+        .on("postgres_changes",{event:"*",schema:"public",table:"jq_players",filter:"code=eq."+code},()=>refetch(code))
+        .on("postgres_changes",{event:"INSERT",schema:"public",table:"jq_actions",filter:"code=eq."+code},()=>{ if(hostRef.current) pollActions(); })
+        .subscribe();
+    }catch(e){}
+    const p1 = setInterval(()=>refetch(code),1500*TS);
+    const p2 = setInterval(()=>{ if(hostRef.current) pollActions(); },400*TS);
+    return ()=>{ try{ if(ch) sb.removeChannel(ch); }catch(e){} clearInterval(p1); clearInterval(p2); clearTimers(); };
+  },[code]);
+
+  /* a new phase means my "sent" flag resets; also show item toasts */
+  useEffect(()=>{ setSent(false); },[S&&S.seq]);
+  useEffect(()=>{
+    if(S && S.toast && S.toast.id!==seenToast.current){ seenToast.current=S.toast.id; setToast(S.toast.text); const t=setTimeout(()=>setToast(""),3200); return ()=>clearTimeout(t); }
+  },[S&&S.toast&&S.toast.id]);
+
+  /* ---- create / join ---- */
+  async function createRoom(forced){
+    setErr(""); if(!name.trim()){ setErr("Enter your name first."); return; }
+    if(!sb){ setErr("Can't reach the server."); return; }
+    const c = (typeof forced==="string"&&forced) ? forced : randCode();
+    if(typeof forced==="string"&&forced) await sb.from("jq_rooms").delete().eq("code",c);
+    const state = { phase:"lobby", seq:0, settings:{ chaos:false, pace:"normal", nopen:false, rounds:2, size:"full" } };
+    const r = await sb.from("jq_rooms").insert({ code:c, host_id:myId, state });
+    if(r.error){ setErr("Couldn't create room: "+r.error.message); return; }
+    await sb.from("jq_players").delete().eq("id",myId);
+    await sb.from("jq_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[0], score:0, items:[] });
+    eng.current.S = state;
+    setRoom({ code:c, host_id:myId, state });
+    setCode(c);
+  }
+  async function joinRoom(cArg){
+    setErr("");
+    const c = ((typeof cArg==="string"&&cArg)||codeInput).trim().toUpperCase();
+    if(!name.trim()){ setErr("Enter your name first."); return; }
+    if(!c){ setErr("Enter a room code."); return; }
+    if(!sb){ setErr("Can't reach the server."); return; }
+    const r = await sb.from("jq_rooms").select("*").eq("code",c).maybeSingle();
+    if(!r.data){ setErr("No room "+c+". Check the code."); return; }
+    const st = r.data.state||{};
+    const ps = await sb.from("jq_players").select("id").eq("code",c);
+    const mine = (ps.data||[]).some(p=>p.id===myId);
+    if(st.phase && st.phase!=="lobby" && !mine){ setErr("That game already started."); return; }
+    const n = (ps.data||[]).filter(p=>p.id!==myId).length;
+    if(!mine){
+      await sb.from("jq_players").delete().eq("id",myId);
+      const ins = await sb.from("jq_players").insert({ id:myId, code:c, name:name.trim(), color:COLORS[n%COLORS.length], score:0, items:[] });
+      if(ins.error){ setErr("Couldn't join: "+ins.error.message); return; }
+    }
+    setRoom(r.data);
+    setCode(c);
+  }
+  function leave(){
+    if(code && sb){ sb.from("jq_players").delete().eq("id",myId).then(()=>{},()=>{}); }
+    clearTimers(); eng.current = { S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false };
+    setCode(""); setRoom(null); setPlayers([]);
+  }
+
+  /* ---- send an action to the host ---- */
+  function act(kind,payload){
+    if(!S) return;
+    sb.from("jq_actions").insert({ code:codeRef.current, uid:myId, kind, payload:{ ...(payload||{}), seq:S.seq } }).then(()=>{},()=>{});
+  }
+
+  /* ================= HOST ENGINE (only the host runs this) ================= */
+  function E(){ return eng.current; }
+  function clearTimers(){ const e=eng.current; e.timers.forEach(clearTimeout); e.timers=[]; }
+  function paceOf(){ return PACE[E().S.settings.pace] || PACE.normal; }
+  function writeState(){
+    const e=E();
+    sb.from("jq_rooms").update({ state:e.S }).eq("code",codeRef.current).then(()=>{},()=>{});
+    setRoom(r=>r?{ ...r, state:e.S }:r);
+  }
+  function writePlayer(id){
+    const p=E().P[id]; if(!p) return;
+    sb.from("jq_players").update({ score:p.score, items:p.items }).eq("id",id).then(()=>{},()=>{});
+    setPlayers(ps=>ps.map(x=>x.id===id?{ ...x, score:p.score, items:p.items }:x));
+  }
+  function go(patch){
+    const e=E(); clearTimers(); e.buzzes=[];
+    e.S = { ...e.S, ...patch, seq:(e.S.seq||0)+1, ts:Date.now() };
+    writeState(); arm();
+  }
+  function touch(patch){ const e=E(); e.S={ ...e.S, ...patch }; writeState(); }
+  function arm(){
+    const e=E(), S=e.S, seq=S.seq, pace=paceOf();
+    const set=(ms,fn)=>{ e.timers.push(setTimeout(()=>{ if(E().S.seq===seq) fn(); },ms*TS)); };
+    if(S.phase==="pick") set(30000,autoPick);
+    else if(S.phase==="dd") set(25000,()=>lockDD(5));
+    else if(S.phase==="buzz") set(pace.buzz*1000,()=>reveal(false,"Time's up - nobody rang in."));
+    else if(S.phase==="answer") set(pace.ans*1000,()=>resolveAnswer(-1));
+    else if(S.phase==="reveal") set(3800,afterReveal);
+    else if(S.phase==="roundend") set(7000,nextRoundMP);
+  }
+  const boardOf = (S) => boardFor(S.cats,S.round);
+  const valuesOf = (S) => valuesFor(S.round,S.size);
+
+  function startGame(){
+    const e=E(), ps=playersRef.current; if(!ps.length) return;
+    const st=e.S.settings;
+    e.P={}; ps.forEach(p=>{ e.P[p.id]={ score:0, items:[] }; });
+    sb.from("jq_players").update({ score:0, items:[] }).eq("code",codeRef.current).then(()=>{},()=>{});
+    setPlayers(list=>list.map(p=>({ ...p, score:0, items:[] })));
+    const size=st.size||"full";
+    go({ phase:"pick", round:0, picker:ps[rand(ps.length)].id, played:{}, size, cats:pickCats(size), dd:placeDD(st.rounds,size), clue:null, fx:[], msg:"", dur:30 });
+  }
+  function setSetting(k,v){ const e=E(); e.S={ ...e.S, settings:{ ...e.S.settings, [k]:v } }; writeState(); }
+  function backToLobby(){
+    const e=E(); clearTimers();
+    e.P={}; sb.from("jq_players").update({ score:0, items:[] }).eq("code",codeRef.current).then(()=>{},()=>{});
+    setPlayers(list=>list.map(p=>({ ...p, score:0, items:[] })));
+    e.S={ phase:"lobby", seq:(e.S.seq||0)+1, settings:e.S.settings }; writeState();
+  }
+  function doPick(uid,c,i){
+    const e=E(), S=e.S;
+    if(S.phase!=="pick" || uid!==S.picker) return;
+    const key=S.round+"-"+c+"-"+i;
+    if(S.played[key]) return;
+    const isDD=S.dd.indexOf(key)>=0;
+    const clue={ key, c, i, dd:isDD, order:shuffle([0,1,2,3]), locked:[], buzzer:null, wager:0 };
+    if(isDD) go({ phase:"dd", clue, dur:25, msg:"" });
+    else go({ phase:"buzz", clue, dur:paceOf().buzz, msg:"" });
+  }
+  function autoPick(){
+    const S=E().S; const vals=[]; 
+    for(let c=0;c<SIZES[S.size].cols;c++) for(let i=0;i<SIZES[S.size].rows;i++) if(!S.played[S.round+"-"+c+"-"+i]) vals.push([c,i]);
+    if(!vals.length) return;
+    const t=vals[rand(vals.length)]; doPick(S.picker,t[0],t[1]);
+  }
+  function lockDD(pct){
+    const e=E(), S=e.S; if(S.phase!=="dd") return;
+    const uid=S.picker, vv=valuesOf(S), top=vv[vv.length-1];
+    const maxW=Math.max(e.P[uid]?e.P[uid].score:0,top);
+    go({ phase:"answer", clue:{ ...S.clue, wager:wagerFor(pct,maxW), buzzer:uid }, dur:paceOf().ans });
+  }
+  function resolveBuzz(seq){
+    const e=E(); if(e.S.seq!==seq || e.S.phase!=="buzz" || !e.buzzes.length) return;
+    const list=[...e.buzzes].sort((a,b)=> a.t<b.t?-1:a.t>b.t?1:a.id-b.id);
+    go({ phase:"answer", clue:{ ...e.S.clue, buzzer:list[0].uid }, dur:paceOf().ans });
+  }
+  function giveItem(uid){
+    const e=E(); if(!e.S.settings.chaos) return false;
+    const p=e.P[uid]; if(!p || p.items.length>=2) return false;
+    p.items=[...p.items, ITEM_KEYS[rand(ITEM_KEYS.length)]];
+    return true;
+  }
+  function resolveAnswer(slot){
+    const e=E(), S=e.S; if(S.phase!=="answer") return;
+    const clue=S.clue, uid=clue.buzzer, q=boardOf(S)[clue.c].clues[clue.i];
+    const idx = slot>=0 ? clue.order[slot] : -1;
+    const right = idx===q.a;
+    const amount = clue.dd ? clue.wager : valuesOf(S)[clue.i];
+    const pl=e.P[uid]; if(!pl) return;
+    const delta = right ? amount : (S.settings.nopen ? 0 : -amount);
+    pl.score += delta;
+    const nm=nameOf(uid);
+    if(right){
+      writePlayer(uid);
+      reveal(true,nm+" got it! +"+fmt(amount),uid);
+      return;
+    }
+    const got = delta<0 ? giveItem(uid) : false;
+    writePlayer(uid);
+    const locked=[...clue.locked,uid];
+    const timeoutMsg = slot<0 ? nm+" ran out of time" : nm+" missed";
+    const lossMsg = delta<0 ? " -"+fmt(amount).replace("$","$") : "";
+    const itemMsg = got ? " (+ item!)" : "";
+    const ids=playersRef.current.map(p=>p.id);
+    if(!clue.dd && ids.some(id=>locked.indexOf(id)<0)){
+      go({ phase:"buzz", clue:{ ...clue, locked, buzzer:null }, dur:paceOf().buzz, msg:timeoutMsg+lossMsg+itemMsg+". Anyone else?" });
+    } else {
+      reveal(false,timeoutMsg+lossMsg+itemMsg+(clue.dd?"":". Nobody got it."),null,locked);
+    }
+  }
+  function reveal(right,msg,winner,lockedList){
+    const e=E(), S=e.S; if(!S.clue) return;
+    const played={ ...S.played, [S.clue.key]: right?"r":"x" };
+    let picker=S.picker;
+    if(right && winner) picker=winner;
+    go({ phase:"reveal", played, picker, fx:[], msg, dur:0, clue:{ ...S.clue, locked:lockedList||S.clue.locked } });
+  }
+  function afterReveal(){
+    const e=E(), S=e.S;
+    const done=Object.keys(S.played).filter(k=>k.indexOf(S.round+"-")===0).length>=perRound(S.size);
+    if(!done){ go({ phase:"pick", clue:null, msg:"", dur:30 }); return; }
+    if(S.round < S.settings.rounds-1) go({ phase:"roundend", clue:null, dur:0 });
+    else go({ phase:"end", clue:null, dur:0 });
+  }
+  function nextRoundMP(){
+    const e=E(), S=e.S; if(S.phase!=="roundend") return;
+    const ids=playersRef.current.map(p=>p.id);
+    let low=ids[0]; ids.forEach(id=>{ if((e.P[id]?e.P[id].score:0)<(e.P[low]?e.P[low].score:0)) low=id; });
+    go({ phase:"pick", round:S.round+1, picker:low, clue:null, msg:"", dur:30 });
+  }
+  function useItem(a){
+    const e=E(), S=e.S;
+    if((S.phase!=="buzz" && S.phase!=="answer") || !S.clue) return;
+    const kind=(a.payload||{}).kind, pl=e.P[a.uid];
+    if(!pl || !ITEMS[kind] || pl.items.indexOf(kind)<0) return;
+    const ids=playersRef.current.map(p=>p.id).filter(id=>id!==a.uid);
+    if(!ids.length) return;
+    let target=ids[0]; ids.forEach(id=>{ if((e.P[id]?e.P[id].score:0)>(e.P[target]?e.P[target].score:0)) target=id; });
+    const at=pl.items.indexOf(kind); pl.items=pl.items.filter((_,i)=>i!==at);
+    const fx={ id:Date.now()+Math.floor(Math.random()*1000), kind, target, from:a.uid };
+    const fxList=[...(S.fx||[]).filter(f=>!(f.target===target&&f.kind===kind)), fx];
+    touch({ fx:fxList, toast:{ id:fx.id, text:nameOf(a.uid)+" hit "+nameOf(target)+" with "+ITEMS[kind].n.toUpperCase()+"!" } });
+    writePlayer(a.uid);
+    e.fxTimers.push(setTimeout(()=>{ const cur=E().S; if(cur && (cur.fx||[]).some(f=>f.id===fx.id)) touch({ fx:cur.fx.filter(f=>f.id!==fx.id) }); }, ITEMS[kind].ms*TS));
+  }
+  function handle(a){
+    const e=E(), S=e.S; if(!S) return;
+    const p=a.payload||{};
+    if(a.kind==="item") return useItem(a);
+    if(p.seq!==S.seq) return;
+    if(a.kind==="pick") doPick(a.uid,p.c,p.i);
+    else if(a.kind==="wager"){ if(S.phase==="dd" && a.uid===S.picker) lockDD(p.pct); }
+    else if(a.kind==="buzz"){
+      if(S.phase!=="buzz" || !S.clue || S.clue.locked.indexOf(a.uid)>=0) return;
+      if(e.buzzes.some(b=>b.uid===a.uid)) return;
+      e.buzzes.push({ uid:a.uid, t:a.created_at||"", id:a.id });
+      if(e.buzzes.length===1){ const seq=S.seq; e.timers.push(setTimeout(()=>resolveBuzz(seq),300*TS)); }
+    }
+    else if(a.kind==="answer"){ if(S.phase==="answer" && S.clue && a.uid===S.clue.buzzer) resolveAnswer(p.slot); }
+  }
+  async function pollActions(){
+    const e=E(); if(e.busy || !codeRef.current || !e.S) return;
+    e.busy=true;
+    try{
+      const r=await sb.from("jq_actions").select("*").eq("code",codeRef.current).gt("id",e.lastId).order("id",{ ascending:true });
+      (r.data||[]).forEach(a=>{ e.lastId=Math.max(e.lastId,a.id); handle(a); });
+    }catch(err2){}
+    e.busy=false;
+  }
+
+  /* ================= screens ================= */
+  function Chips(){
+    const ids = S && S.clue ? S.clue : null;
+    const sorted = [...players];
+    return (
+      <div className="chips">
+        {sorted.map(p=>{
+          const cls = "chip"+(S&&S.phase==="pick"&&S.picker===p.id?" pick":"")+(ids&&S.phase==="answer"&&ids.buzzer===p.id?" ans":"")+(ids&&S.phase==="buzz"&&ids.locked&&ids.locked.indexOf(p.id)>=0?" out":"");
+          return <div key={p.id} className={cls}><b><span className="dot" style={{background:p.color}}></span>{p.id===myId?"You":p.name}</b><em className={(p.score||0)<0?"neg":""}>{fmt(p.score||0)}</em></div>;
+        })}
+      </div>);
+  }
+  const me = players.find(p=>p.id===myId);
+  const myItems = (me && me.items) || [];
+  function ItemBar(){
+    if(!S || !S.settings.chaos) return null;
+    const active = S.phase==="buzz" || S.phase==="answer";
+    return (
+      <div className="items">
+        {myItems.length===0 && <small>Miss a clue to earn a sabotage item.</small>}
+        {myItems.map((k,i)=>(<button key={k+i} className="item" disabled={!active} onClick={()=>{ sfx("item"); act("item",{ kind:k }); }}>{ITEMS[k].n}</button>))}
+        {myItems.length>0 && <small>hits the leader</small>}
+      </div>);
+  }
+
+  if(!code) return (
+    <div className="scr scroll">
+      <h1 className="logo">Multiplayer</h1>
+      <p className="sub">Everyone plays the same clues at the same time. Fastest finger rings in, answers, and if they miss, everyone else gets a shot.</p>
+      {!(name||"").trim() && <div><label className="lbl">Your name</label><input className="in" value={name} onChange={e=>{ setName(e.target.value); ls.set("hub_name",e.target.value); }} maxLength={20} placeholder="Name" /></div>}
+      <button className="btn gold" onClick={()=>createRoom()}>Create room</button>
+      <label className="lbl">Or join a friend</label>
+      <div className="row">
+        <input className="in" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} maxLength={8} placeholder="Room code" autoCapitalize="characters" />
+        <button className="btn sm" onClick={()=>joinRoom()}>Join</button>
+      </div>
+      {err && <div className="err">{err}</div>}
+      <button className="link" onClick={onMenu}>Back to menu</button>
+    </div>);
+
+  if(!S) return <div className="scr"><p className="sub">Connecting to room {code}...</p><button className="link" onClick={leave}>Cancel</button></div>;
+
+  const st = S.settings || {};
+
+  if(S.phase==="lobby") return (
+    <div className="scr scroll">
+      <div className="code">{code}</div>
+      <p className="note">Room code. Friends choose Multiplayer, then Join.</p>
+      <div className="box"><div className="boxh">Players ({players.length})</div>
+        {players.map(p=>(<div className="pr" key={p.id}><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}{room.host_id===p.id&&<i>host</i>}</span></div>))}
+      </div>
+      <label className="lbl">Pace {isHost?"":"(host picks)"}</label>
+      <div className="three">
+        {Object.keys(PACE).map(k=>(<button key={k} disabled={!isHost} className={"card"+(st.pace===k?" on":"")} onClick={()=>setSetting("pace",k)}><b>{PACE[k].label}</b><span>{PACE[k].buzz}s buzz, {PACE[k].ans}s answer</span></button>))}
+      </div>
+      <label className="lbl">Quiz show size</label>
+      <div className="two">
+        {Object.keys(SIZES).map(k=>(<button key={k} disabled={!isHost} className={"card"+((st.size||"full")===k?" on":"")} onClick={()=>setSetting("size",k)}><b>{SIZES[k].label}</b><span>{SIZES[k].cols} x {SIZES[k].rows} per round</span></button>))}
+      </div>
+      <label className="lbl">Length</label>
+      <div className="two">
+        <button disabled={!isHost} className={"card"+(st.rounds===1?" on":"")} onClick={()=>setSetting("rounds",1)}><b>One round</b><span>Quick game</span></button>
+        <button disabled={!isHost} className={"card"+(st.rounds===2?" on":"")} onClick={()=>setSetting("rounds",2)}><b>Two rounds</b><span>Second round worth double</span></button>
+      </div>
+      <label className="lbl">Wrong answers</label>
+      <div className="two">
+        <button disabled={!isHost} className={"card"+(!st.nopen?" on":"")} onClick={()=>setSetting("nopen",false)}><b>Lose points</b><span>Like the real show</span></button>
+        <button disabled={!isHost} className={"card"+(st.nopen?" on":"")} onClick={()=>setSetting("nopen",true)}><b>No penalty</b><span>Wrong costs nothing</span></button>
+      </div>
+      <label className="lbl">Chaos mode</label>
+      <div className="two">
+        <button disabled={!isHost} className={"card"+(!st.chaos?" on":"")} onClick={()=>setSetting("chaos",false)}><b>Off</b><span>Straight quiz</span></button>
+        <button disabled={!isHost} className={"card"+(st.chaos?" on":"")} onClick={()=>setSetting("chaos",true)}><b>On</b><span>Misses earn items to sabotage the leader</span></button>
+      </div>
+      {isHost ? <button className="btn gold" onClick={startGame}>Start game</button> : <p className="note" style={{marginTop:10}}>Waiting for the host to start...</p>}
+      <button className="link" onClick={()=>{ leave(); }}>Leave room</button>
+    </div>);
+
+  const round = S.round||0;
+  const board = S.cats ? boardFor(S.cats,round) : null;
+  const vals = S.size ? valuesFor(round,S.size) : [];
+  const mine = fxFor(S,myId);
+  const pickerName = S.picker?nameOf(S.picker):"";
+
+  if(S.phase==="end"){
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+    return (
+      <div className="scr scroll">
+        <h1 className="logo">Final scores</h1>
+        <div className="box">
+          {ranked.map((p,i)=>(<div className="pr" key={p.id}><span className="rank">{i+1}</span><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}</span><span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span></div>))}
+        </div>
+        {isHost ? <button className="btn gold" onClick={backToLobby}>Play again (back to lobby)</button> : <p className="note" style={{marginTop:10}}>Waiting for the host...</p>}
+        <button className="link" onClick={()=>{ leave(); onMenu(); }}>Leave and go to menu</button>
+      </div>);
+  }
+
+  if(S.phase==="roundend"){
+    const ranked=[...players].sort((a,b)=>(b.score||0)-(a.score||0));
+    return (
+      <div className="scr scroll">
+        <h1 className="logo">{ROUNDS[round].name} complete</h1>
+        <div className="box">{ranked.map((p,i)=>(<div className="pr" key={p.id}><span className="rank">{i+1}</span><span className="pn">{p.name}</span><span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span></div>))}</div>
+        <p className="note" style={{marginTop:10}}>{ROUNDS[round+1]?ROUNDS[round+1].name+" starts in a moment. Last place picks first.":""}</p>
+      </div>);
+  }
+
+  if(S.phase==="pick"){
+    const myTurn = S.picker===myId;
+    return (
+      <div className="scr">
+        <Chips />
+        <Head title={ROUNDS[round].name} meta={myTurn?"Your pick! Choose a clue.":pickerName+" is picking..."} />
+        <BoardView board={board} vals={vals} round={round} played={S.played} onTile={(c,i)=>act("pick",{ c, i })} disabled={!myTurn} />
+        <Countdown secs={S.dur} k={S.seq} />
+      </div>);
+  }
+
+  if(S.phase==="dd"){
+    const myTurn = S.picker===myId;
+    const cat = board[S.clue.c];
+    return (
+      <div className="scr">
+        <Chips />
+        <div className="clue flash">
+          {myTurn
+            ? <DDPicker maxWager={Math.max(me?me.score||0:0,vals[vals.length-1])} lockLabel="Lock in bet" onLock={(pct)=>act("wager",{ pct })} />
+            : <div className="mid"><div className="ddsplash">INDIVIDUAL BET!</div><div className="note">{pickerName} found an Individual Bet in {cat.name} and is placing a bet...</div></div>}
+        </div>
+      </div>);
+  }
+
+  /* buzz / answer / reveal share the clue card */
+  const clue = board[S.clue.c].clues[S.clue.i];
+  const cat = board[S.clue.c];
+  const isBuzzer = S.clue.buzzer===myId;
+  const lockedOut = S.clue.locked.indexOf(myId)>=0;
+  const label = S.clue.dd ? "BET "+fmt(S.clue.wager) : fmt(vals[S.clue.i]);
+  const buzzerName = S.clue.buzzer?nameOf(S.clue.buzzer):"";
+  return (
+    <div className="scr">
+      <Chips />
+      {S.phase==="buzz" && S.msg && <div className="note" style={{fontWeight:700,color:"var(--gold)"}}>{S.msg}</div>}
+      <div className="clue">
+        {mine.fog && <div className="fog"></div>}
+        <div className="cchead"><span className="cc">{cat.name}</span><span className="cv">{label}</span></div>
+        {S.phase!=="reveal" && S.dur>0 && <Countdown secs={S.dur} k={S.seq} />}
+        <ClueText text={clue.q} fx={mine} />
+        {S.phase==="answer" && isBuzzer && (
+          <Options clue={clue} order={S.clue.order} picked={null} fx={mine} locked={sent} onPick={(slot)=>{ setSent(true); act("answer",{ slot }); }} />)}
+        {S.phase==="answer" && !isBuzzer && <div className="note" style={{fontWeight:700}}>{buzzerName} is answering...</div>}
+        {S.phase==="buzz" && <div className="note">Ring in to see the choices!</div>}
+        {S.phase==="reveal" && (
+          <div>
+            <Options clue={clue} order={S.clue.order} picked={null} showAnswer={true} onPick={()=>{}} />
+            <div className="rn" style={{marginTop:6,textAlign:"center",fontSize:15,fontWeight:700,color:"#fff"}}>{S.msg}</div>
+          </div>)}
+      </div>
+      {S.phase==="buzz" && !S.clue.dd && (
+        <button className="buzz" disabled={sent||lockedOut} onClick={()=>{ setSent(true); sfx("buzz"); act("buzz",{}); }}>{lockedOut?"LOCKED OUT":sent?"BUZZED!":"BUZZ"}</button>)}
+      <ItemBar />
+      {S.toast && toast && <div className="toast">{toast}</div>}
+    </div>);
+}
+
+/* ================= APP ================= */
+function App(){
+  const [mode,setMode] = useState("home");   /* home | solo | mp | leaders */
+  const [name,setName] = useState(ls.get("hub_name")||"");
+  const [stats,setStats] = useState(loadLocalStats());
+  const [bonus,setBonus] = useState(null);
+  const [entry,setEntry] = useState(null);
+  const q = new URLSearchParams(location.search);
+  const joinCode = (q.get("join")||"").toUpperCase();
+  const fromHub = !!q.get("lobby");
+
+  useEffect(()=>{ loadStats(ls.get("hub_name")||"").then(r=>{ setStats(r.st); setBonus(r.bonus); }); if(joinCode) setMode("mp"); },[]);
+  useEffect(()=>{ if((name||"").trim()) saveStats(stats,name); },[name]);
+  /* hub top bar (when present) takes space: keep the app inside what is left */
+  useEffect(()=>{
+    const iv = setInterval(()=>{ const sp=document.querySelector(".hb-sp"); document.documentElement.style.setProperty("--hb",(sp?sp.offsetHeight:0)+"px"); },400);
+    return ()=>clearInterval(iv);
+  },[]);
+  useEffect(()=>{
+    if(!fromHub) return;
+    let n=0; const iv=setInterval(()=>{
+      n++;
+      if(window.HUB && window.HUB.entry){ clearInterval(iv); const E=window.HUB.entry(); if(E){ setEntry(E); setMode("mp"); } }
+      else if(n>60) clearInterval(iv);
+    },100);
+    return ()=>clearInterval(iv);
+  },[]);
+
+  if(mode==="solo") return <Solo name={name} stats={stats} setStats={setStats} onMenu={()=>setMode("home")} onLeaders={()=>setMode("leaders")} />;
+  if(mode==="leaders") return <Leaders stats={stats} onBack={()=>setMode("home")} />;
+  if(mode==="mp") return <Versus name={name} setName={setName} entry={entry} joinCode={joinCode} onMenu={()=>setMode("home")} />;
+  return <Home name={name} setName={setName} stats={stats} bonus={bonus} go={setMode} />;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);

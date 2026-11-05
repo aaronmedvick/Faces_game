@@ -57,7 +57,6 @@
   var MAXP = { "pillowtalk.html": 2 };
   /* games that keep a room per code; the host's arrival wipes any stale room so the lobby code can be reused */
   var CFG = {
-     "jeopardy.html": { players: [{ table: "jp_players" }], rooms: ["jp_rooms"] },
     "coldcase.html": { players: [{ table: "players", nullCol: "game_key" }], rooms: ["games"] },
     "liars-dice.html": { players: [{ table: "ld_players" }], rooms: ["ld_games"] },
     "lastman.html": { players: [{ table: "players", eq: { game_key: "lastman" } }], rooms: ["lms_rooms"] },
