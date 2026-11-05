@@ -118,6 +118,7 @@ input{font-family:inherit}
 .chip.out{opacity:.5}
 .chip b{display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap}
 .chip .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.tag{font-size:9px;font-weight:700;background:#4b1fb8;border-radius:3px;padding:0 4px;margin-left:2px}
 .chip em{font-style:normal;font-family:var(--display);font-size:16px}
 .chip em.neg{color:var(--bad)}
 .items{display:flex;gap:6px;flex:none;align-items:center;flex-wrap:wrap}
@@ -405,6 +406,15 @@ const ITEMS = {
   scr:   { n:"Scramble", ms:8000, d:"scrambles the leader's answers" }
 };
 const ITEM_KEYS = Object.keys(ITEMS);
+/* bots: know = base chance of knowing a clue (drops on harder rows), rt = [minimum, spread] reaction time in ms */
+const BOT_SKILL = {
+  easy:   { label:"Easy",   know:0.50, rt:[3000,3000], note:"slow and shaky" },
+  medium: { label:"Medium", know:0.70, rt:[2000,2500], note:"decent" },
+  hard:   { label:"Hard",   know:0.88, rt:[1200,1800], note:"fast and sharp" }
+};
+const BOT_NAMES = ["Botley","Quizzy","Pixel","Sparky","Turbo","Nova","Gizmo","Echo"];
+const isBotId = (id) => typeof id==="string" && id.indexOf("bot_")===0;
+const MAX_PLAYERS = 8;
 const COLORS = ["#ffcc33","#3ee08a","#ff7070","#c79bff","#5fd4ff","#ff9ad5","#9be15d","#ffffff"];
 
 /* ================= helpers ================= */
@@ -839,7 +849,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
   const [sent,setSent] = useState(false);
   const [toast,setToast] = useState("");
   const codeRef = useRef(""); const playersRef = useRef([]); const hostRef = useRef(false);
-  const eng = useRef({ S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false });
+  const eng = useRef({ S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false, botMem:{} });
   const seenToast = useRef(0);
   codeRef.current = code; playersRef.current = players;
 
@@ -927,7 +937,8 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
   }
   function leave(){
     if(code && sb){ sb.from("jq_players").delete().eq("id",myId).then(()=>{},()=>{}); }
-    clearTimers(); eng.current = { S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false };
+    if(hostRef.current && eng.current.S && eng.current.S.bots) Object.keys(eng.current.S.bots).forEach(id=>sb.from("jq_players").delete().eq("id",id).then(()=>{},()=>{}));
+    clearTimers(); eng.current = { S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false, botMem:{} };
     setCode(""); setRoom(null); setPlayers([]);
   }
 
@@ -966,6 +977,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
     else if(S.phase==="answer") set(pace.ans*1000,()=>resolveAnswer(-1));
     else if(S.phase==="reveal") set(3800,afterReveal);
     else if(S.phase==="roundend") set(7000,nextRoundMP);
+    botPlan();
   }
   const boardOf = (S) => boardFor(S.cats,S.round);
   const valuesOf = (S) => valuesFor(S.round,S.size);
@@ -979,12 +991,77 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
     const size=st.size||"full";
     go({ phase:"pick", round:0, picker:ps[rand(ps.length)].id, played:{}, size, cats:pickCats(size), dd:placeDD(st.rounds,size), clue:null, fx:[], msg:"", dur:30 });
   }
+  /* ---- bots: the host's phone plays for them using the same actions a human sends ---- */
+  async function addBot(skill){
+    if(!hostRef.current || !BOT_SKILL[skill]) return;
+    const ps=playersRef.current; if(ps.length>=MAX_PLAYERS) return;
+    const id="bot_"+Math.random().toString(36).slice(2,8);
+    const used=ps.map(p=>p.name);
+    const free=BOT_NAMES.filter(n=>used.indexOf(n)<0);
+    const nm=(free.length?free[rand(free.length)]:"Bot "+(ps.length+1));
+    const color=COLORS[ps.length%COLORS.length];
+    const e=E(); e.S={ ...e.S, bots:{ ...(e.S.bots||{}), [id]:{ skill } } };
+    await sb.from("jq_players").insert({ id, code:codeRef.current, name:nm, color, score:0, items:[] });
+    setPlayers(list=>list.some(p=>p.id===id)?list:[...list,{ id, code:codeRef.current, name:nm, color, score:0, items:[] }]);
+    writeState();
+  }
+  function removeBot(id){
+    if(!hostRef.current || !isBotId(id)) return;
+    const e=E(); const bots={ ...(e.S.bots||{}) }; delete bots[id]; e.S={ ...e.S, bots };
+    sb.from("jq_players").delete().eq("id",id).then(()=>{},()=>{});
+    setPlayers(list=>list.filter(p=>p.id!==id));
+    writeState();
+  }
+  function botSkill(id){ const b=(E().S.bots||{})[id]; return BOT_SKILL[(b&&b.skill)||"medium"]; }
+  function botMind(id,clue){
+    const e=E(), k=clue.key+"|"+id;
+    if(!e.botMem[k]){ const knows=Math.random()<Math.max(0.15,botSkill(id).know-clue.i*0.06); e.botMem[k]={ knows, guess:!knows&&Math.random()<0.2 }; }
+    return e.botMem[k];
+  }
+  function botPlan(){
+    const e=E(), S=e.S, seq=S.seq;
+    const bots=playersRef.current.filter(p=>isBotId(p.id)).map(p=>p.id);
+    if(!bots.length) return;
+    const later=(ms,fn)=>{ e.timers.push(setTimeout(()=>{ if(E().S.seq===seq) fn(); },ms*TS)); };
+    const send=(uid,kind,payload)=>{ sb.from("jq_actions").insert({ code:codeRef.current, uid, kind, payload:{ ...payload, seq } }).then(()=>{},()=>{}); };
+    if(S.phase==="pick" && isBotId(S.picker)){
+      later(1400+rand(1800),()=>{
+        const left=[];
+        for(let c=0;c<SIZES[S.size].cols;c++) for(let i=0;i<SIZES[S.size].rows;i++) if(!S.played[S.round+"-"+c+"-"+i]) left.push([c,i]);
+        if(left.length){ const t=left[rand(left.length)]; send(S.picker,"pick",{ c:t[0], i:t[1] }); }
+      });
+    } else if(S.phase==="dd" && isBotId(S.picker)){
+      later(1800+rand(1500),()=>send(S.picker,"wager",{ pct:3+rand(5) }));
+    } else if(S.phase==="buzz" && S.clue){
+      bots.forEach(id=>{
+        if(S.clue.locked.indexOf(id)>=0) return;
+        const m=botMind(id,S.clue), r=botSkill(id).rt;
+        if(m.knows ? Math.random()<0.95 : m.guess) later(r[0]+rand(r[1])+S.clue.i*150,()=>send(id,"buzz",{}));
+      });
+    } else if(S.phase==="answer" && S.clue && isBotId(S.clue.buzzer)){
+      const id=S.clue.buzzer;
+      later(1500+rand(2500),()=>{
+        const cur=E().S, q=boardOf(cur)[cur.clue.c].clues[cur.clue.i];
+        const m=botMind(id,cur.clue);
+        const right=m.knows || Math.random()<0.25;
+        const good=cur.clue.order.indexOf(q.a);
+        const others=[0,1,2,3].filter(x=>x!==good);
+        send(id,"answer",{ slot: right ? good : others[rand(3)] });
+      });
+    }
+    if(S.settings.chaos && (S.phase==="buzz" || S.phase==="answer")){
+      bots.forEach(id=>{
+        const p=e.P[id];
+        if(p && p.items.length && Math.random()<0.5) later(1200+rand(2500),()=>{ const pi=E().P[id]; if(pi && pi.items.length) send(id,"item",{ kind:pi.items[0] }); });
+      });
+    }
+  }
   function setSetting(k,v){ const e=E(); e.S={ ...e.S, settings:{ ...e.S.settings, [k]:v } }; writeState(); }
   function backToLobby(){
     const e=E(); clearTimers();
     e.P={}; sb.from("jq_players").update({ score:0, items:[] }).eq("code",codeRef.current).then(()=>{},()=>{});
     setPlayers(list=>list.map(p=>({ ...p, score:0, items:[] })));
-    e.S={ phase:"lobby", seq:(e.S.seq||0)+1, settings:e.S.settings }; writeState();
+    e.S={ phase:"lobby", seq:(e.S.seq||0)+1, settings:e.S.settings, bots:e.S.bots }; writeState();
   }
   function doPick(uid,c,i){
     const e=E(), S=e.S;
@@ -1076,6 +1153,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
     if(!ids.length) return;
     let target=ids[0]; ids.forEach(id=>{ if((e.P[id]?e.P[id].score:0)>(e.P[target]?e.P[target].score:0)) target=id; });
     const at=pl.items.indexOf(kind); pl.items=pl.items.filter((_,i)=>i!==at);
+    if(isBotId(target)){ const k=S.clue.key+"|"+target; e.botMem[k]={ ...(e.botMem[k]||{}), knows:false }; }
     const fx={ id:Date.now()+Math.floor(Math.random()*1000), kind, target, from:a.uid };
     const fxList=[...(S.fx||[]).filter(f=>!(f.target===target&&f.kind===kind)), fx];
     touch({ fx:fxList, toast:{ id:fx.id, text:nameOf(a.uid)+" hit "+nameOf(target)+" with "+ITEMS[kind].n.toUpperCase()+"!" } });
@@ -1115,7 +1193,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
       <div className="chips">
         {sorted.map(p=>{
           const cls = "chip"+(S&&S.phase==="pick"&&S.picker===p.id?" pick":"")+(ids&&S.phase==="answer"&&ids.buzzer===p.id?" ans":"")+(ids&&S.phase==="buzz"&&ids.locked&&ids.locked.indexOf(p.id)>=0?" out":"");
-          return <div key={p.id} className={cls}><b><span className="dot" style={{background:p.color}}></span>{p.id===myId?"You":p.name}</b><em className={(p.score||0)<0?"neg":""}>{fmt(p.score||0)}</em></div>;
+          return <div key={p.id} className={cls}><b><span className="dot" style={{background:p.color}}></span>{p.id===myId?"You":p.name}{isBotId(p.id)&&<span className="tag">BOT</span>}</b><em className={(p.score||0)<0?"neg":""}>{fmt(p.score||0)}</em></div>;
         })}
       </div>);
   }
@@ -1135,7 +1213,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
   if(!code) return (
     <div className="scr scroll">
       <h1 className="logo">Multiplayer</h1>
-      <p className="sub">Everyone plays the same clues at the same time. Fastest finger rings in, answers, and if they miss, everyone else gets a shot.</p>
+      <p className="sub">Everyone plays the same clues at the same time. Fastest finger rings in, answers, and if they miss, everyone else gets a shot. Add bots to fill the room, or to play on your own.</p>
       {!(name||"").trim() && <div><label className="lbl">Your name</label><input className="in" value={name} onChange={e=>{ setName(e.target.value); ls.set("hub_name",e.target.value); }} maxLength={20} placeholder="Name" /></div>}
       <button className="btn gold" onClick={()=>createRoom()}>Create room</button>
       <label className="lbl">Or join a friend</label>
@@ -1156,8 +1234,15 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
       <div className="code">{code}</div>
       <p className="note">Room code. Friends choose Multiplayer, then Join.</p>
       <div className="box"><div className="boxh">Players ({players.length})</div>
-        {players.map(p=>(<div className="pr" key={p.id}><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}{room.host_id===p.id&&<i>host</i>}</span></div>))}
+        {players.map(p=>(<div className="pr" key={p.id}><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}{room.host_id===p.id&&<i>host</i>}{isBotId(p.id)&&<i>bot {((S.bots||{})[p.id]||{}).skill}</i>}</span>{isHost&&isBotId(p.id)&&<button className="link" onClick={()=>removeBot(p.id)}>remove</button>}</div>))}
       </div>
+      {isHost && players.length<MAX_PLAYERS && (
+        <div>
+          <label className="lbl">Add a bot</label>
+          <div className="three">
+            {Object.keys(BOT_SKILL).map(k=>(<button key={k} className="card" onClick={()=>addBot(k)}><b>+ {BOT_SKILL[k].label}</b><span>{BOT_SKILL[k].note}</span></button>))}
+          </div>
+        </div>)}
       <label className="lbl">Pace {isHost?"":"(host picks)"}</label>
       <div className="three">
         {Object.keys(PACE).map(k=>(<button key={k} disabled={!isHost} className={"card"+(st.pace===k?" on":"")} onClick={()=>setSetting("pace",k)}><b>{PACE[k].label}</b><span>{PACE[k].buzz}s buzz, {PACE[k].ans}s answer</span></button>))}
@@ -1197,7 +1282,7 @@ function Versus({ name, setName, entry, joinCode, onMenu }){
       <div className="scr scroll">
         <h1 className="logo">Final scores</h1>
         <div className="box">
-          {ranked.map((p,i)=>(<div className="pr" key={p.id}><span className="rank">{i+1}</span><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}</span><span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span></div>))}
+          {ranked.map((p,i)=>(<div className="pr" key={p.id}><span className="rank">{i+1}</span><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}{isBotId(p.id)&&<i>bot</i>}</span><span className={"ps"+((p.score||0)<0?" neg":"")}>{fmt(p.score||0)}</span></div>))}
         </div>
         {isHost ? <button className="btn gold" onClick={backToLobby}>Play again (back to lobby)</button> : <p className="note" style={{marginTop:10}}>Waiting for the host...</p>}
         <button className="link" onClick={()=>{ leave(); onMenu(); }}>Leave and go to menu</button>
