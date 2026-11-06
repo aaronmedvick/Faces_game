@@ -92,6 +92,16 @@ input{font-family:inherit}
 .opt.dim{opacity:.45}
 .opt[disabled]{opacity:1}
 .opt.dim[disabled]{opacity:.45}
+.bz{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:calc(64px*var(--s,1))}
+.tbar.ph{visibility:hidden}
+.optarea{position:relative;flex:none}
+.phmsg{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:calc(16px*var(--s,1));gap:6px;padding:0 12px}
+.phmsg .g{color:var(--gold)}
+.slot{flex:none;height:76px;display:flex;align-items:stretch}
+.slot .buzz{flex:1;min-height:0;height:100%}
+.buzz.sub{font-size:calc(26px*var(--s,1))}
+.slotmsg{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;font-weight:700;font-size:calc(15px*var(--s,1));line-height:1.25}
+.slotmsg .g{color:var(--gold)}
 .rrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none}
 .res{font-family:var(--display);font-size:calc(22px*var(--s,1));text-shadow:2px 2px 0 #000;line-height:1.1}
 .res.r{color:var(--ok)}
@@ -158,6 +168,7 @@ input{font-family:inherit}
 
 .tile.done.ans{color:#cfd6ff;padding:1px}
 .at{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:calc(9px*var(--st,1));line-height:1.05;text-align:center;word-break:break-word;padding:0 2px}
+.linkbox .in{font-size:calc(13px*var(--s,1));padding:9px 10px}
 .botlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .botchip{display:flex;align-items:center;gap:8px;background:#4b1fb8;border-radius:18px;padding:4px 5px 4px 12px;font-size:calc(14px*var(--s,1))}
 .botchip button{background:#000;border:0;border-radius:14px;padding:7px 11px;font-weight:700;font-size:calc(12px*var(--s,1))}
@@ -839,22 +850,25 @@ function Solo({ prefs, name, stats, setStats, onMenu, onLeaders }){
         <Head title={ROUNDS[round].name} meta={cat.name} score={game.score} />
         <div className="clue">
           <div className="cchead"><span className="cc">{cat.name}</span><span className="cv">{cur.dd?"BET "+fmt(cur.wager):fmt(vals[cur.i])}</span></div>
-          {game.timer>0 && cur.stage==="clue" && <Countdown secs={game.timer} k={cur.key} onExpire={expire} />}
+          {game.timer>0 && (cur.stage==="clue" ? <Countdown secs={game.timer} k={cur.key} onExpire={expire} /> : <div className="tbar ph"></div>)}
           <ClueText text={clue.q} />
           <Options clue={clue} order={cur.order} picked={cur.picked} hidden={cur.hidden} onPick={pick} selected={cur.sel} showAnswer={cur.stage==="result"} />
-          {cur.stage==="clue" && ((stats.hints>0 && !cur.hidden.length) || prefs.confirm) && (
-            <div className="rrow">
-              {stats.hints>0 && !cur.hidden.length ? <button className="btn ghost sm" onClick={useHint}>50/50 ({stats.hints} left)</button> : <span></span>}
-              {prefs.confirm && <button className="btn gold" style={{flex:1,marginTop:0}} disabled={cur.sel==null} onClick={submit}>Submit answer</button>}
-            </div>)}
-          {cur.stage==="result" && (
-            <div className="rrow">
-              <div>
-                <div className={"res "+(cur.right?"r":"w")}>{cur.right?"Correct +"+fmt(cur.delta):(cur.timeout?"Time's up":"Wrong")+(cur.delta<0?" -"+fmt(-cur.delta):"")}</div>
-                <div className="rn">{cur.cheer||""}</div>
-              </div>
-              <button className="btn gold sm" onClick={()=>setCur(null)}>Continue</button>
-            </div>)}
+          <div className="bz">
+            {cur.stage==="clue" ? (
+              <React.Fragment>
+                {stats.hints>0 && !cur.hidden.length ? <button className="btn ghost sm" onClick={useHint}>50/50 ({stats.hints} left)</button> : <span></span>}
+                {prefs.confirm && <button className="btn gold" style={{flex:1,marginTop:0}} disabled={cur.sel==null} onClick={submit}>Submit answer</button>}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div>
+                  <div className={"res "+(cur.right?"r":"w")}>{cur.right?"Correct +"+fmt(cur.delta):(cur.timeout?"Time's up":"Wrong")+(cur.delta<0?" -"+fmt(-cur.delta):"")}</div>
+                  <div className="rn">{cur.cheer||""}</div>
+                </div>
+                <button className="btn gold sm" onClick={()=>setCur(null)}>Continue</button>
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </div>);
   }
@@ -919,6 +933,7 @@ function Versus({ prefs, name, setName, entry, joinCode, onMenu }){
   const [sent,setSent] = useState(false);
   const [selSlot,setSelSlot] = useState(null);
   const [botNote,setBotNote] = useState("");
+  const [copied,setCopied] = useState(false);
   const [toast,setToast] = useState("");
   const codeRef = useRef(""); const playersRef = useRef([]); const hostRef = useRef(false);
   const eng = useRef({ S:null, P:{}, lastId:0, timers:[], fxTimers:[], buzzes:[], busy:false, botMem:{} });
@@ -939,6 +954,9 @@ function Versus({ prefs, name, setName, entry, joinCode, onMenu }){
       if(ok) await joinRoom(entry.code); else await createRoom(entry.code);
     }catch(e){} })();
   },[]);
+
+  /* opened from an invite link: join straight away when the name is already known */
+  useEffect(()=>{ if(joinCode && !entry && sb && (name||"").trim()) joinRoom(joinCode); },[]);
 
   /* ---- sync ---- */
   async function refetch(c){
@@ -1277,6 +1295,23 @@ function Versus({ prefs, name, setName, entry, joinCode, onMenu }){
     e.busy=false;
   }
 
+  /* ---- invite link: the portal lobby link when launched from the portal, otherwise a direct join link ---- */
+  function inviteLink(){
+    try{ if(entry && window.HUB && window.HUB.inviteLink) return window.HUB.inviteLink(codeRef.current); }catch(e){}
+    return location.origin+location.pathname+"?join="+codeRef.current;
+  }
+  function copyText(txt,done){
+    const fallback=()=>{ try{ const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); done(); }catch(e){} };
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,fallback); return; } }catch(e){}
+    fallback();
+  }
+  function copyLink(){ copyText(inviteLink(),()=>{ setCopied(true); setTimeout(()=>setCopied(false),2000); }); }
+  function shareLink(){
+    const l=inviteLink();
+    if(navigator.share){ navigator.share({ title:"Join my quiz show", text:"Room "+codeRef.current, url:l }).catch(()=>{}); }
+    else copyLink();
+  }
+
   /* ================= screens ================= */
   function Chips(){
     const ids = S && S.clue ? S.clue : null;
@@ -1325,7 +1360,12 @@ function Versus({ prefs, name, setName, entry, joinCode, onMenu }){
   if(S.phase==="lobby") return (
     <div className="scr scroll">
       <div className="code">{code}</div>
-      <p className="note">Room code. Friends choose Multiplayer, then Join.</p>
+      <div className="linkbox"><input className="in" readOnly value={inviteLink()} onFocus={e=>e.target.select()} aria-label="Invite link" /></div>
+      <div className="two">
+        <button className="btn" style={{marginTop:6}} onClick={copyLink}>{copied?"Link copied":"Copy invite link"}</button>
+        <button className="btn ghost" style={{marginTop:6}} onClick={shareLink}>Share</button>
+      </div>
+      <p className="note" style={{marginTop:6}}>Friends tap the link and join automatically. Or give them the room code.</p>
       <div className="box"><div className="boxh">Players ({players.length})</div>
         {players.map(p=>(<div className="pr" key={p.id}><span className="dot" style={{background:p.color}}></span><span className="pn">{p.name}{p.id===myId&&<i>you</i>}{room.host_id===p.id&&<i>host</i>}{isBotId(p.id)&&<i>bot {((S.bots||{})[p.id]||{}).skill}</i>}</span>{isHost&&isBotId(p.id)&&<button className="link" onClick={()=>removeBot(p.id)}>remove</button>}</div>))}
       </div>
@@ -1432,30 +1472,41 @@ function Versus({ prefs, name, setName, entry, joinCode, onMenu }){
   const label = S.clue.dd ? "BET "+fmt(S.clue.wager) : fmt(vals[S.clue.i]);
   const buzzerName = S.clue.buzzer?nameOf(S.clue.buzzer):"";
   const myCheer = (prefs.sass && S.phase==="reveal") ? (S.winner===myId ? cheerSeeded("right",S.seq) : (S.clue.locked.indexOf(myId)>=0 ? cheerSeeded("wrong",S.seq) : "")) : "";
+  const showOpts = (S.phase==="answer" && isBuzzer) || S.phase==="reveal";
+  const waitText = S.phase==="buzz" ? "Ring in to see the choices" : (S.phase==="answer" && !isBuzzer ? buzzerName+" is answering" : "");
   return (
     <div className="scr">
       {Chips()}
-      {S.phase==="buzz" && S.msg && <div className="note" style={{fontWeight:700,color:"var(--gold)"}}>{S.msg}</div>}
       <div className="clue">
         {mine.fog && <div className="fog"></div>}
         <div className="cchead"><span className="cc">{cat.name}</span><span className="cv">{label}</span></div>
-        {S.phase!=="reveal" && S.dur>0 && <Countdown secs={S.dur} k={S.seq} />}
+        {S.phase!=="reveal" && S.dur>0 ? <Countdown secs={S.dur} k={S.seq} /> : <div className="tbar ph"></div>}
         <ClueText text={clue.q} fx={mine} />
-        {S.phase==="answer" && isBuzzer && (
-          <Options clue={clue} order={S.clue.order} picked={null} fx={mine} locked={sent} selected={selSlot} onPick={(slot)=>{ if(prefs.confirm){ if(!sent) setSelSlot(slot); } else { setSent(true); act("answer",{ slot }); } }} />)}
+        {/* the answer area always takes its space, so nothing jumps when the choices appear or the result shows */}
+        <div className="optarea">
+          <div style={showOpts?undefined:{visibility:"hidden"}} aria-hidden={showOpts?"false":"true"}>
+            {S.phase==="reveal"
+              ? <Options clue={clue} order={S.clue.order} picked={null} showAnswer={true} onPick={()=>{}} />
+              : <Options clue={clue} order={S.clue.order} picked={null} fx={mine} locked={sent||!showOpts} selected={selSlot} onPick={(slot)=>{ if(prefs.confirm){ if(!sent) setSelSlot(slot); } else { setSent(true); act("answer",{ slot }); } }} />}
+          </div>
+          {!showOpts && S.phase!=="reveal" && (
+            <div className="phmsg">
+              {S.phase==="buzz" && S.msg && <div className="g">{S.msg}</div>}
+              <div>{waitText}</div>
+            </div>)}
+        </div>
+      </div>
+      <div className="slot">
+        {S.phase==="buzz" && !S.clue.dd && (
+          <button className={"buzz"+(lockedOut?" wrongb":"")} disabled={sent||lockedOut} onClick={()=>{ setSent(true); sfx("buzz"); act("buzz",{}); }}>{lockedOut?"WRONG: waiting on others":sent?"BUZZED":"BUZZ"}</button>)}
         {S.phase==="answer" && isBuzzer && prefs.confirm && (
-          <button className="btn gold" style={{marginTop:0,flex:"none"}} disabled={selSlot===null||sent} onClick={()=>{ setSent(true); act("answer",{ slot:selSlot }); }}>Submit answer</button>)}
-        {S.phase==="answer" && !isBuzzer && <div className="note" style={{fontWeight:700}}>{buzzerName} is answering...</div>}
-        {S.phase==="buzz" && <div className="note">Ring in to see the choices!</div>}
+          <button className="buzz sub" disabled={selSlot===null||sent} onClick={()=>{ setSent(true); act("answer",{ slot:selSlot }); }}>Submit answer</button>)}
         {S.phase==="reveal" && (
-          <div>
-            <Options clue={clue} order={S.clue.order} picked={null} showAnswer={true} onPick={()=>{}} />
-            <div className="rn" style={{marginTop:6,textAlign:"center",fontWeight:700,color:"#fff"}}>{S.msg}</div>
-            {myCheer && <div className="rn" style={{textAlign:"center",color:"var(--gold)",fontWeight:700}}>{myCheer}</div>}
+          <div className="slotmsg">
+            <div>{S.msg}</div>
+            {myCheer && <div className="g">{myCheer}</div>}
           </div>)}
       </div>
-      {S.phase==="buzz" && !S.clue.dd && (
-        <button className={"buzz"+(lockedOut?" wrongb":"")} disabled={sent||lockedOut} onClick={()=>{ setSent(true); sfx("buzz"); act("buzz",{}); }}>{lockedOut?"WRONG: waiting on others":sent?"BUZZED":"BUZZ"}</button>)}
       {ItemBar()}
       {toast && <div className="toast">{toast}</div>}
     </div>);
