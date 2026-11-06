@@ -85,6 +85,7 @@ input{font-family:inherit}
 .opt{display:flex;align-items:center;gap:10px;text-align:left;background:var(--navy2);border:2px solid #000;border-radius:6px;padding:8px 10px;font-size:calc(16px*var(--s,1));font-weight:700;min-height:50px;width:100%}
 .opt:active{background:var(--navy)}
 .opt i{font-style:normal;font-family:var(--display);color:var(--gold);font-size:calc(19px*var(--s,1));width:18px;flex:none}
+.opt.gone{visibility:hidden;pointer-events:none}
 .opt.sel{border-color:var(--gold);background:#0a1280;box-shadow:inset 0 0 0 2px var(--gold)}
 .opt.right{background:var(--ok);color:#042312;border-color:#042312}
 .opt.right i,.opt.wrong i{color:inherit}
@@ -579,14 +580,20 @@ function BoardView({ board, vals, round, played, onTile, disabled, answerOf }){
 }
 
 function Options({ clue, order, picked, hidden, onPick, locked, fx, showAnswer, selected }){
+  const gone = (idx) => !!(hidden && hidden.indexOf(idx)>=0);
+  const slots = order.map((idx,slot)=>({ idx, slot }));
+  /* after a 50/50 the two removed choices stay as invisible rows at the bottom, so nothing above them moves */
+  const list = [...slots.filter(x=>!gone(x.idx)), ...slots.filter(x=>gone(x.idx))];
   return (
     <div className="opts">
-      {order.map((idx,slot)=>{
-        if(hidden && hidden.indexOf(idx)>=0) return null;
-        let cls = "opt";
-        if(showAnswer){ if(idx===clue.a) cls+=" right"; else if(slot===picked) cls+=" wrong"; else cls+=" dim"; } else if(selected===slot) cls+=" sel";
+      {list.map(({ idx, slot })=>{
+        const off = gone(idx);
+        let cls = "opt"+(off?" gone":"");
+        if(!off){
+          if(showAnswer){ if(idx===clue.a) cls+=" right"; else if(slot===picked) cls+=" wrong"; else cls+=" dim"; } else if(selected===slot) cls+=" sel";
+        }
         const label = fx && fx.scr ? scrambleText(clue.o[idx],fx.scr) : clue.o[idx];
-        return <button key={slot} className={cls} disabled={locked||showAnswer} onClick={()=>onPick(slot)}><i>{LETTERS[slot]}</i><span>{label}</span></button>;
+        return <button key={slot} className={cls} disabled={off||locked||showAnswer} aria-hidden={off?"true":undefined} tabIndex={off?-1:undefined} onClick={()=>onPick(slot)}><i>{LETTERS[slot]}</i><span>{label}</span></button>;
       })}
     </div>);
 }
