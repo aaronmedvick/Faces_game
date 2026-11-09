@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1625">
-<title>Know Your Partner</title>
+<title>Pillow Talking</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
@@ -115,7 +115,7 @@ function hubId(){let v=localStorage.getItem("hub_uid");if(!v){v="u"+Math.random(
 const genCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s;};
 const getQids=(code,allQs)=>{let hash=0;for(let i=0;i<code.length;i++)hash=((hash<<5)-hash)+code.charCodeAt(i)|0;const seeded=()=>{hash=(hash*9301+49297)%233280;return hash/233280;};return allQs.map(q=>q.id).sort(()=>seeded()-.5).slice(0,6);};
 
-async function loadQuestions(){try{const resp=await fetch("data/08.knowyourpartner.pack.json"+"?v="+Math.floor(Date.now()/60000));if(!resp.ok)throw new Error("Failed to load questions");const data=await resp.json();return data.cards||[];}catch(e){return[];}}
+async function loadQuestions(){try{console.log("Fetching from: data/13.pillowtalk.pack.json");const resp=await fetch("data/13.pillowtalk.pack.json"+"?v="+Math.floor(Date.now()/60000));console.log("Fetch response status:",resp.status);if(!resp.ok){const msg="Failed to load questions ("+resp.status+")";console.error(msg);throw new Error(msg);}const data=await resp.json();console.log("JSON loaded. cards=",data.cards);if(!data.cards){console.error("No cards in JSON");return[];}console.log("Loaded "+data.cards.length+" questions");return data.cards;}catch(e){console.error("LoadQuestions caught error:",e.message||e);throw e;}}
 
 function scoreGuess(guess,truth){if(guess==null||truth==null)return 0;const d=Math.abs(guess-truth);return d===0?3:d===1?2:d===2?1:0;}
 
@@ -123,7 +123,7 @@ function scoreCompat(a1,a2){if(a1==null||a2==null)return 0;const d=Math.abs(a1-a
 
 function verdictFor(pct){if(pct>=95)return "Match made in heaven";if(pct>=80)return "Perfectly in tune";if(pct>=65)return "You've got this";if(pct>=50)return "Getting there";if(pct>=25)return "Work in progress";return "A lot left to learn";}
 
-function Home({name,setName,joinCode,setJoinCode,create,join,err,busy}){console.log("Rendering Home");return(<div><div className="hero">Know Your<br/>Partner</div><p className="sub">Answer honestly. See how well you know each other. Plus your real compatibility.</p><div className="card"><input className="inp" placeholder="Your name" value={name} maxLength={14} onChange={e=>setName(e.target.value)}/><button className="btn" disabled={busy||!name.trim()} onClick={create}>Start a room</button></div><div className="card"><div className="small">Join with a code</div><div style={{display:"flex",gap:8}}><input className="inp" placeholder="ABCD" value={joinCode} maxLength={4} autoCapitalize="characters" style={{letterSpacing:".2em",textTransform:"uppercase",fontWeight:700}} onChange={e=>setJoinCode(e.target.value.toUpperCase())}/><button className="btn" style={{margin:0,width:"auto",padding:"0 22px"}} disabled={busy||!name.trim()||joinCode.length<4} onClick={join}>Join</button></div></div>{err&&<div style={{color:"#ff8a8a",fontSize:14,margin:"10px 0"}}>{err}</div>}</div>);}
+function Home({name,setName,joinCode,setJoinCode,create,join,err,busy}){console.log("Rendering Home");return(<div><div className="hero">Pillow<br/>Talking</div><p className="sub">Answer honestly. See how well you know each other. Plus your real compatibility.</p><div className="card"><input className="inp" placeholder="Your name" value={name} maxLength={14} onChange={e=>setName(e.target.value)}/><button className="btn" disabled={busy||!name.trim()} onClick={create}>Start a room</button></div><div className="card"><div className="small">Join with a code</div><div style={{display:"flex",gap:8}}><input className="inp" placeholder="ABCD" value={joinCode} maxLength={4} autoCapitalize="characters" style={{letterSpacing:".2em",textTransform:"uppercase",fontWeight:700}} onChange={e=>setJoinCode(e.target.value.toUpperCase())}/><button className="btn" style={{margin:0,width:"auto",padding:"0 22px"}} disabled={busy||!name.trim()||joinCode.length<4} onClick={join}>Join</button></div></div>{err&&<div style={{color:"#ff8a8a",fontSize:14,margin:"10px 0"}}>{err}</div>}</div>);}
 
 function Lobby({room,isHost,start,copyLink,startBot}){console.log("Lobby render: hasPartner check");const hasPartner=room.guest_uid||room.guest_name==="Bot";console.log("hasPartner=",hasPartner,"guest_uid=",room.guest_uid,"guest_name=",room.guest_name);return(<div><div className="card"><div className="small" style={{textAlign:"center",margin:0}}>Room</div><div className="code">{room.code}</div>{isHost&&!hasPartner&&<button className="btn ghost" style={{marginTop:4}} onClick={copyLink}>Copy link</button>}<div style={{marginTop:12}}><div className="who"><span className="dot on"/>{room.host_name}{isHost?" (you)":""}</div>{hasPartner&&<div className="who"><span className="dot on"/>{room.guest_name} {room.guest_name==="Bot"?"(computer)":"(them)"}</div>}</div></div><div className="card"><p className="sub" style={{margin:0}}>Newlywed game: both answer 3 questions, then guess 3.</p></div>{isHost&&!hasPartner&&<button className="btn ghost" onClick={startBot}>🤖 Play with bot</button>}{isHost&&hasPartner?<button className="btn" onClick={start}>Start</button>:<div className="center sub">{isHost?"Waiting for partner...":room.host_name+" will start soon."}</div>}</div>);}
 
@@ -213,7 +213,7 @@ function App(){
   const slot=isHost?0:1;
   const names=room?[room.host_name||"",room.guest_name||""]:[name,""];
   
-  useEffect(()=>{loadQuestions().then(setQuestions).catch(e=>setErr(String(e.message||e)));},[]);
+  useEffect(()=>{console.log("App useEffect: Loading questions");loadQuestions().then(qs=>{console.log("Questions loaded:",qs.length);setQuestions(qs);}).catch(e=>{const msg="Q-Load Error: "+String(e.message||e);console.error("CAUGHT ERROR:",msg);setErr(msg);});},[]);
   
   const load=async(c)=>{
     try{
@@ -269,7 +269,7 @@ function App(){
     return<div className="card center sub">Loading...</div>;
   };
   
-  const body=renderBody();return<div className={`app${match?" match":""}`}><div className="wrap"><div className="hdr"><div className="logo">Know Your Partner</div><button className="pill" onClick={()=>{if(confirm("Leave?"))localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}>Leave</button></div>{err&&<div style={{background:"#8B0000",padding:"10px",margin:"0 0 10px",borderRadius:"4px"}}><strong>ERROR:</strong> {err}</div>}{!room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>No room | uid:{uid.slice(0,8)}</div>}{room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>room:{room.code} phase:{room.phase} host:{room.host_uid===uid?"YOU":"other"}</div>}{!body&&<div style={{color:"red",padding:"10px",textAlign:"center"}}>ERROR: renderBody returned null</div>}{body}<div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>v2.0</div></div></div>;
+  const body=renderBody();return<div className={`app${match?" match":""}`}><div className="wrap"><div className="hdr"><div className="logo">Pillow Talking</div><button className="pill" onClick={()=>{if(confirm("Leave?"))localStorage.removeItem("kyp_code");setCode("");setRoom(null);}}>Leave</button></div>{err&&<div style={{background:"#8B0000",padding:"10px",margin:"0 0 10px",borderRadius:"4px"}}><strong>ERROR:</strong> {err}</div>}{!room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>No room | uid:{uid.slice(0,8)}</div>}{room&&<div style={{color:"#999",fontSize:"11px",margin:"5px 0",textAlign:"center"}}>room:{room.code} phase:{room.phase} host:{room.host_uid===uid?"YOU":"other"}</div>}{!body&&<div style={{color:"red",padding:"10px",textAlign:"center"}}>ERROR: renderBody returned null</div>}{body}<div className="small" style={{textAlign:"center",marginTop:18,opacity:.6}}>v2.0</div></div></div>;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
