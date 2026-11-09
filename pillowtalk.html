@@ -244,11 +244,11 @@ function App(){
   const renderBody=()=>{
     if(!room){console.log("renderBody: no room, showing Home");return <Home name={name} setName={setName} joinCode={joinCode} setJoinCode={setJoinCode} create={create} join={join} err={err} busy={busy}/>;}
     console.log("renderBody: room exists, phase=",room.phase);
-    if(room.phase==="lobby"){console.log("renderBody: showing Lobby");return<Lobby room={room} isHost={isHost} start={start} startBot={startBot} copyLink={async()=>navigator.clipboard.writeText(location.origin+location.pathname+"?room="+room.code)}/>;}}
+    if(room.phase==="lobby"){console.log("renderBody: showing Lobby");return<Lobby room={room} isHost={isHost} start={start} startBot={startBot} copyLink={async()=>navigator.clipboard.writeText(location.origin+location.pathname+"?room="+room.code)}/>;}
     
-    const qids=getQids(room.code,questions);const qid=qids?.[room.round];const q=questions.find(x=>x.id===qid);
+    const qids=getQids(room.code,questions);console.log("qids=",qids,"round=",room.round);const qid=qids?.[room.round];const q=questions.find(x=>x.id===qid);console.log("q=",q);
     
-    if(!q)return<div className="card center sub">Loading...</div>;
+    if(!q)return<div className="card center sub" style={{color:"#ff8a8a"}}>⏳ Loading questions ({questions.length} loaded)...</div>;
     
     if(room.phase==="answer1"||room.phase==="answer2"){
       const mine=answers.find(a=>a.qid===qid&&a.slot===slot&&a.round===room.round);
