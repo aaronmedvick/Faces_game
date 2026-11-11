@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Table Networking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+:root {
+  --ink:#0E0B1A; --velvet:#171126; --panel:#1E1735; --haze:#332853;
+  --candle:#F5B14C; --psychic:#A78BFA; --rose:#F26D8B; --mist:#E9E3F6; --dim:#8B82A6; --mint:#7DF0A6; --danger:#F2495C;
+}
+body { background: radial-gradient(120% 80% at 50% -10%, #241a3d 0%, var(--ink) 55%); min-height: 100vh; }
+.wrap { font-family:'Space Grotesk',system-ui,sans-serif; color:var(--mist); max-width:520px; margin:0 auto; padding:calc(16px + env(safe-area-inset-top, 0px)) 16px 90px; -webkit-font-smoothing:antialiased; }
+.top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.brand { letter-spacing:.22em; font-weight:700; font-size:13px; color:var(--rose); }
+.brandBig { font-family:'Fraunces',serif; font-weight:600; font-size:38px; line-height:1.04; color:var(--candle); margin:14px 0 4px; }
+.sub { color:var(--dim); font-size:14px; margin-bottom:16px; }
+.who { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); }
+.label { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:16px 0 6px; }
+.card { background:linear-gradient(180deg,var(--panel),var(--velvet)); border:1px solid var(--haze); border-radius:18px; padding:14px 16px; margin-bottom:10px; }
+.input { width:100%; font-family:inherit; font-size:16px; color:var(--mist); background:var(--velvet); border:1px solid var(--haze); border-radius:12px; padding:12px 13px; margin-top:8px; }
+.input::placeholder { color:var(--dim); }
+textarea.input { resize:vertical; min-height:70px; }
+.go { width:100%; margin-top:12px; font-family:'Fraunces',serif; font-weight:600; font-size:20px; padding:14px; border-radius:15px; cursor:pointer; border:none; background:linear-gradient(180deg,#F8C46C,var(--candle)); color:#1b1204; }
+.go:disabled { opacity:.4; cursor:default; }
+.ghost { width:100%; margin-top:8px; font-family:inherit; font-weight:700; font-size:14px; padding:12px; border-radius:12px; cursor:pointer; border:1px solid var(--haze); background:var(--velvet); color:var(--mist); }
+.ghost.danger { color:var(--danger); }
+.err { color:var(--danger); font-size:13px; margin-top:8px; }
+.row { display:flex; align-items:center; gap:12px; }
+.badge { flex:none; width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; background:var(--haze); color:var(--candle); }
+.badge.me { background:var(--candle); color:#1b1204; }
+.pname { font-weight:700; font-size:16px; }
+.phead { color:var(--dim); font-size:13px; }
+.star { flex:none; font-size:26px; line-height:1; background:none; border:none; cursor:pointer; padding:6px; color:var(--haze); }
+.star.on { color:var(--candle); }
+.big { font-family:'Fraunces',serif; font-weight:600; font-size:64px; line-height:1; color:var(--candle); }
+.topic { font-family:'Fraunces',serif; font-size:21px; line-height:1.25; color:var(--mist); }
+.pill { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 9px; border-radius:99px; background:var(--haze); color:var(--mist); margin-right:6px; }
+.tabs { position:fixed; left:0; right:0; bottom:0; display:flex; justify-content:center; background:var(--ink); border-top:1px solid var(--haze); padding:8px 8px calc(8px + env(safe-area-inset-bottom)); z-index:5; }
+.tabs .in { display:flex; gap:6px; width:100%; max-width:520px; }
+.tab { flex:1; font-family:inherit; font-weight:700; font-size:13px; padding:11px 4px; border-radius:11px; border:none; cursor:pointer; background:var(--velvet); color:var(--dim); }
+.tab.on { background:var(--candle); color:#1b1204; }
+.sheetBg { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:10; display:flex; align-items:flex-end; justify-content:center; }
+.sheet { width:100%; max-width:520px; max-height:88vh; overflow:auto; background:var(--panel); border:1px solid var(--haze); border-radius:22px 22px 0 0; padding:18px 18px calc(24px + env(safe-area-inset-bottom)); }
+.kv { font-size:14px; margin:6px 0; word-break:break-all; }
+.kv b { display:inline-block; min-width:62px; color:var(--dim); font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+.kv a { color:var(--psychic); }
+.locked { color:var(--dim); font-style:italic; font-size:13px; }
+.tgrid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.tcell { background:var(--velvet); border:1px solid var(--haze); border-radius:12px; padding:8px 10px; font-size:12px; }
+.tcell b { color:var(--candle); }
+.timer { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:28px; }
+.timer.up { color:var(--danger); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+/* ============ SUPABASE (shared hub project) ============ */
+const SUPABASE_URL = "https://gyvgzeculdaxcwinblld.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kS8hQSqZR8Sog9imuq8dCg_-6iBy2Hi";
+const realSb = (typeof supabase !== "undefined") ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let sb = realSb, DEMO = false, MYID = "";
+let KV = window["localStorage"];
+
+/* ============ DEMO MODE ============
+   If Supabase is unreachable (e.g. a sandboxed Claude artifact), fall back to an in-browser store.
+   Tabs of the same browser sync via the storage event; each tab is its own person. */
+function pickSession() {
+  try { sessionStorage.setItem("_t", "1"); return sessionStorage; }
+  catch (e) { const m = {}; return { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: k => { delete m[k]; } }; }
+}
+function makeMock() {
+  const LS = window["localStorage"];
+  const PK = { tn_events: "code", tn_people: "id", tn_marks: "id" };
+  const load = t => { try { return JSON.parse(LS.getItem("tn_mock_" + t) || "{}"); } catch (e) { return {}; } };
+  const save = (t, o) => { try { LS.setItem("tn_mock_" + t, JSON.stringify(o)); } catch (e) {} };
+  function qb(t) {
+    const st = { op: "select", filters: [], order: null, row: null, single: false };
+    const run = () => {
+      const tbl = load(t);
+      if (st.op === "insert" || st.op === "upsert") {
+        const k = st.row[PK[t]];
+        if (st.op === "insert" && tbl[k]) return { data: null, error: { message: "duplicate" } };
+        tbl[k] = { created_at: new Date().toISOString(), ...(tbl[k] || {}), ...st.row }; save(t, tbl);
+        return { data: null, error: null };
+      }
+      const match = r => st.filters.every(([c, v]) => r[c] === v);
+      if (st.op === "update") { Object.keys(tbl).forEach(k => { if (match(tbl[k])) tbl[k] = { ...tbl[k], ...st.row }; }); save(t, tbl); return { data: null, error: null }; }
+      const rows = Object.values(tbl).filter(match);
+      if (st.order) rows.sort((a, b) => String(a[st.order]).localeCompare(String(b[st.order])));
+      return st.single ? { data: rows[0] || null, error: null } : { data: rows, error: null };
+    };
+    const q = {
+      select() { return q; }, limit() { return q; },
+      eq(c, v) { st.filters.push([c, v]); return q; }, order(c) { st.order = c; return q; },
+      maybeSingle() { st.single = true; return Promise.resolve(run()); },
+      insert(r) { st.op = "insert"; st.row = r; return q; },
+      upsert(r) { st.op = "upsert"; st.row = r; return q; },
+      update(r) { st.op = "update"; st.row = r; return q; },
+      then(res, rej) { return Promise.resolve(run()).then(res, rej); }
+    };
+    return q;
+  }
+  return {
+    from: qb,
+    channel() {
+      const cbs = []; const h = () => cbs.forEach(f => f());
+      const ch = { on(a, b, cb) { cbs.push(cb); return ch; }, subscribe() { window.addEventListener("storage", h); ch._h = h; return ch; } };
+      return ch;
+    },
+    removeChannel(ch) { if (ch && ch._h) window.removeEventListener("storage", ch._h); }
+  };
+}
+async function boot() {
+  let ok = false;
+  if (realSb) {
+    try {
+      const r = await Promise.race([
+        realSb.from("tn_events").select("code").limit(1),
+        new Promise(res => setTimeout(() => res({ error: { message: "timeout fetch" } }), 3000))
+      ]);
+      ok = !(r && r.error && /fetch|network|timeout/i.test(r.error.message || ""));
+    } catch (e) { ok = false; }
+  }
+  if (!ok) { DEMO = true; sb = makeMock(); KV = pickSession(); }
+  MYID = hubId();
+}
+const BOTS = ["Avery","Blake","Casey","Dana","Elliot","Frankie","Gray","Harper","Indie","Jordan","Kai","Logan","Morgan","Nico","Orion","Parker","Quinn","Riley","Sage","Taylor","Uma","Vic","Wren","Xan","Yael"];
+
+/* ============ ROTATION ENGINE ============
+   n prime, n*n people, n tables of n, n+1 rounds, nobody repeats.
+   Seat i (0-based) is the point (x,y) = (i mod n, floor(i/n)) in Z_n x Z_n.
+   Round r < n: table = (y + r*x) mod n.   Round n: table = x.
+   Each parallel class of lines = one round, every pair shares exactly one line. */
+const PRIMES = [3, 5, 7, 11, 13];
+function tableOf(num, r, n) {
+  const i = num - 1, x = i % n, y = Math.floor(i / n);
+  return r < n ? (y + r * x) % n : x;
+}
+function bestN(count) { let b = 0; for (const p of PRIMES) if (p * p <= count) b = p; return b; }
+function tableMates(table, r, n) {
+  const out = [];
+  for (let k = 1; k <= n * n; k++) if (tableOf(k, r, n) === table) out.push(k);
+  return out;
+}
+
+const TOPICS = [
+  "What's the best trip you've ever taken?", "What was your first job?", "What's a skill you'd love to learn?",
+  "Best meal you've had this year?", "What's the most useful app on your phone?", "Which movie can you quote start to finish?",
+  "What did you want to be when you grew up?", "What's your go-to karaoke song?", "Coffee, tea, or neither?",
+  "What's a small business in town you love?", "Favorite hobby outside of work?", "What's the best advice you ever got?",
+  "If you could live anywhere for a year, where?", "What's the best concert you've been to?", "What's something you're proud of lately?",
+  "Morning person or night owl?", "What's your favorite local restaurant?", "What's a book or podcast you keep recommending?",
+  "What was your worst haircut or fashion choice?", "What would your dream weekend look like?", "Which superpower would you pick?",
+  "What's the best gift you've given or received?", "What's your hidden talent?", "Favorite season and why?",
+  "What's a tradition your family has?", "What's the best thing you've learned this year?", "Pineapple on pizza: yes or no?",
+  "What's on your bucket list?", "What's the last thing that made you laugh out loud?", "What's your favorite sport to play or watch?",
+  "What's a project you're excited about right now?", "Which decade had the best music?", "What's your favorite board or card game?",
+  "What's the best part of your job?", "Dogs, cats, or something else?", "What's a place in town everyone should visit?",
+  "What did you do for fun as a kid?", "What's the most interesting person you've met?", "If you had a free Saturday, what would you do?",
+  "What's one thing you'd tell your younger self?"
+];
+
+/* ============ IDENTITY ============ */
+function hubId() { let v = KV.getItem("hub_uid"); if (!v) { v = "u" + Math.random().toString(36).slice(2, 11); KV.setItem("hub_uid", v); } return v; }
+function mkCode() { const c = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s = ""; for (let i = 0; i < 4; i++) s += c[Math.floor(Math.random() * c.length)]; return s; }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function loadProfile() { try { return JSON.parse(KV.getItem("tn_profile") || "{}"); } catch (e) { return {}; } }
+
+/* ============ SMALL COMPONENTS ============ */
+function Timer({ startedAt, mins }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+  if (!startedAt) return null;
+  const left = Math.round((new Date(startedAt).getTime() + mins * 60000 - now) / 1000);
+  const abs = Math.abs(left), m = Math.floor(abs / 60), s = String(abs % 60).padStart(2, "0");
+  return <div className={"timer" + (left < 0 ? " up" : "")}>{left < 0 ? "+" : ""}{m}:{s}</div>;
+}
+
+function QR({ text }) {
+  const ref = useRef(null);
+  useEffect(() => { if (ref.current) { ref.current.innerHTML = ""; new QRCode(ref.current, { text, width: 168, height: 168, colorDark: "#0E0B1A", colorLight: "#ffffff" }); } }, [text]);
+  return <div ref={ref} style={{ background: "#fff", padding: 8, borderRadius: 12, display: "inline-block" }} />;
+}
+
+function PersonRow({ p, num, me, mark, onOpen, onStar }) {
+  return (
+    <div className="card row">
+      <div className={"badge" + (me ? " me" : "")}>{num || "–"}</div>
+      <div style={{ flex: 1, minWidth: 0, cursor: "pointer" }} onClick={onOpen}>
+        <div className="pname">{p.name}{me ? " (you)" : ""}</div>
+        <div className="phead">{p.headline || "Tap to view profile"}</div>
+        {mark && mark.note ? <div className="phead" style={{ color: "var(--psychic)" }}>📝 {mark.note.slice(0, 48)}</div> : null}
+      </div>
+      {!me && <button className={"star" + (mark && mark.starred ? " on" : "")} onClick={onStar}>★</button>}
+    </div>
+  );
+}
+
+function PersonSheet({ p, num, me, met, mark, onSave, onClose }) {
+  const [note, setNote] = useState((mark && mark.note) || "");
+  const starred = !!(mark && mark.starred);
+  const show = me || met;
+  return (
+    <div className="sheetBg" onClick={onClose}>
+      <div className="sheet" onClick={e => e.stopPropagation()}>
+        <div className="row">
+          <div className={"badge" + (me ? " me" : "")}>{num || "–"}</div>
+          <div style={{ flex: 1 }}>
+            <div className="pname" style={{ fontSize: 20 }}>{p.name}</div>
+            <div className="phead">{p.headline}</div>
+          </div>
+          {!me && <button className={"star" + (starred ? " on" : "")} onClick={() => onSave({ starred: !starred, note })}>★</button>}
+        </div>
+        <div className="label">Contact</div>
+        {show ? <>
+          {p.email ? <div className="kv"><b>Email</b><a href={"mailto:" + p.email}>{p.email}</a></div> : null}
+          {p.phone ? <div className="kv"><b>Phone</b><a href={"tel:" + p.phone}>{p.phone}</a></div> : null}
+          {p.links ? <div className="kv"><b>Links</b>{p.links}</div> : null}
+          {!p.email && !p.phone && !p.links ? <div className="locked">No contact info shared.</div> : null}
+        </> : <div className="locked">Contact info unlocks once you've sat at a table together.</div>}
+        {!me && <>
+          <div className="label">Your private note</div>
+          <textarea className="input" placeholder="What did you talk about? Follow up?" value={note} onChange={e => setNote(e.target.value)} onBlur={() => onSave({ starred, note })} />
+        </>}
+        <button className="ghost" onClick={() => { if (!me) onSave({ starred, note }); onClose(); }}>Done</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============ APP ============ */
+function App() {
+  const saved = loadProfile();
+  const [prof, setProf] = useState({ name: KV.getItem("hub_name") || saved.name || "", headline: saved.headline || "", email: saved.email || "", phone: saved.phone || "", links: saved.links || "" });
+  const [code, setCode] = useState("");
+  const [joined, setJoined] = useState(false);
+  const [evName, setEvName] = useState("");
+  const [mins, setMins] = useState(5);
+  const [ev, setEv] = useState(null);
+  const [people, setPeople] = useState([]);
+  const [marks, setMarks] = useState({});
+  const [tab, setTab] = useState("table");
+  const [open, setOpen] = useState(null);
+  const [q, setQ] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const setP = k => e => setProf({ ...prof, [k]: e.target.value });
+  const profOk = prof.name.trim().length > 0;
+
+  const refetch = useCallback(async (c) => {
+    const [e, p, m] = await Promise.all([
+      sb.from("tn_events").select("*").eq("code", c).maybeSingle(),
+      sb.from("tn_people").select("*").eq("code", c).order("created_at"),
+      sb.from("tn_marks").select("*").eq("code", c).eq("owner", MYID)
+    ]);
+    if (e.data) setEv(e.data);
+    if (p.data) setPeople(p.data);
+    if (m.data) { const o = {}; m.data.forEach(r => { o[r.target] = r; }); setMarks(o); }
+  }, []);
+
+  async function savePerson(c) {
+    KV.setItem("hub_name", prof.name.trim());
+    KV.setItem("tn_profile", JSON.stringify(prof));
+    const { error } = await sb.from("tn_people").upsert({ id: c + ":" + MYID, code: c, uid: MYID, name: prof.name.trim(), headline: prof.headline.trim(), email: prof.email.trim(), phone: prof.phone.trim(), links: prof.links.trim() });
+    return error;
+  }
+  function enter(c) { KV.setItem("tn_code", c); setCode(c); setJoined(true); refetch(c); }
+
+  async function host() {
+    setBusy(true); setErr("");
+    const c = mkCode();
+    const { error } = await sb.from("tn_events").insert({ code: c, host_id: MYID, name: evName.trim() || "Table Networking", status: "lobby", round: -1, mins: Number(mins) || 5 });
+    if (error) { setErr("Couldn't create event: " + error.message); setBusy(false); return; }
+    const e2 = await savePerson(c);
+    if (e2) { setErr(e2.message); setBusy(false); return; }
+    setBusy(false); enter(c);
+  }
+  async function join() {
+    setBusy(true); setErr("");
+    const c = code.trim().toUpperCase();
+    const { data } = await sb.from("tn_events").select("code").eq("code", c).maybeSingle();
+    if (!data) { setErr("No event with that code."); setBusy(false); return; }
+    const e2 = await savePerson(c);
+    if (e2) { setErr(e2.message); setBusy(false); return; }
+    setBusy(false); enter(c);
+  }
+  async function addBots() {
+    for (let i = people.length; i < 25; i++) {
+      const uid = "bot" + i;
+      await sb.from("tn_people").upsert({ id: code + ":" + uid, code, uid, name: BOTS[i % BOTS.length] + " " + String.fromCharCode(65 + (i % 26)) + ".", headline: "Demo attendee #" + (i + 1), email: "bot" + i + "@example.com", phone: "555-01" + String(i).padStart(2, "0"), links: "example.com/bot" + i });
+    }
+    refetch(code);
+  }
+  function leave() { KV.removeItem("tn_code"); setJoined(false); setEv(null); setPeople([]); setMarks({}); setCode(""); setTab("table"); }
+
+  // url code + auto-rejoin
+  useEffect(() => {
+    const c = new URLSearchParams(location.search).get("code");
+    if (c) setCode(c.toUpperCase());
+    const sc = KV.getItem("tn_code");
+    if (sc && !c) { setCode(sc); setJoined(true); refetch(sc); }
+  }, []);
+
+  // realtime + fallback poll
+  useEffect(() => {
+    if (!joined || !code) return;
+    const ch = sb.channel("tn_" + code)
+      .on("postgres_changes", { event: "*", schema: "public", table: "tn_events", filter: "code=eq." + code }, () => refetch(code))
+      .on("postgres_changes", { event: "*", schema: "public", table: "tn_people", filter: "code=eq." + code }, () => refetch(code))
+      .subscribe();
+    const t = setInterval(() => refetch(code), 4000);
+    return () => { sb.removeChannel(ch); clearInterval(t); };
+  }, [joined, code]);
+
+  /* ---- derived ---- */
+  const assign = (ev && ev.assign) || {};
+  const myNum = assign[MYID] || null;
+  const n = (ev && ev.n) || 0;
+  const round = ev ? ev.round : -1;
+  const isHost = ev && ev.host_id === MYID;
+  const byUid = useMemo(() => { const o = {}; people.forEach(p => { o[p.uid] = p; }); return o; }, [people]);
+  const uidByNum = useMemo(() => { const o = {}; Object.keys(assign).forEach(u => { o[assign[u]] = u; }); return o; }, [ev && ev.assign]);
+
+  function hasMet(uid) {
+    if (!ev || ev.status === "lobby" || !myNum) return false;
+    const theirs = assign[uid]; if (!theirs) return false;
+    const last = ev.status === "done" ? n : round;
+    for (let r = 0; r <= last; r++) if (tableOf(myNum, r, n) === tableOf(theirs, r, n)) return true;
+    return false;
+  }
+
+  async function saveMark(uid, patch) {
+    const cur = marks[uid] || {};
+    const row = { id: code + ":" + MYID + ":" + uid, code, owner: MYID, target: uid, starred: patch.starred != null ? patch.starred : !!cur.starred, note: patch.note != null ? patch.note : (cur.note || ""), updated_at: new Date().toISOString() };
+    setMarks(m => ({ ...m, [uid]: row }));
+    await sb.from("tn_marks").upsert(row);
+  }
+  const toggleStar = uid => saveMark(uid, { starred: !(marks[uid] && marks[uid].starred) });
+
+  /* ---- host actions ---- */
+  async function startEvent() {
+    const nn = bestN(people.length);
+    if (!nn) return;
+    const seated = shuffle(people.map(p => p.uid)).slice(0, nn * nn);
+    const as = {}; seated.forEach((u, i) => { as[u] = i + 1; });
+    await sb.from("tn_events").update({ status: "running", n: nn, round: 0, assign: as, topics: shuffle(TOPICS).slice(0, nn + 1), round_started_at: new Date().toISOString() }).eq("code", code);
+    refetch(code);
+  }
+  async function setRound(r) { await sb.from("tn_events").update({ round: r, round_started_at: new Date().toISOString() }).eq("code", code); refetch(code); }
+  async function endEvent() { await sb.from("tn_events").update({ status: "done" }).eq("code", code); refetch(code); setTab("list"); }
+
+  /* ---- list export ---- */
+  function starredRows() {
+    return Object.values(marks).filter(m => m.starred).map(m => ({ p: byUid[m.target], m })).filter(x => x.p);
+  }
+  function csvText() {
+    const esc = s => '"' + String(s || "").replace(/"/g, '""') + '"';
+    const lines = [["Name", "Seat", "Headline", "Email", "Phone", "Links", "Note"].join(",")];
+    starredRows().forEach(({ p, m }) => {
+      const met = hasMet(p.uid);
+      lines.push([p.name, assign[p.uid] || "", p.headline, met ? p.email : "", met ? p.phone : "", met ? p.links : "", m.note].map(esc).join(","));
+    });
+    return lines.join("\n");
+  }
+  function downloadCsv() {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csvText()], { type: "text/csv" }));
+    a.download = "table-networking-" + code + ".csv"; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function copyCsv() { try { navigator.clipboard.writeText(csvText()); alert("Copied. Paste into Sheets or Excel."); } catch (e) { alert("Copy failed. Use Download."); } }
+
+  /* ============ SCREENS ============ */
+  if (!joined) {
+    return (
+      <div className="wrap">
+        <div className="top"><div className="brand">TABLE NETWORKING</div>{DEMO ? <span className="pill">DEMO MODE</span> : null}</div>
+        <div className="brandBig">Meet everyone.</div>
+        <div className="sub">Rotating tables, nobody repeats. Star the people you want to follow up with.</div>
+        <div className="card">
+          <div className="label" style={{ marginTop: 0 }}>Your profile</div>
+          <input className="input" placeholder="Name *" value={prof.name} onChange={setP("name")} />
+          <input className="input" placeholder="What you do (headline)" value={prof.headline} onChange={setP("headline")} />
+          <input className="input" type="email" placeholder="Email" value={prof.email} onChange={setP("email")} />
+          <input className="input" type="tel" placeholder="Phone" value={prof.phone} onChange={setP("phone")} />
+          <input className="input" placeholder="Website / LinkedIn / Instagram" value={prof.links} onChange={setP("links")} />
+          <div className="phead" style={{ marginTop: 8 }}>Email, phone and links are only shown to people you sit with.</div>
+        </div>
+        <div className="card">
+          <div className="label" style={{ marginTop: 0 }}>Join an event</div>
+          <input className="input" placeholder="Event code" value={code} onChange={e => setCode(e.target.value.toUpperCase())} maxLength={4} style={{ textTransform: "uppercase", letterSpacing: ".3em", textAlign: "center" }} />
+          <button className="go" disabled={!profOk || code.trim().length < 4 || busy} onClick={join}>Join</button>
+        </div>
+        <div className="card">
+          <div className="label" style={{ marginTop: 0 }}>Host an event</div>
+          <input className="input" placeholder="Event name" value={evName} onChange={e => setEvName(e.target.value)} />
+          <input className="input" type="number" min="1" max="30" placeholder="Minutes per round" value={mins} onChange={e => setMins(e.target.value)} />
+          <button className="ghost" disabled={!profOk || busy} onClick={host}>Create event</button>
+        </div>
+        {err ? <div className="err">{err}</div> : null}
+        {DEMO ? <div className="phead" style={{ marginTop: 10 }}>Demo mode: data lives in this browser only. Open extra tabs to act as other people, or host and tap "fill to 25".</div> : null}
+      </div>
+    );
+  }
+
+  if (!ev) return <div className="wrap"><div className="sub">Loading…</div></div>;
+
+  const me = byUid[MYID];
+  const joinUrl = location.origin + location.pathname + "?code=" + code;
+  const lobby = ev.status === "lobby";
+  const done = ev.status === "done";
+  const nn = bestN(people.length);
+
+  let tabs = [["table", "Table"], ["people", "Everyone"], ["list", "My List ★"]];
+  if (isHost) tabs.push(["host", "Host"]);
+
+  const sheetP = open ? byUid[open] : null;
+
+  function renderTable() {
+    if (lobby) {
+      return <>
+        <div className="card" style={{ textAlign: "center" }}>
+          <div className="label" style={{ marginTop: 0 }}>Waiting for the host to start</div>
+          <div className="big">{people.length}</div>
+          <div className="phead">checked in</div>
+          {isHost ? <div style={{ marginTop: 14 }}><QR text={joinUrl} /><div className="who" style={{ marginTop: 8 }}>Code {code}</div></div> : null}
+        </div>
+        {isHost ? (nn
+          ? <button className="go" onClick={startEvent}>Start: {nn * nn} seats, {nn} tables, {nn + 1} rounds</button>
+          : <div className="card phead">Need at least 9 people to start (3 tables of 3).</div>) : null}
+        {isHost && DEMO && people.length < 25 ? <button className="ghost" onClick={addBots}>Demo: fill to 25 people</button> : null}
+        {isHost && nn && people.length > nn * nn ? <div className="phead">{people.length - nn * nn} extra people will be floaters (no seat, can still browse and star).</div> : null}
+      </>;
+    }
+    if (done) return <div className="card"><div className="pname">Event finished.</div><div className="phead">Check My List to follow up with your stars.</div></div>;
+    if (!myNum) return <div className="card"><div className="pname">You're a floater this event.</div><div className="phead">No seat, but you can browse Everyone and star people.</div></div>;
+    const t = tableOf(myNum, round, n);
+    const mates = tableMates(t, round, n);
+    const topic = (ev.topics || [])[round] || "";
+    return <>
+      <div className="card" style={{ textAlign: "center" }}>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <span className="pill">ROUND {round + 1} / {n + 1}</span>
+          <Timer startedAt={ev.round_started_at} mins={ev.mins} />
+        </div>
+        <div className="label">Go to table</div>
+        <div className="big">{t + 1}</div>
+        <div className="phead" style={{ marginTop: 6 }}>You are seat #{myNum}</div>
+      </div>
+      <div className="card"><div className="label" style={{ marginTop: 0 }}>Talk about</div><div className="topic">{topic}</div></div>
+      <div className="label">At your table</div>
+      {mates.map(k => {
+        const uid = uidByNum[k]; const p = byUid[uid]; if (!p) return null;
+        return <PersonRow key={k} p={p} num={k} me={uid === MYID} mark={marks[uid]} onOpen={() => setOpen(uid)} onStar={() => toggleStar(uid)} />;
+      })}
+    </>;
+  }
+
+  function renderPeople() {
+    const list = people.filter(p => !q || (p.name + " " + (p.headline || "")).toLowerCase().includes(q.toLowerCase()))
+      .sort((a, b) => (assign[a.uid] || 999) - (assign[b.uid] || 999) || a.name.localeCompare(b.name));
+    return <>
+      <input className="input" style={{ marginTop: 0 }} placeholder="Search name or headline" value={q} onChange={e => setQ(e.target.value)} />
+      <div className="label">{people.length} at this event</div>
+      {list.map(p => <PersonRow key={p.uid} p={p} num={assign[p.uid]} me={p.uid === MYID} mark={marks[p.uid]} onOpen={() => setOpen(p.uid)} onStar={() => toggleStar(p.uid)} />)}
+    </>;
+  }
+
+  function renderList() {
+    const rows = starredRows();
+    return <>
+      <div className="label" style={{ marginTop: 0 }}>{rows.length} starred</div>
+      {rows.length === 0 ? <div className="card phead">Star people at your table and they show up here with your notes.</div> : null}
+      {rows.map(({ p }) => <PersonRow key={p.uid} p={p} num={assign[p.uid]} me={false} mark={marks[p.uid]} onOpen={() => setOpen(p.uid)} onStar={() => toggleStar(p.uid)} />)}
+      {rows.length ? <>
+        <button className="go" onClick={downloadCsv}>Download CSV</button>
+        <button className="ghost" onClick={copyCsv}>Copy for Sheets</button>
+      </> : null}
+    </>;
+  }
+
+  function renderHost() {
+    if (lobby) return <div className="card phead">Start the event from the Table tab.</div>;
+    const mates = [];
+    if (!done) for (let t = 0; t < n; t++) mates.push([t, tableMates(t, round, n)]);
+    return <>
+      <div className="card">
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <span className="pill">ROUND {Math.min(round + 1, n + 1)} / {n + 1}</span>
+          <Timer startedAt={ev.round_started_at} mins={ev.mins} />
+        </div>
+        {!done && round > 0 ? <button className="ghost" onClick={() => setRound(round - 1)}>← Previous round</button> : null}
+        {!done && round < n ? <button className="go" onClick={() => setRound(round + 1)}>Next round →</button> : null}
+        {!done && round === n ? <button className="go" onClick={endEvent}>End event</button> : null}
+        {!done ? <button className="ghost danger" onClick={() => { if (confirm("End the event now?")) endEvent(); }}>End early</button> : null}
+      </div>
+      {!done ? <>
+        <div className="label">Tables this round</div>
+        <div className="tgrid">
+          {mates.map(([t, ks]) => <div className="tcell" key={t}><b>Table {t + 1}</b><br />{ks.map(k => (byUid[uidByNum[k]] || {}).name || "?").join(", ")}</div>)}
+        </div>
+      </> : null}
+    </>;
+  }
+
+  return (
+    <div className="wrap">
+      <div className="top">
+        <div className="brand">{ev.name.toUpperCase()}</div>
+        <div className="who">{code} · {me ? me.name : ""} <span style={{ cursor: "pointer", color: "var(--rose)" }} onClick={leave}>leave</span></div>
+      </div>
+      {tab === "table" && renderTable()}
+      {tab === "people" && renderPeople()}
+      {tab === "list" && renderList()}
+      {tab === "host" && isHost && renderHost()}
+      <div className="tabs"><div className="in">
+        {tabs.map(([k, l]) => <button key={k} className={"tab" + (tab === k ? " on" : "")} onClick={() => setTab(k)}>{l}</button>)}
+      </div></div>
+      {sheetP ? <PersonSheet key={sheetP.uid} p={sheetP} num={assign[sheetP.uid]} me={sheetP.uid === MYID} met={hasMet(sheetP.uid)} mark={marks[sheetP.uid]} onSave={patch => saveMark(sheetP.uid, patch)} onClose={() => setOpen(null)} /> : null}
+    </div>
+  );
+}
+
+boot().then(() => ReactDOM.createRoot(document.getElementById("root")).render(<App />));
+</script>
+</body>
+</html>
