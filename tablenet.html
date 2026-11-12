@@ -137,6 +137,14 @@ async function boot() {
   if (!ok) { DEMO = true; sb = makeMock(); KV = pickSession(); }
   MYID = hubId();
 }
+function botRow(c, i) {
+  return { id: c + ":bot" + i, code: c, uid: "bot" + i, name: BOTS[i % BOTS.length] + " " + String.fromCharCode(65 + (i % 26)) + ".", headline: "Demo attendee #" + (i + 1), email: "bot" + i + "@example.com", phone: "555-01" + String(i).padStart(2, "0"), links: "example.com/bot" + i };
+}
+function startPayload(uids) {
+  const nn = bestN(uids.length);
+  const seated = shuffle(uids).slice(0, nn * nn); const as = {}; seated.forEach((u, i) => { as[u] = i + 1; });
+  return { status: "running", n: nn, round: 0, assign: as, topics: shuffle(TOPICS).slice(0, nn + 1), round_started_at: new Date().toISOString() };
+}
 const BOTS = ["Avery","Blake","Casey","Dana","Elliot","Frankie","Gray","Harper","Indie","Jordan","Kai","Logan","Morgan","Nico","Orion","Parker","Quinn","Riley","Sage","Taylor","Uma","Vic","Wren","Xan","Yael"];
 
 /* ============ ROTATION ENGINE ============
@@ -298,14 +306,27 @@ function App() {
     if (e2) { setErr(e2.message); setBusy(false); return; }
     setBusy(false); enter(c);
   }
-  async function addBots() {
-    for (let i = people.length; i < 25; i++) {
-      const uid = "bot" + i;
-      await sb.from("tn_people").upsert({ id: code + ":" + uid, code, uid, name: BOTS[i % BOTS.length] + " " + String.fromCharCode(65 + (i % 26)) + ".", headline: "Demo attendee #" + (i + 1), email: "bot" + i + "@example.com", phone: "555-01" + String(i).padStart(2, "0"), links: "example.com/bot" + i });
-    }
+  async function addBots(target) {
+    for (let i = people.length; i < target; i++) await sb.from("tn_people").upsert(botRow(code, i));
     refetch(code);
   }
-  function leave() { KV.removeItem("tn_code"); setJoined(false); setEv(null); setPeople([]); setMarks({}); setCode(""); setTab("table"); }
+  const demoPrev = useRef(null);
+  async function startDemo(size) {
+    setBusy(true); setErr("");
+    demoPrev.current = { sb, KV, DEMO, MYID };
+    sb = makeMock(); DEMO = true; KV = pickSession(); MYID = hubId();
+    ["tn_events", "tn_people", "tn_marks"].forEach(t => { try { window["localStorage"].removeItem("tn_mock_" + t); } catch (e) {} });
+    const c = mkCode(), me = { name: prof.name.trim() || "You", headline: prof.headline.trim() || "Demo host", email: prof.email.trim() || "you@example.com", phone: prof.phone.trim() || "555-0100", links: prof.links.trim() };
+    await sb.from("tn_events").insert({ code: c, host_id: MYID, name: "Demo Mixer", status: "lobby", round: -1, mins: 5 });
+    await sb.from("tn_people").upsert({ id: c + ":" + MYID, code: c, uid: MYID, ...me });
+    const uids = [MYID];
+    for (let i = 1; i < size; i++) { await sb.from("tn_people").upsert(botRow(c, i)); uids.push("bot" + i); }
+    await sb.from("tn_events").update(startPayload(uids)).eq("code", c);
+    setBusy(false); enter(c);
+  }
+  function leave() {
+    if (demoPrev.current) { ({ sb, KV, DEMO, MYID } = demoPrev.current); demoPrev.current = null; }
+KV.removeItem("tn_code"); setJoined(false); setEv(null); setPeople([]); setMarks({}); setCode(""); setTab("table"); }
 
   // url code + auto-rejoin
   useEffect(() => {
@@ -318,12 +339,13 @@ function App() {
   // realtime + fallback poll
   useEffect(() => {
     if (!joined || !code) return;
-    const ch = sb.channel("tn_" + code)
+    const cli = sb;
+    const ch = cli.channel("tn_" + code)
       .on("postgres_changes", { event: "*", schema: "public", table: "tn_events", filter: "code=eq." + code }, () => refetch(code))
       .on("postgres_changes", { event: "*", schema: "public", table: "tn_people", filter: "code=eq." + code }, () => refetch(code))
       .subscribe();
     const t = setInterval(() => refetch(code), 4000);
-    return () => { sb.removeChannel(ch); clearInterval(t); };
+    return () => { cli.removeChannel(ch); clearInterval(t); };
   }, [joined, code]);
 
   /* ---- derived ---- */
@@ -353,11 +375,8 @@ function App() {
 
   /* ---- host actions ---- */
   async function startEvent() {
-    const nn = bestN(people.length);
-    if (!nn) return;
-    const seated = shuffle(people.map(p => p.uid)).slice(0, nn * nn);
-    const as = {}; seated.forEach((u, i) => { as[u] = i + 1; });
-    await sb.from("tn_events").update({ status: "running", n: nn, round: 0, assign: as, topics: shuffle(TOPICS).slice(0, nn + 1), round_started_at: new Date().toISOString() }).eq("code", code);
+    if (!bestN(people.length)) return;
+    await sb.from("tn_events").update(startPayload(people.map(p => p.uid))).eq("code", code);
     refetch(code);
   }
   async function setRound(r) { await sb.from("tn_events").update({ round: r, round_started_at: new Date().toISOString() }).eq("code", code); refetch(code); }
@@ -391,6 +410,13 @@ function App() {
         <div className="brandBig">Meet everyone.</div>
         <div className="sub">Rotating tables, nobody repeats. Star the people you want to follow up with.</div>
         <div className="card">
+          <div className="label" style={{ marginTop: 0 }}>Just looking?</div>
+          <div className="phead">Run a live demo on your own with fake attendees. No sign-up, nothing saved to the server. Pick a size:</div>
+          <div className="row" style={{ gap: 8, marginTop: 10 }}>
+            {[9, 25, 49, 121].map(k => <button key={k} className="ghost" style={{ marginTop: 0 }} disabled={busy} onClick={() => startDemo(k)}>{k}</button>)}
+          </div>
+        </div>
+        <div className="card">
           <div className="label" style={{ marginTop: 0 }}>Your profile</div>
           <input className="input" placeholder="Name *" value={prof.name} onChange={setP("name")} />
           <input className="input" placeholder="What you do (headline)" value={prof.headline} onChange={setP("headline")} />
@@ -411,7 +437,7 @@ function App() {
           <button className="ghost" disabled={!profOk || busy} onClick={host}>Create event</button>
         </div>
         {err ? <div className="err">{err}</div> : null}
-        {DEMO ? <div className="phead" style={{ marginTop: 10 }}>Demo mode: data lives in this browser only. Open extra tabs to act as other people, or host and tap "fill to 25".</div> : null}
+        {DEMO ? <div className="phead" style={{ marginTop: 10 }}>Demo mode: data lives in this browser only. Open extra tabs to act as other people, or host and use "Fill to N" in the lobby.</div> : null}
       </div>
     );
   }
@@ -441,7 +467,7 @@ function App() {
         {isHost ? (nn
           ? <button className="go" onClick={startEvent}>Start: {nn * nn} seats, {nn} tables, {nn + 1} rounds</button>
           : <div className="card phead">Need at least 9 people to start (3 tables of 3).</div>) : null}
-        {isHost && DEMO && people.length < 25 ? <button className="ghost" onClick={addBots}>Demo: fill to 25 people</button> : null}
+        {isHost && DEMO ? <div className="row" style={{ gap: 8 }}>{[9, 25, 49, 121].filter(k => k > people.length).map(k => <button key={k} className="ghost" onClick={() => addBots(k)}>Fill to {k}</button>)}</div> : null}
         {isHost && nn && people.length > nn * nn ? <div className="phead">{people.length - nn * nn} extra people will be floaters (no seat, can still browse and star).</div> : null}
       </>;
     }
@@ -519,7 +545,7 @@ function App() {
   return (
     <div className="wrap">
       <div className="top">
-        <div className="brand">{ev.name.toUpperCase()}</div>
+        <div className="brand">{ev.name.toUpperCase()}{DEMO ? " · DEMO" : ""}</div>
         <div className="who">{code} · {me ? me.name : ""} <span style={{ cursor: "pointer", color: "var(--rose)" }} onClick={leave}>leave</span></div>
       </div>
       {tab === "table" && renderTable()}
